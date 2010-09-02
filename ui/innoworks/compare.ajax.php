@@ -25,14 +25,17 @@ if (isset($_POST) && $_POST != '') {
 			break;
 		case "deleteRiskItem":
 			echo "Deleting Group... ";
-			$group = deleteGroup($_POST['groupId'],$_SESSION['innoworks.ID']);
-			echo "Response Code: ".$group;
+			$resp = deleteRiskItem($_POST['riskEvaluationId'],$_SESSION['innoworks.ID']);
+			echo "Response Code: ".$resp;
 			break;
-		case "linkUserToGroup":
-			echo "Creating Link.. ";
-			$group = linkGroupToUser($_POST['groupId'],$_POST['userId']);
-			echo "Response Code: ".$group;
-			break;
+		case "updateRiskItem":
+			echo "Updating Risk Item... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			unset($opts['title']);
+			$resp = updateRiskItem($opts);
+			echo "Response Code: ".$resp;
+			break;	
 	}
 }
 ?>

@@ -16,6 +16,7 @@ function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
 		<?renderGenericUpdateRow($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId"));?>
 		<td>
+			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
 			<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')"  value=" U "/>
 			<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')"  value=" - "/>
 		</td>

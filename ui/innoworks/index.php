@@ -2,7 +2,6 @@
 require_once("thinConnector.php"); 
 requireLogin();
 ?>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,8 +9,8 @@ requireLogin();
 <title>innoWorks</title>
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/jQuery_UI-Min.js"></script>
+<!-- <script type="text/javascript"
+	src="<?= $serverRoot?>ui/scripts/jQuery_UI-Min.js"></script>-->
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 
@@ -26,6 +25,7 @@ requireLogin();
 //////// VARS //////////
 var currentIdeaId;
 var currentGroupId;
+var formArray; // Temp holder for form value functions
 var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
 		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};
 
@@ -34,6 +34,7 @@ dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.layout.ContentPane");
+dojo.require("dijit.Menu");
 
 $(document).ready(function() {
 	//Loading animation for all ajax operations
@@ -45,11 +46,28 @@ $(document).ready(function() {
 		$("#ajaxLoader").hide();
 		$("#logo").show();		
 	});
+	//Show default
 	showIdeas();
-	showIdeaGroupsForUser();
 });
 
+
+dojo.addOnLoad(function(){
+	//Setup stuff for tab menus
+	dojo.subscribe("ideasPopupTabContainer-selectChild", function(child){
+		if (child.id == "ideaComments") 
+			getCommentsForIdea();
+		else if (child.id == "ideaFeatureEvaluationList") 
+			getFeatureEvaluationForIdea();
+	});
+});
+
+
 //////////// MENU ///////////
+function showIdeaReviews(ideaId) { 
+	currentIdeaId = ideaId;
+	getCommentsForIdea();
+	dijit.byId('ideasPopup').show();
+}
 
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
@@ -73,7 +91,7 @@ function getIdeas() {
 		});
 	}
 	showIdeaGroupsForUser();
-}
+} 
 
 function getReports() {
 	$.get("reports.ajax.php?action=getReportDetails", function (data) {
@@ -117,7 +135,7 @@ function showReports() {
 function showGroups() {
 	$(".tabBody").hide();
 	$("#groupTab").show();
-	getGroups();
+	getGroups(); 
 }
 
 function showCompare() {
@@ -127,6 +145,28 @@ function showCompare() {
 }
 
 /////// COMMON FUNCTIONS ///////
+
+function setFormArrayValue(key,val) {
+	formArray[key] = val;
+}
+
+function getInputDataFromId(selector) {
+	formArray=new Array();
+	$("#" + selector + " input").each(function(index, formArray) {
+		if ($(this).attr('name') != null && $(this).attr('name') != '') 
+			setFormArrayValue($(this).attr('name'),$(this).val());
+	}); 
+	return formArray;
+}
+
+function getSerializedArray(array) {
+	var a = [];
+	for (key in array) {
+	    a.push(key+"="+array[key]);
+	}
+	return a.join("&") // a=2&c=1	
+}
+
 
 function showDetails(id) {
 	$("#" + id).toggle();
@@ -264,7 +304,7 @@ function delIdeaFromCurGroup(id) {
 	});
 }
 
-///////////// EVALUATION /////////////
+///////////// RISK EVALUATION /////////////
 function showAddRiskItem() {
 	$('comparePopup').empty();
 	dijit.byId('comparePopup').show();
@@ -280,30 +320,77 @@ function addRiskItem(id) {
 		showCompare();
 	});
 }
-
-
-var formArray;
-function setFormArrayValue(key,val) {
-	formArray[key] = value;
-}
-
-function getInputDataFromId(selector) {
-	$("#" + selector + " input").each(function(index, formArray) {
-		setFormArrayValue($(this).attr('name'),$(this).val());
-	});
-
-	alert(formArray['title']);
-	
-	return formArray;
-}
-
-
+ 
 function updateRisk(riskid,riskform){
-	form = getInputDataFromId(riskform);
-	alert (form);
+	formData = getInputDataFromId(riskform);
+	formData['action'] = 'updateRiskItem';
+	$.post("compare.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
+	});
 }
 
-function deleteRisk(){}
+function deleteRisk(riskid){
+	$.post("compare.ajax.php", {action: "deleteRiskItem", riskEvaluationId:riskid}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
+	});
+}
+
+///////////// REVIEWS /////////////////////
+
+function getCommentsForIdea() {
+	$.get("ideas.ajax.php?action=getCommentsForIdea&actionId="+currentIdeaId, function(data) {
+		$("#commentList").html(data);
+	});
+}
+
+function getFeatureEvaluationForIdea() {
+	$.get("ideas.ajax.php?action=getFeatureEvaluationForIdea&actionId="+currentIdeaId, function(data) {
+		$("#fEvalContent").html(data);
+	});
+}
+
+function addComment() {
+	$.post("ideas.ajax.php", $("#addCommentForm").serialize()+"&ideaId="+currentIdeaId, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getCommentsForIdea();
+	});
+}
+ 
+function updateComment(){
+}
+
+function deleteComment(cid) {
+	$.post("ideas.ajax.php", {action: "deleteComment", commentId:cid}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getCommentsForIdea();
+	}); 
+}
+
+function addFeatureItem(fId) {
+	$.post("ideas.ajax.php", {action: "createFeatureItem", featureId: fId}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
+}
+ 
+function updateFeatureItem(featureItemId,featureForm){
+	formData = getInputDataFromId(featureForm);
+	formData['action'] = 'updateFeatureItem';
+	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
+}
+
+function deleteFeatureItem(fid){
+	$.post("ideas.ajax.php", {action: "deleteFeatureItem", featureEvaluationId:fid}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
+}
+
 </script>
 
 <style>
@@ -439,7 +526,7 @@ div#groupsList, div#groupDetails {
 <div id="head">
 	<div id="leftAlignMenu">
 		<ul class="tabMenu">
-			<li><img id="logo" style="height:20px; width:20px;" src="<?= $serverRoot?>ui/style/kubu.png"/>
+			<li><img id="logo" style="height:25px; width:25px;" src="<?= $serverRoot?>ui/style/kubu.png"/>
 			<img id="ajaxLoader" src="<?= $serverRoot?>ui/style/ajaxLoader.gif"/></li>
 			<li><b>Innoworks</b></li>
 			<li><a id="ideaslnk" href="javascript:showIdeas()">Ideas</a></li>
@@ -479,12 +566,22 @@ div#groupsList, div#groupDetails {
 	</div>
 	
 	<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
-    <div dojoType="dijit.layout.TabContainer" style="width: 30em; height: 300px;">
-        <div dojoType="dijit.layout.ContentPane" title="Reviews">
-            No reviews yet
+    <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 35em; height: 300px;">
+        <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Reviews">
+        	<div id="addComment">
+        		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
+        			New Comment
+        			<input type="text" name="text"/>
+        			<input type="hidden" name="action" value="addComment" />
+        			<input type="submit" value=" + "/>
+        		</form>
+        	</div>
+            <div id="commentList">No comments yet</div>
         </div>
-        <div dojoType="dijit.layout.ContentPane" title="Feature Evaluation">
-            No feature evaluations yet
+        
+        <div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane" title="Feature Evaluation">
+            <div id="addFeatureEval"></div>
+            <div id="fEvalContent"></div>
         </div>
     </div>
 </div>

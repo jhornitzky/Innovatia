@@ -14,6 +14,12 @@ if (isset($_GET) && $_GET != '') {
 		case "getIdeasForGroup":
 			renderIdeasForGroup($_GET['groupId']);
 			break;
+		case "getCommentsForIdea":
+			renderCommentsForIdea($_GET['actionId']);
+			break;
+		case "getFeatureEvaluationForIdea":
+			renderFeatureEvaluationForIdea($_GET['actionId']);
+			break;
 	}
 }
 
@@ -61,9 +67,42 @@ if (isset($_POST) && $_POST != '') {
 			break;
 		case "deleteRole":
 			echo "Deleting Role... ";
-			$opts = array_merge($_POST['actionId'], (array) $_SESSION['innoworks.ID']);
+			$opts = array_merge($_POST['actionId'], array("userId" => $_SESSION['innoworks.ID']));
 			$feature = deleteRole($opts);
 			echo "Response Code: ".$feature;
+			break;
+		case "addComment":
+			echo "Adding Comment... ";
+			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
+			unset($opts['action']);
+			$comment = createComment($opts);
+			echo "Response Code: ".$comment;
+			break;
+		case "deleteComment":
+			echo "Deleting Comment... ";
+			//$opts = array_merge($_POST['actionId'], (array) $_SESSION['innoworks.ID']);
+			$feature = deleteComment($_POST['commentId']);
+			echo "Response Code: " . $feature;
+			break;
+		case "createFeatureItem":
+			echo "Adding Item... ";
+			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
+			unset($opts['action']);
+			$resp = createFeatureItem($opts);
+			echo "Response Code: ".$resp;
+			break;
+		case "updateFeatureItem":
+			echo "Updating Item... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			unset($opts['title']);
+			$resp = updateFeatureItem($opts);
+			echo "Response Code: ".$resp;
+			break;
+		case "deleteFeatureItem":
+			echo "Deleting Item... ";
+			$feature = deleteFeatureItem($_POST['featureEvaluationId']);
+			echo "Response Code: " . $feature;
 			break;
 	}
 }

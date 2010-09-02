@@ -45,4 +45,32 @@ function deleteRole($id) {
 	return genericDelete("Roles", array("roleId"=>$id));
 }
 
+function getFeatureEvaluationForIdea ($id) {
+	return dbQuery("SELECT Ideas.title, FeatureEvaluation.* FROM FeatureEvaluation, Ideas, Features WHERE FeatureEvaluation.featureId = Features.featureId AND Features.ideaId = '$id' AND Ideas.ideaId = Features.ideaId");
+}
+
+function getCommentsForIdea($id) {
+	return dbQuery("SELECT * FROM Comments WHERE ideaId = '$id'");
+}
+
+function createComment($opts) {
+	return genericCreate("Comments", $opts);
+}
+
+function deleteComment($id) {
+	return genericDelete("Comments", array("commentId"=>$id));
+}
+
+function createFeatureItem($opts) {
+	return genericCreate("FeatureEvaluation", $opts);
+}
+
+function updateFeatureItem($opts) {
+	$where = array("featureEvaluationId");
+	return genericUpdate("FeatureEvaluation", $opts, $where);
+}
+
+function deleteFeatureItem($id) {
+	return genericDelete("FeatureEvaluation", array("featureEvaluationId"=>$id));
+}
 ?>

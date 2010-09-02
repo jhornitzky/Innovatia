@@ -5,11 +5,12 @@ function createRiskItem($opts) {
 }
 
 function updateRiskItem($opts) {
-	genericUpdate("RiskEvaluation",$opts);
+	$where = array("riskEvaluationId");
+	return genericUpdate("RiskEvaluation", $opts, $where);
 }
 
 function deleteRiskItem($id, $user) {
-	$success = dbQuery("DELETE FROM RiskEvaluation WHERE riskId = '$id'" );
+	$success = dbQuery("DELETE FROM RiskEvaluation WHERE riskEvaluationId = '$id'" );
 	return $success;
 }
 ?>
