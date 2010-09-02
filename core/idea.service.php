@@ -1,0 +1,48 @@
+<?
+/**
+ * Functions for retrieving and adding users to the database
+ */
+require_once("innoworks.connector.php");
+
+function getIdeas($userid) {
+	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
+}
+
+function createIdea($opts) {
+	return genericCreate("Ideas", $opts);
+}
+
+function updateIdeaDetails($opts) {
+	$where = array("ideaId", "userId");
+	return genericUpdate("Ideas", $opts, $where);
+}
+
+function deleteIdea($opts) {
+	return genericDelete("Ideas", $opts);
+}
+
+function getFeaturesForIdea($id) {
+	return dbQuery("SELECT * FROM Features WHERE ideaId = ".$id);	
+}
+
+function createFeature($opts) {
+	return genericCreate("Features", $opts);
+}
+
+function deleteFeature($id) {
+	return genericDelete("Features", array("featureId"=>$id));
+}
+
+function getRolesForIdea($id) {
+	return dbQuery("SELECT * FROM Roles WHERE ideaId = ".$id);	
+}
+
+function createRole($opts) {
+	return genericCreate("Roles", $opts);
+}
+
+function deleteRole($id) {
+	return genericDelete("Roles", array("roleId"=>$id));
+}
+
+?>
