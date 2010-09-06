@@ -4,6 +4,7 @@ require_once("thinConnector.php");
 function renderDefault($user) {
 	$riskItems = dbQuery("SELECT Ideas.title, RiskEvaluation.*  FROM RiskEvaluation, Ideas 
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user");
+	
 	echo "<table>";
 	renderGenericHeader($riskItems, array("ideaId","riskEvaluationId","groupId"));
 	while ($riskItem = dbFetchObject($riskItems)) {
@@ -14,7 +15,7 @@ function renderDefault($user) {
 
 function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
-		<?renderGenericUpdateRow($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId"));?>
+		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId"), "RiskEvaluation");?>
 		<td>
 			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
 			<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')"  value=" U "/>

@@ -152,7 +152,7 @@ function setFormArrayValue(key,val) {
 
 function getInputDataFromId(selector) {
 	formArray=new Array();
-	$("#" + selector + " input").each(function(index, formArray) {
+	$("#" + selector + " :input").each(function(index, formArray) {
 		if ($(this).attr('name') != null && $(this).attr('name') != '') 
 			setFormArrayValue($(this).attr('name'),$(this).val());
 	}); 

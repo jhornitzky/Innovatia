@@ -1,6 +1,10 @@
 <?
 require_once("innoworks.config.php");
 
+function getRefDataForTable($table) {
+	return dbQuery("SELECT * FROM ReferenceData WHERE key1 = '$table'");
+}
+
 //////////////// GENERIC CRUD FUNCTIONS ////////////
 
 function genericCreate($tablename, $opts) {
@@ -216,6 +220,16 @@ function dbFetchField($result) {
 
 function dbFetchArray($results) {
 	return mysqli_fetch_array($results);
+}
+
+function dbFetchAll($results) {
+	$fetchArray = array();
+	$i = 0;
+	while ($obj = dbFetchArray($results)){
+		$fetchArray[$i] = $obj;
+		$i++;
+	}
+	return $fetchArray;
 }
 
 function dbRelease($result)
