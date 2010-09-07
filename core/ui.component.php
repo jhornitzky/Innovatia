@@ -39,7 +39,7 @@ function renderGenericHeader($rs, $omitArray) {
 function renderGenericUpdateRow($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {?>
-<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+		<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
 		<?}
 	}
 }
@@ -52,15 +52,21 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {
 			$metaArray = findColumnMetadata($refdata, $key);
+			
 			if ($metaArray){
 				echo "<td>";
 				echo "<select name='$key' value='$value'>";
 				echo "<option value='$value' selected='selected'>$value</option>";
-				foreach($metaArray as $metaKey => $metaValue) {
-					$metaValueAct = $metaValue["value"];
-					if ($metaValueAct != $value) //PREVENT DOUBLE RENDERING
-					echo "<option value='$metaValueAct'>$metaValueAct</option>";
+				
+				$metaValArray = getColumnValues($metaArray);
+				if ($metaValArray) {
+					foreach($metaValArray as $metaValue) {
+						logDebug("Meta value is ".$metaValue);
+						if ($metaValue != $value) //PREVENT DOUBLE RENDERING
+						echo "<option value='$metaValue'>$metaValue</option>";
+					}
 				}
+				
 				echo "</select>";
 				echo "</td>";
 			}
@@ -72,17 +78,33 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 }
 
 function findColumnMetadata($refDataArray, $needle) {
-	logDebug('FIND this needle: '.$needle);
 	if (!$refDataArray)
 	return $refDataArray;
 
 	$metaArray = false;
 	foreach ($refDataArray as $key => $refDataValue) {
-		logDebug("Array Iter: ". $key . " " . $refDataValue["key2"]);
+		//logDebug("Array Iter: ". $key . " " . $refDataValue["key2"]);
 		if ($refDataValue["key2"] == $needle)
 		$metaArray[$key] = $refDataValue;
+	} 
+	return $metaArray;
+}
+
+function getColumnValues($refDataArray) {
+	if (!$refDataArray)
+		return $refDataArray;
+
+	$metaArray = false;
+	$x=0;
+	
+	foreach ($refDataArray as $refDataValue) {
+		logDebug("Column value grab: " . $refDataValue["value"] . " ; key3: " . $refDataValue["key3"]);
+		if ($refDataValue["key3"] == "V") {
+			logDebug("Add to metaArray". $refDataValue["key3"]);
+			$metaArray[$x] = $refDataValue["value"];
+			$x++;
+		}
 	}
-	logDebug("MetaArray: " . $metaArray);
 	return $metaArray;
 }
 

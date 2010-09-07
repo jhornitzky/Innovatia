@@ -6,7 +6,7 @@ function renderDefault($user) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user");
 	
 	echo "<table>";
-	renderGenericHeader($riskItems, array("ideaId","riskEvaluationId","groupId"));
+	renderGenericHeader($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"));
 	while ($riskItem = dbFetchObject($riskItems)) {
 		renderRiskItem($riskItems, $riskItem);
 	}
@@ -15,7 +15,7 @@ function renderDefault($user) {
 
 function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
-		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId"), "RiskEvaluation");?>
+		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation");?>
 		<td>
 			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
 			<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')"  value=" U "/>

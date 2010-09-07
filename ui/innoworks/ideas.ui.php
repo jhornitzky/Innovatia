@@ -29,7 +29,7 @@ function renderIdea($ideas, $idea) { ?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
 
 <div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<?=$idea->title?> <a
+<span class="ideatitle"><?=$idea->title?></span> <a
 	href="javascript:showDetails('ideadetails_form_<?= $idea->ideaId?>')">Mission</a>
 <a
 	href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
@@ -179,7 +179,7 @@ function renderFeatureEvaluationTable($id) {
 
 function renderFeatureItem($featureItems, $featureItem) {?> 
 	<tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
-		<?renderGenericUpdateRow($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId"));?>
+		<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId"), "FeatureEvaluation");?>
 		<td>
 			<input type="hidden" name="featureEvaluationId" value="<?= $featureItem->featureEvaluationId ?>"/>
 			<input type="button" onclick="updateFeatureItem('<?= $featureItem->featureEvaluationId ?>','featureitemform_<?= $featureItem->featureEvaluationId ?>')"  value=" U "/>

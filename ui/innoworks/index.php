@@ -391,6 +391,20 @@ function deleteFeatureItem(fid){
 	});
 }
 
+jQuery.expr[':'].Contains = function(a,i,m){
+    return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+};
+
+function filterIdeas(element) {
+	var filter = $(element).val();
+    if (filter) { 
+      $("#ideasList .idea .formHead ").find(".ideatitle:not(:Contains('" + filter + "'))").parent().slideUp();
+      $("#ideasList .idea .formHead ").find(".ideatitle:Contains('" + filter + "')").parent().slideDown();
+    } else {
+      $("#ideasList .idea .formHead ").find(".ideatitle").parent().slideDown();
+    }
+	
+}
 </script>
 
 <style>
@@ -518,6 +532,10 @@ div#groupsList, div#groupDetails {
 	overflow:auto;
 	max-height:20em;
 }
+
+select {
+	width:5em;
+}
 </style>
 
 </head>
@@ -557,7 +575,7 @@ div#groupsList, div#groupDetails {
 			</form>
 		</div> 
 		<div id="ideaGroups" class="ui-corner-all">
-			<input type="text" value="Search" disabled="disabled"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
+			Search<input type="text" value="" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
 			Groups <span id="ideaGroupsList">None</span>
 		</div>
 	</div>
@@ -617,7 +635,8 @@ div#groupsList, div#groupDetails {
 
 <div id="compareTab" class="tabBody">
 	<h2>R-W-W</h2>
-	<input type='button' onclick='showAddRiskItem()' value=' + '/>
+	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p>
+	<div class="addform ui-corner-all">Add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
 	<div id="compareList">
 		<p>No comparisons yet</p>
 	</div>

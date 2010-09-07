@@ -2,7 +2,7 @@
 require_once("innoworks.config.php");
 
 function getRefDataForTable($table) {
-	return dbQuery("SELECT * FROM ReferenceData WHERE key1 = '$table'");
+	return dbQuery("SELECT * FROM ReferenceData WHERE key1 = '$table' ORDER BY value");
 }
 
 //////////////// GENERIC CRUD FUNCTIONS ////////////
