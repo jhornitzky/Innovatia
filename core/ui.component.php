@@ -22,8 +22,8 @@ function renderGenericUpdateForm($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-		<td><label><?=fromCamelCase($key)?></label></td>
-		<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+		<td style="width:10%"><label><?=fromCamelCase($key)?></label></td>
+		<td style="width:90%"><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
 		<?}
 		echo "</tr>";
 	}

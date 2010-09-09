@@ -66,7 +66,7 @@ Feature | </span> <input type="text" name="feature"/>
 <div class="ideaRoles subform">
 <div id="idearoles_form_<?= $idea->ideaId?>" style="display: none;">
 <form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New Role |
-</span> <? renderGenericAddForm("Roles", array("roleId", "ideaId"));	?>
+</span> <input type="text" name="role"/>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="addRole" /> <input type="button"
 	onclick="genericAdd('addrole_form_<?= $idea->ideaId?>');getRoles('idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
@@ -180,12 +180,14 @@ function renderFeatureEvaluationForIdea($id) {
 
 function renderFeatureEvaluationTable($id) {
 	$featureItems = getFeatureEvaluationForIdea($id);
-	echo "<table>";
-	renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId"));
-	while ($featureItem = dbFetchObject($featureItems)) {
-		renderFeatureItem($featureItems, $featureItem);
+	if ($riskItems && dbNumRows($riskItems) > 0){
+		echo "<table>";
+		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId"));
+		while ($featureItem = dbFetchObject($featureItems)) {
+			renderFeatureItem($featureItems, $featureItem);
+		}
+		echo "</table>";
 	}
-	echo "</table>";
 } 
 
 function renderFeatureItem($featureItems, $featureItem) {?> 

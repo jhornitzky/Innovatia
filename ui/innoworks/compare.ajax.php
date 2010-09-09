@@ -32,7 +32,7 @@ if (isset($_POST) && $_POST != '') {
 			echo "Updating Risk Item... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			unset($opts['title']);
+			unset($opts['idea']);
 			$resp = updateRiskItem($opts);
 			echo "Response Code: ".$resp;
 			break;	
