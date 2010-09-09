@@ -2,9 +2,7 @@
 require_once("thinConnector.php");  
 
 function renderDefault($user) {
-	$riskItems = dbQuery("SELECT Ideas.title, RiskEvaluation.*  FROM RiskEvaluation, Ideas 
-	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user");
-	
+	$riskItems = getRiskItems($user);
 	echo "<table>";
 	renderGenericHeader($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"));
 	while ($riskItem = dbFetchObject($riskItems)) {

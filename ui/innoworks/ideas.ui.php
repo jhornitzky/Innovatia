@@ -26,17 +26,20 @@ function renderIdeasForGroup($groupId) {
 }
 
 function renderIdea($ideas, $idea) { ?>
-<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
+<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all" onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
 
-<div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<span class="ideatitle"><?=$idea->title?></span> <a
-	href="javascript:showDetails('ideadetails_form_<?= $idea->ideaId?>')">Mission</a>
-<a
-	href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
+<div class="formHead" ><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
+<span class="ideatitle"><?=$idea->title?></span> 
+
+<span class="ideaoptions">
+<a href="javascript:showDetails('ideadetails_form_<?= $idea->ideaId?>')">Mission</a>
+<a href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
 <a href="javascript:showDetails('idearoles_form_<?= $idea->ideaId?>')">Roles</a>
 <a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');">Review</a>
-<input type="button" value=" - "
-	onclick="deleteIdea(<?= $idea->ideaId?>)" /></div>
+<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" />
+</span>
+</div>
+
 <div class="formBody">
 <div class="ideaDetails subform">
 <form id="ideadetails_form_<?= $idea->ideaId?>" style="display: none;">
@@ -50,11 +53,26 @@ function renderIdea($ideas, $idea) { ?>
 
 <div class="ideaFeatures subform">
 <div id="ideafeatures_form_<?= $idea->ideaId?>" style="display: none;">
+<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span> New
+Feature | </span> <input type="text" name="feature"/>
+<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+	type="hidden" name="action" value="addFeature" /> <input type="button"
+	onclick="genericAdd('addfeature_form_<?= $idea->ideaId?>');getFeatures('ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
+<div id="ideafeatures_<?= $idea->ideaId?>">
 <? renderIdeaFeatures($idea->ideaId); ?></div>
+</div>
 </div>
 
 <div class="ideaRoles subform">
-<div id="idearoles_form_<?= $idea->ideaId?>" style="display: none;"><? renderIdeaRoles($idea->ideaId); ?>
+<div id="idearoles_form_<?= $idea->ideaId?>" style="display: none;">
+<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New Role |
+</span> <? renderGenericAddForm("Roles", array("roleId", "ideaId"));	?>
+<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+	type="hidden" name="action" value="addRole" /> <input type="button"
+	onclick="genericAdd('addrole_form_<?= $idea->ideaId?>');getRoles('idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
+	<div id="idearoles_<?= $idea->ideaId?>">
+		<? renderIdeaRoles($idea->ideaId); ?>
+	</div>
 </div>
 </div>
 </div>
@@ -63,62 +81,55 @@ function renderIdea($ideas, $idea) { ?>
 <?
 }
 
-function renderIdeaFeatures($ideaId) { ?>
-<form id="addfeature_form_<?= $ideaId?>" class="addForm"><span> New
-Feature | </span> <? renderGenericAddForm("Features", array("featureId", "ideaId")); ?>
-<input type="hidden" name="ideaId" value="<?= $ideaId?>" /> <input
-	type="hidden" name="action" value="addFeature" /> <input type="button"
-	onclick="genericAdd('addfeature_form_<?= $ideaId?>')" value=" + " /></form>
-<?
-$features = getFeaturesForIdea($ideaId);
-if ($features && dbNumRows($features) > 0 ) {
-	echo "<table>";
-	renderGenericHeader($features, array("featureId", "ideaId"));
-	while ($feature = dbFetchObject($features)) {
-		renderFeature($features, $feature);
+function renderIdeaFeatures($ideaId) { 
+	$features = getFeaturesForIdea($ideaId);
+	if ($features && dbNumRows($features) > 0 ) {
+		echo "<table>";
+		renderGenericHeader($features, array("featureId", "ideaId"));
+		while ($feature = dbFetchObject($features)) {
+			renderFeature($features, $feature);
+		}
+		echo "</table>";
+	} else {
+		echo "<p>No features</p>";
 	}
-	echo "</table>";
-} else {
-	echo "<p>No features</p>";
-}
 }
 
 function renderFeature($features, $feature) {?>
-<tr>
+<tr id="featureform_<?= $feature->featureId ?>">
 <?renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
-	<td><input type="button"
-		onclick="genericDelete('deleteFeature','<?= $feature->featureId ?>')"
+	<td>
+	<input type="hidden" name="featureId" value="<?= $feature->featureId?>" /> 
+	<input type="button" onclick="updateFeature('<?= $feature->featureId ?>','featureform_<?= $feature->featureId ?>','<?= $feature->ideaId ?>')"  value=" U "/>
+	<input type="button"
+		onclick="genericDelete('deleteFeature','<?= $feature->featureId ?>');getFeatures('ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
 		value=" - " /></td>
 </tr>
 <?}
 
-function renderIdeaRoles($ideaId) { ?>
-<form id="addrole_form_<?= $ideaId?>" class="addForm"><span> New Role |
-</span> <? renderGenericAddForm("Roles", array("roleId", "ideaId"));	?>
-<input type="hidden" name="ideaId" value="<?= $ideaId?>" /> <input
-	type="hidden" name="action" value="addRole" /> <input type="button"
-	onclick="genericAdd('addrole_form_<?= $ideaId?>')" value=" + " /></form>
-
-<?
-$roles = getRolesForIdea($ideaId);
-if ($roles && dbNumRows($roles) > 0 ) {
-	echo "<table>";
-	renderGenericHeader($roles, array("roleId", "ideaId"));
-	while ($role = dbFetchObject($roles)) {
-		renderRole($roles, $role);
+function renderIdeaRoles($ideaId) { 
+	$roles = getRolesForIdea($ideaId);
+	if ($roles && dbNumRows($roles) > 0 ) {
+		echo "<table>";
+		renderGenericHeader($roles, array("roleId", "ideaId"));
+		while ($role = dbFetchObject($roles)) {
+			renderRole($roles, $role);
+		}
+		echo "</table>";
+	} else {
+		echo "<p>No roles</p>";
 	}
-	echo "</table>";
-} else {
-	echo "<p>No roles</p>";
-}
 }
 
 function renderRole($roles, $role) {?>
-<tr>
-<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
-	<td><input type="button"
-		onclick="genericDelete('deleteRole','<?= $role->roleId ?>')"
-		value=" - " /></td>
+<tr id="roleform_<?= $role->roleId ?>'">
+	<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
+	<td>
+		<input type="hidden" name="roleId" value="<?= $role->roleId ?>" /> 
+		<input type="button" onclick="updateRole('<?= $role->roleId ?>','roleform_<?= $role->roleId ?>','<?= $role->roleId ?>')"  value=" U "/>
+		<input type="button" onclick="genericDelete('deleteRole','<?= $role->roleId ?>');getRoles('idearoles_<?= $role->ideaId?>','<?= $role->ideaId ?>');"
+		value=" - " />
+	</td>
 </tr>
 <?}
 

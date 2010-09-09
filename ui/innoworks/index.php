@@ -17,12 +17,9 @@ requireLogin();
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 
-<link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet"
-	type="text/css">
-<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css"
-        />
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
-	type="text/css">
+<link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css"/>
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"type="text/css"/>
 	
 <script type="text/javascript">
 //////// VARS //////////
@@ -124,28 +121,28 @@ function showIdeasForGroup(gId) {
 	showIdeas();
 }
 
-function showIdeas() {
+function showIdeas(elem) {
+	getIdeas();
 	$(".tabBody").hide();
 	$("#ideaTab").show();
-	getIdeas();
 }
 
-function showReports() {
+function showReports(elem) {
+	getReports();
 	$(".tabBody").hide();
 	$("#reportTab").show();
-	getReports();
 }	
 
-function showGroups() {
+function showGroups(elem) {
+	getGroups(); 
 	$(".tabBody").hide();
 	$("#groupTab").show();
-	getGroups(); 
 }
 
-function showCompare() {
+function showCompare(elem) {
+	getCompare();
 	$(".tabBody").hide();
 	$("#compareTab").show();
-	getCompare();
 }
 
 /////// COMMON FUNCTIONS ///////
@@ -199,14 +196,14 @@ function hideResponses(selector) {
 function genericAdd(selector) {
 	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses("#ideaResponses", data, true);
-		getIdeas();
+		//getIdeas();
 	});	
 }
 
 function genericDelete(target, id) {
 	$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
 		showResponses("#ideaResponses", data, true);
-		getIdeas();
+		//getIdeas();
 	});		
 }
 
@@ -237,15 +234,33 @@ function updateIdeaDetails(formId) {
 	});
 }
 
-function getFeatures(formId,actionId) {
-	$.post("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
-		$(formId).html();
+function showIdeaOptions(element) {
+	$(element).find(".ideaoptions").show();
+}
+
+function hideIdeaOptions(element) {
+	$(element).find(".ideaoptions").hide();
+}
+
+function updateFeature(id,form, ideaId) {
+	formData = getInputDataFromId(form);
+	formData['action'] = 'updateFeature';
+	$.post("ideas.ajax.php", getSerializedArray(formData), function(data, form, ideaId) {
+		showResponses("#ideaResponses", data, true);
 	});
 }
 
-function getRoles (formId,actionId) {
-	$.post("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
-		$(formId).html();
+function getFeatures(formId,actionId) {
+	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+	});
+}
+
+function getRoles(formId,actionId) {
+	//alert(formId);
+	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
+		//alert(formId);
+		$("#"+formId).html(data);
 	});
 }
 
@@ -412,6 +427,7 @@ function deleteFeatureItem(fid){
 	});
 }
 
+//Add another contains method
 jQuery.expr[':'].Contains = function(a,i,m){
     return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
 };
@@ -459,6 +475,8 @@ a {
 #head {
 	width:100%;
 	height:2.0em;
+	margin-top:0.3em;
+	margin-bottom:0.3em;
 }
 
 #leftAlignMenu {
@@ -484,11 +502,6 @@ a {
 	padding:4px;
 }
 
-.idea {
-	margin: 5px;
-	border-left: 5px solid #CCC;
-}
-
 /* CONTENT */
 #content { 
 	width:98%;
@@ -497,6 +510,8 @@ a {
 
 .formHead {
 	background-color:#F2F2F2;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
 }
 
 .formBody subform {
@@ -550,11 +565,6 @@ div#groupsList, div#groupDetails {
 	border:1px solid #000000;
 }
 
-#groupPopup {
-	overflow:auto;
-	max-height:20em;
-}
-
 select {
 	width:5em;
 }
@@ -562,6 +572,31 @@ select {
 .ideaDetails input[type=text] {
 	width:50em;
 }
+
+.ideaoptions {
+	display:none;
+}
+
+.ideatitle {
+	font-size:1.2em;
+}
+
+.idea {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-left: 5px solid #CCC;
+}
+
+.selMenu {
+	background-color:#000000;
+	color:#FFFFFF;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
+}
+
+div.loadingSpinner {
+	
+}
+
 </style>
 
 </head>
@@ -573,10 +608,10 @@ select {
 			<li><img id="logo" style="height:25px; width:25px;" src="<?= $serverRoot?>ui/style/kubu.png"/>
 			<img id="ajaxLoader" src="<?= $serverRoot?>ui/style/ajaxLoader.gif"/></li>
 			<li><b>Innoworks</b></li>
-			<li><a id="ideaslnk" href="javascript:showIdeas()">Ideas</a></li>
-			<li><a id="comparelnk" href="javascript:showCompare()">Compare</a></li>
-			<li><a id="groupslnk" href="javascript:showGroups()">Groups</a></li>
-			<li><a id="reportslnk" href="javascript:showReports()">Reports</a></li>
+			<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
+			<li><a id="comparelnk" class="menulnk" href="javascript:showCompare(this)">Compare</a></li>
+			<li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li>
+			<li><a id="reportslnk" class="menulnk" href="javascript:showReports(this)">Reports</a></li>
 		</ul>
 	</div>
 	<div id="rightAlignMenu">
@@ -639,14 +674,14 @@ select {
 </div>
 
 <div id="groupTab" class="tabBody">
-	<div id="groupSelect" class="two-column" style="padding:10px">
+	<div id="groupSelect" class="two-column" >
 		<div class="formHeadContain" style="width:100%">
 			<form id="addGroupForm" class="addForm ui-corner-all" onsubmit="addGroup(); return false;">
 			<span>New Group</span> <input name="title" type="text"></input> <input type="submit" value=" + "/>
 			<input type="hidden" name="action" value="addGroup"/>
 			</form>
 		</div>
-		<div id="groupsList">
+		<div id="groupsList" style="padding:10px">
 		</div> 
 	</div>
 	<div id="groupDetails" class="two-column" style="padding:10px">
@@ -655,9 +690,9 @@ select {
 </div>
 
 <div id="compareTab" class="tabBody">
-	<h2>R-W-W</h2>
-	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p>
-	<div class="addform ui-corner-all">Add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
+	<!-- <h2>R-W-W</h2>
+	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
+	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
 	<div id="compareList">
 		<p>No comparisons yet</p>
 	</div>

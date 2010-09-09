@@ -73,4 +73,17 @@ function updateFeatureItem($opts) {
 function deleteFeatureItem($id) {
 	return genericDelete("FeatureEvaluation", array("featureEvaluationId"=>$id));
 }
+
+function updateFeature($opts) {
+	$where = array("featureId");
+	return genericUpdate("Features", $opts, $where);
+}
+
+function updateRole($opts) {
+	$where = array("roleId");
+	return genericUpdate("Roles", $opts, $where);
+}
+
+
+
 ?>

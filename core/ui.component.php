@@ -10,7 +10,7 @@ function renderGenericAddForm($tablename, $omitArray) {
 		if (!$meta || in_array($meta->name, $omitArray)) {
 			//logDebug("Omit field from generic add");
 		} else {?>
-<label><?= $meta->name;?></label>
+<label><?= fromCamelCase($meta->name);?></label>
 <input type="text"
 	name="<?= $meta->name;?>" />
 		<?}
@@ -22,8 +22,8 @@ function renderGenericUpdateForm($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-<td><label><?=$key?></label></td>
-<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+		<td><label><?=fromCamelCase($key)?></label></td>
+		<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
 		<?}
 		echo "</tr>";
 	}
@@ -31,6 +31,18 @@ function renderGenericUpdateForm($rs,$row,$omitArray) {
 }
 
 function renderGenericHeader($rs, $omitArray) {
+	echo "<tr>";
+	while ($field = dbFetchField($rs)) {
+		if (!in_array($field->name, $omitArray)) {
+			echo "<th>". fromCamelCase($field->name). "</th>";
+		}
+	}
+	echo "<th></th>"; //EXTRA For actions
+	echo "</tr>";
+}
+
+function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
+	
 	echo "<tr>";
 	while ($field = dbFetchField($rs)) {
 		if (!in_array($field->name, $omitArray)) {
