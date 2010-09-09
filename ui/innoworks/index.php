@@ -1,4 +1,7 @@
 <? 
+/**
+ * Main view for all logged in innowroks users.
+ */
 require_once("thinConnector.php"); 
 requireLogin();
 ?>
@@ -23,6 +26,7 @@ requireLogin();
 	
 <script type="text/javascript">
 //////// VARS //////////
+var ctime;
 var currentIdeaId;
 var currentGroupId;
 var formArray; // Temp holder for form value functions
@@ -178,15 +182,18 @@ function logout() {
 
 function showResponses(selector, data, timeout) {
 	$(selector).html(data);
-	$(selector).show();
+	$(selector).slideDown();
 	if (timeout) {
-		window.setTimeout('hideResponses("'+selector+'")', 5000);
+		if (ctime != null)
+			window.clearTimeout(ctime);
+		ctime = window.setTimeout('hideResponses("'+selector+'")', 5000);
 	} 
 }
 
 function hideResponses(selector) {
-	$(selector).empty();
-	$(selector).hide();
+	$(selector).slideUp(function () {
+		$(selector).empty();
+	});
 }
 
 function genericAdd(selector) {
@@ -216,15 +223,29 @@ function addIdea() {
 }
 
 function deleteIdea(iId) {
-	$.post("ideas.ajax.php", {action:"deleteIdea", ideaId:iId}, function (data) {
-		showResponses("#ideaResponses", data, true);
-		getIdeas();
-	});
+	if (confirm("Are you sure you wish to delete this idea?")) {
+		$.post("ideas.ajax.php", {action:"deleteIdea", ideaId:iId}, function (data) {
+			showResponses("#ideaResponses", data, true);
+			getIdeas();
+		});
+	}
 }
 
 function updateIdeaDetails(formId) {
 	$.post("ideas.ajax.php", $(formId).serialize(), function (data) {
 		showResponses("#ideaResponses", data, true);
+	});
+}
+
+function getFeatures(formId,actionId) {
+	$.post("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
+		$(formId).html();
+	});
+}
+
+function getRoles (formId,actionId) {
+	$.post("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
+		$(formId).html();
 	});
 }
 
@@ -259,23 +280,23 @@ function updateForGroup(id) {
 }
 
 function showAddGroupIdea() {
-	$('groupPopup').empty();
-	dijit.byId('groupPopup').show();
+	$('#commonPopup #actionDetails').empty();
+	dijit.byId('commonPopup').show();
 	$.get("groups.ajax.php?action=getAddIdea", function(data) {
 		$("#actionDetails").html(data);
 	});
 }
 
 function showAddGroupUser() {
-	$('groupPopup').empty();
-	dijit.byId('groupPopup').show();
+	$('#commonPopup #actionDetails').empty();
+	dijit.byId('commonPopup').show();
 	$.get("groups.ajax.php?action=getAddUser", function(data) {
 		$("#actionDetails").html(data);
 	});
 } 
 
 function addUserToCurGroup(id) {
-	dijit.byId('groupPopup').hide();
+	dijit.byId('commonPopup').hide();
 	$.post("groups.ajax.php", {action: "linkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showGroupDetails();
@@ -283,7 +304,7 @@ function addUserToCurGroup(id) {
 }
 
 function addIdeaToCurGroup(id) {
-	dijit.byId('groupPopup').hide();
+	dijit.byId('commonPopup').hide();
 	$.post("groups.ajax.php", {action: "linkIdeaToGroup", ideaId:id, groupId:currentGroupId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showGroupDetails();
@@ -306,15 +327,15 @@ function delIdeaFromCurGroup(id) {
 
 ///////////// RISK EVALUATION /////////////
 function showAddRiskItem() {
-	$('comparePopup').empty();
-	dijit.byId('comparePopup').show();
+	$('#commonPopup #actionDetails').empty();
+	dijit.byId('commonPopup').show();
 	$.get("compare.ajax.php?action=getAddRisk", function(data) {
-		$("#compareDetails").html(data);
+		$("#commonPopup #actionDetails").html(data);
 	});
 } 
 
 function addRiskItem(id) {
-	dijit.byId('comparePopup').hide();
+	dijit.byId('commonPopup').hide();
 	$.post("compare.ajax.php", {action: "createRiskItem", ideaId:id}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showCompare();
@@ -397,11 +418,11 @@ jQuery.expr[':'].Contains = function(a,i,m){
 
 function filterIdeas(element) {
 	var filter = $(element).val();
-    if (filter) { 
-      $("#ideasList .idea .formHead ").find(".ideatitle:not(:Contains('" + filter + "'))").parent().slideUp();
-      $("#ideasList .idea .formHead ").find(".ideatitle:Contains('" + filter + "')").parent().slideDown();
+    if (filter != '' && filter != null) { 
+      $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().slideUp();
+      $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().slideDown();
     } else {
-      $("#ideasList .idea .formHead ").find(".ideatitle").parent().slideDown();
+      $("#ideasList .idea .formHead").find(".ideatitle").parent().slideDown();
     }
 	
 }
@@ -487,6 +508,7 @@ a {
 	display:none;
 	padding:5px;
 	margin-bottom: 5px;
+	height:1em;
 }
 
 .tabBody {javascript:showCompare()
@@ -536,6 +558,10 @@ div#groupsList, div#groupDetails {
 select {
 	width:5em;
 }
+
+.ideaDetails input[type=text] {
+	width:50em;
+}
 </style>
 
 </head>
@@ -575,7 +601,7 @@ select {
 			</form>
 		</div> 
 		<div id="ideaGroups" class="ui-corner-all">
-			Search<input type="text" value="" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
+			<input type="text" value="Search" onclick="$(this).val('')" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
 			Groups <span id="ideaGroupsList">None</span>
 		</div>
 	</div>
@@ -626,11 +652,6 @@ select {
 	<div id="groupDetails" class="two-column" style="padding:10px">
 		Select a group
 	</div>
-	<div id="groupPopup" dojoType="dijit.Dialog" title="Group">
-    	<div id="actionDetails" dojoType="dijit.layout.ContentPane">
-            No actions yet
-        </div>
-	</div>
 </div>
 
 <div id="compareTab" class="tabBody">
@@ -640,13 +661,14 @@ select {
 	<div id="compareList">
 		<p>No comparisons yet</p>
 	</div>
-	
-	<div id="comparePopup" dojoType="dijit.Dialog" title="Compare">
-    	<div id="compareDetails" dojoType="dijit.layout.ContentPane">
-            No actions yet
-        </div>
-	</div>
 </div>
+
+<div id="commonPopup" dojoType="dijit.Dialog" title="Action"  style="width: 15em; height: 300px;">
+    <div id="actionDetails" dojoType="dijit.layout.ContentPane" >
+          No actions yet
+    </div>
+</div>
+
 </div>
 
 </body>

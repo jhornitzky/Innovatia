@@ -1,4 +1,9 @@
 <?
+/*
+ * UI Components are common often db related controls to do automatic rendering for data sources 
+ * within certain parameters
+ */
+
 function renderGenericAddForm($tablename, $omitArray) {
 	$rs = dbQuery("SELECT * FROM $tablename LIMIT 0"); //FIXME
 	while ($meta = dbFetchField($rs)) {
@@ -46,36 +51,54 @@ function renderGenericUpdateRow($rs,$row,$omitArray) {
 
 function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 	$refdata = getRefDataForTable($tableName);
+	
 	if ($refdata && dbNumRows($refdata) > 0)
-	$refdata = dbFetchAll($refdata);
+		$refdata = dbFetchAll($refdata);
 
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {
 			$metaArray = findColumnMetadata($refdata, $key);
-			
+			echo "<td>";
+			//If metadata then render appropriate input dialog
 			if ($metaArray){
-				echo "<td>";
-				echo "<select name='$key' value='$value'>";
-				echo "<option value='$value' selected='selected'>$value</option>";
-				
-				$metaValArray = getColumnValues($metaArray);
-				if ($metaValArray) {
-					foreach($metaValArray as $metaValue) {
-						logDebug("Meta value is ".$metaValue);
-						if ($metaValue != $value) //PREVENT DOUBLE RENDERING
-						echo "<option value='$metaValue'>$metaValue</option>";
+				//Get column type, if column type, then render appropriate input
+				$metaType = getColumnType($refdata);
+				if ($metaType) {
+					switch ($metaType) {
+						case "likert7":
+							echo "<select name='$key' value='$value'>";
+							echo "<option value='$value' selected='selected'>$value</option>";
+							for ($i = 1; $i <= 7; $i++ ) {
+								if ($i != $value) //PREVENT DOUBLE RENDERING
+									echo "<option value='$i'>$i</option>";
+							}
+							echo "</select>";
+							break;
 					}
+				} else {
+					echo "<select name='$key' value='$value'>";
+					echo "<option value='$value' selected='selected'>$value</option>";
+					$metaValArray = getColumnValues($metaArray);
+					if ($metaValArray) {
+						foreach($metaValArray as $metaValue) {
+							if ($metaValue != $value) //PREVENT DOUBLE RENDERING
+								echo "<option value='$metaValue'>$metaValue</option>";
+						}
+					}
+					echo "</select>";
 				}
 				
-				echo "</select>";
-				echo "</td>";
 			}
+			//Render default input text box
 			else {?>
-				<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+				<input type="text" name="<?=$key?>" value="<?=$value?>" />
 			<?}
+			echo "</td>";
 		}
 	}
 }
+
+////////////// COLUMN METADATA FUNCTIONS FROM REFERENCE DATA //////////////////
 
 function findColumnMetadata($refDataArray, $needle) {
 	if (!$refDataArray)
@@ -106,6 +129,25 @@ function getColumnValues($refDataArray) {
 		}
 	}
 	return $metaArray;
+}
+
+function getColumnType($refDataArray) {
+	if (!$refDataArray)
+		return $refDataArray;
+		
+	foreach ($refDataArray as $refDataValue) {
+		if ($refDataValue["key3"] == "T") {
+			return $refDataValue["value"];
+		}
+	}
+	return false;
+}
+
+function getColumnDescription($refDataArray) {
+	return "Describe Me";
+}
+
+function renderUpdateField() {
 }
 
 ///////////////////////// Camel Case util functions courtesy of  //////////////////////////////

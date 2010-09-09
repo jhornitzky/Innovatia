@@ -46,7 +46,7 @@ function deleteRole($id) {
 }
 
 function getFeatureEvaluationForIdea ($id) {
-	return dbQuery("SELECT Ideas.title, FeatureEvaluation.* FROM FeatureEvaluation, Ideas, Features WHERE FeatureEvaluation.featureId = Features.featureId AND Features.ideaId = '$id' AND Ideas.ideaId = Features.ideaId");
+	return dbQuery("SELECT Features.feature, FeatureEvaluation.* FROM FeatureEvaluation, Ideas, Features WHERE FeatureEvaluation.featureId = Features.featureId AND Features.ideaId = '$id' AND Ideas.ideaId = Features.ideaId");
 }
 
 function getCommentsForIdea($id) {

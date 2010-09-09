@@ -1,0 +1,13 @@
+These directories contain the code for the early beta version of the innoworks project.
+
+This early version of innoworks really consists of two parts: core and ui.
+
+By default, all requests are routed through index.php, which then routes to the appropriate UI (login or innoworks) under the ui/ folder.
+
+The login contains very simiple html and php functions primiarily aroudn display.
+
+The innoworks folder cotains a number of php files that are modelled on a modular MVC design, with ajax controllers for each of the different views.
+
+All DB/model layer functions reside as services within the core/ directory. Some common ajax functions also reside there.
+
+For more info on Innoworks and open innovation head to http://innovatia.org to get a better perspective on how innovation works!
