@@ -4,14 +4,14 @@ require_once("thinConnector.php");
 function renderDefault($user) {
 	$riskItems = getRiskItems($user);
 	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table>";
+		echo "<table id='riskEvaluation'>";
 		renderGenericHeader($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"));
 		while ($riskItem = dbFetchObject($riskItems)) {
 			renderRiskItem($riskItems, $riskItem);
 		}
 		echo "</table>";?>
 		<script type="text/javascript">
-			initFormSelectTotals();
+			initFormSelectTotals('table#riskEvaluation');
 		</script>
 		<?
 	} else {

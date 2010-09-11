@@ -172,7 +172,7 @@ function renderFeatureEvaluationForIdea($id) {
 		dojo.byId("addFeatureEval").appendChild(button.domNode);
 		</script>
 	<? } else {
-		echo "No features to rate";
+		echo "<p>No features to rate</p>";
 	}
 	
 	renderFeatureEvaluationTable($id);
@@ -180,13 +180,17 @@ function renderFeatureEvaluationForIdea($id) {
 
 function renderFeatureEvaluationTable($id) {
 	$featureItems = getFeatureEvaluationForIdea($id);
-	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table>";
+	if ($featureItems && dbNumRows($featureItems) > 0){
+		echo "<table id='featureEvaluation_$id'>";
 		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId"));
 		while ($featureItem = dbFetchObject($featureItems)) {
 			renderFeatureItem($featureItems, $featureItem);
 		}
-		echo "</table>";
+		echo "</table>";?>
+		<script type="text/javascript">
+			initFormSelectTotals('table#featureEvaluation_<?= $id?>');
+		</script>
+		<?
 	}
 } 
 
@@ -194,6 +198,7 @@ function renderFeatureItem($featureItems, $featureItem) {?>
 	<tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
 		<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId"), "FeatureEvaluation");?>
 		<td>
+			Score: <span class="itemTotal">0 </span>
 			<input type="hidden" name="featureEvaluationId" value="<?= $featureItem->featureEvaluationId ?>"/>
 			<input type="button" onclick="updateFeatureItem('<?= $featureItem->featureEvaluationId ?>','featureitemform_<?= $featureItem->featureEvaluationId ?>')"  value=" U "/>
 			<input type="button" onclick="deleteFeatureItem('<?= $featureItem->featureEvaluationId ?>')"  value=" - "/>

@@ -30,11 +30,11 @@ var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",
 
 /////// START UP ///////
 dojo.require("dijit.Dialog");
-$("#groupslnk").addClass("selMenu");
 dojo.require("dijit.form.Button");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.Menu");
+dojo.require("dojo.parser");
 
 $(document).ready(function() {
 	//Loading animation for all ajax operations
@@ -390,8 +390,10 @@ function getCommentsForIdea() {
 }
 
 function getFeatureEvaluationForIdea() {
+	//dojo.destroy("addFeatureEval");
+	$("div#addFeatureEval").empty();
 	$.get("ideas.ajax.php?action=getFeatureEvaluationForIdea&actionId="+currentIdeaId, function(data) {
-		$("#fEvalContent").html(data);
+		$("#featureEvalContent").html(data);
 	});
 }
 
@@ -443,19 +445,18 @@ jQuery.expr[':'].Contains = function(a,i,m){
 function filterIdeas(element) {
 	var filter = $(element).val();
     if (filter != '' && filter != null) { 
-      $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().slideUp();
-      $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().slideDown();
+      $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
+      $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
     } else {
-      $("#ideasList .idea .formHead").find(".ideatitle").parent().slideDown();
+      $("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
     }
 	
 }
 
-//var initFormId;
-
-function initFormSelectTotals() {
+// COMMON methods for doing counts across forms and so on
+function initFormSelectTotals(selector) {
 	//alert("initFormSelectTotals");
-	$("#compareList tr").each(function(index, element) {
+	$(selector + " tr").each(function(index, element) {
 		var initFormId = $(element).attr("id");
 		if (initFormId != null && initFormId != ''){
 			$(element).find("select").change(function () {
@@ -645,7 +646,7 @@ div.loadingSpinner {
 	
 }
 
-table
+#compareList table
 {text-align: center;
 font-weight: normal;
 color: #fff;
@@ -655,7 +656,7 @@ border: 0px;
 border-collapse: collapse;
 border-spacing: 0px;}
 
-table td
+#compareList table td
 {
 background-color: #CCC;
 color: #000;
@@ -664,7 +665,7 @@ text-align: left;
 border: 1px #fff solid;
 }
 
-table th
+#compareList table th 
 {
 background-color: #AAA;
 color: #fff;
@@ -675,8 +676,9 @@ font-size: 12px;
 font-weight: bold;
 } 
 
-table td input {
+table td input[type=text] {
 	width:100%;
+	min-width:6em;
 }
 
 </style>
@@ -759,7 +761,7 @@ table td input {
 </div>
 
 <div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
-    <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 35em; height: 300px;">
+    <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 25em;">
         <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
         	<div id="addComment">
         		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
@@ -774,7 +776,7 @@ table td input {
         
         <div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane" title="Feature Evaluation">
             <div id="addFeatureEval"></div>
-            <div id="fEvalContent"></div>
+            <div id="featureEvalContent"></div>
         </div>
     </div>
 </div>
