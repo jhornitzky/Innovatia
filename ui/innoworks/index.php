@@ -13,7 +13,7 @@ requireLogin();
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
 
 <link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css"/>
@@ -52,6 +52,9 @@ $(document).ready(function() {
 
 
 dojo.addOnLoad(function(){
+	//Parse controls
+	dojo.parser.instantiate([dojo.byId("ideasPopup"),dojo.byId("ideasPopupTabContainer"), dojo.byId("ideaComments"),dojo.byId("ideaFeatureEvaluationList"),dojo.byId("commonPopup"),dojo.byId("actionDetails")]); 
+	
 	//Setup stuff for tab menus
 	dojo.subscribe("ideasPopupTabContainer-selectChild", function(child){
 		if (child.id == "ideaComments") 
@@ -65,6 +68,7 @@ dojo.addOnLoad(function(){
 //////////// MENU ///////////
 function showIdeaReviews(ideaId) { 
 	currentIdeaId = ideaId;
+	dojo.empty("addFeatureEval");
 	getCommentsForIdea();
 	getFeatureEvaluationForIdea();
 	dijit.byId('ideasPopup').show();
@@ -390,8 +394,6 @@ function getCommentsForIdea() {
 }
 
 function getFeatureEvaluationForIdea() {
-	//dojo.destroy("addFeatureEval");
-	$("div#addFeatureEval").empty();
 	$.get("ideas.ajax.php?action=getFeatureEvaluationForIdea&actionId="+currentIdeaId, function(data) {
 		$("#featureEvalContent").html(data);
 	});

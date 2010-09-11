@@ -148,7 +148,9 @@ function renderIdeaGroupsForUser($uid) {
 function renderFeatureEvaluationForIdea($id) {
 	$featureList = getFeaturesForIdea($id);
 	
-	if ($featureList && dbNumRows($featureList) > 0 ) {?>
+	if ($featureList && dbNumRows($featureList) > 0 ) {
+		renderFeatureEvaluationTable($id);
+		?>
 		<script type="text/javascript">
 		var menu = new dijit.Menu({
 			style: "display: none;"
@@ -175,7 +177,7 @@ function renderFeatureEvaluationForIdea($id) {
 		echo "<p>No features to rate</p>";
 	}
 	
-	renderFeatureEvaluationTable($id);
+	
 }
 
 function renderFeatureEvaluationTable($id) {

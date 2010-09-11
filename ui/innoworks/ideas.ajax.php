@@ -101,7 +101,7 @@ if (isset($_POST) && $_POST != '') {
 			echo "Updating Item... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			unset($opts['title']);
+			unset($opts['feature']);
 			$resp = updateFeatureItem($opts);
 			echo "Response Code: ".$resp;
 			break;
