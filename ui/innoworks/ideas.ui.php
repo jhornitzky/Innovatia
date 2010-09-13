@@ -218,5 +218,9 @@ function renderCommentsForIdea($id) {
 		echo "None";
 	}
 }
+
+function renderShare($ideaId) {
+	echo "<p>Sharing to come</p>";
+}
 ?>
 

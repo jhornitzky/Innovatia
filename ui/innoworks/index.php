@@ -53,7 +53,8 @@ $(document).ready(function() {
 
 dojo.addOnLoad(function(){
 	//Parse controls
-	dojo.parser.instantiate([dojo.byId("ideasPopup"),dojo.byId("ideasPopupTabContainer"), dojo.byId("ideaComments"),dojo.byId("ideaFeatureEvaluationList"),dojo.byId("commonPopup"),dojo.byId("actionDetails")]); 
+	//dojo.parser.instantiate([dojo.byId("ideasPopup"),dojo.byId("ideasPopupTabContainer"), dojo.byId("ideaComments"),dojo.byId("ideaFeatureEvaluationList"),dojo.byId("commonPopup"),dojo.byId("actionDetails")]); 
+	dojo.parser.parse();
 	
 	//Setup stuff for tab menus
 	dojo.subscribe("ideasPopupTabContainer-selectChild", function(child){
@@ -85,6 +86,12 @@ function showDefaultIdeas() {
 	getIdeas();
 }
 
+function getDash() {
+	$.get("dash.php", function (data) {
+		$("#dashTab").html(data);
+	});
+}
+
 function getIdeas() {
 	if (currentGroupId == null) {
 		$.get("ideas.ajax.php?action=getIdeas", function (data) {
@@ -98,6 +105,21 @@ function getIdeas() {
 	showIdeaGroupsForUser();
 } 
 
+function getCompare() {
+	$.get("compare.ajax.php?action=getComparison", function (data) {
+		$("#compareList").html(data);
+	});
+}
+
+function getSelect() {}
+
+function getGroups() {
+	$.get("groups.ajax.php?action=getGroups", function (data) {
+		$("#groupsList").html(data);
+		showIdeaGroupsForUser();
+	});
+}
+
 function getReports() {
 	$.get("reports.ajax.php?action=getReportDetails", function (data) {
 		$("#reportDetails").html(data);
@@ -107,18 +129,7 @@ function getReports() {
 	});
 }
 
-function getGroups() {
-	$.get("groups.ajax.php?action=getGroups", function (data) {
-		$("#groupsList").html(data);
-		showIdeaGroupsForUser();
-	});
-}
-
-function getCompare() {
-	$.get("compare.ajax.php?action=getComparison", function (data) {
-		$("#compareList").html(data);
-	});
-}
+function getAdmin(){}
 
 function showIdeasForGroup(gId) {
 	currentGroupId = gId;
@@ -157,8 +168,35 @@ function showCompare(elem) {
 	$("#compareTab").show();
 }
 
-/////// COMMON FUNCTIONS ///////
+function showSelect(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#selectlnk").parent().addClass("selMenu");
+	getSelect();
+	$(".tabBody").hide();
+	$("#selectTab").show();	
+}
 
+function showDash(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	//$("#dashlnk").parent().addClass("selMenu");
+	getDash();
+	$(".tabBody").hide();
+	$("#dashTab").show();
+}
+
+function showAdmin(elem) {	
+	$(".menulnk").parent().removeClass("selMenu");
+	//$("#dashlnk").parent().addClass("selMenu");
+	getAdmin();
+	$(".tabBody").hide();
+	$("#adminTab").show();	
+}
+
+function showFeedback(elem) {
+	window.open("mailto:james.hornitzky@gmail.com");
+}
+
+/////// COMMON FUNCTIONS ///////
 function setFormArrayValue(key,val) {
 	formArray[key] = val;
 }
@@ -490,6 +528,10 @@ body {
 	text-align:left;
 }
 
+.idea table {
+	width:100%;
+}
+
 table, th {
 	text-align:left;
 }
@@ -567,7 +609,7 @@ a {
 	height:1em;
 }
 
-.tabBody {javascript:showCompare()
+.tabBody {
 	display:none;
 }
 
@@ -585,7 +627,7 @@ a {
 	background-color:#FFFFFF;
 	position:relative;
 	float:right;
-	padding:3px;
+	#padding:3px;
 }
 
 span#ideaGroupsList {
@@ -683,6 +725,15 @@ table td input[type=text] {
 	min-width:6em;
 }
 
+
+.tundra .tabMenu .dijitDropDownButton, .tundra .tabMenu .dijitButtonNode  {
+	padding:0;
+	margin:0;
+	border:none;
+	background:none;
+	font-size:0.95em;
+}
+
 </style>
 
 </head>
@@ -693,17 +744,34 @@ table td input[type=text] {
 		<ul class="tabMenu">
 			<li><img id="logo" style="height:25px; width:25px;" src="<?= $serverRoot?>ui/style/kubu.png"/>
 			<img id="ajaxLoader" src="<?= $serverRoot?>ui/style/ajaxLoader.gif"/></li>
-			<li><b>Innoworks</b></li>
+			<li><a id="mainlnk" class="menulnk" href="javascript:showDash(this)" style="font-size:1.0em"><b>Innoworks</b></a></li>
 			<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
 			<li><a id="comparelnk" class="menulnk" href="javascript:showCompare(this)">Compare</a></li>
+			<li><a id="selectlnk" class="menulnk" href="javascript:showSelect(this)">Select</a></li>
 			<li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li>
-			<li><a id="reportslnk" class="menulnk" href="javascript:showReports(this)">Reports</a></li>
+			<li id="morelnk">
+				<div dojoType="dijit.form.DropDownButton">
+				    <span>
+        				More
+    				</span>
+					<div dojoType="dijit.Menu" id="fileMenu">
+            			<div dojoType="dijit.MenuItem" onClick="showReports(this)">
+                			Reports
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
+                			Admin
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showFeedback(this)">
+                			Feedback
+            			</div>
+        			</div>
+				</div>
+			</li>
 		</ul>
 	</div>
 	<div id="rightAlignMenu">
 		<ul class="tabMenu">
 			<li>Welcome <?= $_SESSION['innoworks.username']; ?></li>
-			<li><a href="mailto:james.hornitzky@gmail.com">feedback</a></li>
 			<li><a href="javascript:logout()">logout</a></li>
 		</ul>
 	</div>
@@ -711,6 +779,9 @@ table td input[type=text] {
 
 <div id="content">
 <div id="ideaResponses" class="responses ui-corner-all"></div>
+
+<div id="dashTab" class="tabBody">
+</div>
 
 <div id="ideaTab" class="tabBody">
 	<div id="ideaTabHead" class="tabHead addForm ui-corner-all"> 
@@ -730,11 +801,16 @@ table td input[type=text] {
 	</div>
 </div>
 
-<div id="reportTab" class="tabBody">
-	<div id="reportDetails" class="two-column ui-corner-all" style="padding:10px">
-		Select a group
+<div id="compareTab" class="tabBody">
+	<!-- <h2>R-W-W</h2>
+	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
+	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
+	<div id="compareList">
+		<p>No comparisons yet</p>
 	</div>
-	<div id="reportList" class="two-column" style="padding:10px"></div>
+</div>
+
+<div id="selectTab" class="tabBody">
 </div>
 
 <div id="groupTab" class="tabBody">
@@ -753,15 +829,18 @@ table td input[type=text] {
 	</div>
 </div>
 
-<div id="compareTab" class="tabBody">
-	<!-- <h2>R-W-W</h2>
-	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
-	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
-	<div id="compareList">
-		<p>No comparisons yet</p>
+<!-- MORE TABS -->
+<div id="reportTab" class="tabBody">
+	<div id="reportDetails" class="two-column ui-corner-all" style="padding:10px">
+		Select a group
 	</div>
+	<div id="reportList" class="two-column" style="padding:10px"></div>
 </div>
 
+<div id="adminTab" class="tabBody">
+</div>
+
+<!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
     <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 25em;">
         <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">

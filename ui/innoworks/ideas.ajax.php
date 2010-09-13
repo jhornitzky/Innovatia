@@ -26,6 +26,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getRoles":
 			renderIdeaRoles($_GET['actionId']);
 			break;
+		case "getShare":
+			renderShare($_GET['actionId'], $_SESSION['username']);
+			break;
 	}
 }
 

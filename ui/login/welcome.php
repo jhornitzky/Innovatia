@@ -28,7 +28,7 @@ require_once("core/innoworks.config.php");
 						<table cellpadding="5" height="220" cellspacing="5" border="0"
 							style="margin: 25px; height: 220px;">
 							<tr>
-								<td align="center" valign="middle"><img id="logo" style="margin-top:-20px;height:60px;width:57px;" src="<?= $serverRoot?>ui/style/kubu.png"/></td>
+								<td align="center" valign="middle"><img id="logo" style="height:60px;width:57px;" src="<?= $serverRoot?>ui/style/kubu.png"/></td>
 								<td align="center" valign="middle" style="padding-right: 50px;">
 									<h2>Innoworks</h2>
 									<noscript>You must have javascript enabled to use Innoworks</noscript>
