@@ -35,6 +35,7 @@ dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.Menu");
 dojo.require("dojo.parser");
+dojo.require("dijit.form.Textarea");
 
 $(document).ready(function() {
 	//Loading animation for all ajax operations
@@ -47,7 +48,7 @@ $(document).ready(function() {
 		$("#logo").show();		
 	});
 	//Show default
-	showIdeas();
+	showDash();
 });
 
 
@@ -67,6 +68,13 @@ dojo.addOnLoad(function(){
 
 
 //////////// MENU ///////////
+
+function triggerClick(selector) {
+	//alert(selector);
+	//$(selector).trigger('click');
+	$(selector).click();
+}
+
 function showIdeaReviews(ideaId) { 
 	currentIdeaId = ideaId;
 	dojo.empty("addFeatureEval");
@@ -77,13 +85,27 @@ function showIdeaReviews(ideaId) {
 
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
-		$("#ideaGroupsList").html(data);
+		$(".ideaGroupsList").html(data);
 	});
 }
 
 function showDefaultIdeas() {
 	currentGroupId = null;
+	$("#addIdeaTitle").removeAttr('disabled');
+	$(".ideaGroups .ideaGroupsList a").removeClass('selected');
 	getIdeas();
+	getCompare();
+}
+
+function showIdeasForGroup(gId, elem) {
+	currentGroupId = gId;
+	$("#addIdeaTitle").attr('disabled', 'disabled');
+	//$(".ideaGroups .ideaGroupsList a").removeClass('selected');
+	//alert(elem);
+	$(elem).addClass('selected');
+	getIdeas();
+	getCompare();
+	//showIdeas();
 }
 
 function getDash() {
@@ -106,9 +128,16 @@ function getIdeas() {
 } 
 
 function getCompare() {
-	$.get("compare.ajax.php?action=getComparison", function (data) {
-		$("#compareList").html(data);
-	});
+	if (currentGroupId == null) {
+		$.get("compare.ajax.php?action=getComparison", function (data) {
+			$("#compareList").html(data);
+		});
+	} else { 
+		$.get("compare.ajax.php?action=getComparisonForGroup&groupId="+currentGroupId, function (data) {
+			$("#compareList").html(data);
+		});
+	}
+	showIdeaGroupsForUser();
 }
 
 function getSelect() {}
@@ -130,11 +159,6 @@ function getReports() {
 }
 
 function getAdmin(){}
-
-function showIdeasForGroup(gId) {
-	currentGroupId = gId;
-	showIdeas();
-}
 
 function showIdeas(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
@@ -178,7 +202,7 @@ function showSelect(elem) {
 
 function showDash(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
-	//$("#dashlnk").parent().addClass("selMenu");
+	$("#mainlnk").parent().addClass("selMenu");
 	getDash();
 	$(".tabBody").hide();
 	$("#dashTab").show();
@@ -243,6 +267,12 @@ function hideResponses(selector) {
 	});
 }
 
+function showHelp(text) {
+	$('#commonPopup #actionDetails').empty();
+	$('#commonPopup #actionDetails').html(text);
+	dijit.byId('commonPopup').show();
+}
+
 function genericAdd(selector) {
 	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses("#ideaResponses", data, true);
@@ -263,10 +293,14 @@ function genericFieldUpdate(target, element) {}
 
 /////// IDEA FUNCTIONS /////////
 function addIdea() {
-	$.post("ideas.ajax.php", $("#addIdeaForm").serialize(), function(data) {
-		showResponses("#ideaResponses", data, true);
-		getIdeas();
-	});
+	if(currentGroupId == null) {
+		$.post("ideas.ajax.php", $("#addIdeaForm").serialize(), function(data) {
+			showResponses("#ideaResponses", data, true);
+			getIdeas();
+		});
+	} else {
+		showAddGroupIdea();
+	}
 }
 
 function deleteIdea(iId) {
@@ -284,13 +318,9 @@ function updateIdeaDetails(formId) {
 	});
 }
 
-function showIdeaOptions(element) {
-	//$(element).find(".ideaoptions").show();
-}
+function showIdeaOptions(element) {}
 
-function hideIdeaOptions(element) {
-	//$(element).find(".ideaoptions").hide();
-}
+function hideIdeaOptions(element) {}
 
 function updateFeature(id,form, ideaId) {
 	formData = getInputDataFromId(form);
@@ -307,9 +337,7 @@ function getFeatures(formId,actionId) {
 }
 
 function getRoles(formId,actionId) {
-	//alert(formId);
 	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
-		//alert(formId);
 		$("#"+formId).html(data);
 	});
 }
@@ -394,14 +422,28 @@ function delIdeaFromCurGroup(id) {
 function showAddRiskItem() {
 	$('#commonPopup #actionDetails').empty();
 	dijit.byId('commonPopup').show();
-	$.get("compare.ajax.php?action=getAddRisk", function(data) {
-		$("#commonPopup #actionDetails").html(data);
-	});
+	if (currentGroupId == null ) {
+		$.get("compare.ajax.php?action=getAddRisk", function(data) {
+			$("#commonPopup #actionDetails").html(data);
+		});
+	} else {
+		$.get("compare.ajax.php?action=getAddRiskForGroup&groupId="+currentGroupId, function(data) {
+			$("#commonPopup #actionDetails").html(data);
+		});
+	}
 } 
 
 function addRiskItem(id) {
 	dijit.byId('commonPopup').hide();
 	$.post("compare.ajax.php", {action: "createRiskItem", ideaId:id}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
+	});
+}
+
+function addRiskItemForGroup(id, groupId) {
+	dijit.byId('commonPopup').hide();
+	$.post("compare.ajax.php", {action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showCompare();
 	});
@@ -623,14 +665,15 @@ a {
 	float:left;
 }
 
-#ideaGroups {
+.ideaGroups {
 	background-color:#FFFFFF;
 	position:relative;
 	float:right;
 	#padding:3px;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 
-span#ideaGroupsList {
+span.ideaGroupsList {
 	color:#666;
 	font-size:0.9em;	
 }
@@ -686,19 +729,28 @@ select {
 	font-weight: bold;
 }
 
-div.loadingSpinner {
-	
+
+.ideaGroups .ideaGroupsList a.selected {
+	background-color:#444444;
+	color:#FFFFFF;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
+	border-bottom:none;
+	font-weight: bold;
 }
 
+div.loadingSpinner {}
+
 #compareList table
-{text-align: center;
+{
+text-align: center;
 font-weight: normal;
 color: #fff;
 width: 100%;
 background-color: #666;
 border: 0px;
 border-collapse: collapse;
-border-spacing: 0px;}
+border-spacing: 0px;
+}
 
 #compareList table td
 {
@@ -725,13 +777,24 @@ table td input[type=text] {
 	min-width:6em;
 }
 
-
 .tundra .tabMenu .dijitDropDownButton, .tundra .tabMenu .dijitButtonNode  {
 	padding:0;
 	margin:0;
 	border:none;
 	background:none;
 	font-size:0.95em;
+}
+
+.tundra #commonPopup {
+	overflow:auto;
+}
+
+.tundra #ideasPopup {
+	overflow:auto;
+}
+
+.tundra #actionDetails {
+	overflow:hidden;
 }
 
 </style>
@@ -757,6 +820,12 @@ table td input[type=text] {
 					<div dojoType="dijit.Menu" id="fileMenu">
             			<div dojoType="dijit.MenuItem" onClick="showReports(this)">
                 			Reports
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
+                			People
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
+                			Search
             			</div>
             			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
                 			Admin
@@ -787,13 +856,13 @@ table td input[type=text] {
 	<div id="ideaTabHead" class="tabHead addForm ui-corner-all"> 
 		<div class="formHeadContain">
 			<form id="addIdeaForm" onsubmit="addIdea(); return false;">
-			<span>New idea</span> <input name="title" type="text"></input> <input type="submit" value=" + "/>
+			<span>New idea</span> <input id="addIdeaTitle" name="title" type="text"></input> <input type="submit" value=" + " title="Add idea"/>
 			<input type="hidden" name="action" value="addIdea"/>
 			</form>
 		</div> 
-		<div id="ideaGroups" class="ui-corner-all">
+		<div class="ideaGroups" class="ui-corner-all">
 			<input type="text" value="Search" onclick="$(this).val('')" onkeyup="filterIdeas(this)" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
-			Groups <span id="ideaGroupsList">None</span>
+			Groups <span class="ideaGroupsList">None</span>
 		</div>
 	</div>
 
@@ -804,20 +873,23 @@ table td input[type=text] {
 <div id="compareTab" class="tabBody">
 	<!-- <h2>R-W-W</h2>
 	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
-	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + '/></div>
+	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + ' title="Add an idea to comparison"/>
+	<div class="ideaGroups ui-corner-all"><a href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
+	</div>
 	<div id="compareList">
 		<p>No comparisons yet</p>
 	</div>
 </div>
 
 <div id="selectTab" class="tabBody">
+	No selections yet
 </div>
 
 <div id="groupTab" class="tabBody">
 	<div id="groupSelect" class="two-column" >
 		<div class="formHeadContain" style="width:100%">
 			<form id="addGroupForm" class="addForm ui-corner-all" onsubmit="addGroup(); return false;">
-			<span>New Group</span> <input name="title" type="text"></input> <input type="submit" value=" + "/>
+			<span>New Group</span> <input name="title" type="text"/> <input type="submit" value=" + " title="Create a group"/>
 			<input type="hidden" name="action" value="addGroup"/>
 			</form>
 		</div>
@@ -832,7 +904,7 @@ table td input[type=text] {
 <!-- MORE TABS -->
 <div id="reportTab" class="tabBody">
 	<div id="reportDetails" class="two-column ui-corner-all" style="padding:10px">
-		Select a group
+		Loading reports...
 	</div>
 	<div id="reportList" class="two-column" style="padding:10px"></div>
 </div>
@@ -846,10 +918,11 @@ table td input[type=text] {
         <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
         	<div id="addComment">
         		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
-        			New Comment
-        			<input type="text" name="text"/>
+        			New Comment <input type="submit" value=" + "/>
+        			<!-- <input type="text" name="text" style="width:100%"/> -->
+        			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea" style="width:100%; height:4em;">
+					</textarea>
         			<input type="hidden" name="action" value="addComment" />
-        			<input type="submit" value=" + "/>
         		</form>
         	</div>
             <div id="commentList">No comments yet</div>
@@ -862,7 +935,7 @@ table td input[type=text] {
     </div>
 </div>
 
-<div id="commonPopup" dojoType="dijit.Dialog" title="Action"  style="width: 15em; height: 300px;">
+<div id="commonPopup" dojoType="dijit.Dialog" title=""  style="width: 15em; height: 300px;">
     <div id="actionDetails" dojoType="dijit.layout.ContentPane" >
           No actions yet
     </div>

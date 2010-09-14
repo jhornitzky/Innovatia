@@ -1,0 +1,16 @@
+<?
+require_once("innoworks.connector.php");
+
+function getDashIdeas($user) {
+	return dbQuery("SELECT * FROM Ideas WHERE userId='$user' ORDER BY createdTime LIMIT 5");
+}
+
+function getDashCompare($user) {
+	return dbQuery("SELECT Ideas.title, RiskEvaluation.*  FROM RiskEvaluation, Ideas 
+	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId='$user' LIMIT 5");
+}
+
+function getDashSelect() {
+	return null;
+}
+?>

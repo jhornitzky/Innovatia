@@ -42,14 +42,33 @@ function renderGenericHeader($rs, $omitArray) {
 }
 
 function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
+	$refdata = getRefDataForTable($tableName);
+	
+	if ($refdata && dbNumRows($refdata) > 0)
+		$refdata = dbFetchAll($refdata);
 	
 	echo "<tr>";
 	while ($field = dbFetchField($rs)) {
 		if (!in_array($field->name, $omitArray)) {
-			echo "<th>". fromCamelCase($field->name). "</th>";
+			//logDebug("Field name: ".$field->name);
+			$metaArray = findColumnMetadata($refdata, $field->name);
+			//logDebug("Col Head meta array: ".$metaArray);
+			
+			echo "<th>";
+			echo fromCamelCase($field->name); 
+			//If metadata then render help lnk
+			if ($metaArray){
+				$metaHelp = getColumnDescription($metaArray);
+				logDebug("metahelp: ".$metaHelp);
+				if ($metaHelp) {?>
+					<a href="javascript:showHelp('<?= $metaHelp?>')">?</a>
+				<?}
+			}
+			echo "</th>";
+			
 		}
 	}
-	echo "<th></th>"; //EXTRA For actions
+	echo "<th></th>"; //EXTRA For actions FIXME
 	echo "</tr>";
 }
 
@@ -113,14 +132,19 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 ////////////// COLUMN METADATA FUNCTIONS FROM REFERENCE DATA //////////////////
 
 function findColumnMetadata($refDataArray, $needle) {
-	if (!$refDataArray)
-	return $refDataArray;
-
+	
+	logDebug("Find column metadata");
+	if (!$refDataArray) {
+		logDebug("Empty refDataArray");
+		return $refDataArray;
+	}
 	$metaArray = false;
 	foreach ($refDataArray as $key => $refDataValue) {
 		//logDebug("Array Iter: ". $key . " " . $refDataValue["key2"]);
-		if ($refDataValue["key2"] == $needle)
-		$metaArray[$key] = $refDataValue;
+		if ($refDataValue["key2"] == $needle) {
+			//logDebug("Found metadata for column; ". $needle);
+			$metaArray[$key] = $refDataValue;
+		}
 	} 
 	return $metaArray;
 }
@@ -156,7 +180,17 @@ function getColumnType($refDataArray) {
 }
 
 function getColumnDescription($refDataArray) {
-	return "Describe Me";
+	logDebug("In get col description");
+	if (!$refDataArray)
+		return $refDataArray;
+		
+	foreach ($refDataArray as $refDataValue) {
+		if ($refDataValue["key3"] == "H") {
+			logDebug("return refdata value");
+			return $refDataValue["value"];
+		}
+	}
+	return false;
 }
 
 function renderUpdateField() {

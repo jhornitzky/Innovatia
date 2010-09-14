@@ -8,8 +8,14 @@ if (isset($_GET) && $_GET != '') {
 		case "getComparison":
 			renderDefault($_SESSION['innoworks.ID']);
 			break;
+		case "getComparisonForGroup":
+			renderComparisonForGroup($_GET['groupId']);
+			break;
 		case "getAddRisk":
 			renderAddRiskIdea($_SESSION['innoworks.ID']);
+			break;
+		case "getAddRiskForGroup":
+			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
 			break;
 	}
 }
@@ -21,6 +27,13 @@ if (isset($_POST) && $_POST != '') {
 			$opts = $_POST;
 			unset($opts['action']);
 			$risk = createRiskItem($opts);
+			echo "Response Code: ".$risk;
+			break;
+		case "createRiskItemForGroup":
+			echo "Creating Risk Item.. ";
+			$opts = $_POST;
+			unset($opts['action']);
+			$risk = createRiskItemForGroup($opts);
 			echo "Response Code: ".$risk;
 			break;
 		case "deleteRiskItem":

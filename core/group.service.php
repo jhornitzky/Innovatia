@@ -31,6 +31,10 @@ function getIdeasForGroup($id) {
 	return dbQuery("SELECT Ideas.* FROM Ideas,Groups,GroupIdeas WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId");
 }
 
+function getRiskEvaluationForGroup($id) {
+	return dbQuery("SELECT Ideas.title as Idea, RiskEvaluation.* FROM RiskEvaluation, Ideas,Groups,GroupIdeas WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Groups.groupId=RiskEvaluation.groupId");
+}
+
 function getGroups() {
 	return dbQuery("SELECT * FROM Groups");
 }

@@ -6,7 +6,7 @@ function renderDefault() {
 	$ideas = getIdeas($_SESSION["innoworks.ID"]) or die("Error retrieving ideas. Report to IT Support.");
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
-			renderIdea($ideas,$idea);
+			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
 	} else {
 		echo "<p>No ideas yet</p>";
@@ -17,15 +17,16 @@ function renderIdeasForGroup($groupId) {
 	import("group.service");
 	$ideas = getIdeasForGroup($groupId) or die("Error retrieving ideas. Report to IT Support.");
 	if ($ideas && dbNumRows($ideas) > 0 ) {
+		//echo "<h3>Ideas for group</h3>";
 		while ($idea = dbFetchObject($ideas)) {
-			renderIdea($ideas,$idea);
+			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
 	} else {
 		echo "<p>No ideas yet</p>";
 	}
 }
 
-function renderIdea($ideas, $idea) { ?>
+function renderIdea($ideas, $idea, $user) { ?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all" onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
 
 <div class="formHead" ><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
@@ -36,7 +37,9 @@ function renderIdea($ideas, $idea) { ?>
 <a href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
 <a href="javascript:showDetails('idearoles_form_<?= $idea->ideaId?>')">Roles</a>
 <a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');">Review</a>
-<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" />
+<?if ($idea->userId == $user) { ?>
+	<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" />
+<?}?>
 </span>
 </div>
 
@@ -138,7 +141,7 @@ function renderIdeaGroupsForUser($uid) {
 	$groups = getAllGroupsForUser($uid);
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
-			echo "<a href='javascript:showIdeasForGroup($group->groupId)'>" . $group->title . "</a>";
+			echo "<a class='groupSelect_$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId, '.groupSelect_$group->groupId')\">" . $group->title . "</a>";
 		}
 	} else {
 		echo "None";
