@@ -3,7 +3,7 @@ require_once("thinConnector.php");
 import("dash.service");
 ?>
 <div class="dashHeader" style="width:100%; display:none;"><b>Notifications</b></div>
-<div class="threeColumnContainer" style="width:100%;">
+<div id="dashui" class="threeColumnContainer">
 	<div class="col1 ui-corner-all" style="margin-right:1%;width:32%;position:relative; float:left; overflow:auto; background-color:#CCFFFF">
 		<div class="widget ui-corner-all" style="padding:1%; height:80%;">
 			<h2><a href="javascript:showIdeas();">Ideas</a></h2>

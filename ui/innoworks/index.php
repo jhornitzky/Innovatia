@@ -54,7 +54,9 @@ $(document).ready(function() {
 
 dojo.addOnLoad(function(){
 	//Parse controls
-	//dojo.parser.instantiate([dojo.byId("ideasPopup"),dojo.byId("ideasPopupTabContainer"), dojo.byId("ideaComments"),dojo.byId("ideaFeatureEvaluationList"),dojo.byId("commonPopup"),dojo.byId("actionDetails")]); 
+	//dojo.parser.instantiate(dojo.query("#ideasPopup *")); 
+	//dojo.parser.instantiate(dojo.query("#commonPopup *")); 
+	//dojo.parser.instantiate(dojo.query("#morelnk *")); 
 	dojo.parser.parse();
 	
 	//Setup stuff for tab menus
@@ -882,7 +884,12 @@ table td input[type=text] {
 </div>
 
 <div id="selectTab" class="tabBody">
-	No selections yet
+	<div class="addform ui-corner-all">Click here to select an idea to manage work <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on"/>
+	<div class="ideaGroups ui-corner-all"><a href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
+	</div>
+	<div id="selectList">
+		<p>No selections yet</p>
+	</div>
 </div>
 
 <div id="groupTab" class="tabBody">
@@ -920,8 +927,7 @@ table td input[type=text] {
         		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
         			New Comment <input type="submit" value=" + "/>
         			<!-- <input type="text" name="text" style="width:100%"/> -->
-        			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea" style="width:100%; height:4em;">
-					</textarea>
+        			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea" style="width:100%;"></textarea>
         			<input type="hidden" name="action" value="addComment" />
         		</form>
         	</div>

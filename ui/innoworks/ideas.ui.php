@@ -8,6 +8,11 @@ function renderDefault() {
 		while ($idea = dbFetchObject($ideas)) {
 			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
+		?>
+		<script type="text/javascript">
+		dojo.parser.instantiate(dojo.query('#ideasList *'));
+		</script>
+		<?
 	} else {
 		echo "<p>No ideas yet</p>";
 	}
@@ -21,6 +26,11 @@ function renderIdeasForGroup($groupId) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
+		?>
+		<script type="text/javascript">
+		dojo.parser.instantiate(dojo.query('#ideasList *'));
+		</script>
+		<?
 	} else {
 		echo "<p>No ideas yet</p>";
 	}
@@ -87,7 +97,7 @@ Feature | </span> <input type="text" name="feature"/>
 function renderIdeaFeatures($ideaId) { 
 	$features = getFeaturesForIdea($ideaId);
 	if ($features && dbNumRows($features) > 0 ) {
-		echo "<table>";
+		echo "<table id='featureTable_$ideaId'>";
 		renderGenericHeader($features, array("featureId", "ideaId"));
 		while ($feature = dbFetchObject($features)) {
 			renderFeature($features, $feature);
@@ -100,7 +110,7 @@ function renderIdeaFeatures($ideaId) {
 
 function renderFeature($features, $feature) {?>
 <tr id="featureform_<?= $feature->featureId ?>">
-<?renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
+	<?renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
 	<td>
 	<input type="hidden" name="featureId" value="<?= $feature->featureId?>" /> 
 	<input type="button" onclick="updateFeature('<?= $feature->featureId ?>','featureform_<?= $feature->featureId ?>','<?= $feature->ideaId ?>')"  value=" U "/>

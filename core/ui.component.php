@@ -23,7 +23,10 @@ function renderGenericUpdateForm($rs,$row,$omitArray) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
 		<td style="width:10%"><label><?=fromCamelCase($key)?></label></td>
-		<td style="width:90%"><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+		<td style="width:90%">
+		<!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+		</td>
 		<?}
 		echo "</tr>";
 	}
@@ -75,7 +78,10 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
 function renderGenericUpdateRow($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {?>
-		<td><input type="text" name="<?=$key?>" value="<?=$value?>" /></td>
+		<td>
+		<!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+		</td>
 		<?}
 	}
 }
