@@ -18,6 +18,7 @@ requireLogin();
 <link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css"/>
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"type="text/css"/>
+<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"type="text/css"/>
 	
 <script type="text/javascript">
 //////// VARS //////////
@@ -142,7 +143,12 @@ function getCompare() {
 	showIdeaGroupsForUser();
 }
 
-function getSelect() {}
+function getSelect() {
+	$.get("select.ajax.php?action=getSelection", function (data) {
+		$("#selectList").html(data);
+		showIdeaGroupsForUser();
+	});
+}
 
 function getGroups() {
 	$.get("groups.ajax.php?action=getGroups", function (data) {
@@ -564,242 +570,59 @@ function updateFormSelectTotals(formId) {
 	if (count != 0)
 		$("#" + formId + " span.itemTotal").html(Math.round(total/count));
 }
-</script>
 
-<style>
-/* COMMON */
-body {
-	text-align:left;
-}
-
-.idea table {
-	width:100%;
-}
-
-table, th {
-	text-align:left;
-}
-
-/* Page header */
-.tabMenu {
-	text-decoration:none;
-	list-style:none;
-	text-indent:0px;
-}
-
-.tabMenu li {
-	float:left;
-	position:relative;
-	padding-left:0.5em;
-	padding-right:0.5em;
-	text-indent:0px;
-}
-
-a {
-	font-size:0.9em;
-}
-
-#head {
-	width:100%;
-	height:2.0em;
-	margin-top:0.3em;
-	margin-bottom:0.3em;
-}
-
-#leftAlignMenu {
-	top:0px;
-	left:0px;
-	position: absolute;
-}
-
-#rightAlignMenu {
-	top:0px;
-	right: 0px;
-	position: absolute;
-}
-
-#ajaxLoader {
-	display:none;
-	height:20px; 
-	width:20px;
-}
-
-.addForm {
-	background-color:#69F564;
-	padding:4px;
-}
-
-/* CONTENT */
-#content { 
-	width:98%;
-	padding:1%;
-}
-
-.formHead {
-	background-color:#F2F2F2;
-	padding-top: 0.1em;
-	padding-bottom: 0.1em;
-}
-
-.formBody subform {
-	padding:4px;
-}
-
-.responses {
-	border:1px solid #000000;
-	display:none;
-	padding:5px;
-	margin-bottom: 5px;
-	height:1em;
-}
-
-.tabBody {
-	display:none;
-}
-
-/* tab head */
-#ideaTabHead {
-	height:1.5em;
-}
-
-.formHeadContain {
-	position:relative;
-	float:left;
-}
-
-.ideaGroups {
-	background-color:#FFFFFF;
-	position:relative;
-	float:right;
-	#padding:3px;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
-}
-
-span.ideaGroupsList {
-	color:#666;
-	font-size:0.9em;	
-}
-
-div#groupsList, div#groupDetails {
-	padding-top:1.5em;
-}
-
-.two-column {
-	position:relative; float:left; width:48%;min-height:200px;
-}
-
-#reportDetails {
-	padding:5px;
-	border:1px solid #000000;
-}
-
-select {
-	width:5em;
-}
-
-.ideaDetails td.label {
-	#width:50em;
-}
-
-.ideaDetails input[type=text] {
-	#width:50em;
-}
-
-.ideaoptions {
-	#display:none;
-}
-
-.ideatitle {
-	font-size:1.2em;
-}
-
-.idea {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	border-left: 5px solid #CCC;
-}
-
-.selMenu {
-	background-color:#444444;
-	color:#FFFFFF;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
-}
-
-.selMenu a {
-	color:#FFFFFF;
-	border-bottom:none;
-	font-weight: bold;
-}
-
-
-.ideaGroups .ideaGroupsList a.selected {
-	background-color:#444444;
-	color:#FFFFFF;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
-	border-bottom:none;
-	font-weight: bold;
-}
-
-div.loadingSpinner {}
-
-#compareList table
-{
-text-align: center;
-font-weight: normal;
-color: #fff;
-width: 100%;
-background-color: #666;
-border: 0px;
-border-collapse: collapse;
-border-spacing: 0px;
-}
-
-#compareList table td
-{
-background-color: #CCC;
-color: #000;
-padding: 4px;
-text-align: left;
-border: 1px #fff solid;
-}
-
-#compareList table th 
-{
-background-color: #AAA;
-color: #fff;
-padding: 4px;
-text-align: left;
-border-bottom: 2px #fff solid;
-font-size: 12px;
-font-weight: bold;
+//////////////// SELECTIONS ////////////////
+function showAddSelectIdea() {
+	$('#commonPopup #actionDetails').empty();
+	dijit.byId('commonPopup').show();
+	if (currentGroupId == null ) {
+		$.get("select.ajax.php?action=getAddSelect", function(data) {
+			$("#commonPopup #actionDetails").html(data);
+		});
+	} else {
+		$.get("select.ajax.php?action=getAddSelectForGroup&groupId="+currentGroupId, function(data) {
+			$("#commonPopup #actionDetails").html(data);
+		});
+	}
 } 
 
-table td input[type=text] {
-	width:100%;
-	min-width:6em;
+function addSelectItem(id) {
+	dijit.byId('commonPopup').hide();
+	$.post("select.ajax.php", {action: "createSelection", ideaId:id}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		showSelect();
+	});
 }
 
-.tundra .tabMenu .dijitDropDownButton, .tundra .tabMenu .dijitButtonNode  {
-	padding:0;
-	margin:0;
-	border:none;
-	background:none;
-	font-size:0.95em;
+function deleteSelectIdea(id){
+	$.post("select.ajax.php", {action: "deleteSelection", selectionId:id}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		showSelect();
+	});
 }
 
-.tundra #commonPopup {
-	overflow:auto;
+/*
+function addRiskItemForGroup(id, groupId) {
+	dijit.byId('commonPopup').hide();
+	$.post("compare.ajax.php", {action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
+	});
+}
+ 
+function updateRisk(riskid,riskform){
+	formData = getInputDataFromId(riskform);
+	formData['action'] = 'updateRiskItem';
+	$.post("compare.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
+	});
 }
 
-.tundra #ideasPopup {
-	overflow:auto;
-}
 
-.tundra #actionDetails {
-	overflow:hidden;
-}
+*/
 
-</style>
+</script>
 
 </head>
 <body class="tundra">

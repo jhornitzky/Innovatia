@@ -1,17 +1,18 @@
 <?
 require_once("thinConnector.php");
 require_once("select.ui.php");
+import("idea.service");
 
 if (isset($_GET) && $_GET != '') {
 	switch ($_GET['action']) {
 		case "getSelection":
-			renderDefault($_SESSION['innoworks.ID']);
+			renderSelectDefault($_SESSION['innoworks.ID']);
 			break;
 		case "getAddSelect":
-			renderAddRiskIdea($_SESSION['innoworks.ID']);
+			renderAddSelectIdea($_SESSION['innoworks.ID']);
 			break;
 		case "getAddSelectForGroup":
-			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
+			renderAddSelectIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
 			break;
 	}
 }
@@ -22,12 +23,12 @@ if (isset($_POST) && $_POST != '') {
 			echo "Add selection.. ";
 			$opts = $_POST;
 			unset($opts['action']);
-			//$risk = createRiskItem($opts);
-			echo "Response Code: ".$risk;
+			$resp = createIdeaSelect($opts);
+			echo $resp;
 			break;
 		case "deleteSelection":
 			echo "Deleting selection... ";
-			//$resp = deleteRiskItem($_POST['riskEvaluationId'],$_SESSION['innoworks.ID']);
+			$resp = deleteIdeaSelect(array("selectionId" => $_POST['selectionId']));
 			echo "Response Code: ".$resp;
 			break;
 	}

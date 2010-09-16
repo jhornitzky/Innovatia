@@ -8,6 +8,10 @@ function getIdeas($userid) {
 	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
 }
 
+function getSelectedIdeas($userid) {
+	return dbQuery("SELECT Ideas.*, Selections.selectionId FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId");
+}
+
 function createIdea($opts) {
 	return genericCreate("Ideas", $opts);
 }
@@ -19,6 +23,19 @@ function updateIdeaDetails($opts) {
 
 function deleteIdea($opts) {
 	return genericDelete("Ideas", $opts);
+}
+
+function createIdeaSelect($opts) {
+	return genericCreate("Selections", $opts);
+}
+
+function updateIdeaSelect($opts) {
+	$where = array("ideaId", "userId");
+	return genericUpdate("Selections", $opts, $where);
+}
+
+function deleteIdeaSelect($opts) {
+	return genericDelete("Selections", $opts);
 }
 
 function getFeaturesForIdea($id) {
