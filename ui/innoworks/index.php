@@ -68,7 +68,7 @@ dojo.addOnLoad(function(){
 			selectedChild = "comments";
 		}
 		else if (child.id == "ideaFeatureEvaluationList") {
-			getFeatureEvaluationForIdea();
+			getFeatureEvaluationsForIdea();
 			selectedChild = "featureEvaulation";
 		}
 		else if (child.id == "ideaMission") {
@@ -94,7 +94,7 @@ function loadPopupShow() {
 	else if (selectedChild == "roles")
 		getRolesForm("ideaRoles",currentIdeaId);
 	else if (selectedChild == "featureEvaulation")
-		getFeatureEvaluationForIdea();
+		getFeatureEvaluationsForIdea();
 	else if (selectedChild == "comments")
 		getCommentsForIdea();
 	else 
@@ -350,6 +350,51 @@ function showHelp(text) {
 	dijit.byId('commonPopup').show();
 }
 
+
+//Add another contains method
+jQuery.expr[':'].Contains = function(a,i,m){
+  return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+};
+
+function filterIdeas(element) {
+	var filter = $(element).val();
+  if (filter != '' && filter != null) { 
+    $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
+    $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
+  } else {
+    $("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
+  }
+	
+}
+
+//COMMON methods for doing counts across forms and so on
+function initFormSelectTotals(selector) {
+	//alert("initFormSelectTotals");
+	$(selector + " tr").each(function(index, element) {
+		var initFormId = $(element).attr("id");
+		if (initFormId != null && initFormId != ''){
+			$(element).find("select").change(function () {
+				var x = initFormId;
+				updateFormSelectTotals(x);
+			}); 
+			updateFormSelectTotals(initFormId);
+		}
+	}); 
+}
+
+function updateFormSelectTotals(formId) {
+	var total = 0;
+	var count = 0;
+	$("#" + formId + " select").each(function(index) {
+		if (!isNaN(parseInt($(this).val()))){
+			total = total + parseInt($(this).val());
+			count++;
+		}
+	}); 
+	if (count != 0)
+		$("#" + formId + " span.itemTotal").html(Math.round(total/count));
+}
+
 function genericFormUpdate(target, element) {}
 
 function genericFieldUpdate(target, element) {}
@@ -541,10 +586,17 @@ function deleteRisk(riskid){
 }
 
 ///////////// REVIEWS /////////////////////
-
 function getCommentsForIdea() {
 	$.get("ideas.ajax.php?action=getCommentsForIdea&actionId="+currentIdeaId, function(data) {
 		$("#commentList").html(data);
+	});
+}
+
+function getFeatureEvaluationsForIdea() {
+	$.get("ideas.ajax.php?action=getIdeaFeatureEvaluationsForIdea&actionId="+currentIdeaId, function(data) {
+		alert("CURR IDEA: " + currentIdeaId);
+		$("#ideaFeatureEvaluationList").html(data);
+		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList *'));
 	});
 }
 
@@ -595,48 +647,28 @@ function deleteFeatureItem(fid){
 	});
 }
 
-//Add another contains method
-jQuery.expr[':'].Contains = function(a,i,m){
-    return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
-};
-
-function filterIdeas(element) {
-	var filter = $(element).val();
-    if (filter != '' && filter != null) { 
-      $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
-      $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
-    } else {
-      $("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
-    }
-	
+function addFeatureEvaluation(selector) {
+	//alert("FId: " + id);
+	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
+}
+ 
+function updateFeatureEvaluation(FeatureEvaluationId,featureForm){
+	formData = getInputDataFromId(featureForm);
+	formData['action'] = 'updateFeatureEvaluation';
+	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
 }
 
-// COMMON methods for doing counts across forms and so on
-function initFormSelectTotals(selector) {
-	//alert("initFormSelectTotals");
-	$(selector + " tr").each(function(index, element) {
-		var initFormId = $(element).attr("id");
-		if (initFormId != null && initFormId != ''){
-			$(element).find("select").change(function () {
-				var x = initFormId;
-				updateFormSelectTotals(x);
-			}); 
-			updateFormSelectTotals(initFormId);
-		}
-	}); 
-}
-
-function updateFormSelectTotals(formId) {
-	var total = 0;
-	var count = 0;
-	$("#" + formId + " select").each(function(index) {
-		if (!isNaN(parseInt($(this).val()))){
-			total = total + parseInt($(this).val());
-			count++;
-		}
-	}); 
-	if (count != 0)
-		$("#" + formId + " span.itemTotal").html(Math.round(total/count));
+function deleteFeatureEvaluation(fid){
+	$.post("ideas.ajax.php", {action: "deleteFeatureEvaluation", featureEvaluationId:fid}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getFeatureEvaluationForIdea();
+	});
 }
 
 //////////////// SELECTIONS ////////////////

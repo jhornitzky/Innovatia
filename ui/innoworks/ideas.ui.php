@@ -122,7 +122,7 @@ $idea = dbFetchObject($rs);
 ?>
 <div class="ideaFeatures subform">
 <form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span> New
-Feature | </span> <input type="text" name="feature"/>
+Feature </span> <input type="text" name="feature"/>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="addFeature" /> <input type="button"
 	onclick="genericAdd('addfeature_form_<?= $idea->ideaId?>');getFeatures('ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
@@ -137,7 +137,7 @@ $rs = getIdeaDetails($ideaId);
 $idea = dbFetchObject($rs);
 ?>
 <div class="ideaRoles subform">
-<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New Role |
+<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New Role
 </span> <input type="text" name="role"/>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="addRole" /> <input type="button"
@@ -213,8 +213,32 @@ function renderIdeaGroupsForUser($uid) {
 	}
 }
 
-function renderFeatureEvaluationForIdea($id) {
-	$featureList = getFeaturesForIdea($id);
+function renderIdeaFeatureEvaluationsForIdea($id) {
+	$rs = getIdeaDetails($id);
+	$idea = dbFetchObject($rs);
+	?>
+	<form id="addFeatureEvaluationContainer_<?= $idea->ideaId?>" class="addForm">
+	<span> New feature evaluation </span> 
+	<input type="text" name="title"/>
+	<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> 
+	<input type="hidden" name="action" value="createFeatureEvaluation" /> 
+	<input type="button" onclick="addFeatureEvaluation('addFeatureEvaluationContainer_<?= $idea->ideaId?>');" value=" + " />
+	</form>
+	<?
+	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
+	
+	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
+		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {
+			echo "<hr/>";
+			renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);
+		}
+	} else {
+		echo "<p>No feature evaluations</p>";
+	}
+}
+
+function renderFeatureEvaluationForIdea($id, $evalId) {
+	$featureList = getFeaturesForIdea($id); 
 	
 	if ($featureList && dbNumRows($featureList) > 0 ) {?>
 		<div dojoType="dijit.form.DropDownButton">
@@ -223,12 +247,12 @@ function renderFeatureEvaluationForIdea($id) {
     		</span>
 			<div dojoType="dijit.Menu">
             	<?while ($feature = dbFetchObject($featureList)) {?>
-            	<div dojoType="dijit.MenuItem" onClick="addFeatureItem(<?=$feature->featureId?>)"><?=$feature->feature?></div>
+            	<div dojoType="dijit.MenuItem" onClick="addFeatureItem(<?=$feature->featureId ." , ".$evalId?>)"><?=$feature->feature?></div>
 				<?}?>
         	</div>
 		</div>
 		<? 
-		renderFeatureEvaluationTable($id);
+		renderFeatureEvaluationTable($evalId);
 	} else {
 		echo "<p>No features to rate</p>";
 	}

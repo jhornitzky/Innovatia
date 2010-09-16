@@ -17,6 +17,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getCommentsForIdea":
 			renderCommentsForIdea($_GET['actionId']);
 			break;
+		case "getIdeaFeatureEvaluationsForIdea":
+			renderIdeaFeatureEvaluationsForIdea($_GET['actionId']);
+			break;
 		case "getFeatureEvaluationForIdea":
 			renderFeatureEvaluationForIdea($_GET['actionId']);
 			break;
@@ -136,6 +139,28 @@ if (isset($_POST) && $_POST != '') {
 			$feature = updateFeature($opts);
 			echo "Response Code: ".$feature;
 			break;
+		case "createFeatureEvaluation":
+			echo "Adding Item... ";
+			logDebug("IDEA ID: ". $_POST['ideaId']);
+			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
+			unset($opts['action']);
+			$resp = createFeatureEvaluation($opts);
+			echo "Response Code: ".$resp;
+			break;
+		case "updateFeatureEvaluation":
+			echo "Updating Item... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			unset($opts['feature']);
+			$resp = updateFeatureEvaluation($opts);
+			echo "Response Code: ".$resp;
+			break;
+		case "deleteFeatureEvaluation":
+			echo "Deleting Item... ";
+			$feature = deleteFeatureEvaluation($_POST['featureEvaluationId']);
+			echo "Response Code: " . $feature;
+			break;
+		
 	}
 }
 ?>

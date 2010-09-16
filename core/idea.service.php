@@ -66,8 +66,12 @@ function deleteRole($id) {
 	return genericDelete("Roles", array("roleId"=>$id));
 }
 
-function getFeatureEvaluationForIdea ($id) {
-	return dbQuery("SELECT Features.feature, FeatureEvaluation.* FROM FeatureEvaluation, Ideas, Features WHERE FeatureEvaluation.featureId = Features.featureId AND Features.ideaId = '$id' AND Ideas.ideaId = Features.ideaId");
+function getIdeaFeatureEvaluationsForIdea($id) {
+	return dbQuery("SELECT IdeaFeatureEvaluations.* FROM IdeaFeatureEvaluations, Ideas WHERE IdeaFeatureEvaluations.ideaId = Ideas.ideaId AND Ideas.ideaId = '$id'");
+}
+
+function getFeatureEvaluationForIdea($id) {
+	return dbQuery("SELECT Features.feature, FeatureEvaluation.* FROM FeatureEvaluation, Ideas, Features,IdeaFeatureEvaluations WHERE FeatureEvaluation.featureId = Features.featureId AND Features.ideaId = IdeaFeatureEvaluations.ideaId AND Ideas.ideaId = Features.ideaId AND IdeaFeatureEvaluations.ideaFeatureEvaluationId='$id'");
 }
 
 function getCommentsForIdea($id) {
@@ -80,6 +84,19 @@ function createComment($opts) {
 
 function deleteComment($id) {
 	return genericDelete("Comments", array("commentId"=>$id));
+}
+
+function createFeatureEvaluation($opts) {
+	return genericCreate("IdeaFeatureEvaluations", $opts);
+}
+
+function updateFeatureEvaluation($opts) {
+	$where = array("featureEvaluationId");
+	return genericUpdate("IdeaFeatureEvaluations", $opts, $where);
+}
+
+function deleteFeatureEvaluation($id) {
+	return genericDelete("IdeaFeatureEvaluations", array("ideaFeatureEvaluationId"=>$id));
 }
 
 function createFeatureItem($opts) {
