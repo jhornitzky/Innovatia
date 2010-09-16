@@ -6,13 +6,8 @@ function renderDefault() {
 	$ideas = getIdeas($_SESSION["innoworks.ID"]) or die("Error retrieving ideas. Report to IT Support.");
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
-			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
+			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
-		?>
-		<script type="text/javascript">
-		dojo.parser.instantiate(dojo.query('#ideasList *'));
-		</script>
-		<?
 	} else {
 		echo "<p>No ideas yet</p>";
 	}
@@ -24,17 +19,27 @@ function renderIdeasForGroup($groupId) {
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		//echo "<h3>Ideas for group</h3>";
 		while ($idea = dbFetchObject($ideas)) {
-			renderIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
+			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
-		?>
-		<script type="text/javascript">
-		dojo.parser.instantiate(dojo.query('#ideasList *'));
-		</script>
-		<?
 	} else {
 		echo "<p>No ideas yet</p>";
 	}
 }
+
+function renderJustIdea($ideas, $idea, $user) {?>
+<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all" onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
+<div class="formHead" ><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
+<span class="ideatitle"><?=$idea->title?></span> 
+
+<span class="ideaoptions">
+<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');">Details</a>
+<?if ($idea->userId == $user) { ?>
+	<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" />
+<?}?>
+</span>
+</div>
+</div>
+<?}
 
 function renderIdea($ideas, $idea, $user) { ?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all" onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
@@ -94,6 +99,56 @@ Feature | </span> <input type="text" name="feature"/>
 <?
 }
 
+function renderIdeaMission($ideaId) { 
+$rs = getIdeaDetails($ideaId);
+$idea = dbFetchObject($rs);
+?>
+<div class="formBody">
+<div class="ideaDetails subform">
+<form id="ideadetails_form_<?= $idea->ideaId?>"">
+<? renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime")); ?>
+<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+	type="hidden" name="action" value="updateIdeaDetails" /> <input
+	type="button"
+	onclick="updateIdeaDetails('#ideadetails_form_<?= $idea->ideaId?>')"
+	value="Update" /></form>
+</div>
+</div>
+<?}
+
+function renderIdeaFeaturesForm($ideaId) {
+$rs = getIdeaDetails($ideaId);
+$idea = dbFetchObject($rs);
+?>
+<div class="ideaFeatures subform">
+<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span> New
+Feature | </span> <input type="text" name="feature"/>
+<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+	type="hidden" name="action" value="addFeature" /> <input type="button"
+	onclick="genericAdd('addfeature_form_<?= $idea->ideaId?>');getFeatures('ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
+<div id="ideafeatures_<?= $idea->ideaId?>">
+<? renderIdeaFeatures($idea->ideaId); ?></div>
+</div>
+<?
+}
+
+function renderIdeaRolesForm($ideaId) {
+$rs = getIdeaDetails($ideaId);
+$idea = dbFetchObject($rs);
+?>
+<div class="ideaRoles subform">
+<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New Role |
+</span> <input type="text" name="role"/>
+<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+	type="hidden" name="action" value="addRole" /> <input type="button"
+	onclick="genericAdd('addrole_form_<?= $idea->ideaId?>');getRoles('idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');" value=" + " /></form>
+	<div id="idearoles_<?= $idea->ideaId?>">
+		<? renderIdeaRoles($idea->ideaId); ?>
+	</div>
+</div>
+</div>
+<?}
+
 function renderIdeaFeatures($ideaId) { 
 	$features = getFeaturesForIdea($ideaId);
 	if ($features && dbNumRows($features) > 0 ) {
@@ -151,7 +206,7 @@ function renderIdeaGroupsForUser($uid) {
 	$groups = getAllGroupsForUser($uid);
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
-			echo "<a class='groupSelect_$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId, '.groupSelect_$group->groupId')\">" . $group->title . "</a>";
+			echo "<a groupId='$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a>";
 		}
 	} else {
 		echo "None";
@@ -161,36 +216,22 @@ function renderIdeaGroupsForUser($uid) {
 function renderFeatureEvaluationForIdea($id) {
 	$featureList = getFeaturesForIdea($id);
 	
-	if ($featureList && dbNumRows($featureList) > 0 ) {
+	if ($featureList && dbNumRows($featureList) > 0 ) {?>
+		<div dojoType="dijit.form.DropDownButton">
+			<span>
+        		Add feature
+    		</span>
+			<div dojoType="dijit.Menu">
+            	<?while ($feature = dbFetchObject($featureList)) {?>
+            	<div dojoType="dijit.MenuItem" onClick="addFeatureItem(<?=$feature->featureId?>)"><?=$feature->feature?></div>
+				<?}?>
+        	</div>
+		</div>
+		<? 
 		renderFeatureEvaluationTable($id);
-		?>
-		<script type="text/javascript">
-		var menu = new dijit.Menu({
-			style: "display: none;"
-		});
-		<?while ($feature = dbFetchObject($featureList)) {?>
-			menu.addChild(new dijit.MenuItem({
-				label: "<?=  $feature->feature ?>",
-				onClick: function() {
-					addFeatureItem(<?=  $feature->featureId ?>);
-				}
-				})
-			);
-		<?}?>
-		var button = new dijit.form.DropDownButton({
-			label: "Add",
-			name: "programmatic2",
-			dropDown: menu,
-			id: "progButton"
-		});
-		
-		dojo.byId("addFeatureEval").appendChild(button.domNode);
-		</script>
-	<? } else {
+	} else {
 		echo "<p>No features to rate</p>";
 	}
-	
-	
 }
 
 function renderFeatureEvaluationTable($id) {
@@ -228,7 +269,7 @@ function renderCommentsForIdea($id) {
 			echo $comment->text. "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '><br/>";
 		}
 	} else {
-		echo "None";
+		echo "<p>None</p>";
 	}
 }
 

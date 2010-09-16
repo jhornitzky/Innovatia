@@ -10,7 +10,7 @@ function getDashCompare($user) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId='$user' LIMIT 5");
 }
 
-function getDashSelect() {
-	return null;
+function getDashSelect($userid) {
+	return dbQuery("SELECT Ideas.*, Selections.selectionId FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId LIMIT 3");
 }
 ?>

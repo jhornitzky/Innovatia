@@ -20,11 +20,20 @@ if (isset($_GET) && $_GET != '') {
 		case "getFeatureEvaluationForIdea":
 			renderFeatureEvaluationForIdea($_GET['actionId']);
 			break;
+		case "getMission":
+			renderIdeaMission($_GET['actionId']);
+			break;
 		case "getFeatures":
 			renderIdeaFeatures($_GET['actionId']);
 			break;
 		case "getRoles":
 			renderIdeaRoles($_GET['actionId']);
+			break;
+		case "getFeaturesForm":
+			renderIdeaFeaturesForm($_GET['actionId']);
+			break;
+		case "getRolesForm":
+			renderIdeaRolesForm($_GET['actionId']);
 			break;
 		case "getShare":
 			renderShare($_GET['actionId'], $_SESSION['username']);

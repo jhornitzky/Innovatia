@@ -28,6 +28,7 @@ var currentGroupId;
 var formArray; // Temp holder for form value functions
 var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
 		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};
+var selectedChild;
 
 /////// START UP ///////
 dojo.require("dijit.Dialog");
@@ -62,33 +63,101 @@ dojo.addOnLoad(function(){
 	
 	//Setup stuff for tab menus
 	dojo.subscribe("ideasPopupTabContainer-selectChild", function(child){
-		if (child.id == "ideaComments") 
+		if (child.id == "ideaComments") {
 			getCommentsForIdea();
-		else if (child.id == "ideaFeatureEvaluationList") 
+			selectedChild = "comments";
+		}
+		else if (child.id == "ideaFeatureEvaluationList") {
 			getFeatureEvaluationForIdea();
+			selectedChild = "featureEvaulation";
+		}
+		else if (child.id == "ideaMission") {
+			getMission("ideaMission",currentIdeaId);
+			selectedChild = "mission";
+		}
+		else if (child.id == "ideaFeatures") {
+			getFeaturesForm("ideaFeatures",currentIdeaId);
+			selectedChild = "features";
+		}
+		else if (child.id == "ideaRoles") {
+			getRolesForm("ideaRoles",currentIdeaId);
+			selectedChild = "roles";
+		} 
 	});
 });
 
-
-//////////// MENU ///////////
-
-function triggerClick(selector) {
-	//alert(selector);
-	//$(selector).trigger('click');
-	$(selector).click();
+function loadPopupShow() {
+	if (selectedChild == "mission") 
+		getMission("ideaMission",currentIdeaId);
+	else if (selectedChild == "features")
+		getFeaturesForm("ideaFeatures",currentIdeaId);
+	else if (selectedChild == "roles")
+		getRolesForm("ideaRoles",currentIdeaId);
+	else if (selectedChild == "featureEvaulation")
+		getFeatureEvaluationForIdea();
+	else if (selectedChild == "comments")
+		getCommentsForIdea();
+	else 
+		getMission("ideaMission",currentIdeaId);
 }
 
-function showIdeaReviews(ideaId) { 
+function getMission(formId,actionId) { 
+	$.get("ideas.ajax.php?action=getMission&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+	});
+}
+
+function getFeaturesForm(formId,actionId) {
+	$.get("ideas.ajax.php?action=getFeaturesForm&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+	});
+}
+
+function getRolesForm(formId,actionId) {
+	$.get("ideas.ajax.php?action=getRolesForm&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+	});
+}
+
+function getFeatures(formId,actionId) {
+	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+	});
+}
+
+function getRoles(formId,actionId) {
+	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
+		$("#"+formId).html(data);
+		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+	});
+}
+
+//////////// MENU ///////////
+function showIdeaReviews(ideaId) {
+	showIdeaDetails(ideaId);
+	/*
 	currentIdeaId = ideaId;
-	dojo.empty("addFeatureEval");
-	getCommentsForIdea();
-	getFeatureEvaluationForIdea();
+	var tabs = dijit.byId("ideasPopup");
+	tabs.selectChild(dojo.byId("ideaComments"));
+	loadPopupShow();
+	dijit.byId('ideasPopup').show();
+	*/
+}
+
+function showIdeaDetails(ideaId) { 
+	currentIdeaId = ideaId;
+	loadPopupShow();
 	dijit.byId('ideasPopup').show();
 }
 
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
+		$(".ideaGroupsList a[groupId=" + currentGroupId + "]").addClass("selected");
 	});
 }
 
@@ -98,17 +167,17 @@ function showDefaultIdeas() {
 	$(".ideaGroups .ideaGroupsList a").removeClass('selected');
 	getIdeas();
 	getCompare();
+	getSelect();
 }
 
 function showIdeasForGroup(gId, elem) {
 	currentGroupId = gId;
 	$("#addIdeaTitle").attr('disabled', 'disabled');
-	//$(".ideaGroups .ideaGroupsList a").removeClass('selected');
 	//alert(elem);
 	$(elem).addClass('selected');
 	getIdeas();
 	getCompare();
-	//showIdeas();
+	getSelect();
 }
 
 function getDash() {
@@ -281,20 +350,6 @@ function showHelp(text) {
 	dijit.byId('commonPopup').show();
 }
 
-function genericAdd(selector) {
-	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
-		showResponses("#ideaResponses", data, true);
-		//getIdeas();
-	});	
-}
-
-function genericDelete(target, id) {
-	$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
-		showResponses("#ideaResponses", data, true);
-		//getIdeas();
-	});		
-}
-
 function genericFormUpdate(target, element) {}
 
 function genericFieldUpdate(target, element) {}
@@ -338,17 +393,29 @@ function updateFeature(id,form, ideaId) {
 	});
 }
 
-function getFeatures(formId,actionId) {
-	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
-		$("#"+formId).html(data);
+function updateRole(id,form, ideaId) {
+	formData = getInputDataFromId(form);
+	formData['action'] = 'updateRole';
+	$.post("ideas.ajax.php", getSerializedArray(formData), function(data, form, ideaId) {
+		showResponses("#ideaResponses", data, true);
 	});
 }
 
-function getRoles(formId,actionId) {
-	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
-		$("#"+formId).html(data);
-	});
+
+function genericAdd(selector) {
+	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+		showResponses("#ideaResponses", data, true);
+		getIdeas();
+	});	
 }
+
+function genericDelete(target, id) {
+	$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
+		showResponses("#ideaResponses", data, true);
+		getIdeas();
+	});		
+}
+
 
 ///////////////// GROUP ///////////////
 
@@ -483,7 +550,8 @@ function getCommentsForIdea() {
 
 function getFeatureEvaluationForIdea() {
 	$.get("ideas.ajax.php?action=getFeatureEvaluationForIdea&actionId="+currentIdeaId, function(data) {
-		$("#featureEvalContent").html(data);
+		$("#ideaFeatureEvaluationList").html(data);
+		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList *'));
 	});
 }
 
@@ -600,28 +668,6 @@ function deleteSelectIdea(id){
 		showSelect();
 	});
 }
-
-/*
-function addRiskItemForGroup(id, groupId) {
-	dijit.byId('commonPopup').hide();
-	$.post("compare.ajax.php", {action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, function(data) {
-		showResponses("#ideaResponses", data, true);
-		showCompare();
-	});
-}
- 
-function updateRisk(riskid,riskform){
-	formData = getInputDataFromId(riskform);
-	formData['action'] = 'updateRiskItem';
-	$.post("compare.ajax.php", getSerializedArray(formData), function(data) {
-		showResponses("#ideaResponses", data, true);
-		showCompare();
-	});
-}
-
-
-*/
-
 </script>
 
 </head>
@@ -743,8 +789,19 @@ function updateRisk(riskid,riskform){
 </div>
 
 <!-- POPUP DIALOGS -->
-<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
+<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea" draggable="false">
+	<h2 id="ideaName"></h2>
     <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 25em;">
+        
+        <div id="ideaMission" dojoType="dijit.layout.ContentPane" title="Mission">
+        </div>
+        
+        <div id="ideaFeatures" dojoType="dijit.layout.ContentPane" title="Features">
+        </div>
+        
+        <div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles">
+        </div>
+        
         <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
         	<div id="addComment">
         		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
@@ -758,8 +815,6 @@ function updateRisk(riskid,riskform){
         </div>
         
         <div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane" title="Feature Evaluation">
-            <div id="addFeatureEval"></div>
-            <div id="featureEvalContent"></div>
         </div>
     </div>
 </div>

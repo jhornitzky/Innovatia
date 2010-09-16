@@ -137,6 +137,8 @@ select {
 }
 
 .ideaoptions {
+	#position:relative;
+	#float:right;
 	#display:none;
 }
 

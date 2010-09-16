@@ -8,6 +8,10 @@ function getIdeas($userid) {
 	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
 }
 
+function getIdeaDetails($ideaId) {
+	return dbQuery("SELECT * FROM Ideas WHERE ideaId = '".$ideaId."'");
+}
+
 function getSelectedIdeas($userid) {
 	return dbQuery("SELECT Ideas.*, Selections.selectionId FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId");
 }
@@ -100,7 +104,4 @@ function updateRole($opts) {
 	$where = array("roleId");
 	return genericUpdate("Roles", $opts, $where);
 }
-
-
-
 ?>

@@ -20,7 +20,7 @@ if (isset($_GET) && $_GET != '') {
 if (isset($_POST) && $_POST != '') {
 	switch ($_POST['action']) {
 		case "createSelection":
-			echo "Add selection.. ";
+			echo "Add selection... ";
 			$opts = $_POST;
 			unset($opts['action']);
 			$resp = createIdeaSelect($opts);
@@ -29,7 +29,7 @@ if (isset($_POST) && $_POST != '') {
 		case "deleteSelection":
 			echo "Deleting selection... ";
 			$resp = deleteIdeaSelect(array("selectionId" => $_POST['selectionId']));
-			echo "Response Code: ".$resp;
+			echo $resp;
 			break;
 	}
 }
