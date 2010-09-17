@@ -173,17 +173,25 @@ function showDefaultIdeas() {
 function showIdeasForGroup(gId, elem) {
 	currentGroupId = gId;
 	$("#addIdeaTitle").attr('disabled', 'disabled');
-	//alert(elem);
-	$(elem).addClass('selected');
 	getIdeas();
 	getCompare();
 	getSelect();
 }
 
+function showNotes() {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#mainlnk").parent().addClass("selMenu");
+	getNotes();
+	$(".tabBody").hide();
+	$("#noteTab").show();
+}
+
+function getNotes() {
+	$("#noteTab").load("notes.php");
+}
+
 function getDash() {
-	$.get("dash.php", function (data) {
-		$("#dashTab").html(data);
-	});
+	$("#dashTab").load("dash.php");
 }
 
 function getIdeas() {
@@ -219,6 +227,13 @@ function getSelect() {
 	});
 }
 
+function getProfile() {
+	$.get("profile.ajax.php?action=getProfile", function (data) {
+		$("#profileTab").html(data);
+		dojo.parser.instantiate(dojo.query('#profileTab *'));
+	});
+}
+
 function getGroups() {
 	$.get("groups.ajax.php?action=getGroups", function (data) {
 		$("#groupsList").html(data);
@@ -233,6 +248,18 @@ function getReports() {
 			$("#reportList").html(data);
 		});
 	});
+}
+
+function getSearch() {
+	var searchTerms = $("#searchInput").val();
+	$("#searchTab").load("search.php?searchTerms="+searchTerms);
+}
+function showSearch() {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#searchlnk").parent().addClass("selMenu");
+	getSearch();
+	$(".tabBody").hide();
+	$("#searchTab").show();	
 }
 
 function getAdmin(){}
@@ -252,6 +279,14 @@ function showReports(elem) {
 	$(".tabBody").hide();
 	$("#reportTab").show();
 }	
+
+function showProfile(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#profilelnk").parent().addClass("selMenu");
+	getProfile();
+	$(".tabBody").hide();
+	$("#profileTab").show();
+}
 
 function showGroups(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
@@ -294,7 +329,7 @@ function showAdmin(elem) {
 }
 
 function showFeedback(elem) {
-	window.open("mailto:james.hornitzky@gmail.com");
+	window.open("mailto:james.hornitzky@uts.edu.au");
 }
 
 /////// COMMON FUNCTIONS ///////
@@ -369,7 +404,6 @@ function filterIdeas(element) {
 
 //COMMON methods for doing counts across forms and so on
 function initFormSelectTotals(selector) {
-	//alert("initFormSelectTotals");
 	$(selector + " tr").each(function(index, element) {
 		var initFormId = $(element).attr("id");
 		if (initFormId != null && initFormId != ''){
@@ -460,7 +494,6 @@ function genericDelete(target, id) {
 		getIdeas();
 	});		
 }
-
 
 ///////////////// GROUP ///////////////
 
@@ -594,7 +627,7 @@ function getCommentsForIdea() {
 
 function getFeatureEvaluationsForIdea() {
 	$.get("ideas.ajax.php?action=getIdeaFeatureEvaluationsForIdea&actionId="+currentIdeaId, function(data) {
-		alert("CURR IDEA: " + currentIdeaId);
+		//alert("CURR IDEA: " + currentIdeaId);
 		$("#ideaFeatureEvaluationList").html(data);
 		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList *'));
 	});
@@ -624,10 +657,10 @@ function deleteComment(cid) {
 	}); 
 }
 
-function addFeatureItem(fId) {
-	$.post("ideas.ajax.php", {action: "createFeatureItem", featureId: fId}, function(data) {
+function addFeatureItem(fId, evalId) {
+	$.post("ideas.ajax.php", {action: "createFeatureItem", featureId: fId, ideaFeatureEvaluationId:evalId}, function(data) {
 		showResponses("#ideaResponses", data, true);
-		getFeatureEvaluationForIdea();
+		getFeatureEvaluationsForIdea();
 	});
 }
  
@@ -636,14 +669,14 @@ function updateFeatureItem(featureItemId,featureForm){
 	formData['action'] = 'updateFeatureItem';
 	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses("#ideaResponses", data, true);
-		getFeatureEvaluationForIdea();
+		//getFeatureEvaluationForIdea();
 	});
 }
 
 function deleteFeatureItem(fid){
 	$.post("ideas.ajax.php", {action: "deleteFeatureItem", featureEvaluationId:fid}, function(data) {
 		showResponses("#ideaResponses", data, true);
-		getFeatureEvaluationForIdea();
+		getFeatureEvaluationsForIdea();
 	});
 }
 
@@ -668,6 +701,14 @@ function deleteFeatureEvaluation(fid){
 	$.post("ideas.ajax.php", {action: "deleteFeatureEvaluation", featureEvaluationId:fid}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		getFeatureEvaluationForIdea();
+	});
+}
+
+function updateProfile(form){
+	formData = getInputDataFromId(form);
+	formData['action'] = 'updateProfile';
+	$.post("profile.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
 	});
 }
 
@@ -714,21 +755,28 @@ function deleteSelectIdea(id){
 			<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
 			<li><a id="comparelnk" class="menulnk" href="javascript:showCompare(this)">Compare</a></li>
 			<li><a id="selectlnk" class="menulnk" href="javascript:showSelect(this)">Select</a></li>
-			<li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li>
+			<!-- <li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li> -->
 			<li id="morelnk">
 				<div dojoType="dijit.form.DropDownButton">
 				    <span>
         				More
     				</span>
 					<div dojoType="dijit.Menu" id="fileMenu">
+						<div dojoType="dijit.MenuItem" onClick="showProfile(this)">
+                			Profile
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showGroups(this)">
+                			Groups
+            			</div>
+						<div dojoType="dijit.MenuItem" onClick="showNotes(this)">
+                			Notes
+            			</div>
+            			<div dojoType="dijit.MenuItem" onClick="showSearch(this)">
+                			Search
+            			</div>
+            			<div dojoType="dijit.MenuSeparator"></div>
             			<div dojoType="dijit.MenuItem" onClick="showReports(this)">
                 			Reports
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
-                			People
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
-                			Search
             			</div>
             			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
                 			Admin
@@ -764,7 +812,7 @@ function deleteSelectIdea(id){
 			</form>
 		</div> 
 		<div class="ideaGroups" class="ui-corner-all">
-			<input type="text" value="Search" onclick="$(this).val('')" onkeyup="filterIdeas(this)" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
+			<input type="text" value="Show" onclick="$(this).val('')" onkeyup="filterIdeas(this)" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
 			Groups <span class="ideaGroupsList">None</span>
 		</div>
 	</div>
@@ -793,6 +841,10 @@ function deleteSelectIdea(id){
 	</div>
 </div>
 
+<!-- MORE TABS -->
+<div id="profileTab" class="tabBody">
+</div>
+
 <div id="groupTab" class="tabBody">
 	<div id="groupSelect" class="two-column" >
 		<div class="formHeadContain" style="width:100%">
@@ -809,7 +861,12 @@ function deleteSelectIdea(id){
 	</div>
 </div>
 
-<!-- MORE TABS -->
+<div id="noteTab" class="tabBody">
+</div>
+
+<div id="searchTab" class="tabBody">
+</div>
+
 <div id="reportTab" class="tabBody">
 	<div id="reportDetails" class="two-column ui-corner-all" style="padding:10px">
 		Loading reports...

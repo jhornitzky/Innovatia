@@ -157,7 +157,7 @@ if (isset($_POST) && $_POST != '') {
 			break;
 		case "deleteFeatureEvaluation":
 			echo "Deleting Item... ";
-			$feature = deleteFeatureEvaluation($_POST['featureEvaluationId']);
+			$feature = deleteFeatureEvaluation($_POST['actionId']);
 			echo "Response Code: " . $feature;
 			break;
 		

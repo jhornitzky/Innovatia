@@ -119,9 +119,9 @@ function isLoggedIn()
 	return false;
 }
 
-function getUserInfo()
+function getUserInfo($userId)
 {
-	$rs = dbQuery("SELECT * FROM Users WHERE (ID = '".$_SESSION['innoworks.ID']."')");
+	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
 	$row = dbFetchObject($rs);
 	return $row;
 }
@@ -132,5 +132,9 @@ function getUserGroups($user) {
 
 function getAllUsers() {
 	return dbQuery("SELECT * FROM Users");
+}
+
+function updateUser($opts) {
+	return genericUpdate("Users", $opts, array("userId") );
 }
 ?>

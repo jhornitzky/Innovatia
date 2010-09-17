@@ -231,3 +231,10 @@ table td input[type=text] {
 .tundra #actionDetails {
 	overflow:hidden;
 }
+
+#dashui {
+	#background:#ffffff url('bg.jpg') no-repeat center top;
+	background:#ffffff no-repeat center top;
+	width:100%;
+	min-height:720px;
+}

@@ -48,7 +48,7 @@ import("dash.service");
 				echo "<p>No selections yet</p>";
 			}?>
 		</div>
-		<div class="moreInfo ui-corner-all" style="width:98%; padding:1%; background-color:#FFFFFF; opacity:0.95">
+		<div class="moreInfo ui-corner-all" style="width:98%; padding:1%; background-color:#FFFFFF; opacity:0.95;">
 			<h2>More</h2>
 			<p><a href="javascript:showGroups();">Groups</a> > Manage who you share your ideas with</p>
 			<p><a href="javascript:showReports();">Reports</a> > Check your progress and see how others are doing</p>

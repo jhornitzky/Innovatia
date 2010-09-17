@@ -138,14 +138,13 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 ////////////// COLUMN METADATA FUNCTIONS FROM REFERENCE DATA //////////////////
 
 function findColumnMetadata($refDataArray, $needle) {
-	
-	logDebug("Find column metadata");
+	//logDebug("Find column metadata");
 	if (!$refDataArray) {
-		logDebug("Empty refDataArray");
+		logDebug("Empty column meta refDataArray");
 		return $refDataArray;
 	}
 	$metaArray = false;
-	foreach ($refDataArray as $key => $refDataValue) {
+	foreach ($refDataArray as $key => $refDataValue) { 
 		//logDebug("Array Iter: ". $key . " " . $refDataValue["key2"]);
 		if ($refDataValue["key2"] == $needle) {
 			//logDebug("Found metadata for column; ". $needle);
@@ -163,9 +162,9 @@ function getColumnValues($refDataArray) {
 	$x=0;
 	
 	foreach ($refDataArray as $refDataValue) {
-		logDebug("Column value grab: " . $refDataValue["value"] . " ; key3: " . $refDataValue["key3"]);
+		//logDebug("Column value grab: " . $refDataValue["value"] . " ; key3: " . $refDataValue["key3"]);
 		if ($refDataValue["key3"] == "V") {
-			logDebug("Add to metaArray". $refDataValue["key3"]);
+			//logDebug("Add to metaArray". $refDataValue["key3"]);
 			$metaArray[$x] = $refDataValue["value"];
 			$x++;
 		}
@@ -186,13 +185,13 @@ function getColumnType($refDataArray) {
 }
 
 function getColumnDescription($refDataArray) {
-	logDebug("In get col description");
+	//logDebug("In get col description");
 	if (!$refDataArray)
 		return $refDataArray;
 		
 	foreach ($refDataArray as $refDataValue) {
 		if ($refDataValue["key3"] == "H") {
-			logDebug("return refdata value");
+			//logDebug("return refdata value");
 			return $refDataValue["value"];
 		}
 	}

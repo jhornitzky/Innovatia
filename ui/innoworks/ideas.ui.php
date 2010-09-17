@@ -31,12 +31,12 @@ function renderJustIdea($ideas, $idea, $user) {?>
 <div class="formHead" ><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
 <span class="ideatitle"><?=$idea->title?></span> 
 
-<span class="ideaoptions">
+<!--<span class="ideaoptions">-->
 <a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');">Details</a>
 <?if ($idea->userId == $user) { ?>
 	<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" />
 <?}?>
-</span>
+<!-- </span>-->
 </div>
 </div>
 <?}
@@ -228,9 +228,11 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
 	
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
-		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {
-			echo "<hr/>";
-			renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);
+		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {?>
+			<hr/>
+			<b><?=$featureEvaluation->title?></b>
+			<input type="button" onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();" title="Delete feature evaluation" value=" - " /></td>
+			<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);
 		}
 	} else {
 		echo "<p>No feature evaluations</p>";
@@ -247,7 +249,7 @@ function renderFeatureEvaluationForIdea($id, $evalId) {
     		</span>
 			<div dojoType="dijit.Menu">
             	<?while ($feature = dbFetchObject($featureList)) {?>
-            	<div dojoType="dijit.MenuItem" onClick="addFeatureItem(<?=$feature->featureId ." , ".$evalId?>)"><?=$feature->feature?></div>
+            	<div dojoType="dijit.MenuItem" onClick="addFeatureItem(<?=$feature->featureId?>,<?=$evalId?>)"><?=$feature->feature?></div>
 				<?}?>
         	</div>
 		</div>
@@ -262,7 +264,7 @@ function renderFeatureEvaluationTable($id) {
 	$featureItems = getFeatureEvaluationForIdea($id);
 	if ($featureItems && dbNumRows($featureItems) > 0){
 		echo "<table id='featureEvaluation_$id'>";
-		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId"));
+		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"));
 		while ($featureItem = dbFetchObject($featureItems)) {
 			renderFeatureItem($featureItems, $featureItem);
 		}
@@ -276,7 +278,7 @@ function renderFeatureEvaluationTable($id) {
 
 function renderFeatureItem($featureItems, $featureItem) {?> 
 	<tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
-		<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId"), "FeatureEvaluation");?>
+		<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"), "FeatureEvaluation");?>
 		<td>
 			Score: <span class="itemTotal">0 </span>
 			<input type="hidden" name="featureEvaluationId" value="<?= $featureItem->featureEvaluationId ?>"/>
