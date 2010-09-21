@@ -22,7 +22,6 @@ function getRiskItems($user) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user AND RiskEvaluation.groupId IS NULL");
 }
 
-
 function getRiskItemsForGroup($group) {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group");

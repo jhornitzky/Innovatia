@@ -1,8 +1,8 @@
-<? 
+<?
 /**
  * Main view for all logged in innowroks users.
  */
-require_once("thinConnector.php"); 
+require_once("thinConnector.php");
 requireLogin();
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,13 +13,21 @@ requireLogin();
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript"
+	src="<?= $serverRoot?>ui/scripts/ajaxfileupload.js"></script>
+<script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
-
-<link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css"/>
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"type="text/css"/>
-<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"type="text/css"/>
 	
+<!-- <link href="<?= $serverRoot?>ui/scripts/ajaxfileupload.css" rel="stylesheet"
+	type="text/css" />-->
+<link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet"
+	type="text/css" />
+<link rel="stylesheet" type="text/css"
+	href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
+	type="text/css" />
+<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"
+	type="text/css" />
+
 <script type="text/javascript">
 //////// VARS //////////
 var ctime;
@@ -82,6 +90,9 @@ dojo.addOnLoad(function(){
 		else if (child.id == "ideaRoles") {
 			getRolesForm("ideaRoles",currentIdeaId);
 			selectedChild = "roles";
+		} else if (child.id == "ideaAttachments") {
+			getAttachments("ideaRoles",currentIdeaId);
+			selectedChild = "attachments";
 		} 
 	});
 });
@@ -94,7 +105,7 @@ function loadPopupShow() {
 	else if (selectedChild == "roles")
 		getRolesForm("ideaRoles",currentIdeaId);
 	else if (selectedChild == "featureEvaulation")
-		getFeatureEvaluationsForIdea();
+		getFeatureEvalushowIdeaSummaryationsForIdea();
 	else if (selectedChild == "comments")
 		getCommentsForIdea();
 	else 
@@ -146,6 +157,14 @@ function showIdeaReviews(ideaId) {
 	loadPopupShow();
 	dijit.byId('ideasPopup').show();
 	*/
+}
+ 
+function showIdeaSummary(id) {
+	//alert('Hitting summary');
+	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id});
+	dojo.body().appendChild(idea.domNode);
+	idea.startup();
+	idea.show();
 }
 
 function showIdeaDetails(ideaId) { 
@@ -264,6 +283,12 @@ function showSearch() {
 
 function getAdmin(){}
 
+function getAttachments() {
+	$.get("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId, function (data) {
+		$("#ideaAttachments").html(data);
+	});
+}
+
 function showIdeas(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#ideaslnk").parent().addClass("selMenu");
@@ -327,6 +352,13 @@ function showAdmin(elem) {
 	$(".tabBody").hide();
 	$("#adminTab").show();	
 }
+
+function showTimelines(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#timelineTab").load("timeline.php");
+	$(".tabBody").hide();
+	$("#timelineTab").show();	
+} 
 
 function showFeedback(elem) {
 	window.open("mailto:james.hornitzky@uts.edu.au");
@@ -741,177 +773,209 @@ function deleteSelectIdea(id){
 		showSelect();
 	});
 }
+
+
+//////////////// ATTACHMENTS /////////////
+
+function addIdeaAttachment(element) {
+	alert("adding attach");
+	$("#loading").ajaxStart(function(){
+		$(this).show();
+	}).ajaxComplete(function(){
+		$(this).hide();
+	});
+
+	alert("File uploading attach");
+	$.ajaxFileUpload
+	(
+		{
+			url:'ideas.ajax.php',
+			secureuri:false,
+			fileElementId:'userfile',
+			dataType: 'json',
+			complete: function() {
+				alert("File uploading attach done");
+				//getAttachments();
+			}
+		}
+	)
+	
+	return false;
+}
+
+function deleteIdeaAttachment(attachmentId) {
+	$.post("ideas.ajax.php", {actionId: attachmentId, action:"deleteAttachment"} , function(data) {
+		showResponses("#ideaResponses", data, true);
+		getAttachments();
+	});
+}
 </script>
 
 </head>
 <body class="tundra">
 
 <div id="head">
-	<div id="leftAlignMenu">
-		<ul class="tabMenu">
-			<li><img id="logo" style="height:25px; width:25px;" src="<?= $serverRoot?>ui/style/kubu.png"/>
-			<img id="ajaxLoader" src="<?= $serverRoot?>ui/style/ajaxLoader.gif"/></li>
-			<li><a id="mainlnk" class="menulnk" href="javascript:showDash(this)" style="font-size:1.0em"><b>Innoworks</b></a></li>
-			<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
-			<li><a id="comparelnk" class="menulnk" href="javascript:showCompare(this)">Compare</a></li>
-			<li><a id="selectlnk" class="menulnk" href="javascript:showSelect(this)">Select</a></li>
-			<!-- <li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li> -->
-			<li id="morelnk">
-				<div dojoType="dijit.form.DropDownButton">
-				    <span>
-        				More
-    				</span>
-					<div dojoType="dijit.Menu" id="fileMenu">
-						<div dojoType="dijit.MenuItem" onClick="showProfile(this)">
-                			Profile
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showGroups(this)">
-                			Groups
-            			</div>
-						<div dojoType="dijit.MenuItem" onClick="showNotes(this)">
-                			Notes
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showSearch(this)">
-                			Search
-            			</div>
-            			<div dojoType="dijit.MenuSeparator"></div>
-            			<div dojoType="dijit.MenuItem" onClick="showReports(this)">
-                			Reports
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showAdmin(this)" disabled="true">
-                			Admin
-            			</div>
-            			<div dojoType="dijit.MenuItem" onClick="showFeedback(this)">
-                			Feedback
-            			</div>
-        			</div>
-				</div>
-			</li>
-		</ul>
+<div id="leftAlignMenu">
+<ul class="tabMenu">
+	<li><img id="logo" style="height: 25px; width: 25px;"
+		src="<?= $serverRoot?>ui/style/kubu.png" /> <img id="ajaxLoader"
+		src="<?= $serverRoot?>ui/style/ajaxLoader.gif" /></li>
+	<li><a id="mainlnk" class="menulnk" href="javascript:showDash(this)"
+		style="font-size: 1.0em"><b>Innoworks</b></a></li>
+	<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
+	<li><a id="comparelnk" class="menulnk"
+		href="javascript:showCompare(this)">Compare</a></li>
+	<li><a id="selectlnk" class="menulnk"
+		href="javascript:showSelect(this)">Select</a></li>
+	<!-- <li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li> -->
+	<li id="morelnk">
+	<div dojoType="dijit.form.DropDownButton"><span> More </span>
+	<div dojoType="dijit.Menu" id="fileMenu">
+	<div dojoType="dijit.MenuItem" onClick="showProfile(this)">Profile</div>
+	<div dojoType="dijit.MenuItem" onClick="showGroups(this)">Groups</div>
+	<div dojoType="dijit.MenuItem" onClick="showNotes(this)">Notes</div>
+	<div dojoType="dijit.MenuItem" onClick="showSearch(this)">Search</div>
+	<div dojoType="dijit.MenuSeparator"></div>
+	<div dojoType="dijit.MenuItem" onClick="showTimelines(this)">Timelines
 	</div>
-	<div id="rightAlignMenu">
-		<ul class="tabMenu">
-			<li>Welcome <?= $_SESSION['innoworks.username']; ?></li>
-			<li><a href="javascript:logout()">logout</a></li>
-		</ul>
+	<div dojoType="dijit.MenuItem" onClick="showReports(this)">Reports</div>
+	<div dojoType="dijit.MenuItem" onClick="showAdmin(this)"
+		disabled="true">Admin</div>
+	<div dojoType="dijit.MenuItem" onClick="showFeedback(this)">Feedback</div>
 	</div>
+	</div>
+	</li>
+</ul>
+</div>
+<div id="rightAlignMenu">
+<ul class="tabMenu">
+	<li>Welcome <?= $_SESSION['innoworks.username']; ?></li>
+	<li><a href="javascript:logout()">logout</a></li>
+</ul>
+</div>
 </div>
 
 <div id="content">
 <div id="ideaResponses" class="responses ui-corner-all"></div>
 
-<div id="dashTab" class="tabBody">
-</div>
+<div id="dashTab" class="tabBody"></div>
 
 <div id="ideaTab" class="tabBody">
-	<div id="ideaTabHead" class="tabHead addForm ui-corner-all"> 
-		<div class="formHeadContain">
-			<form id="addIdeaForm" onsubmit="addIdea(); return false;">
-			<span>New idea</span> <input id="addIdeaTitle" name="title" type="text"></input> <input type="submit" value=" + " title="Add idea"/>
-			<input type="hidden" name="action" value="addIdea"/>
-			</form>
-		</div> 
-		<div class="ideaGroups" class="ui-corner-all">
-			<input type="text" value="Show" onclick="$(this).val('')" onkeyup="filterIdeas(this)" onchange="filterIdeas(this)"/><a href="javascript:showDefaultIdeas()">My Ideas</a> 
-			Groups <span class="ideaGroupsList">None</span>
-		</div>
-	</div>
-
-	<div id="ideasList">
-	</div>
+<div id="ideaTabHead" class="tabHead addForm ui-corner-all">
+<div class="formHeadContain">
+<form id="addIdeaForm" onsubmit="addIdea(); return false;"><span>New
+idea</span> <input id="addIdeaTitle" name="title" type="text"></input> <input
+	type="submit" value=" + " title="Add idea" /> <input type="hidden"
+	name="action" value="addIdea" /></form>
+</div>
+<div class="ideaGroups" class="ui-corner-all"><input type="text"
+	value="Show" onclick="$(this).val('')" onkeyup="filterIdeas(this)"
+	onchange="filterIdeas(this)" /><a href="javascript:showDefaultIdeas()">My
+Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
 </div>
 
-<div id="compareTab" class="tabBody">
-	<!-- <h2>R-W-W</h2>
+<div id="ideasList"></div>
+</div>
+
+<div id="compareTab" class="tabBody"><!-- <h2>R-W-W</h2>
 	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
-	<div class="addform ui-corner-all">Click here to add idea to comparison <input type='button' onclick='showAddRiskItem()' value=' + ' title="Add an idea to comparison"/>
-	<div class="ideaGroups ui-corner-all"><a href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
-	</div>
-	<div id="compareList">
-		<p>No comparisons yet</p>
-	</div>
+<div class="addform ui-corner-all">Click here to add idea to comparison
+<input type='button' onclick='showAddRiskItem()' value=' + '
+	title="Add an idea to comparison" />
+<div class="ideaGroups ui-corner-all"><a
+	href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span
+	class="ideaGroupsList">None</span></div>
+</div>
+<div id="compareList">
+<p>No comparisons yet</p>
+</div>
 </div>
 
 <div id="selectTab" class="tabBody">
-	<div class="addform ui-corner-all">Click here to select an idea to manage work <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on"/>
-	<div class="ideaGroups ui-corner-all"><a href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
-	</div>
-	<div id="selectList">
-		<p>No selections yet</p>
-	</div>
+<div class="addform ui-corner-all">Click here to select an idea to
+manage work <input type='button' onclick='showAddSelectIdea()'
+	value=' + ' title="Select an idea to work on" />
+<div class="ideaGroups ui-corner-all"><a
+	href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span
+	class="ideaGroupsList">None</span></div>
+</div>
+<div id="selectList">
+<p>No selections yet</p>
+</div>
 </div>
 
 <!-- MORE TABS -->
-<div id="profileTab" class="tabBody">
-</div>
+<div id="profileTab" class="tabBody"></div>
 
 <div id="groupTab" class="tabBody">
-	<div id="groupSelect" class="two-column" >
-		<div class="formHeadContain" style="width:100%">
-			<form id="addGroupForm" class="addForm ui-corner-all" onsubmit="addGroup(); return false;">
-			<span>New Group</span> <input name="title" type="text"/> <input type="submit" value=" + " title="Create a group"/>
-			<input type="hidden" name="action" value="addGroup"/>
-			</form>
-		</div>
-		<div id="groupsList" style="padding:10px; margin-top:1em">
-		</div> 
-	</div>
-	<div id="groupDetails" class="two-column" style="padding:10px">
-		Select a group
-	</div>
+<div id="groupSelect" class="two-column">
+<div class="formHeadContain" style="width: 100%">
+<form id="addGroupForm" class="addForm ui-corner-all"
+	onsubmit="addGroup(); return false;"><span>New Group</span> <input
+	name="title" type="text" /> <input type="submit" value=" + "
+	title="Create a group" /> <input type="hidden" name="action"
+	value="addGroup" /></form>
+</div>
+<div id="groupsList" style="padding: 10px; margin-top: 1em"></div>
+</div>
+<div id="groupDetails" class="two-column ui-corner-all"
+	style="padding: 10px; border: 1px solid #000000">Select a group</div>
 </div>
 
-<div id="noteTab" class="tabBody">
-</div>
+<div id="noteTab" class="tabBody"></div>
 
-<div id="searchTab" class="tabBody">
-</div>
+<div id="searchTab" class="tabBody"></div>
+
+<div id="timelineTab" class="tabBody"></div>
 
 <div id="reportTab" class="tabBody">
-	<div id="reportDetails" class="two-column ui-corner-all" style="padding:10px">
-		Loading reports...
-	</div>
-	<div id="reportList" class="two-column" style="padding:10px"></div>
+<div id="reportDetails" class="two-column ui-corner-all"
+	style="padding: 10px">Loading reports...</div>
+<div id="reportList" class="two-column" style="padding: 10px"></div>
 </div>
 
-<div id="adminTab" class="tabBody">
-</div>
+<div id="adminTab" class="tabBody"></div>
 
 <!-- POPUP DIALOGS -->
-<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea" draggable="false">
-	<h2 id="ideaName"></h2>
-    <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 25em;">
-        
-        <div id="ideaMission" dojoType="dijit.layout.ContentPane" title="Mission">
-        </div>
-        
-        <div id="ideaFeatures" dojoType="dijit.layout.ContentPane" title="Features">
-        </div>
-        
-        <div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles">
-        </div>
-        
-        <div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
-        	<div id="addComment">
-        		<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
-        			New Comment <input type="submit" value=" + "/>
-        			<!-- <input type="text" name="text" style="width:100%"/> -->
-        			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea" style="width:100%;"></textarea>
-        			<input type="hidden" name="action" value="addComment" />
-        		</form>
-        	</div>
-            <div id="commentList">No comments yet</div>
-        </div>
-        
-        <div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane" title="Feature Evaluation">
-        </div>
-    </div>
+<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
+<h2 id="ideaName"></h2>
+<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
+	style="width: 55em; height: 25em;">
+
+<div id="ideaMission" dojoType="dijit.layout.ContentPane"
+	title="Mission"></div>
+
+<div id="ideaFeatures" dojoType="dijit.layout.ContentPane"
+	title="Features"></div>
+
+<div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles"></div>
+
+<div id="ideaComments" dojoType="dijit.layout.ContentPane"
+	title="Comments">
+<div id="addComment">
+<form id="addCommentForm" class="addForm ui-corner-all"
+	onsubmit="addComment();return false;">New Comment <input type="submit"
+	value=" + " /> <!-- <input type="text" name="text" style="width:100%"/> -->
+<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea"
+	style="width: 100%;"></textarea> <input type="hidden" name="action"
+	value="addComment" /></form>
+</div>
+<div id="commentList">No comments yet</div>
 </div>
 
-<div id="commonPopup" dojoType="dijit.Dialog" title=""  style="width: 15em; height: 300px;">
-    <div id="actionDetails" dojoType="dijit.layout.ContentPane" >
-          No actions yet
-    </div>
+<div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane"
+	title="Feature Evaluation"></div>
+
+<div id="ideaAttachments" dojoType="dijit.layout.ContentPane"
+	title="Attachments"></div>
+
+</div>
+</div>
+
+<div id="commonPopup" dojoType="dijit.Dialog" title=""
+	style="width: 15em; height: 300px;">
+<div id="actionDetails" dojoType="dijit.layout.ContentPane">No actions
+yet</div>
 </div>
 
 </div>

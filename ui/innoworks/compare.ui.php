@@ -42,6 +42,7 @@ function renderRiskItem($riskItems, $riskItem) {?>
 		<td>
 			Score: <span class="itemTotal">0 </span>
 			<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
+			<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a>
 			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
 			<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')" title="Update this risk item"  value=" U "/>
 			<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
@@ -76,4 +77,12 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 	}
 }
 
+function renderIdeaSummary($ideaId) {
+	import("idea.service");
+	$idea = dbFetchObject(getIdeaDetails($ideaId));
+	renderGenericInfoForm(null, $idea, null);
+	?>
+	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Open</a>
+	<?		
+}
 ?>

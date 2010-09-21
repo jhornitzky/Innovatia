@@ -32,5 +32,4 @@ function dbValImplode($array) {
 	}
 	return $arrayString;
 }
-
 ?>

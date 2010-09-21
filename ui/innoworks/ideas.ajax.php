@@ -3,6 +3,8 @@ require_once("thinConnector.php");
 require_once("ideas.ui.php");
 import("idea.service");
 
+logDebug("IM BEING HIT!");
+
 if (isset($_GET) && $_GET != '') {
 	switch ($_GET['action']) {
 		case "getIdeas":
@@ -40,6 +42,9 @@ if (isset($_GET) && $_GET != '') {
 			break;
 		case "getShare":
 			renderShare($_GET['actionId'], $_SESSION['username']);
+			break;
+		case "getAttachments": 
+			renderAttachmentsIframe($_GET['actionId'], $_SESSION['username']);
 			break;
 	}
 }
@@ -160,7 +165,19 @@ if (isset($_POST) && $_POST != '') {
 			$feature = deleteFeatureEvaluation($_POST['actionId']);
 			echo "Response Code: " . $feature;
 			break;
-		
+		case "addAttachment":
+			echo "Creating Attachment.. ";
+			logDebug('Create Attach!!!!!');
+			//$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
+			//unset($opts['action']);
+			$idea = createAttachment($_POST);
+			echo $idea;
+			break;
+		case "deleteAttachment":
+			echo "Deleting Item... ";
+			$feature = deleteAttachment($_POST['actionId']);
+			echo "Response Code: " . $feature;
+			break;
 	}
 }
 ?>

@@ -238,3 +238,7 @@ table td input[type=text] {
 	width:100%;
 	min-height:720px;
 }
+
+._underlay {
+	display:none;
+}

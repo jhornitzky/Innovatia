@@ -43,7 +43,7 @@ function deleteIdeaSelect($opts) {
 }
 
 function getFeaturesForIdea($id) {
-	return dbQuery("SELECT * FROM Features WHERE ideaId = ".$id);	
+	return dbQuery("SELECT * FROM Features WHERE ideaId = ".$id);
 }
 
 function createFeature($opts) {
@@ -55,7 +55,7 @@ function deleteFeature($id) {
 }
 
 function getRolesForIdea($id) {
-	return dbQuery("SELECT * FROM Roles WHERE ideaId = ".$id);	
+	return dbQuery("SELECT * FROM Roles WHERE ideaId = ".$id);
 }
 
 function createRole($opts) {
@@ -120,5 +120,49 @@ function updateFeature($opts) {
 function updateRole($opts) {
 	$where = array("roleId");
 	return genericUpdate("Roles", $opts, $where);
+}
+
+function createAttachment() {
+	if ($_FILES['userfile']['size'] > 0) {
+		$fileName = $_FILES['userfile']['name'];
+		$tmpName  = $_FILES['userfile']['tmp_name'];
+		$fileSize = $_FILES['userfile']['size'];
+		$fileType = $_FILES['userfile']['type'];
+
+		$fp      = fopen($tmpName, 'r');
+		$content = fread($fp, filesize($tmpName));
+		$content = addslashes($content);
+		fclose($fp);
+
+		if(!get_magic_quotes_gpc())
+		{
+			$fileName = addslashes($fileName);
+		}
+
+		$query = "INSERT INTO Attachments (ideaId, title, data, type, size ) VALUES ('".$_POST['ideaId']."', '$fileName', '$content', '$fileType', '$fileSize')";
+		return dbQuery($query) or die('Error, query failed');
+	}
+}
+
+function deleteAttachment($id) {
+	return dbQuery("DELETE FROM Attachments WHERE Attachments.attachmentId='$id'");
+}
+
+function getAttachmentsForIdea($ideaId) {
+	return dbQuery("SELECT * FROM Attachments WHERE ideaId = '$ideaId'");
+}
+
+function retrieveAttachment($id) {
+	if(isset($id)) {
+		logDebug("ID IS: " + $id);
+		$query = "SELECT * FROM Attachments WHERE attachmentId = '$id'";
+		$result = dbQuery($query) or die('Error, query failed');
+		$attach = dbFetchObject($result);
+		header("Content-length: $attach->size");
+		header("Content-type: $attach->type");
+		header("Content-Disposition: attachment; filename=$attach->title");
+		echo $attach->data; 
+		exit;
+	}
 }
 ?>
