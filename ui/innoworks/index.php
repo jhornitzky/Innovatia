@@ -95,7 +95,22 @@ dojo.addOnLoad(function(){
 			selectedChild = "attachments";
 		} 
 	});
+
+	//Start server polling
+	setInterval(pollServer, 5000);
 });
+
+function pollServer() {
+	$.get("poll.php", function(data){
+		if (data != null && data != '') {
+			showResponses("#ideaResponses", data, true);
+			if (!($("#noteTab").is(":hidden"))) {
+				showNotes();
+			}
+			//$(".responses").html(data);
+		}
+	});
+}
 
 function loadPopupShow() {
 	if (selectedChild == "mission") 
@@ -464,6 +479,13 @@ function updateFormSelectTotals(formId) {
 function genericFormUpdate(target, element) {}
 
 function genericFieldUpdate(target, element) {}
+
+function addNote(element) {
+	$.post("notes.ajax.php", $(element).serialize(), function(data) {
+		showResponses("#ideaResponses", data, true);
+		showNotes();
+	});
+}
 
 /////// IDEA FUNCTIONS /////////
 function addIdea() {
