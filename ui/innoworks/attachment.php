@@ -31,6 +31,10 @@ if (isset($_POST) && $_POST != '') {
 <html>
 
 <head>
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
+	type="text/css" />
+<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"
+	type="text/css" />
 </head>
 
 <body>
