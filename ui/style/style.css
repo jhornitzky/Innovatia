@@ -1,9 +1,11 @@
-body {
+html, body {
 	font-family:Calibri, Tahoma, Arial;
 	margin:0px;
 	padding:0px;
 	color:#444;
 	text-align:center;
+	width:100%;
+	height:100%
 }
 th, label {
 	font-size:0.8em;
@@ -54,12 +56,4 @@ form {
 }
 #MainHolder {
   height:270px;
-}
-
-.threeColumnContainer > * {
-	opacity:0.95;
-}
-
-#noteTab table {
-	max-height:30em;
 }

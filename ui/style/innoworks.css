@@ -56,20 +56,28 @@ a {
 }
 
 .addForm {
-	background-color:#69F564;
+	background-color:#90CAD1;
 	padding:4px;
 }
 
 /* CONTENT */
 #content { 
-	width:98%;
+	width:100%;
+	padding:0%;
+	background:#ffffff url('bg.jpg') no-repeat center top;
+}
+
+#content > *{ 
 	padding:1%;
 }
 
 .formHead {
-	background-color:#F2F2F2;
 	padding-top: 0.1em;
 	padding-bottom: 0.1em;
+}
+
+.formHead:hover {
+	background-color:#F2F2F2;
 }
 
 .formBody subform {
@@ -149,7 +157,7 @@ select {
 .idea {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	border-left: 5px solid #CCC;
+	#border-left: 5px solid #CCC;
 }
 
 .selMenu {
@@ -234,11 +242,38 @@ table td input[type=text] {
 
 #dashui {
 	#background:#ffffff url('bg.jpg') no-repeat center top;
-	background:#ffffff no-repeat center top;
+	border:none;
+	#background:#ffffff no-repeat center top;
 	width:100%;
 	min-height:720px;
 }
 
 ._underlay {
 	display:none;
+}
+
+
+.threeColumnContainer > * {
+	opacity:0.95;
+}
+
+ul.tabMenu * {
+	cursor:pointer;
+}
+
+#noteTab table {
+	max-height:30em;
+}
+
+.ideaoptions {
+	position:relative;
+	float:right;
+}
+
+#groupsList div { 
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;	
+	border:1px solid #000000;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
+	padding:1%;
 }

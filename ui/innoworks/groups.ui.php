@@ -3,6 +3,8 @@ require_once("thinConnector.php");
 import("group.service");
  
 function renderDefault() {
+	
+	echo "<div>";
 	echo "<h3>My Groups</h3>";
 	$groups = getGroupsForCreatorUser($_SESSION['innoworks.ID']);
 	if ($groups && dbNumRows($groups) > 0 ) {
@@ -12,7 +14,9 @@ function renderDefault() {
 	} else {
 		echo "<p>No groups</p>";
 	}
+	echo "</div>";
 	
+	echo "<div>";
 	echo "<h3>Groups I'm part of</h3>";
 	$groups = getPartOfGroupsForUser($_SESSION['innoworks.ID']);
 	if ($groups && dbNumRows($groups) > 0 ) {
@@ -22,7 +26,9 @@ function renderDefault() {
 	} else {
 		echo "<p>No groups that Im just part of</p>";
 	}
+	echo "</div>";
 	
+	echo "<div>";
 	echo "<h3>Other Groups</h3>";
 	$groups = getOtherGroupsForUser($_SESSION['innoworks.ID']);
 	if ($groups && dbNumRows($groups) > 0 ) {
@@ -32,7 +38,8 @@ function renderDefault() {
 	} else {
 		echo "<p>No other groups</p>";
 	}
-} 
+	echo "</div>";
+}  
 
 function renderGroup($groups, $group) {
 	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\")'>". $group->title . "</a>";
