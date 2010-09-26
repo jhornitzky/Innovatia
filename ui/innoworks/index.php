@@ -50,13 +50,12 @@ dojo.require("dijit.form.Textarea");
 $(document).ready(function() {
 	//Loading animation for all ajax operations
 	$("body").ajaxStart(function() {
-		$("#logo").hide();		
-		$("#ajaxLoader").show();
+		$("#logo").attr("src",'<?= $serverRoot?>ui/style/ajaxLoader.gif');		
 	});
 	$("body").ajaxStop(function() {
-		$("#ajaxLoader").hide();
-		$("#logo").show();		
+		$("#logo").attr("src",'<?= $serverRoot?>ui/style/kubu.png');
 	});
+	
 	//Show default
 	showDash();
 });
@@ -212,14 +211,6 @@ function showIdeasForGroup(gId, elem) {
 	getSelect();
 }
 
-function showNotes() {
-	$(".menulnk").parent().removeClass("selMenu");
-	$("#mainlnk").parent().addClass("selMenu");
-	getNotes();
-	$(".tabBody").hide();
-	$("#noteTab").show();
-}
-
 function getNotes() {
 	$("#noteTab").load("notes.php");
 }
@@ -354,7 +345,7 @@ function showSelect(elem) {
 
 function showDash(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
-	$("#mainlnk").parent().addClass("selMenu");
+	$("#dashlnk").parent().addClass("selMenu");
 	getDash();
 	$(".tabBody").hide();
 	$("#dashTab").show();
@@ -362,7 +353,7 @@ function showDash(elem) {
 
 function showAdmin(elem) {	
 	$(".menulnk").parent().removeClass("selMenu");
-	//$("#dashlnk").parent().addClass("selMenu");
+	$("#adminlnk").parent().addClass("selMenu");
 	getAdmin();
 	$(".tabBody").hide();
 	$("#adminTab").show();	
@@ -370,10 +361,19 @@ function showAdmin(elem) {
 
 function showTimelines(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
+	$("#timelinelnk").parent().addClass("selMenu");
 	$("#timelineTab").load("timeline.php");
 	$(".tabBody").hide();
 	$("#timelineTab").show();	
-} 
+}
+
+function showNotes() {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#noteslnk").parent().addClass("selMenu");
+	getNotes();
+	$(".tabBody").hide();
+	$("#noteTab").show();
+}
 
 function showFeedback(elem) {
 	window.open("mailto:james.hornitzky@uts.edu.au");
@@ -796,9 +796,8 @@ function deleteSelectIdea(id){
 	});
 }
 
-
 //////////////// ATTACHMENTS /////////////
-
+/*
 function addIdeaAttachment(element) {
 	alert("adding attach");
 	$("#loading").ajaxStart(function(){
@@ -831,6 +830,7 @@ function deleteIdeaAttachment(attachmentId) {
 		getAttachments();
 	});
 }
+*/
 </script>
 
 </head>
@@ -839,40 +839,45 @@ function deleteIdeaAttachment(attachmentId) {
 <div id="head">
 <div id="leftAlignMenu">
 <ul class="tabMenu">
-	<li><img id="logo" style="height: 25px; width: 25px;"
-		src="<?= $serverRoot?>ui/style/kubu.png" /> <img id="ajaxLoader"
-		src="<?= $serverRoot?>ui/style/ajaxLoader.gif" /></li>
-	<li><a id="mainlnk" class="menulnk" href="javascript:showDash(this)"
-		style="font-size: 1.0em"><b>Innoworks</b></a></li>
-	<li><a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a></li>
-	<li><a id="comparelnk" class="menulnk"
-		href="javascript:showCompare(this)">Compare</a></li>
-	<li><a id="selectlnk" class="menulnk"
-		href="javascript:showSelect(this)">Select</a></li>
-	<!-- <li><a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a></li> -->
-	<li id="morelnk">
-	<div dojoType="dijit.form.DropDownButton"><span> More </span>
-	<div dojoType="dijit.Menu" id="fileMenu">
-	<div dojoType="dijit.MenuItem" onClick="showProfile(this)">Profile</div>
-	<div dojoType="dijit.MenuItem" onClick="showGroups(this)">Groups</div>
-	<div dojoType="dijit.MenuItem" onClick="showNotes(this)">Notes</div>
-	<div dojoType="dijit.MenuItem" onClick="showSearch(this)">Search</div>
-	<div dojoType="dijit.MenuSeparator"></div>
-	<div dojoType="dijit.MenuItem" onClick="showTimelines(this)">Timelines
-	</div>
-	<div dojoType="dijit.MenuItem" onClick="showReports(this)">Reports</div>
-	<div dojoType="dijit.MenuItem" onClick="showAdmin(this)"
-		disabled="true">Admin</div>
-	<div dojoType="dijit.MenuItem" onClick="showFeedback(this)">Feedback</div>
-	</div>
-	</div>
+	<li style="height: 3.0em; width: 3.0em; margin-right:0.7em">
+		<img id="logo" style="width:100%;height:100%" src="<?= $serverRoot?>ui/style/kubu.png" />
 	</li>
+	
+	<li class="selMenu">
+	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/innovate.png"/>Innovate<br/>
+	<a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a>
+	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a>
+	<a id="comparelnk" class="menulnk"
+		href="javascript:showCompare(this)">Compare</a>
+	<a id="selectlnk" class="menulnk"
+		href="javascript:showSelect(this)">Select</a>
+	</li>
+	
+	<li>
+	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/collab.png"/>Collaborate<br/>
+	<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a>
+	<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)">Profile</a>
+	<a id="noteslnk" class="menulnk"
+		href="javascript:showNotes(this)">Notes</a>
+	</li>
+	
+	<li>
+	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/tools.png"/>Tools<br/>
+	<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)">Search</a>
+	<a id="timelinelnk" class="menulnk" href="javascript:showTimelines(this)">Timelines</a>
+	<a id="adminlnk" class="menulnk"
+		href="javascript:showAdmin(this)">Admin</a>
+	<a id="reportslnk" class="menulnk"
+		href="javascript:showReports(this)">Reports</a>
+	</li>
+	
 </ul>
 </div>
+
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li>Welcome <?= $_SESSION['innoworks.username']; ?></li>
-	<li><a href="javascript:logout()">logout</a></li>
+	<li><span style="font-size:0.925em;opacity:0.8em;"><?= $_SESSION['innoworks.username']; ?> | Innoworks </span><br/>
+	<a href="javascript:logout()">Logout</a><a href="javascript:showFeedback()">Feedback</a></li>
 </ul>
 </div>
 </div>
@@ -960,6 +965,7 @@ manage work <input type='button' onclick='showAddSelectIdea()'
 
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
+<img/>
 <h2 id="ideaName"></h2>
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 	style="width: 55em; height: 25em;">
@@ -994,10 +1000,8 @@ manage work <input type='button' onclick='showAddSelectIdea()'
 </div>
 </div>
 
-<div id="commonPopup" dojoType="dijit.Dialog" title=""
-	style="width: 15em; height: 300px;">
-<div id="actionDetails" dojoType="dijit.layout.ContentPane">No actions
-yet</div>
+<div id="commonPopup" dojoType="dijit.Dialog" style="width: 15em; height: 300px;">
+<div id="actionDetails" dojoType="dijit.layout.ContentPane"></div>
 </div>
 
 </div>
