@@ -49,12 +49,14 @@ dojo.require("dijit.form.Textarea");
 
 $(document).ready(function() {
 	//Loading animation for all ajax operations
+	/*
 	$("body").ajaxStart(function() {
 		$("#logo").attr("src",'<?= $serverRoot?>ui/style/ajaxLoader.gif');		
 	});
 	$("body").ajaxStop(function() {
 		$("#logo").attr("src",'<?= $serverRoot?>ui/style/kubu.png');
 	});
+	*/
 	
 	//Show default
 	showDash();
@@ -876,7 +878,7 @@ function deleteIdeaAttachment(attachmentId) {
 	<li>
 	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/collab.png"/>Collaborate<br/>
 	<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a>
-	<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)">Profile</a>
+	<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)">Profiles</a>
 	<a id="noteslnk" class="menulnk"
 		href="javascript:showNotes(this)">Notes</a>
 	</li>
@@ -966,7 +968,7 @@ manage work <input type='button' onclick='showAddSelectIdea()'
 <div id="groupsList" style="padding: 10px; margin-top: 1em"></div>
 </div>
 <div id="groupDetails" class="two-column ui-corner-all"
-	style="padding: 10px; border: 1px solid #000000">Select a group</div>
+	style="padding: 10px; border: 1px solid #000000"> << Select one of the groups on the left to see its details</div>
 </div>
 
 <div id="noteTab" class="tabBody"></div>

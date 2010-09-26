@@ -20,7 +20,7 @@ import("dash.service");
 		</div>
 	</div>
 	<div class="col2 ui-corner-all" style="margin-right:1%;width:32%;position:relative; float:left; overflow:auto; background-color:#CCCCFF">
-		<div class="widget ui-corner-all" style="padding:1%; height:65%;">
+		<div class="widget ui-corner-all" style="padding:1%; height:60%;">
 			<h2><a href="javascript:showCompare();">Compare</a></h2>
 			<p>Contrast and compare your existing ideas and work to improve them.</p>
 			<?
@@ -35,7 +35,7 @@ import("dash.service");
 		</div>
 	</div>
 	<div class="col3 ui-corner-all" style="width:32%; position:relative; float:left; overflow:auto; ">
-		<div class="widget ui-corner-all" style="height:50%;width:98%;background-color:#00AADD; padding:1%;">
+		<div class="widget ui-corner-all" style="height:40%;width:98%;background-color:#00AADD; padding:1%;">
 			<h2><a href="javascript:showSelect();">Select</a></h2>
 			<p>Choose ideas to work on, and manage their priorities and tasks.</p>
 			<?
@@ -48,10 +48,13 @@ import("dash.service");
 				echo "<p>No selections yet</p>";
 			}?>
 		</div>
-		<!-- <div class="moreInfo ui-corner-all" style="width:98%; padding:1%; background-color:#FFFFFF; opacity:0.95; margin-top:1.0em">
+		<div class="moreInfo ui-corner-all" style="width:98%; padding:1%; background-color:#FFFFFF; opacity:0.95; margin-top:0.5em">
 			<h2>More</h2>
 			<p><a href="javascript:showGroups();">Groups</a> > Manage who you share your ideas with</p>
-			<p><a href="javascript:showReports();">Reports</a> > Check your progress and see how others are doing</p>
-		</div>  -->
+			<p><a href="javascript:showProfile();">Profiles</a> > Find other innovators to collaborate with</p>
+			<p><a href="javascript:showNotes();">Notes</a> > Send others messages and review your own (in real-time)</p>
+			<p><a href="javascript:showSearch();">Search</a> > Look for ideas, people or groups</p>
+			<p><a href="javascript:showTimelines();">Timelines</a>, <a href="javascript:showAdmin();">Admin</a> and <a href="javascript:showReports();">Reports</a>  </p>
+		</div>
 	</div>
 </div>
