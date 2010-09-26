@@ -298,6 +298,8 @@ function getAttachments() {
 function showIdeas(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#ideaslnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#ideaslnk").addClass("selLnk");
 	getIdeas();
 	$(".tabBody").hide();
 	$("#ideaTab").show();
@@ -306,6 +308,8 @@ function showIdeas(elem) {
 function showReports(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#reportslnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#reportslnk").addClass("selLnk");
 	getReports();
 	$(".tabBody").hide();
 	$("#reportTab").show();
@@ -314,6 +318,8 @@ function showReports(elem) {
 function showProfile(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#profilelnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#profilelnk").addClass("selLnk");
 	getProfile();
 	$(".tabBody").hide();
 	$("#profileTab").show();
@@ -322,6 +328,8 @@ function showProfile(elem) {
 function showGroups(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#groupslnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#groupslnk").addClass("selLnk");
 	getGroups(); 
 	$(".tabBody").hide();
 	$("#groupTab").show();
@@ -330,6 +338,8 @@ function showGroups(elem) {
 function showCompare(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#comparelnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#comparelnk").addClass("selLnk");
 	getCompare();
 	$(".tabBody").hide();
 	$("#compareTab").show();
@@ -338,6 +348,8 @@ function showCompare(elem) {
 function showSelect(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#selectlnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#selectlnk").addClass("selLnk");
 	getSelect();
 	$(".tabBody").hide();
 	$("#selectTab").show();	
@@ -346,6 +358,8 @@ function showSelect(elem) {
 function showDash(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#dashlnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#dashlnk").addClass("selLnk");
 	getDash();
 	$(".tabBody").hide();
 	$("#dashTab").show();
@@ -354,6 +368,8 @@ function showDash(elem) {
 function showAdmin(elem) {	
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#adminlnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#adminlnk").addClass("selLnk");
 	getAdmin();
 	$(".tabBody").hide();
 	$("#adminTab").show();	
@@ -362,6 +378,8 @@ function showAdmin(elem) {
 function showTimelines(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#timelinelnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#timelinelnk").addClass("selLnk");
 	$("#timelineTab").load("timeline.php");
 	$(".tabBody").hide();
 	$("#timelineTab").show();	
@@ -370,6 +388,8 @@ function showTimelines(elem) {
 function showNotes() {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#noteslnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#noteslnk").addClass("selLnk");
 	getNotes();
 	$(".tabBody").hide();
 	$("#noteTab").show();

@@ -4,7 +4,7 @@ body {
 	#background-color:#E8F7FF;
 }
 
-.idea table {
+.idea table {idea
 	width:100%;
 }
 
@@ -29,9 +29,12 @@ table, th {
 	margin-left:0px; 
 }
 
-.selLnk {
-	color:#000000;
-	background-color:#FFFFFF;
+.selMenu a.selLnk {
+	text-decoration:underline;
+	font-weight: bold;
+	#color:#000000;
+	#background-color:#FFFFFF;
+	#-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 
 a {
@@ -175,7 +178,6 @@ select {
 .selMenu a {
 	color:#FFFFFF;
 	border-bottom:none;
-	font-weight: bold;
 }
 
 
