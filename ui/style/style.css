@@ -30,30 +30,3 @@ a {
 a:hover {
 	font-weight:bold; 
 }
-#Responses {
-	font-size:15px;
-	font-weight:bold;
-	color:#43a2e5;
-	text-shadow: #999 1px 1px 3px; /* Safari */
-	height: 1em;
-	filter: Shadow(Color=#999, Direction=135, Strength=3); /* Internet Explorer */
-	text-align:center;
-	padding-bottom:5px;
-}
-.Logo
-{
-	filter:alpha(opacity=50);
-	-moz-opacity:0.5;
-	-khtml-opacity: 0.5;
-	opacity: 0.5;
-}
-form {
-	padding:0px;
-	margin:0px;
-}
-#Wait{
-	z-index:2;
-}
-#MainHolder {
-  height:270px;
-}

@@ -30,8 +30,8 @@ function renderJustIdea($ideas, $idea, $user) {?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all"
 	onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
 <div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<span class="ideatitle"><?=$idea->title?></span> <!--<span class="ideaoptions">-->
-<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');">Details</a>
+ <!--<span class="ideaoptions">-->
+<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a>
 <?if ($idea->userId == $user) { ?> <input type="button" value=" - "
 	onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
 <!-- </span>--></div>
@@ -46,8 +46,7 @@ function renderIdea($ideas, $idea, $user) { ?>
 <span class="ideatitle"><?=$idea->title?></span> <span
 	class="ideaoptions"> <a
 	href="javascript:showDetails('ideadetails_form_<?= $idea->ideaId?>')">Mission</a>
-<a
-	href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
+<a href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
 <a href="javascript:showDetails('idearoles_form_<?= $idea->ideaId?>')">Roles</a>
 <a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');">Review</a>
 <?if ($idea->userId == $user) { ?> <input type="button" value=" - "

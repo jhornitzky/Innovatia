@@ -2,7 +2,7 @@
 require_once("innoworks.connector.php");
 
 function getDashIdeas($user) {
-	return dbQuery("SELECT * FROM Ideas WHERE userId='$user' ORDER BY createdTime LIMIT 5");
+	return dbQuery("SELECT * FROM Ideas WHERE userId='$user' ORDER BY createdTime LIMIT 8");
 }
 
 function getDashCompare($user) {

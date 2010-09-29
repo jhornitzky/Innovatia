@@ -28,23 +28,6 @@ function enterOS(goFS)
 {window.location.reload();
 }
 
-function startUp()
-{
-	$("#Wait").fadeOut();	
-}
-
-function logOut()
-{
-	$("#AjaxForm").fadeOut(250, function() {
-		$("#Wait").fadeIn(250);
-		$.get("core/login.logout.php", function(data) {
-			$.get("ui/login/login.html", function(data) {
-				$("#AjaxForm").html(data);
-				hideWait();
-			});									 
-		});	
-	});	
-}
 function mainMenu()
 {
 	hideResponse();

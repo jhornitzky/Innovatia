@@ -1,0 +1,33 @@
+html, body {
+	font-size:1.3em;
+}
+
+#Responses {
+	font-size:15px;
+	font-weight:bold;
+	color:#43a2e5;
+	text-shadow: #999 1px 1px 3px; /* Safari */
+	height: 1em;
+	filter: Shadow(Color=#999, Direction=135, Strength=3); /* Internet Explorer */
+	text-align:center;
+	padding-bottom:5px;
+}
+
+#loginContent {
+	width:80%;
+	top:1.0em;
+	margin:auto;
+}
+
+#submenu li {
+	float:none;
+	list-style: none;
+}
+
+#rightAlignMenu { 
+	padding:1%;
+}
+
+table#regForm {
+	font-size:1.0em;
+}

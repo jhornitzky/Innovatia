@@ -21,13 +21,13 @@ function renderSelectIdea($ideas,$idea,$user) {?>
 <div id="selectideaform_<?= $idea->ideaId?>" class="idea ui-corner-all" onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
 
 <div class="formHead" ><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<span class="ideatitle"><?=$idea->title?></span> 
-<span class="ideaoptions">
-<a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');">Review</a>
+<span class="ideatitle">
+<a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');"><?=$idea->title?></a></span> 
+<!-- <span class="ideaoptions">-->
 <?if ($idea->userId == $user) { ?>
 	<input type="button" value=" - " onclick="deleteSelectIdea(<?= $idea->selectionId?>)" title="Delete this idea" />
 <?}?>
-</span>
+<!-- </span>-->
 </div>
 </div>
 <?}

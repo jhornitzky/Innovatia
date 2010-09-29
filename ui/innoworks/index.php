@@ -121,7 +121,7 @@ function loadPopupShow() {
 	else if (selectedChild == "roles")
 		getRolesForm("ideaRoles",currentIdeaId);
 	else if (selectedChild == "featureEvaulation")
-		getFeatureEvalushowIdeaSummaryationsForIdea();
+		getFeatureEvaluationsForIdea();
 	else if (selectedChild == "comments")
 		getCommentsForIdea();
 	else 
@@ -835,7 +835,7 @@ function addIdeaAttachment(element) {
 			url:'ideas.ajax.php',
 			secureuri:false,
 			fileElementId:'userfile',
-			dataType: 'json',
+			datstyle="position:relative; float:left"aType: 'json',
 			complete: function() {
 				alert("File uploading attach done");
 				//getAttachments();
@@ -986,7 +986,7 @@ manage work <input type='button' onclick='showAddSelectIdea()'
 <div id="adminTab" class="tabBody"></div>
 
 <!-- POPUP DIALOGS -->
-<div id="ideasPopup" dojoType="dijit.Dialog" title="More about idea">
+<div id="ideasPopup" dojoType="dijit.Dialog">
 <img/>
 <h2 id="ideaName"></h2>
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
