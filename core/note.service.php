@@ -10,6 +10,10 @@ function deleteNote($opts) {
 }
 
 function getAllNotes($user) {
+	return dbQuery("SELECT Notes.* FROM Notes WHERE toUserId='$user' OR fromUserId='$user' ORDER BY createdTime DESC");
+}
+
+function getAllIncomingNotes($user) {
 	return dbQuery("SELECT * FROM Notes WHERE toUserId='$user' ORDER BY createdTime");
 }
 

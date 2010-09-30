@@ -6,7 +6,7 @@ import("dash.service");
 <div id="dashui" class="threeColumnContainer">
 	<div class="col1 ui-corner-all" style="margin-right:1%;width:32%;position:relative; float:left; overflow:auto; background-color:#CCFFFF">
 		<div class="widget ui-corner-all" style="padding:1%; height:80%;">
-			<h2><a href="javascript:showIdeas();">Ideas</a></h2>
+			<h2><a href="javascript:showIdeas();">Record</a></h2>
 			<p>Record, manage and explore your ideas to help them take shape and grow.</p>
 			<p><i>Your ideas</i></p>
 			<?

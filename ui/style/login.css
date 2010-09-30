@@ -15,7 +15,7 @@ html, body {
 
 #loginContent {
 	width:80%;
-	top:1.0em;
+	top:0.5em;
 	margin:auto;
 }
 
@@ -30,4 +30,8 @@ html, body {
 
 table#regForm {
 	font-size:1.0em;
+}
+
+span.subtext {
+	font-size:0.75em
 }

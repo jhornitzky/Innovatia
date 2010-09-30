@@ -198,6 +198,43 @@ function renderRole($roles, $role) {?>
 function renderIdeaGroupsForUser($uid) {
 	import("group.service");
 	$groups = getAllGroupsForUser($uid);
+	if ($groups && dbNumRows($groups) > 0 ) {?>
+		<div class="ideaGroupsSel" dojoType="dijit.form.DropDownButton">
+		    <span> My Own </span>
+			<div dojoType="dijit.Menu">
+			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">my own</div>
+			<div dojoType="dijit.MenuSeparator"></div>
+			<? while ($group = dbFetchObject($groups)) {?>
+			<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>
+			<?}?>
+			<div dojoType="dijit.MenuSeparator"></div>
+			<div iconClass="dijitEditorIcon dijitEditorIconCopy" dojoType="dijit.MenuItem" onClick="showGroups()">Manage Groups</div>
+			</div>
+		</div>
+	<?} else {
+		echo "None";
+	}
+}
+
+
+function renderIdeaGroupsSelectForUser($uid) {
+	import("group.service");
+	$groups = getAllGroupsForUser($uid);
+	if ($groups && dbNumRows($groups) > 0 ) {?>
+		<select dojoType="dijit.form.ComboBox" class="ideaGroupsSel" onchange="alert('Changed');">
+		<option value="default" selected="selected">My Own </option>
+	    <? while ($group = dbFetchObject($groups)) {?>
+    		<option value="<?= ($group->groupId)?>"> <?= $group->title ?> </option>
+		<?}?>
+		</select>
+	<?} else {
+		echo "None";
+	}
+}
+
+function renderIdeaGroupsListForUser($uid) {
+	import("group.service");
+	$groups = getAllGroupsForUser($uid);
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
 			echo "<a groupId='$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a>";
@@ -319,4 +356,10 @@ function renderAttachments($ideaId, $userId) {?>
 
 function renderAttachmentsIframe($ideaId, $userId) {?>
 	<iframe src="attachment.php?ideaId=<?= $ideaId?>" style="width:100%;height:100%"></iframe>
-<?}?>
+<?}
+
+function renderIdeaName($ideaId) {
+	$details = dbFetchObject(getIdeaDetails($ideaId));
+	echo $details->title;
+}
+?>

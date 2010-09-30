@@ -59,8 +59,8 @@ function renderDetails($currentGroupId) {
 	
 	if ($groups && (dbNumRows($groups) == 1)) {
 		$group = dbFetchObject($groups); 
-		//echo "IDS: " . $group->userId . " | Session: " . $_SESSION['innoworks.ID'];
 		
+		echo "<h2>".$group->title."</h2>";
 		echo "<h3>Users</h3>";
 		if ($group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value=' + ' onclick='showAddGroupUser()'/>";
 		

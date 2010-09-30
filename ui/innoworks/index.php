@@ -32,7 +32,9 @@ requireLogin();
 //////// VARS //////////
 var ctime;
 var currentIdeaId;
+var currentIdeaName;
 var currentGroupId;
+var currentGroupName;
 var formArray; // Temp holder for form value functions
 var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
 		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};
@@ -41,11 +43,12 @@ var selectedChild;
 /////// START UP ///////
 dojo.require("dijit.Dialog");
 dojo.require("dijit.form.Button");
+dojo.require("dijit.form.ComboBox");
+dojo.require("dijit.form.Textarea");
 dojo.require("dijit.layout.TabContainer");
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.Menu");
 dojo.require("dojo.parser");
-dojo.require("dijit.form.Textarea");
 
 $(document).ready(function() {
 	//Loading animation for all ajax operations
@@ -114,6 +117,7 @@ function pollServer() {
 }
 
 function loadPopupShow() {
+	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId="+currentIdeaId);
 	if (selectedChild == "mission") 
 		getMission("ideaMission",currentIdeaId);
 	else if (selectedChild == "features")
@@ -176,7 +180,6 @@ function showIdeaReviews(ideaId) {
 }
  
 function showIdeaSummary(id) {
-	//alert('Hitting summary');
 	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
@@ -189,29 +192,40 @@ function showIdeaDetails(ideaId) {
 	dijit.byId('ideasPopup').show();
 }
 
+///// GROUP SELECTION////////////
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
-		$(".ideaGroupsList a[groupId=" + currentGroupId + "]").addClass("selected");
+		//$(".ideaGroupsList a[groupId=" + currentGroupId + "]").addClass("selected");
+		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
+		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
+		$("button span.dijitButtonText").html(currentIdeaName);
 	});
 }
 
 function showDefaultIdeas() {
 	currentGroupId = null;
+	currentIdeaName = "My Own";
 	$("#addIdeaTitle").removeAttr('disabled');
-	$(".ideaGroups .ideaGroupsList a").removeClass('selected');
+	//$(".ideaGroups .ideaGroupsList a").removeClass('selected');
 	getIdeas();
 	getCompare();
 	getSelect();
+	showIdeaGroupsForUser();
 }
 
 function showIdeasForGroup(gId, elem) {
 	currentGroupId = gId;
+	currentIdeaName = elem;
 	$("#addIdeaTitle").attr('disabled', 'disabled');
+	//$("button span.dijitButtonText").html(elem);
 	getIdeas();
 	getCompare();
 	getSelect();
+	showIdeaGroupsForUser();
 }
+
+///////////// GET FUNCTIONS ///////////////
 
 function getNotes() {
 	$("#noteTab").load("notes.php");
@@ -231,7 +245,7 @@ function getIdeas() {
 			$("#ideasList").html(data);
 		});
 	}
-	showIdeaGroupsForUser();
+	//showIdeaGroupsForUser();
 } 
 
 function getCompare() {
@@ -244,13 +258,13 @@ function getCompare() {
 			$("#compareList").html(data);
 		});
 	}
-	showIdeaGroupsForUser();
+	//showIdeaGroupsForUser();
 }
 
 function getSelect() {
 	$.get("select.ajax.php?action=getSelection", function (data) {
 		$("#selectList").html(data);
-		showIdeaGroupsForUser();
+		//showIdeaGroupsForUser();
 	});
 }
 
@@ -303,6 +317,7 @@ function showIdeas(elem) {
 	$(".menulnk").removeClass("selLnk");
 	$("#ideaslnk").addClass("selLnk");
 	getIdeas();
+	showIdeaGroupsForUser();
 	$(".tabBody").hide();
 	$("#ideaTab").show();
 }
@@ -343,6 +358,7 @@ function showCompare(elem) {
 	$(".menulnk").removeClass("selLnk");
 	$("#comparelnk").addClass("selLnk");
 	getCompare();
+	showIdeaGroupsForUser();
 	$(".tabBody").hide();
 	$("#compareTab").show();
 }
@@ -353,6 +369,7 @@ function showSelect(elem) {
 	$(".menulnk").removeClass("selLnk");
 	$("#selectlnk").addClass("selLnk");
 	getSelect();
+	showIdeaGroupsForUser();
 	$(".tabBody").hide();
 	$("#selectTab").show();	
 }
@@ -590,15 +607,16 @@ function deleteGroup(gId) {
 	});
 }
 
-function showGroupDetails() {
-	$.get("groups.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
+function showGroupDetails(id) {
+	$.get("groups.ajax.php?action=getGroupDetails&actionId="+id, function(data) {
 		$("#groupDetails").html(data);
 	});
 }
 
 function updateForGroup(id) {
-	currentGroupId = id;
-	showGroupDetails();
+	//currentGroupId = id;
+	showGroupDetails(id);
+	//showIdeaGroups();
 }
 
 function showAddGroupIdea() {
@@ -866,9 +884,9 @@ function deleteIdeaAttachment(attachmentId) {
 	</li>
 	
 	<li class="selMenu">
-	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/innovate.png"/>Innovate<br/>
+	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/innovate.png"/>Ideas<br/>
 	<a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a>
-	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Ideas</a>
+	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Record</a>
 	<a id="comparelnk" class="menulnk"
 		href="javascript:showCompare(this)">Compare</a>
 	<a id="selectlnk" class="menulnk"
@@ -910,17 +928,15 @@ function deleteIdeaAttachment(attachmentId) {
 <div id="dashTab" class="tabBody"></div>
 
 <div id="ideaTab" class="tabBody">
-<div id="ideaTabHead" class="tabHead addForm ui-corner-all">
-<div class="formHeadContain">
-<form id="addIdeaForm" onsubmit="addIdea(); return false;"><span>New
-idea</span> <input id="addIdeaTitle" name="title" type="text"></input> <input
+<div id="ideaTabHead" class=" addForm ui-corner-all">
+<h2>Record <span class="ideaGroupsList"></span> ideas</h2>
+<form id="addIdeaForm" onsubmit="addIdea(); return false;">Add new idea <input id="addIdeaTitle" name="title" type="text"></input> <input
 	type="submit" value=" + " title="Add idea" /> <input type="hidden"
 	name="action" value="addIdea" /></form>
-</div>
-<div class="ideaGroups" class="ui-corner-all"><input type="text"
+
+<!-- <div class="rightBox">Search ideas on this page <input type="text"
 	value="Show" onclick="$(this).val('')" onkeyup="filterIdeas(this)"
-	onchange="filterIdeas(this)" /><a href="javascript:showDefaultIdeas()">My
-Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
+	onchange="filterIdeas(this)" /> </div>-->
 </div>
 
 <div id="ideasList"></div>
@@ -928,28 +944,25 @@ Ideas</a> Groups <span class="ideaGroupsList">None</span></div>
 
 <div id="compareTab" class="tabBody"><!-- <h2>R-W-W</h2>
 	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
-<div class="addform ui-corner-all">Click here to add idea to comparison
+<div class="addform ui-corner-all">
+<h2>Compare <span class="ideaGroupsList">My</span> ideas</h2>
+Click here to add idea to comparison
 <input type='button' onclick='showAddRiskItem()' value=' + '
 	title="Add an idea to comparison" />
-<div class="ideaGroups ui-corner-all"><a
+<!-- <div class="ideaGroups ui-corner-all"><a
 	href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span
-	class="ideaGroupsList">None</span></div>
+	class="ideaGroupsList">None</span></div>-->
 </div>
 <div id="compareList">
-<p>No comparisons yet</p>
 </div>
 </div>
 
 <div id="selectTab" class="tabBody">
-<div class="addform ui-corner-all">Click here to select an idea to
-manage work <input type='button' onclick='showAddSelectIdea()'
-	value=' + ' title="Select an idea to work on" />
-<div class="ideaGroups ui-corner-all"><a
-	href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span
-	class="ideaGroupsList">None</span></div>
+<div class="addform ui-corner-all">
+<h2>Select <span class="ideaGroupsList">My</span> ideas</h2> 
+Click here to select one of your own ideas for this group <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on" />
 </div>
 <div id="selectList">
-<p>No selections yet</p>
 </div>
 </div>
 
@@ -987,8 +1000,7 @@ manage work <input type='button' onclick='showAddSelectIdea()'
 
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
-<img/>
-<h2 id="ideaName"></h2>
+<h2><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/><span id="ideaName">xxx</span></h2>
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 	style="width: 55em; height: 25em;">
 

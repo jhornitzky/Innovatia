@@ -41,10 +41,13 @@ if (isset($_GET) && $_GET != '') {
 			renderIdeaRolesForm($_GET['actionId']);
 			break;
 		case "getShare":
-			renderShare($_GET['actionId'], $_SESSION['username']);
+			renderShare($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 		case "getAttachments": 
-			renderAttachmentsIframe($_GET['actionId'], $_SESSION['username']);
+			renderAttachmentsIframe($_GET['actionId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getIdeaName":
+			renderIdeaName($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 	}
 }
