@@ -200,9 +200,9 @@ function renderIdeaGroupsForUser($uid) {
 	$groups = getAllGroupsForUser($uid);
 	if ($groups && dbNumRows($groups) > 0 ) {?>
 		<div class="ideaGroupsSel" dojoType="dijit.form.DropDownButton">
-		    <span> My Own </span>
+		    <span> Private </span>
 			<div dojoType="dijit.Menu">
-			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">my own</div>
+			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">Private</div>
 			<div dojoType="dijit.MenuSeparator"></div>
 			<? while ($group = dbFetchObject($groups)) {?>
 			<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>

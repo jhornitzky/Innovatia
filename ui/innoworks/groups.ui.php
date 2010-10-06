@@ -42,12 +42,12 @@ function renderDefault() {
 }  
 
 function renderGroup($groups, $group) {
-	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\")'>". $group->title . "</a>";
+	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
 	echo "<input type='button' onclick='deleteGroup(" . $group->groupId .")' value=' - ' />";
 }
 
 function renderPartOfGroups($groups, $group) {
-	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\")'>". $group->title . "</a>";
+	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
 }
 
 function renderOtherGroup($groups, $group) {
