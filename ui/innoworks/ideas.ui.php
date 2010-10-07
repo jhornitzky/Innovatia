@@ -260,15 +260,16 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
 		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {?>
+<div id="featureEvaluationContainer_<?= $featureEvaluation->ideaFeatureEvaluationId ?>" class="featureEvaluation">
 <hr />
-<b><?=$featureEvaluation->title?></b>
+<span class="evalTotal">0</span> <b><?=$featureEvaluation->title?></b>
 <input
 	type="button"
 	onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
 	title="Delete feature evaluation" value=" - " />
-</td>
-		<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);
-		}
+		<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);?>
+</div>
+		<?}
 	} else {
 		echo "<p>No feature evaluations</p>";
 	}
@@ -300,8 +301,8 @@ function renderFeatureEvaluationTable($id) {
 			renderFeatureItem($featureItems, $featureItem);
 		}
 		echo "</table>";?>
-<script type="text/javascript">
-			initFormSelectTotals('table#featureEvaluation_<?= $id?>');
+		<script type="text/javascript">
+			initFormSelectTotals('#featureEvaluation_<?= $id?>', '#featureEvaluationContainer_<?= $id?>');
 		</script>
 		<?
 	}

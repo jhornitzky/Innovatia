@@ -383,15 +383,17 @@ function filterIdeas(element) {
 }
 
 //COMMON methods for doing counts across forms and so on
-function initFormSelectTotals(selector) {
+function initFormSelectTotals(selector, parentSelector) {
 	$(selector + " tr").each(function(index, element) {
 		var initFormId = $(element).attr("id");
 		if (initFormId != null && initFormId != ''){
 			$(element).find("select").change(function () {
 				var x = initFormId;
 				updateFormSelectTotals(x);
+				updateFormTotal(parentSelector);
 			}); 
 			updateFormSelectTotals(initFormId);
+			updateFormTotal(parentSelector);
 		}
 	}); 
 }
@@ -407,6 +409,19 @@ function updateFormSelectTotals(formId) {
 	}); 
 	if (count != 0)
 		$("#" + formId + " span.itemTotal").html(Math.round(total/count));
+}
+
+function updateFormTotal(formId) {
+	var total = 0;
+	var count = 0;
+	$(formId).find("select").each(function(index) {
+		if (!isNaN(parseInt($(this).val()))){
+			total = total + parseInt($(this).val());
+			count++;
+		}
+	}); 
+	if (count != 0)
+		$(formId + " span.evalTotal").html(Math.round(total/count));
 }
 
 function genericFormUpdate(target, element) {}
