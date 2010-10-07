@@ -102,6 +102,21 @@ dojo.addOnLoad(function(){
 });
 
 
+function printIdea() {
+	  newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + currentIdeaId);
+	  //newWin.document.write($('#ideasPopup').html());
+	  newWin.print();
+	  //newWin.close();
+}
+
+function ideaToCompare() {
+	
+}
+
+function ideaToSelect() {
+	
+}
+
 </script>
 
 </head>
@@ -117,7 +132,7 @@ dojo.addOnLoad(function(){
 	<li class="selMenu">
 	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/innovate.png"/>Ideas<br/>
 	<a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a>
-	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Record</a>
+	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Explore</a>
 	<a id="comparelnk" class="menulnk"
 		href="javascript:showCompare(this)">Compare</a>
 	<a id="selectlnk" class="menulnk"
@@ -160,7 +175,7 @@ dojo.addOnLoad(function(){
 
 <div id="ideaTab" class="tabBody">
 <div id="ideaTabHead" class=" addForm ui-corner-all">
-<h2>Record <span class="ideaGroupsList"></span> ideas</h2>
+<h2>Explore <span class="ideaGroupsList"></span> ideas</h2>
 <form id="addIdeaForm" onsubmit="addIdea(); return false;">Add new idea <input id="addIdeaTitle" name="title" type="text"></input> <input
 	type="submit" value=" + " title="Add idea" /> <input type="hidden"
 	name="action" value="addIdea" /></form>
@@ -231,7 +246,8 @@ Click here to select one of your own ideas for this group <input type='button' o
 
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
-<span class="ideaOptions" style="position:relative; float:right;">Print Compare Select</span>
+<span class="ideaOptions" style="position:relative; float:right;">
+<a href="javascript:printIdea()">Print</a> </span>
 <table><tr>
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
 <td style="vertical-align:middle;"><h2><span id="ideaName"></span></h2></td></tr>
@@ -265,6 +281,15 @@ Click here to select one of your own ideas for this group <input type='button' o
 
 <div id="ideaAttachments" dojoType="dijit.layout.ContentPane"
 	title="Attachments"></div>
+	
+<div id="ideaRiskEval" dojoType="dijit.layout.ContentPane"
+	title="Risk Evaluation"></div>
+	
+<div id="ideaShare" dojoType="dijit.layout.ContentPane"
+	title="Share"></div>
+	
+<div id="ideaSelect" dojoType="dijit.layout.ContentPane"
+	title="Select"></div>
 
 </div>
 </div>
