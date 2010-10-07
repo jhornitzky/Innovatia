@@ -33,6 +33,7 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 }
 
 function renderGenericUpdateForm($rs,$row,$omitArray) {
+	//print_r($row);
 	echo "<table>";
 	foreach($row as $key => $value) {
 		echo "<tr>";

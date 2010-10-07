@@ -1,4 +1,7 @@
 <? 
+/**
+ * Rendering functions for various cpomarison activities i.e. Risk/CommercialEvaluation
+ */
 require_once("thinConnector.php");  
 
 function renderDefault($user) {
@@ -84,5 +87,17 @@ function renderIdeaSummary($ideaId) {
 	?>
 	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Open</a>
 	<?		
+}
+
+function renderIdeaRiskEval($ideaId, $userId) {
+	import("compare.service");
+	$item = getRiskItemForIdea($ideaId,$userId);
+	if ($item && dbNumRows($item) > 0) {
+		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
+		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to edit data";
+	} else {
+		echo "<p>No compare data for idea</p>"; 
+		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to add comparison data";
+	}
 }
 ?>

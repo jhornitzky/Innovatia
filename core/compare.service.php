@@ -26,4 +26,9 @@ function getRiskItemsForGroup($group) {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group");
 }
+
+function getRiskItemForIdea($ideaId, $user) {
+	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation, Ideas WHERE RiskEvaluation.ideaId = '$ideaId' 
+	AND RiskEvaluation.ideaId = Ideas.ideaId  AND Ideas.userId=$user");
+}
 ?>

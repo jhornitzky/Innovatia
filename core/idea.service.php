@@ -8,12 +8,24 @@ function getIdeas($userid) {
 	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
 }
 
+function getAddIdeas($userid) {
+	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
+}
+
 function getIdeaDetails($ideaId) {
 	return dbQuery("SELECT * FROM Ideas WHERE ideaId = '".$ideaId."'");
 }
 
 function getSelectedIdeas($userid) {
-	return dbQuery("SELECT Ideas.*, Selections.selectionId FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId");
+	return dbQuery("SELECT Ideas.*, Selections.* FROM Ideas, Selections WHERE Ideas.userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId");
+}
+
+function getSelectedIdeasForGroup($groupid,$userid) {
+	return dbQuery("SELECT Ideas.*, Selections.* FROM Ideas, Selections, GroupIdeas WHERE Ideas.ideaId = GroupIdeas.ideaId AND GroupIdeas.groupId = '$groupid' AND Selections.ideaId =  Ideas.ideaId");
+}
+
+function getIdeaSelect($ideaId, $userid) {
+	return dbQuery("SELECT Selections.* FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId AND Ideas.ideaId = '$ideaId'");
 }
 
 function createIdea($opts) {

@@ -17,6 +17,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getAddIdea":
 			renderAddIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
+		case "getShareForIdea":
+			renderIdeaShare($_GET['actionId'], $_SESSION['innoworks.ID']);
+			break;
 	}
 }
 

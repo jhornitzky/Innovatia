@@ -8,11 +8,17 @@ if (isset($_GET) && $_GET != '') {
 		case "getSelection":
 			renderSelectDefault($_SESSION['innoworks.ID']);
 			break;
+		case "getSelectionForGroup":
+			renderSelectForGroup($_GET['actionId'],$_SESSION['innoworks.ID']);
+			break;
 		case "getAddSelect":
 			renderAddSelectIdea($_SESSION['innoworks.ID']);
 			break;
 		case "getAddSelectForGroup":
 			renderAddSelectIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getSelectForIdea":
+			renderIdeaSelect($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 	}
 }

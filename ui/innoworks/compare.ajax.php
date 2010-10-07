@@ -17,8 +17,11 @@ if (isset($_GET) && $_GET != '') {
 		case "getAddRiskForGroup":
 			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
 			break;
-		case "getIdeaSummary";
+		case "getIdeaSummary":
 			renderIdeaSummary($_GET['actionId']);
+			break;
+		case "getRiskEvalForIdea":
+			renderIdeaRiskEval($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 	}
 }

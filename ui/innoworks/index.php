@@ -27,6 +27,7 @@ requireLogin();
 
 <script type="text/javascript">
 //////// VARS //////////
+var serverRoot = '<?=$serverRoot?>';
 var ctime;
 var currentIdeaId;
 var currentIdeaName;
@@ -111,15 +112,15 @@ function subscribeForChild(child) {
 		selectedChild = "attachments";
 	} 
 	else if (child.id == "ideaShare") {
-		//getAttachments("ideaRoles",currentIdeaId);
+		getShareForIdea();
 		selectedChild = "share";
 	} 
 	else if (child.id == "ideaSelect") {
-		//getAttachments("ideaRoles",currentIdeaId);
+		getSelectForIdea();
 		selectedChild = "select";
 	} 
 	else if (child.id == "ideaRiskEval") {
-		//getAttachments("ideaRoles",currentIdeaId);
+		getRiskEvalForIdea("ideaRisks",currentIdeaId);
 		selectedChild = "riskEval";
 	} 
 }
@@ -130,15 +131,6 @@ function printIdea() {
 	  newWin.print();
 	  //newWin.close();
 }
-
-function ideaToCompare() {
-	
-}
-
-function ideaToSelect() {
-	
-}
-
 </script>
 
 </head>
@@ -173,8 +165,8 @@ function ideaToSelect() {
 	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/tools.png"/>Tools<br/>
 	<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)">Search</a>
 	<a id="timelinelnk" class="menulnk" href="javascript:showTimelines(this)">Timelines</a>
-	<a id="adminlnk" class="menulnk"
-		href="javascript:showAdmin(this)">Admin</a>
+	<!-- <a id="adminlnk" class="menulnk"
+		href="javascript:showAdmin(this)">Admin</a> -->
 	<a id="reportslnk" class="menulnk"
 		href="javascript:showReports(this)">Reports</a>
 	</li>

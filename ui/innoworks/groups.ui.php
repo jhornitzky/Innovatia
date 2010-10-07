@@ -121,4 +121,29 @@ function renderAddIdea() {
 		echo "</ul>";
 	}
 }
+
+
+function renderIdeaRiskEval($ideaId, $userId) {
+	import("compare.service");
+	$item = getRiskItemForIdea($ideaId,$userId);
+	if ($item && dbNumRows($item) > 0) {
+		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
+		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to edit data";
+	} else {
+		echo "<p>No compare data for idea</p>"; 
+		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to add comparison data";
+	}
+}
+
+function renderIdeaShare($ideaId, $userId) {
+	import("group.service");
+	$item = getIdeaShareDetails($ideaId);
+	if ($item && dbNumRows($item) > 0) {
+		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
+		echo "Go to <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a> to edit data";
+	} else {
+		echo "<p>No share data for this idea</p>"; 
+		echo "Go to <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a> to share with group";
+	}
+}
 ?>

@@ -22,6 +22,14 @@ function loadPopupShow() {
 		getFeatureEvaluationsForIdea();
 	else if (selectedChild == "comments")
 		getCommentsForIdea();
+	else if (selectedChild == "attachments")
+		getAttachments();
+	else if (selectedChild == "ideaShare")
+		getShareForIdea();
+	else if (selectedChild == "select")
+		getSelectForIdea();
+	else if (selectedChild == "riskEval")
+		getRiskEvalForIdea();
 	else 
 		getMission("ideaMission",currentIdeaId);
 }
@@ -156,10 +164,11 @@ function getCompare() {
 }
 
 function getSelect() {
-	$.get("select.ajax.php?action=getSelection", function (data) {
-		$("#selectList").html(data);
-		//showIdeaGroupsForUser();
-	});
+	if (currentGroupId == null) {
+		$("#selectList").load("select.ajax.php?action=getSelection");
+	} else {
+		$("#selectList").load("select.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
+	}
 }
 
 function getProfile() {
@@ -189,6 +198,7 @@ function getSearch() {
 	var searchTerms = $("#searchInput").val();
 	$("#searchTab").load("search.php?searchTerms="+searchTerms);
 }
+
 function showSearch() {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#searchlnk").parent().addClass("selMenu");
@@ -202,6 +212,24 @@ function getAdmin(){}
 function getAttachments() {
 	$.get("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId, function (data) {
 		$("#ideaAttachments").html(data);
+	});
+}
+
+function getRiskEvalForIdea() {
+	$.get("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaRiskEval").html(data);
+	});
+}
+
+function getShareForIdea() {
+	$.get("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaShare").html(data);
+	});
+}
+
+function getSelectForIdea() {
+	$.get("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaSelect").html(data);
 	});
 }
 
@@ -340,7 +368,7 @@ function showDetails(id) {
 }
 
 function logout() {
-	window.location.href = "<?=$serverRoot?>?logOut=1";
+	window.location.href = serverRoot + "?logOut=1";
 }
 
 function showResponses(selector, data, timeout) {
