@@ -62,7 +62,6 @@ $(document).ready(function() {
 	showDash();
 });
 
-
 dojo.addOnLoad(function(){
 	//Parse controls
 	//dojo.parser.instantiate(dojo.query("#ideasPopup *")); 
@@ -72,35 +71,58 @@ dojo.addOnLoad(function(){
 	
 	//Setup stuff for tab menus
 	dojo.subscribe("ideasPopupTabContainer-selectChild", function(child){
-		if (child.id == "ideaComments") {
-			getCommentsForIdea();
-			selectedChild = "comments";
-		}
-		else if (child.id == "ideaFeatureEvaluationList") {
-			getFeatureEvaluationsForIdea();
-			selectedChild = "featureEvaulation";
-		}
-		else if (child.id == "ideaMission") {
-			getMission("ideaMission",currentIdeaId);
-			selectedChild = "mission";
-		}
-		else if (child.id == "ideaFeatures") {
-			getFeaturesForm("ideaFeatures",currentIdeaId);
-			selectedChild = "features";
-		}
-		else if (child.id == "ideaRoles") {
-			getRolesForm("ideaRoles",currentIdeaId);
-			selectedChild = "roles";
-		} else if (child.id == "ideaAttachments") {
-			getAttachments("ideaRoles",currentIdeaId);
-			selectedChild = "attachments";
-		} 
+		subscribeForChild(child);
 	});
+	dojo.subscribe("ideasPopupDetails-selectChild", function(child){
+		subscribeForChild(child);
+	});
+	dojo.subscribe("ideasPopupReview-selectChild", function(child){
+		subscribeForChild(child);
+	});
+	
 
 	//Start server polling
 	setInterval(pollServer, 5000);
 });
 
+function subscribeForChild(child) {
+	if (child.id == "ideaComments") {
+		getCommentsForIdea();
+		selectedChild = "comments";
+	}
+	else if (child.id == "ideaFeatureEvaluationList") {
+		getFeatureEvaluationsForIdea();
+		selectedChild = "featureEvaulation";
+	}
+	else if (child.id == "ideaMission") {
+		getMission("ideaMission",currentIdeaId);
+		selectedChild = "mission";
+	}
+	else if (child.id == "ideaFeatures") {
+		getFeaturesForm("ideaFeatures",currentIdeaId);
+		selectedChild = "features";
+	}
+	else if (child.id == "ideaRoles") {
+		getRolesForm("ideaRoles",currentIdeaId);
+		selectedChild = "roles";
+	} 
+	else if (child.id == "ideaAttachments") {
+		getAttachments("ideaAttachments",currentIdeaId);
+		selectedChild = "attachments";
+	} 
+	else if (child.id == "ideaShare") {
+		//getAttachments("ideaRoles",currentIdeaId);
+		selectedChild = "share";
+	} 
+	else if (child.id == "ideaSelect") {
+		//getAttachments("ideaRoles",currentIdeaId);
+		selectedChild = "select";
+	} 
+	else if (child.id == "ideaRiskEval") {
+		//getAttachments("ideaRoles",currentIdeaId);
+		selectedChild = "riskEval";
+	} 
+}
 
 function printIdea() {
 	  newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + currentIdeaId);
@@ -254,43 +276,36 @@ Click here to select one of your own ideas for this group <input type='button' o
 </table>
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 	style="width: 55em; height: 25em;">
-
-<div id="ideaMission" dojoType="dijit.layout.ContentPane"
-	title="Mission"></div>
-
-<div id="ideaFeatures" dojoType="dijit.layout.ContentPane"
-	title="Features"></div>
-
-<div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles"></div>
-
-<div id="ideaComments" dojoType="dijit.layout.ContentPane"
-	title="Comments">
-<div id="addComment">
-<form id="addCommentForm" class="addForm ui-corner-all"
-	onsubmit="addComment();return false;">New Comment <input type="submit"
-	value=" + " /> <!-- <input type="text" name="text" style="width:100%"/> -->
-<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea"
-	style="width: 100%;"></textarea> <input type="hidden" name="action"
-	value="addComment" /></form>
-</div>
-<div id="commentList">No comments yet</div>
-</div>
-
-<div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane"
-	title="Feature Evaluation"></div>
-
-<div id="ideaAttachments" dojoType="dijit.layout.ContentPane"
-	title="Attachments"></div>
+	<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true">
+		<div id="ideaMission" dojoType="dijit.layout.ContentPane" title="Mission"></div>
+		<div id="ideaFeatures" dojoType="dijit.layout.ContentPane" title="Features"></div>
+		<div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles"></div>
+		<div id="ideaAttachments" dojoType="dijit.layout.ContentPane" title="Attachments"></div>
+	</div>
+	<div id="ideasPopupReview" dojoType="dijit.layout.TabContainer" title="Review" nested="true">
+		<div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
+			<div id="addComment">
+			<form id="addCommentForm" class="addForm ui-corner-all"
+				onsubmit="addComment();return false;">New Comment <input type="submit"
+				value=" + " /> <!-- <input type="text" name="text" style="width:100%"/> -->
+			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea"
+				style="width: 100%;"></textarea> <input type="hidden" name="action"
+				value="addComment" /></form>
+			</div>
+			<div id="commentList">No comments yet</div>
+		</div>
+		<div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane"
+			title="Feature Evaluation"></div>
+		<div id="ideaRiskEval" dojoType="dijit.layout.ContentPane"
+			title="Risk Evaluation"></div>
+	</div>
 	
-<div id="ideaRiskEval" dojoType="dijit.layout.ContentPane"
-	title="Risk Evaluation"></div>
+	<div id="ideaSelect" dojoType="dijit.layout.ContentPane"
+		title="Select"></div>
 	
-<div id="ideaShare" dojoType="dijit.layout.ContentPane"
-	title="Share"></div>
+	<div id="ideaShare" dojoType="dijit.layout.ContentPane"
+		title="Share"></div>
 	
-<div id="ideaSelect" dojoType="dijit.layout.ContentPane"
-	title="Select"></div>
-
 </div>
 </div>
 
