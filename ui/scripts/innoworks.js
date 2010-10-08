@@ -202,6 +202,8 @@ function getSearch() {
 function showSearch() {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#searchlnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#searchlnk").addClass("selLnk");
 	getSearch();
 	$(".tabBody").hide();
 	$("#searchTab").show();	
