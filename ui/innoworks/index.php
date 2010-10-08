@@ -33,6 +33,8 @@ var currentIdeaId;
 var currentIdeaName;
 var currentGroupId;
 var currentGroupName;
+var currentPersonId;
+var currentPersonName;
 var formArray; // Temp holder for form value functions
 var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
 		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};

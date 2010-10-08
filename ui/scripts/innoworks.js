@@ -10,6 +10,10 @@ function pollServer() {
 	});
 }
 
+function showLoading(selector) {
+	$(selector).html("<div class='loadingAnim'></div>");
+}
+
 function loadPopupShow() {
 	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId="+currentIdeaId);
 	if (selectedChild == "mission") 
@@ -35,6 +39,7 @@ function loadPopupShow() {
 }
 
 function getMission(formId,actionId) { 
+	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getMission&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
@@ -42,6 +47,7 @@ function getMission(formId,actionId) {
 }
 
 function getFeaturesForm(formId,actionId) {
+	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getFeaturesForm&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
@@ -49,6 +55,7 @@ function getFeaturesForm(formId,actionId) {
 }
 
 function getRolesForm(formId,actionId) {
+	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getRolesForm&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
@@ -56,6 +63,7 @@ function getRolesForm(formId,actionId) {
 }
 
 function getFeatures(formId,actionId) {
+	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
@@ -63,6 +71,7 @@ function getFeatures(formId,actionId) {
 }
 
 function getRoles(formId,actionId) {
+	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
@@ -130,14 +139,17 @@ function showIdeasForGroup(gId, elem) {
 ///////////// GET FUNCTIONS ///////////////
 
 function getNotes() {
+	showLoading("#noteTab");
 	$("#noteTab").load("notes.php");
 }
 
 function getDash() {
+	showLoading("#dashTab");
 	$("#dashTab").load("dash.php");
 }
 
 function getIdeas() {
+	showLoading("#ideasList");
 	if (currentGroupId == null) {
 		$.get("ideas.ajax.php?action=getIdeas", function (data) {
 			$("#ideasList").html(data);
@@ -151,6 +163,7 @@ function getIdeas() {
 } 
 
 function getCompare() {
+	showLoading("#compareList");
 	if (currentGroupId == null) {
 		$.get("compare.ajax.php?action=getComparison", function (data) {
 			$("#compareList").html(data);
@@ -160,10 +173,10 @@ function getCompare() {
 			$("#compareList").html(data);
 		});
 	}
-	//showIdeaGroupsForUser();
 }
 
 function getSelect() {
+	showLoading("#selectList");
 	if (currentGroupId == null) {
 		$("#selectList").load("select.ajax.php?action=getSelection");
 	} else {
@@ -172,6 +185,7 @@ function getSelect() {
 }
 
 function getProfile() {
+	showLoading("#profileTab");
 	$.get("profile.ajax.php?action=getProfile", function (data) {
 		$("#profileTab").html(data);
 		dojo.parser.instantiate(dojo.query('#profileTab *'));
@@ -179,6 +193,7 @@ function getProfile() {
 }
 
 function getGroups() {
+	showLoading("#groupsList");
 	$.get("groups.ajax.php?action=getGroups", function (data) {
 		$("#groupsList").html(data);
 		showIdeaGroupsForUser();
@@ -186,6 +201,7 @@ function getGroups() {
 }
 
 function getReports() {
+	showLoading("#reportList");
 	$.get("reports.ajax.php?action=getReportDetails", function (data) {
 		$("#reportDetails").html(data);
 		$.get("reports.ajax.php?action=getReportGraphs", function (data) {
@@ -195,8 +211,39 @@ function getReports() {
 }
 
 function getSearch() {
+	showLoading("#searchTab");
 	var searchTerms = $("#searchInput").val();
 	$("#searchTab").load("search.php?searchTerms="+searchTerms);
+}
+
+function getAdmin(){}
+
+function getAttachments() {
+	showLoading("#ideaAttachments");
+	$.get("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId, function (data) {
+		$("#ideaAttachments").html(data);
+	});
+}
+
+function getRiskEvalForIdea() {
+	showLoading("#ideaRiskEval");
+	$.get("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaRiskEval").html(data);
+	});
+}
+
+function getShareForIdea() {
+	showLoading("#ideaShare");
+	$.get("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaShare").html(data);
+	});
+}
+
+function getSelectForIdea() {
+	showLoading("#ideaSelect");
+	$.get("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function (data) {
+		$("#ideaSelect").html(data);
+	});
 }
 
 function showSearch() {
@@ -207,32 +254,6 @@ function showSearch() {
 	getSearch();
 	$(".tabBody").hide();
 	$("#searchTab").show();	
-}
-
-function getAdmin(){}
-
-function getAttachments() {
-	$.get("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId, function (data) {
-		$("#ideaAttachments").html(data);
-	});
-}
-
-function getRiskEvalForIdea() {
-	$.get("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaRiskEval").html(data);
-	});
-}
-
-function getShareForIdea() {
-	$.get("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaShare").html(data);
-	});
-}
-
-function getSelectForIdea() {
-	$.get("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaSelect").html(data);
-	});
 }
 
 function showIdeas(elem) {
@@ -776,39 +797,3 @@ function deleteSelectIdea(id){
 		showSelect();
 	});
 }
-
-//////////////// ATTACHMENTS /////////////
-/*
-function addIdeaAttachment(element) {
-	alert("adding attach");
-	$("#loading").ajaxStart(function(){
-		$(this).show();
-	}).ajaxComplete(function(){
-		$(this).hide();
-	});
-
-	alert("File uploading attach");
-	$.ajaxFileUpload
-	(
-		{
-			url:'ideas.ajax.php',
-			secureuri:false,
-			fileElementId:'userfile',
-			datstyle="position:relative; float:left"aType: 'json',
-			complete: function() {
-				alert("File uploading attach done");
-				//getAttachments();
-			}
-		}
-	)
-	
-	return false;
-}
-
-function deleteIdeaAttachment(attachmentId) {
-	$.post("ideas.ajax.php", {actionId: attachmentId, action:"deleteAttachment"} , function(data) {
-		showResponses("#ideaResponses", data, true);
-		getAttachments();
-	});
-}
-*/
