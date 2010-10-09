@@ -5,7 +5,7 @@
 require_once("innoworks.connector.php");
 
 function getIdeas($userid) {
-	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
+	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId");
 }
 
 function getAddIdeas($userid) {
@@ -13,15 +13,15 @@ function getAddIdeas($userid) {
 }
 
 function getIdeaDetails($ideaId) {
-	return dbQuery("SELECT * FROM Ideas WHERE ideaId = '".$ideaId."'");
+	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE ideaId = '".$ideaId."'  AND Users.userId = Ideas.userId");
 }
 
 function getSelectedIdeas($userid) {
-	return dbQuery("SELECT Ideas.*, Selections.* FROM Ideas, Selections WHERE Ideas.userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId");
+	return dbQuery("SELECT Ideas.*, Selections.*, Users.username FROM Ideas, Selections, Users WHERE Ideas.userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId AND Users.userId = Ideas.userId");
 }
 
 function getSelectedIdeasForGroup($groupid,$userid) {
-	return dbQuery("SELECT Ideas.*, Selections.* FROM Ideas, Selections, GroupIdeas WHERE Ideas.ideaId = GroupIdeas.ideaId AND GroupIdeas.groupId = '$groupid' AND Selections.ideaId =  Ideas.ideaId");
+	return dbQuery("SELECT Ideas.*, Selections.*, Users.username FROM Ideas, Selections, GroupIdeas, Users WHERE Ideas.ideaId = GroupIdeas.ideaId AND GroupIdeas.groupId = '$groupid' AND Selections.ideaId =  Ideas.ideaId AND Users.userId = Ideas.userId");
 }
 
 function getIdeaSelect($ideaId, $userid) {

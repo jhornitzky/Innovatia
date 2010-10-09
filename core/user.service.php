@@ -137,4 +137,10 @@ function getAllUsers() {
 function updateUser($opts) {
 	return genericUpdate("Users", $opts, array("userId") );
 }
+
+function getUserIdForUsername($username) {
+	$rs = dbQuery("SELECT userId FROM Users WHERE (username = '".$username."')");
+	$row = dbFetchObject($rs);
+	return $row->userId;
+}
 ?>

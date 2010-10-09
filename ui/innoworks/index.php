@@ -266,7 +266,7 @@ Click here to select one of your own ideas for this group <input type='button' o
 <a href="javascript:printIdea()">Print</a> </span>
 <table><tr>
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
-<td style="vertical-align:middle;"><h2><span id="ideaName"></span></h2></td></tr>
+<td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
 </table>
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 	style="width: 55em; height: 25em;">

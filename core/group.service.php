@@ -28,7 +28,7 @@ function getUsersForGroup($id) {
 }
 
 function getIdeasForGroup($id) {
-	return dbQuery("SELECT Ideas.* FROM Ideas,Groups,GroupIdeas WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId");
+	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId");
 }
 
 function getIdeaShareDetails($id) {

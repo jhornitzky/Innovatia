@@ -36,10 +36,10 @@ $(document).ready( function () {
 <div id="loginContent">
 <table style="width: 100%; font-size: 1em;">
 	<tr>
-		<td colspan="2" style="height: 1.5em;">
-		<div id="Responses">
-		<div id="Wait"><img style="height:1.5em;width:1.5em" src="<?= $serverRoot?>ui/style/ajaxLoader.gif" alt="Loading..."/></div>
-		</div>
+		<td colspan="2" style="height: 1.5em; min-height:48px;">
+			<div id="Responses">
+				<div id="Wait" class="loadingAnim"></div>
+			</div>
 		</td>
 	</tr>
 	<tr>

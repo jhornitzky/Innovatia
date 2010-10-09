@@ -211,8 +211,8 @@ function getReports() {
 }
 
 function getSearch() {
-	showLoading("#searchTab");
 	var searchTerms = $("#searchInput").val();
+	showLoading("#searchTab");
 	$("#searchTab").load("search.php?searchTerms="+searchTerms);
 }
 
@@ -220,30 +220,22 @@ function getAdmin(){}
 
 function getAttachments() {
 	showLoading("#ideaAttachments");
-	$.get("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId, function (data) {
-		$("#ideaAttachments").html(data);
-	});
+	$("#ideaAttachments").load("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId);
 }
 
 function getRiskEvalForIdea() {
 	showLoading("#ideaRiskEval");
-	$.get("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaRiskEval").html(data);
-	});
+	$("#ideaRiskEval").load("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId);
 }
 
 function getShareForIdea() {
 	showLoading("#ideaShare");
-	$.get("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaShare").html(data);
-	});
+	$("#ideaShare").load("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId);
 }
 
 function getSelectForIdea() {
 	showLoading("#ideaSelect");
-	$.get("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function (data) {
-		$("#ideaSelect").html(data);
-	});
+	$("#ideaSelect").load("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId);
 }
 
 function showSearch() {

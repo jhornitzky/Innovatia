@@ -27,13 +27,19 @@ import("user.service");
 $notes = getAllNotes($_SESSION['innoworks.ID']);
 if ($notes && dbNumRows($notes) > 0 ) {
 	echo "<table cellpadding='3px'>";
-	while ($note = dbFetchObject($notes)) {?>
-		<tr>
-			<td><i><?= $note->createdTime ?></i></td>
-		    <td><b><?= $note->toUserId ?></b></td>
+	while ($note = dbFetchObject($notes)) {
+		$class;
+		if ($note->toUserId == $_SESSION['innoworks.ID']) 
+			$class = "incoming";
+		else 
+			$class = "outgoing";	
+		?>
+		<tr class="<?= $class ?>">
+			<td class="first"><i><?= $note->createdTime ?></i></td>
+			<td><b><?= getUserInfo($note->fromUserId)->username ?></b></td>
 			<td>></td>
-			<td><b><?= $note->fromUserId ?></b></td>
-			<td><?= $note->noteText ?></td>
+		    <td><b><?= getUserInfo($note->toUserId)->username ?></b></td>
+			<td class="last"><?= $note->noteText ?></td>
 		</tr>
 	<?}
 	echo "</table>";

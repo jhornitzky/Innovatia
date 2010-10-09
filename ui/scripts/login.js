@@ -1,42 +1,39 @@
-
-function authenUser()
-{
+function authenUser() {
 	hideResponse();
-	$("#AjaxForm").fadeOut(250, function() {
-		$("#Wait").fadeIn(250);
-		$.post("core/login.authenticateUser.php", $("#LoginForm").serialize(), function(data) {
-			$("#Responses").html(data);
-			hideWait();
-			showResponse();
-		});
-	});
-} 
-
-function hideWait()
-{
-	$("#Wait").fadeOut(250, function() {
-		$("#AjaxForm").fadeIn(250);	
-	});
+	$("#Wait").fadeIn(250);
+	$.post("core/login.authenticateUser.php", $("#LoginForm").serialize(),
+			function(data) {
+				$("#Responses").html(data);
+				hideWait();
+				showResponse();
+			});
 }
 
-function showResponse()
-{
-	$("#Responses").fadeIn(175);		
+function hideWait() {
+	$("#Wait").fadeOut(250);
+	$("#AjaxForm").fadeIn(250);
 }
 
-function enterOS(goFS)
-{window.location.reload();
+function showResponse() {
+	$("#Responses").fadeIn(175);
 }
 
-function mainMenu()
-{
+function hideResponse() {
+	$("#Responses").fadeOut(175);
+}
+
+function enterOS(goFS) {
+	window.location.reload();
+}
+
+function mainMenu() {
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
 		$.get("ui/login/login.html", function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
-		});									 		
+		});
 	});
 }
 
@@ -47,38 +44,30 @@ function showAbout() {
 		$.get("ui/login/about.html", function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
-		});									 		
+		});
 	});
 }
 
-function registerUser()
-{
+function registerUser() {
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
 		$.get("ui/login/register.html", function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
-		});									 		
+		});
 	});
 }
 
 function registerNewUser() {
 	hideResponse();
-	$("#AjaxForm").fadeOut(250, function() {
-		$("#Wait").fadeIn(250);	
-		$.post("core/register.registerUser.php", $("#registerform").serialize(), function(data) {
-			$("#Responses").html(data);
-		});
-	});
-}
-
-function showDemo()
-{
-	window.open("ui/convergence/demo.html",null,"fullscreen=yes,status=no,toolbar=no,menubar=no,location=no"); 					 		
-}
-
-function hideResponse()
-{
-	$("#Responses").fadeOut(175);		
+	$("#AjaxForm").fadeOut(
+			250,
+			function() {
+				$("#Wait").fadeIn(250);
+				$.post("core/register.registerUser.php", $("#registerform")
+						.serialize(), function(data) {
+					$("#Responses").html(data);
+				});
+			});
 }

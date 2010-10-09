@@ -30,11 +30,12 @@ function renderJustIdea($ideas, $idea, $user) {?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all"
 	onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
 <div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
- <!--<span class="ideaoptions">-->
 <a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a>
+<span class="ideaoptions">
+<?= $idea->username?>
 <?if ($idea->userId == $user) { ?> <input type="button" value=" - "
 	onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
-<!-- </span>--></div>
+</span></div>
 </div>
 <?}
 
@@ -361,6 +362,6 @@ function renderAttachmentsIframe($ideaId, $userId) {?>
 
 function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));
-	echo $details->title;
+	echo "<b style='font-size:1.2em'>".$details->title."</b> ".$details->username." ".$details->createdTime;
 }
 ?>
