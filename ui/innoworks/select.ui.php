@@ -17,6 +17,22 @@ function renderSelectDefault($userId) {
 	}
 }
 
+function renderSelectPublic() {
+	//require_once("ideas.ui.php");
+	$ideas = getPublicSelectedIdeas() or die("Error retrieving ideas. Report to IT Support.");
+	if ($ideas && dbNumRows($ideas) > 0 ) {
+		while ($idea = dbFetchObject($ideas)) {
+			renderSelectIdea($ideas,$idea, $userId);
+		}?>
+		<!-- <script type="text/javascript">
+		dojo.parser.instantiate(dojo.query('#ideasList *'));
+		</script> -->
+	<?} else {
+		echo "<p>No selections yet</p>";
+	}
+}
+
+
 function renderSelectForGroup($groupId, $userId) {
 	$ideas = getSelectedIdeasForGroup($groupId, $userId) or die("Error retrieving ideas. Report to IT Support.");
 	if ($ideas && dbNumRows($ideas) > 0 ) {
@@ -76,11 +92,21 @@ function renderIdeaSelect($ideaId,$userId) {
 	import("idea.service");
 	$item = getIdeaSelect($ideaId,$userId);
 	if ($item && dbNumRows($item) > 0) {
-		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
-		echo "Go to <a href='javascript:showSelect(); dijit.byId(\"ideasPopup\").hide()'>Select</a> to edit data";
-	} else {
-		echo "<p>No selection data for this idea</p>"; 
-		echo "Go to <a href='javascript:showSelect(); dijit.byId(\"ideasPopup\").hide()'>Select</a> to add to selections";
-	}
+		$item = dbFetchObject($item);?>
+		<form id="ideaSelectDetails" onsubmit="updateSelection('<?= $item->selectionId ?>','ideaSelectDetails'); return false;">
+		Selection Reason
+		<textarea name="reason" dojoType="dijit.form.Textarea"><?= $item->reason ?></textarea>
+		<?//renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId","selectionId"), "Selections");?>
+		<input type="hidden" name="selectionId" value="<?= $item->selectionId ?>"/>
+		<input type="hidden" name="action" value="updateSelection" />
+		<input type="submit" value="Update" />
+		</form>
+		Go to <a href='javascript:showSelect(); dijit.byId("ideasPopup").hide()'>Select</a>
+		<script type="text/javascript"> dojo.parser.instantiate(dojo.query('#ideaSelectDetails *')); </script>
+	<?} else {?>
+		<p>No selection data for this idea</p>
+		<p>Select this idea <a onclick="addSelectItem('<?= $ideaId ?>');loadPopupShow()" href="javascript:logAction()">now</a> </p> 
+		Go to <a href='javascript:showSelect(); dijit.byId(\"ideasPopup\").hide()'>Select</a>
+	<?}
 }
 ?>

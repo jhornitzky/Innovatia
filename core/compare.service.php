@@ -22,13 +22,17 @@ function getRiskItems($user) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user AND RiskEvaluation.groupId IS NULL");
 }
 
+function getPublicRiskItems($user) {
+	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
+	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.isPublic='1'");
+}
+
 function getRiskItemsForGroup($group) {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
-	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group");
+	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group"); //FIXME
 }
 
 function getRiskItemForIdea($ideaId, $user) {
-	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation, Ideas WHERE RiskEvaluation.ideaId = '$ideaId' 
-	AND RiskEvaluation.ideaId = Ideas.ideaId  AND Ideas.userId=$user");
+	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation WHERE RiskEvaluation.ideaId = '$ideaId'"); //FIXME
 }
 ?>

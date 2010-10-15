@@ -126,6 +126,19 @@ function getUserInfo($userId)
 	return $row;
 }
 
+function getSimilarUserProfiles($userId) {
+	$info = getUserInfo($userId);
+	$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') ORDER BY createdTime LIMIT 5");
+	if ($rs && dbNumRows($rs) == 0) {
+		$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' ORDER BY createdTime LIMIT 5");
+	}
+	return $rs;
+}
+
+function getPublicUsers() {
+	return dbQuery("SELECT * FROM Users WHERE isPublic='1' ORDER BY createdTime");
+}
+
 function getUserGroups($user) {
 	return dbQuery("SELECT * FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId");
 }

@@ -32,7 +32,7 @@ var ctime;
 var currentIdeaId;
 var currentIdeaName;
 var currentGroupId;
-var currentGroupName;
+var currentGroupName = "Private";
 var currentPersonId;
 var currentPersonName;
 var formArray; // Temp holder for form value functions
@@ -91,47 +91,45 @@ dojo.addOnLoad(function(){
 function subscribeForChild(child) {
 	if (child.id == "ideaComments") {
 		getCommentsForIdea();
-		selectedChild = "comments";
 	}
 	else if (child.id == "ideaFeatureEvaluationList") {
 		getFeatureEvaluationsForIdea();
-		selectedChild = "featureEvaulation";
 	}
 	else if (child.id == "ideaMission") {
 		getMission("ideaMission",currentIdeaId);
-		selectedChild = "mission";
 	}
 	else if (child.id == "ideaFeatures") {
 		getFeaturesForm("ideaFeatures",currentIdeaId);
-		selectedChild = "features";
 	}
 	else if (child.id == "ideaRoles") {
 		getRolesForm("ideaRoles",currentIdeaId);
-		selectedChild = "roles";
 	} 
 	else if (child.id == "ideaAttachments") {
 		getAttachments("ideaAttachments",currentIdeaId);
-		selectedChild = "attachments";
 	} 
 	else if (child.id == "ideaShare") {
 		getShareForIdea();
-		selectedChild = "share";
 	} 
 	else if (child.id == "ideaSelect") {
 		getSelectForIdea();
-		selectedChild = "select";
 	} 
 	else if (child.id == "ideaRiskEval") {
 		getRiskEvalForIdea("ideaRisks",currentIdeaId);
-		selectedChild = "riskEval";
 	} 
+	selectedChild = child.id;
 }
 
-function printIdea() {
-	  newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + currentIdeaId);
-	  //newWin.document.write($('#ideasPopup').html());
-	  newWin.print();
-	  //newWin.close();
+function printIdea(id) {
+	var sendId;
+	if (id != null && id != undefined) {
+		sendId = id;
+	} else {
+		sendId = currentIdeaId;
+	}
+	newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + sendId);
+	//newWin.document.write($('#ideasPopup').html());
+	newWin.print();
+	//newWin.close();
 }
 </script>
 
@@ -222,7 +220,7 @@ Click here to add idea to comparison
 <div id="selectTab" class="tabBody">
 <div class="addform ui-corner-all">
 <h2>Select <span class="ideaGroupsList">My</span> ideas</h2> 
-Click here to select one of your own ideas for this group <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on" />
+Click here to select an idea <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on" />
 </div>
 <div id="selectList">
 </div>
@@ -262,7 +260,7 @@ Click here to select one of your own ideas for this group <input type='button' o
 
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
-<span class="ideaOptions" style="position:relative; float:right;">
+<span class="ideaDetailsOptions" style="position:relative; float:right;">
 <a href="javascript:printIdea()">Print</a> </span>
 <table><tr>
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>

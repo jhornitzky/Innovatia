@@ -8,6 +8,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getSelection":
 			renderSelectDefault($_SESSION['innoworks.ID']);
 			break;
+		case "getPublicSelection":
+			renderSelectPublic();
+			break;
 		case "getSelectionForGroup":
 			renderSelectForGroup($_GET['actionId'],$_SESSION['innoworks.ID']);
 			break;
@@ -37,6 +40,13 @@ if (isset($_POST) && $_POST != '') {
 			$resp = deleteIdeaSelect(array("selectionId" => $_POST['selectionId']));
 			echo $resp;
 			break;
+		case "updateSelection":
+			echo "Updating selection... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			$resp = updateIdeaSelect($opts);
+			echo "Response Code: ".$resp;
+			break;	
 	}
 }
 ?>

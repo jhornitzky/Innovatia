@@ -138,12 +138,34 @@ function renderIdeaRiskEval($ideaId, $userId) {
 function renderIdeaShare($ideaId, $userId) {
 	import("group.service");
 	$item = getIdeaShareDetails($ideaId);
+	$groups = getGroupsForCreatorUser($_SESSION['innoworks.ID']);
+	$othergroups = getPartOfGroupsForUser($_SESSION['innoworks.ID']);
+	
 	if ($item && dbNumRows($item) > 0) {
 		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
+		echo "<a href='logAction()' onclick=''>Remove from this group</a>";
 		echo "Go to <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a> to edit data";
-	} else {
-		echo "<p>No share data for this idea</p>"; 
-		echo "Go to <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a> to share with group";
-	}
+	} else {?>
+		<p>No share data for this idea</p> 
+		<p>Share idea with a group: </p> 
+		<ul>
+	    <? 
+		if ($groups && dbNumRows($groups) > 0 ) {
+			while ($group = dbFetchObject($groups)) {
+				renderIdeaGroupItem($ideaId, $group);
+			}
+		} 
+		if ($othergroups && dbNumRows($othergroups) > 0 ) {
+			while ($group = dbFetchObject($othergroups)) {
+				renderIdeaGroupItem($ideaId, $group);
+			}
+		} 
+		?>
+		</ul> 
+		Show <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a>
+	<?}
 }
-?>
+
+function renderIdeaGroupItem($ideaId, $group) { ?>
+	<li><a href="javascript:logAction()" onclick="addIdeaToGroup('<?= $ideaId ?>','<?= $group->groupId ?>');loadPopupShow()"><?= $group->title ?></a></li>
+<?}?>

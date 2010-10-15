@@ -21,6 +21,26 @@ function renderDefault($user) {
 		echo "<p>No items yet. Add some items by clicking the '+' above. </p>";
 	}
 } 
+
+function renderPublicRiskItems() {
+	$riskItems = getPublicRiskItems();
+	if ($riskItems && dbNumRows($riskItems) > 0){
+		echo "<table id='riskEvaluation'>";
+		renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
+		while ($riskItem = dbFetchObject($riskItems)) {
+			renderRiskItem($riskItems, $riskItem);
+		}
+		echo "</table>";?>
+		<script type="text/javascript">
+			initFormSelectTotals('table#riskEvaluation');
+		</script>
+		<?
+	} else {
+		echo "<p>No items yet. Add some items by clicking the '+' above. </p>";
+	}
+} 
+
+
 function renderComparisonForGroup($groupId) {
 	$riskItems = getRiskItemsForGroup($groupId);
 	if ($riskItems && dbNumRows($riskItems) > 0){
@@ -80,7 +100,9 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 	}
 }
 
-function renderIdeaSummary($ideaId) {
+function renderIdeaSummary($ideaId) {?>
+<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea('<?= $ideaId?>')">Print</a> </span>
+	<?
 	import("idea.service");
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
 	renderGenericInfoForm(null, $idea, null);
@@ -93,11 +115,18 @@ function renderIdeaRiskEval($ideaId, $userId) {
 	import("compare.service");
 	$item = getRiskItemForIdea($ideaId,$userId);
 	if ($item && dbNumRows($item) > 0) {
-		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
-		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to edit data";
-	} else {
-		echo "<p>No compare data for idea</p>"; 
-		echo "Go to <a href='javascript:showCompare(); dijit.byId(\"ideasPopup\").hide()'>Compare</a> to add comparison data";
-	}
+		$item = dbFetchObject($item);
+		?>
+		<form id="ideaRiskEvalDetails" onsubmit="updateRisk('<?= $item->riskEvaluationId ?>','ideaRiskEvalDetails'); return false;">
+		<? renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId"), "RiskEvaluation");?>
+		<input type="hidden" name="riskEvaluationId" value="<?= $item->riskEvaluationId ?>"/>
+		<input type="hidden" name="action" value="updateRiskEval" />
+		<input type="submit" value="Update" /></form>
+		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a> to edit data
+	<?} else {?>
+		<p>No compare data for idea</p>
+		<p>Add comparison data for idea <a onclick="addRiskItem('<?= $ideaId ?>');loadPopupShow()" href="javascript:logAction()">now</a> </p> 
+		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
+	<?}
 }
 ?>

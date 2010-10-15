@@ -4,6 +4,10 @@
  */
 require_once("innoworks.connector.php");
 
+function getPublicIdeas() {
+	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.isPublic = '1' AND Ideas.userId = Users.userId ORDER BY createdTime");
+}
+
 function getIdeas($userid) {
 	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId");
 }
@@ -20,12 +24,16 @@ function getSelectedIdeas($userid) {
 	return dbQuery("SELECT Ideas.*, Selections.*, Users.username FROM Ideas, Selections, Users WHERE Ideas.userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId AND Users.userId = Ideas.userId");
 }
 
+function getPublicSelectedIdeas() {
+	return dbQuery("SELECT Ideas.*, Selections.*, Users.username FROM Ideas, Selections, Users WHERE Ideas.isPublic = '1' AND Selections.ideaId =  Ideas.ideaId AND Users.userId = Ideas.userId");
+}
+
 function getSelectedIdeasForGroup($groupid,$userid) {
 	return dbQuery("SELECT Ideas.*, Selections.*, Users.username FROM Ideas, Selections, GroupIdeas, Users WHERE Ideas.ideaId = GroupIdeas.ideaId AND GroupIdeas.groupId = '$groupid' AND Selections.ideaId =  Ideas.ideaId AND Users.userId = Ideas.userId");
 }
 
 function getIdeaSelect($ideaId, $userid) {
-	return dbQuery("SELECT Selections.* FROM Ideas, Selections WHERE userId = '".$userid."' AND Selections.ideaId =  Ideas.ideaId AND Ideas.ideaId = '$ideaId'");
+	return dbQuery("SELECT Selections.* FROM Ideas, Selections WHERE Selections.ideaId =  Ideas.ideaId AND Ideas.ideaId = '$ideaId'");
 }
 
 function createIdea($opts) {
@@ -46,7 +54,7 @@ function createIdeaSelect($opts) {
 }
 
 function updateIdeaSelect($opts) {
-	$where = array("ideaId", "userId");
+	$where = array("ideaId", "userId", "selectionId");
 	return genericUpdate("Selections", $opts, $where);
 }
 

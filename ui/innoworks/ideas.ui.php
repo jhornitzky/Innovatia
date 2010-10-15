@@ -13,6 +13,17 @@ function renderDefault() {
 	}
 }
 
+function renderPublicIdeas() {
+	$ideas = getPublicIdeas() or die("Error retrieving ideas. Report to IT Support.");
+	if ($ideas && dbNumRows($ideas) > 0 ) {
+		while ($idea = dbFetchObject($ideas)) {
+			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
+		}
+	} else {
+		echo "<p>No ideas yet</p>";
+	}
+}
+
 function renderIdeasForGroup($groupId) {
 	import("group.service");
 	$ideas = getIdeasForGroup($groupId) or die("Error retrieving ideas. Report to IT Support.");
@@ -101,7 +112,8 @@ function renderIdeaMission($ideaId) {
 	?>
 <div class="formBody">
 <div class="ideaDetails subform">
-<form id="ideadetails_form_<?= $idea->ideaId?>""><? renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime")); ?>
+<form id="ideadetails_form_<?= $idea->ideaId?>">
+<? renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username")); ?>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="updateIdeaDetails" /> <input
 	type="button"
@@ -186,7 +198,7 @@ function renderIdeaRoles($ideaId) {
 
 function renderRole($roles, $role) {?>
 <tr id="roleform_<?= $role->roleId ?>'">
-<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
+	<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
 	<td><input type="hidden" name="roleId" value="<?= $role->roleId ?>" />
 	<input type="button"
 		onclick="updateRole('<?= $role->roleId ?>','roleform_<?= $role->roleId ?>','<?= $role->roleId ?>')"
@@ -204,6 +216,7 @@ function renderIdeaGroupsForUser($uid) {
 		    <span> Private </span>
 			<div dojoType="dijit.Menu">
 			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">Private</div>
+			<div dojoType="dijit.MenuItem" onClick="showPublicIdeas()">Public</div>
 			<div dojoType="dijit.MenuSeparator"></div>
 			<? while ($group = dbFetchObject($groups)) {?>
 			<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>

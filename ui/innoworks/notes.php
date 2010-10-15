@@ -5,7 +5,7 @@ import("user.service");
 ?>
 
 <form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
-	Send Note
+	Send Note to
 	<input type="hidden" name="action" value="addNote"/>
 	<select class="toUserNote" dojoType="dijit.form.ComboBox" name="toUserId">
 		<?
@@ -15,12 +15,13 @@ import("user.service");
 			}
 		?>
 	</select>
-	<input type="text" name="noteText" id="noteText"/>
-	<input type="submit" value=" + " title = "Add Note"/>
+	<input type="submit" value=" + " title = "Send"/>
+	<input type="text" name="noteText" class="noteText" dojoType="dijit.form.Textarea" />
 </form>
 
 <script type="text/javascript">
 	dojo.parser.instantiate(dojo.query(".toUserNote"));
+	dojo.parser.instantiate(dojo.query(".noteText"));
 </script>
 
 <?

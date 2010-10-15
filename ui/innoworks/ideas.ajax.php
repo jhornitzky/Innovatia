@@ -3,12 +3,13 @@ require_once("thinConnector.php");
 require_once("ideas.ui.php");
 import("idea.service");
 
-logDebug("IM BEING HIT!");
-
 if (isset($_GET) && $_GET != '') {
 	switch ($_GET['action']) {
 		case "getIdeas":
 			renderDefault();
+			break;
+		case "getPublicIdeas":
+			renderPublicIdeas();
 			break;
 		case "getIdeaGroupsForUser":
 			renderIdeaGroupsForUser($_SESSION['innoworks.ID']);

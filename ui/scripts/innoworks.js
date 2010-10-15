@@ -5,10 +5,11 @@ function pollServer() {
 			if (!($("#noteTab").is(":hidden"))) {
 				showNotes();
 			}
-			//$(".responses").html(data);
 		}
 	});
 }
+
+function logAction(action) {}
 
 function showLoading(selector) {
 	$(selector).html("<div class='loadingAnim'></div>");
@@ -16,24 +17,24 @@ function showLoading(selector) {
 
 function loadPopupShow() {
 	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId="+currentIdeaId);
-	if (selectedChild == "mission") 
-		getMission("ideaMission",currentIdeaId);
-	else if (selectedChild == "features")
-		getFeaturesForm("ideaFeatures",currentIdeaId);
-	else if (selectedChild == "roles")
-		getRolesForm("ideaRoles",currentIdeaId);
-	else if (selectedChild == "featureEvaulation")
+	if (selectedChild == "ideaMission") 
+		getMission(selectedChild,currentIdeaId);
+	else if (selectedChild == "ideaFeatures")
+		getFeaturesForm(selectedChild,currentIdeaId);
+	else if (selectedChild == "ideaRoles")
+		getRolesForm(selectedChild,currentIdeaId);
+	else if (selectedChild == "ideaFeatureEvaluationList")
 		getFeatureEvaluationsForIdea();
-	else if (selectedChild == "comments")
+	else if (selectedChild == "ideaComments")
 		getCommentsForIdea();
-	else if (selectedChild == "attachments")
-		getAttachments();
+	else if (selectedChild == "ideaAttachments")
+		getAttachments(selectedChild,currentIdeaId);
 	else if (selectedChild == "ideaShare")
 		getShareForIdea();
-	else if (selectedChild == "select")
+	else if (selectedChild == "ideaSelect")
 		getSelectForIdea();
-	else if (selectedChild == "riskEval")
-		getRiskEvalForIdea();
+	else if (selectedChild == "ideaRiskEval")
+		getRiskEvalForIdea("ideaRisks",currentIdeaId);
 	else 
 		getMission("ideaMission",currentIdeaId);
 }
@@ -107,7 +108,6 @@ function showIdeaDetails(ideaId) {
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
-		//$(".ideaGroupsList a[groupId=" + currentGroupId + "]").addClass("selected");
 		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
 		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
 		$("button span.dijitButtonText").html(currentGroupName);
@@ -118,7 +118,16 @@ function showDefaultIdeas() {
 	currentGroupId = null;
 	currentGroupName = "Private";
 	$("#addIdeaTitle").removeAttr('disabled');
-	//$(".ideaGroups .ideaGroupsList a").removeClass('selected');
+	getIdeas();
+	getCompare();
+	getSelect();
+	showIdeaGroupsForUser();
+}
+
+function showPublicIdeas() {
+	currentGroupId = null;
+	currentGroupName = "Public";
+	$("#addIdeaTitle").attr('disabled', 'disabled');
 	getIdeas();
 	getCompare();
 	getSelect();
@@ -129,7 +138,6 @@ function showIdeasForGroup(gId, elem) {
 	currentGroupId = gId;
 	currentGroupName = elem;
 	$("#addIdeaTitle").attr('disabled', 'disabled');
-	//$("button span.dijitButtonText").html(elem);
 	getIdeas();
 	getCompare();
 	getSelect();
@@ -150,8 +158,12 @@ function getDash() {
 
 function getIdeas() {
 	showLoading("#ideasList");
-	if (currentGroupId == null) {
+	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("ideas.ajax.php?action=getIdeas", function (data) {
+			$("#ideasList").html(data);
+		});
+	} else if (currentGroupId == null && currentGroupName == "Public") {
+		$.get("ideas.ajax.php?action=getPublicIdeas", function (data) {
 			$("#ideasList").html(data);
 		});
 	} else { 
@@ -159,13 +171,16 @@ function getIdeas() {
 			$("#ideasList").html(data);
 		});
 	}
-	//showIdeaGroupsForUser();
 } 
 
 function getCompare() {
 	showLoading("#compareList");
-	if (currentGroupId == null) {
+	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("compare.ajax.php?action=getComparison", function (data) {
+			$("#compareList").html(data);
+		});
+	} else if (currentGroupId == null && currentGroupName == "Public") {
+		$.get("compare.ajax.php?action=getPublicComparison", function (data) {
 			$("#compareList").html(data);
 		});
 	} else { 
@@ -177,8 +192,10 @@ function getCompare() {
 
 function getSelect() {
 	showLoading("#selectList");
-	if (currentGroupId == null) {
+	if (currentGroupId == null && currentGroupName == "Private") {
 		$("#selectList").load("select.ajax.php?action=getSelection");
+	} else if (currentGroupId == null && currentGroupName == "Public") {
+		$("#selectList").load("select.ajax.php?action=getPublicSelection");
 	} else {
 		$("#selectList").load("select.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
 	}
@@ -597,12 +614,16 @@ function addUserToCurGroup(id) {
 	});
 }
 
-function addIdeaToCurGroup(id) {
+function addIdeaToGroup(id, gId) {
 	dijit.byId('commonPopup').hide();
-	$.post("groups.ajax.php", {action: "linkIdeaToGroup", ideaId:id, groupId:currentGroupId}, function(data) {
+	$.post("groups.ajax.php", {action: "linkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showGroupDetails();
 	});
+}
+
+function addIdeaToCurGroup(id) {
+	addIdeaToGroup(id, currentGroupId);
 }
 
 function delUserFromCurGroup(id) {
@@ -612,11 +633,15 @@ function delUserFromCurGroup(id) {
 	});
 }
 
-function delIdeaFromCurGroup(id) {
-	$.post("groups.ajax.php", {action: "unlinkIdeaToGroup", ideaId:id, groupId:currentGroupId}, function(data) {
+function delIdeaFromGroup(id, gId) {
+	$.post("groups.ajax.php", {action: "unlinkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showGroupDetails();
 	});
+}
+
+function delIdeaFromCurGroup(id) {
+	delIdeaFromGroup(id, currentGroupId);
 }
 
 ///////////// RISK EVALUATION /////////////
@@ -695,8 +720,7 @@ function addComment() {
 	});
 }
  
-function updateComment(){
-}
+function updateComment(){}
 
 function deleteComment(cid) {
 	$.post("ideas.ajax.php", {action: "deleteComment", commentId:cid}, function(data) {
@@ -717,7 +741,6 @@ function updateFeatureItem(featureItemId,featureForm){
 	formData['action'] = 'updateFeatureItem';
 	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses("#ideaResponses", data, true);
-		//getFeatureEvaluationForIdea();
 	});
 }
 
@@ -729,7 +752,6 @@ function deleteFeatureItem(fid){
 }
 
 function addFeatureEvaluation(selector) {
-	//alert("FId: " + id);
 	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses("#ideaResponses", data, true);
 		getFeatureEvaluationsForIdea();
@@ -741,7 +763,6 @@ function updateFeatureEvaluation(FeatureEvaluationId,featureForm){
 	formData['action'] = 'updateFeatureEvaluation';
 	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses("#ideaResponses", data, true);
-		//getFeatureEvaluationForIdea();
 	});
 }
 
@@ -787,5 +808,14 @@ function deleteSelectIdea(id){
 	$.post("select.ajax.php", {action: "deleteSelection", selectionId:id}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		showSelect();
+	});
+}
+
+function updateSelection(selectid,selectform){
+	formData = getInputDataFromId(selectform);
+	formData['action'] = 'updateSelection';
+	$.post("select.ajax.php", getSerializedArray(formData), function(data) {
+		showResponses("#ideaResponses", data, true);
+		showCompare();
 	});
 }

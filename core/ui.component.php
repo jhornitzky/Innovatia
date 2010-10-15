@@ -1,6 +1,6 @@
 <?
 /*
- * UI Components are common often db related controls to do automatic rendering for data sources 
+ * UI Components are common often db related controls to do automatic rendering for data sources
  * within certain parameters
  */
 
@@ -22,10 +22,10 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-		<td><label><?=fromCamelCase($key)?></label></td>
-		<td>
-			<p><?=$value?></p>
-		</td>
+<td><label><?=fromCamelCase($key)?></label></td>
+<td>
+<p><?=$value?></p>
+</td>
 		<?}
 		echo "</tr>";
 	}
@@ -38,12 +38,57 @@ function renderGenericUpdateForm($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-		<td style="width:10%"><label><?=fromCamelCase($key)?></label></td>
-		<td style="width:90%">
-		<!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-		</td>
+<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+<td
+	style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+</td>
 		<?}
+		echo "</tr>";
+	}
+	echo "</table>";
+}
+
+function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
+	$refdata = getRefDataForTable($tableName);
+
+	if ($refdata && dbNumRows($refdata) > 0)
+	$refdata = dbFetchAll($refdata);
+
+	echo "<table>";
+	foreach($row as $key => $value) {
+		echo "<tr>";
+		if (!in_array($key, $omitArray)) {
+			$metaArray = findColumnMetadata($refdata, $key);
+			if ($metaArray){
+				$metaHelp = getColumnDescription($metaArray);
+				if ($metaHelp) {?>
+					<td style="width: 10%"><span class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($key) ?></span></td>
+				<?} else {?>
+					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+				<?}
+			}
+			
+			$metaArray = findColumnMetadata($refdata, $key);
+			//If metadata then render appropriate input dialog
+			if ($metaArray){
+				//Get column type, if column type, then render appropriate input
+				$metaType = getColumnType($refdata);
+				if ($metaType) {
+					renderMetaType($metaType, $key, $value);
+				} else {?>
+					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+					<td style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+						<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+					</td>
+				<?}
+			} else {?>
+					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+					<td style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+						<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+					</td>
+			<?}
+		}
 		echo "</tr>";
 	}
 	echo "</table>";
@@ -62,29 +107,29 @@ function renderGenericHeader($rs, $omitArray) {
 
 function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
 	$refdata = getRefDataForTable($tableName);
-	
+
 	if ($refdata && dbNumRows($refdata) > 0)
-		$refdata = dbFetchAll($refdata);
-	
+	$refdata = dbFetchAll($refdata);
+
 	echo "<tr>";
 	while ($field = dbFetchField($rs)) {
 		if (!in_array($field->name, $omitArray)) {
 			//logDebug("Field name: ".$field->name);
 			$metaArray = findColumnMetadata($refdata, $field->name);
 			//logDebug("Col Head meta array: ".$metaArray);
-			
+				
 			echo "<th>";
-			echo fromCamelCase($field->name); 
 			//If metadata then render help lnk
 			if ($metaArray){
 				$metaHelp = getColumnDescription($metaArray);
-				logDebug("metahelp: ".$metaHelp);
 				if ($metaHelp) {?>
-					<a href="javascript:showHelp('<?= $metaHelp?>')">?</a>
+					<span class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($field->name) ?></span>
 				<?}
+			} else {
+				echo fromCamelCase($field->name);
 			}
 			echo "</th>";
-			
+				
 		}
 	}
 	echo "<th></th>"; //EXTRA For actions FIXME
@@ -94,17 +139,16 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
 function renderGenericUpdateRow($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {?>
-		<td>
-		<!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-		</td>
+<td><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+</td>
 		<?}
 	}
 }
 
 function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 	$refdata = getRefDataForTable($tableName);
-	
+
 	if ($refdata && dbNumRows($refdata) > 0)
 		$refdata = dbFetchAll($refdata);
 
@@ -117,17 +161,7 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 				//Get column type, if column type, then render appropriate input
 				$metaType = getColumnType($refdata);
 				if ($metaType) {
-					switch ($metaType) {
-						case "likert7":
-							echo "<select name='$key' value='$value'>";
-							echo "<option value='$value' selected='selected'>$value</option>";
-							for ($i = 1; $i <= 7; $i++ ) {
-								if ($i != $value) //PREVENT DOUBLE RENDERING
-									echo "<option value='$i'>$i</option>";
-							}
-							echo "</select>";
-							break;
-					}
+					renderMetaType($metaType, $key, $value);
 				} else {
 					echo "<select name='$key' value='$value'>";
 					echo "<option value='$value' selected='selected'>$value</option>";
@@ -135,16 +169,17 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 					if ($metaValArray) {
 						foreach($metaValArray as $metaValue) {
 							if ($metaValue != $value) //PREVENT DOUBLE RENDERING
-								echo "<option value='$metaValue'>$metaValue</option>";
+							echo "<option value='$metaValue'>$metaValue</option>";
 						}
 					}
 					echo "</select>";
 				}
-				
+
 			}
 			//Render default input text box
 			else {?>
-				<input type="text" name="<?=$key?>" value="<?=$value?>" />
+<input
+	type="text" name="<?=$key?>" value="<?=$value?>" />
 			<?}
 			echo "</td>";
 		}
@@ -153,6 +188,20 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 
 ////////////// COLUMN METADATA FUNCTIONS FROM REFERENCE DATA //////////////////
 
+function renderMetaType($metaType, $key, $value) {
+	switch ($metaType) {
+		case "likert7":
+			echo "<select name='$key' value='$value'>";
+			echo "<option value='$value' selected='selected'>$value</option>";
+			for ($i = 1; $i <= 7; $i++ ) {
+				if ($i != $value) //PREVENT DOUBLE RENDERING
+				echo "<option value='$i'>$i</option>";
+			}
+			echo "</select>";
+			break;
+	}
+}
+
 function findColumnMetadata($refDataArray, $needle) {
 	//logDebug("Find column metadata");
 	if (!$refDataArray) {
@@ -160,23 +209,23 @@ function findColumnMetadata($refDataArray, $needle) {
 		return $refDataArray;
 	}
 	$metaArray = false;
-	foreach ($refDataArray as $key => $refDataValue) { 
+	foreach ($refDataArray as $key => $refDataValue) {
 		//logDebug("Array Iter: ". $key . " " . $refDataValue["key2"]);
 		if ($refDataValue["key2"] == $needle) {
 			//logDebug("Found metadata for column; ". $needle);
 			$metaArray[$key] = $refDataValue;
 		}
-	} 
+	}
 	return $metaArray;
 }
 
 function getColumnValues($refDataArray) {
 	if (!$refDataArray)
-		return $refDataArray;
+	return $refDataArray;
 
 	$metaArray = false;
 	$x=0;
-	
+
 	foreach ($refDataArray as $refDataValue) {
 		//logDebug("Column value grab: " . $refDataValue["value"] . " ; key3: " . $refDataValue["key3"]);
 		if ($refDataValue["key3"] == "V") {
@@ -190,8 +239,8 @@ function getColumnValues($refDataArray) {
 
 function getColumnType($refDataArray) {
 	if (!$refDataArray)
-		return $refDataArray;
-		
+	return $refDataArray;
+
 	foreach ($refDataArray as $refDataValue) {
 		if ($refDataValue["key3"] == "T") {
 			return $refDataValue["value"];
@@ -203,8 +252,8 @@ function getColumnType($refDataArray) {
 function getColumnDescription($refDataArray) {
 	//logDebug("In get col description");
 	if (!$refDataArray)
-		return $refDataArray;
-		
+	return $refDataArray;
+
 	foreach ($refDataArray as $refDataValue) {
 		if ($refDataValue["key3"] == "H") {
 			//logDebug("return refdata value");

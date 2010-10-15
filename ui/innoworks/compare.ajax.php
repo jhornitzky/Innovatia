@@ -8,6 +8,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getComparison":
 			renderDefault($_SESSION['innoworks.ID']);
 			break;
+		case "getPublicComparison":
+			renderPublicRiskItems($_SESSION['innoworks.ID']);
+			break;
 		case "getComparisonForGroup":
 			renderComparisonForGroup($_GET['groupId']);
 			break;
