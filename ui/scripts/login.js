@@ -48,6 +48,30 @@ function showAbout() {
 	});
 }
 
+
+function showIdeas() {
+	hideResponse();
+	$("#AjaxForm").fadeOut(250, function() {
+		$("#Wait").fadeIn(250);
+		$.get("ui/login/loginIdeas.php", function(data) {
+			$("#AjaxForm").html(data);
+			hideWait();
+		});
+	});
+}
+
+function showInnovators() {
+	hideResponse();
+	$("#AjaxForm").fadeOut(250, function() {
+		$("#Wait").fadeIn(250);
+		$.get("ui/login/loginInnovators.php", function(data) {
+			$("#AjaxForm").html(data);
+			hideWait();
+		});
+	});
+}
+
+
 function registerUser() {
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
