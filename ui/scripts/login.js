@@ -71,6 +71,16 @@ function showInnovators() {
 	});
 }
 
+function showSearch(query) {
+	hideResponse();
+	$("#AjaxForm").fadeOut(250, function() {
+		$("#Wait").fadeIn(250);
+		$.get("ui/login/loginSearch.php?q=" + query, function(data) {
+			$("#AjaxForm").html(data);
+			hideWait();
+		});
+	});
+}
 
 function registerUser() {
 	hideResponse();

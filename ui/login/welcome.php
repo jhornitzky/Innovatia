@@ -49,6 +49,7 @@ $(document).ready( function () {
 		<noscript>You must have javascript enabled to use Innoworks</noscript>
 		<ul id="submenu">
 			<li><a href="javascript:showAbout();">What is innoworks?</a></li>
+			<li><a href="#" onClick="showSearch();">Search</a></li>
 			<li><a href="#" onClick="showIdeas();">Latest ideas</a></li>
 			<li><a href="#" onClick="showInnovators();">Innovators</a></li>
 			<li><a href="javascript:registerUser();">Register now</a></li>
