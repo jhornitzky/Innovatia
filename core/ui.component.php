@@ -146,14 +146,17 @@ function renderGenericUpdateRow($rs,$row,$omitArray) {
 	}
 }
 
-function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
+function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName, $renderCallback) {
 	$refdata = getRefDataForTable($tableName);
 
 	if ($refdata && dbNumRows($refdata) > 0)
 		$refdata = dbFetchAll($refdata);
 
 	foreach($row as $key => $value) {
-		if (!in_array($key, $omitArray)) {
+		if ($renderCallback != null) 
+			eval('$rendered='.$renderCallback.'($key, $value);');
+			
+		if (!in_array($key, $omitArray) && !$rendered) {
 			$metaArray = findColumnMetadata($refdata, $key);
 			echo "<td>";
 			//If metadata then render appropriate input dialog
@@ -175,11 +178,8 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName) {
 					echo "</select>";
 				}
 
-			}
-			//Render default input text box
-			else {?>
-<input
-	type="text" name="<?=$key?>" value="<?=$value?>" />
+			} else {?>
+				<input type="text" name="<?=$key?>" value="<?=$value?>" />
 			<?}
 			echo "</td>";
 		}

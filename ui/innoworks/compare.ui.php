@@ -61,7 +61,7 @@ function renderComparisonForGroup($groupId) {
 
 function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
-		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation");?>
+		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation","renderRiskItemCallbackRow");?>
 		<td>
 			Score: <span class="itemTotal">0 </span>
 			<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
@@ -73,6 +73,18 @@ function renderRiskItem($riskItems, $riskItem) {?>
 	</tr>
 	
 <?}
+
+function renderRiskItemCallbackRow($key, $value) {
+	if ($key == "idea") {
+		logDebug("ITS AN IDEA!");
+		echo "<td>";
+		echo $value;
+		echo "</td>";
+		return true;
+	} else {
+		return false;
+	}
+}
 
 function renderAddRiskIdea() {
 	import("idea.service");

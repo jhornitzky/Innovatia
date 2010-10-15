@@ -3,7 +3,6 @@ require_once("thinConnector.php");
 import("note.service");
 import("user.service");
 ?>
-
 <form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
 	Send Note to
 	<input type="hidden" name="action" value="addNote"/>
