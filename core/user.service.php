@@ -7,10 +7,19 @@ require_once("innoworks.connector.php");
 //Get the user details for a user
 function authenticateUser($username,$password)
 {
+	global $salt;
 	$db = dbConnect();
+	
+	//FIXME remove these unencrypted bits
 	$query = sprintf("SELECT userId, username FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), cleanseString($db, $password));
+	$result = dbQuery($query);
+	if (dbNumRows($result) == 0) {
+		$pass = sha1($salt.$password);
+		$query = sprintf("SELECT userId, username FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), $pass); 
+		$result = dbQuery($query);
+	}
 	dbClose($db);
-	return dbQuery($query);
+	return $result;
 }
 
 function loginUser($username,$password)
@@ -28,24 +37,28 @@ function loginUser($username,$password)
 }
 
 function registerUser($postArgs) {
-	global $serverRoot;
+	global $serverRoot, $salt;
 
 	$link = dbConnect();
-
+	
+	//ENCRYPT PASSWORD
+	$pass = sha1($salt.$postArgs['password']);
+	
 	//Now prepare and run this query
 	$sql = sprintf("INSERT INTO Users (`username`, `password`, `firstName`, `lastName`, `email`) VALUES ('%s','%s','%s','%s', '%s')",
 	cleanseString($link,$postArgs['username']),
-	cleanseString($link,$postArgs['password']),
+	$pass,
 	cleanseString($link,$postArgs['firstName']),
 	cleanseString($link,$postArgs['lastName']),
 	cleanseString($link,$postArgs['email'])
 	);
+	
+	logDebug("Register user: " . $sql);
 
-	$success = execQuery($link,$sql);
+	$success = dbQuery($link,$sql);
 	
 	$successId = dbInsertedId($link);
 
-	//Add default apps FIXME
 	$message = '<html>
 				<head>
 				  <title>Innoworks Credentials</title>
@@ -54,10 +67,10 @@ function registerUser($postArgs) {
 				  <p>Innoworks - Login Credentials</p>
 				  <table>
 					<tr>
-					  <th>username:</th><td>'.$postArgs["username"].'</td>
+					  <th>Username:</th><td>'.$postArgs["username"].'</td>
 					</tr>
 					<tr>
-					  <th>password:</th><td>'.$postArgs["password"].'</td>
+					  <th>Password:</th><td>'.$postArgs["password"].'</td>
 					</tr>
 				  </table>
 				</body>
@@ -75,21 +88,24 @@ function registerUser($postArgs) {
 	return $success;
 }
 
-function checkusernameExists($username) {
+function checkUsernameExists($username) {
 	//First open a connection
 	$link = dbConnect();
-
+	logDebug("PREPARE CHECK QUERY");
 	//Now prepare and run this query
 	$sql = sprintf("SELECT * FROM Users WHERE username = '%s' ",
 	cleanseString($link,$username));
 
-	$result = execQuery($link,$sql);
-
+	logDebug("EXEC CHECK QUERY");
+	$result = dbQuery($link, $sql);
+	
+	logDebug("AFTER CHECK QUERY");
 	$found=false;
 	if (dbNumRows($result) > 0) {
 		$found=true;
 	}
-
+	
+	logDebug("CLEANING CHECK");
 	//Tidy up
 	dbRelease($result);
 	dbClose($link);
@@ -106,7 +122,7 @@ function deleteUser($username) {
 	$sql = sprintf("DELETE FROM Users WHERE userId = '%s'",
 	cleanseString($link,$username));
 
-	$result = execQuery($link,$sql);
+	$result = dbQuery($link,$sql);
 
 	//FIXME Error checks here
 	dbClose($link);

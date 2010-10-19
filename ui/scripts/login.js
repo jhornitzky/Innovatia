@@ -95,13 +95,13 @@ function registerUser() {
 
 function registerNewUser() {
 	hideResponse();
-	$("#AjaxForm").fadeOut(
-			250,
+	$("#AjaxForm").fadeOut(250,
 			function() {
 				$("#Wait").fadeIn(250);
-				$.post("core/register.registerUser.php", $("#registerform")
-						.serialize(), function(data) {
+				$.post("core/register.registerUser.php", $("#registerform").serialize(), function(data) {
 					$("#Responses").html(data);
+					hideWait();
+					showResponse();
 				});
 			});
 }

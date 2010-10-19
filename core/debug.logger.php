@@ -11,22 +11,22 @@ function custom_warning_handler($errno, $errstr) {
 }
 
 function logDebug($msg) { 
-  error_log(" [DEBUG] ".$msg);
+  error_log(" [DEBUG](".$_SERVER['SCRIPT_NAME'] . ") " . $msg);
 }
 
 function logInfo($msg) {
-  error_log(" [INFO] ".$msg);
+  error_log(" [INFO](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 
 function logWarning($msg) {
-  error_log(" [WARN] ".$msg);
+  error_log(" [WARN](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 
 function logError($msg) {
-  error_log(" [ERROR] ".$msg);
+  error_log(" [ERROR](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 
 function logAudit($msg) {
-  error_log(" [AUDIT] ".$msg);
+  error_log(" [AUDIT](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 ?>

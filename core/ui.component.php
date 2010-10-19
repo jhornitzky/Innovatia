@@ -1,7 +1,7 @@
 <?
 /*
- * UI Components are common often db related controls to do automatic rendering for data sources
- * within certain parameters
+ * UI Components are common, often db-related widgets. 
+ * These common patterns are abstracted to try and reduce the amount of rendering code written.
  */
 
 function renderGenericAddForm($tablename, $omitArray) {
@@ -263,8 +263,18 @@ function getColumnDescription($refDataArray) {
 	return false;
 }
 
-function renderUpdateField() {
+function renderServiceResponse($resp) {
+	if ($resp) {
+		return "<span style='color:green;font-weight:bold;'>Success</span> ";	
+	} else {
+		return getCommonErrorString("Unknown");
+	}
+	
 }
+
+function getCommonErrorString($cause) {
+	return "<span style='color:red;font-weight:bold;'>Error occurred:</span> " . $cause . "<br/> Please review your input in light of error. If problem exists please notify support thru feedback.";
+} 
 
 ///////////////////////// Camel Case util functions courtesy of  //////////////////////////////
 /////////http://www.paulferrett.com/2009/php-camel-case-functions///////////////////

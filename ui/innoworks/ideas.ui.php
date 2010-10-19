@@ -210,26 +210,23 @@ function renderRole($roles, $role) {?>
 
 function renderIdeaGroupsForUser($uid) {
 	import("group.service");
-	$groups = getAllGroupsForUser($uid);
-	if ($groups && dbNumRows($groups) > 0 ) {?>
+	$groups = getAllGroupsForUser($uid);?>
 		<div class="ideaGroupsSel" dojoType="dijit.form.DropDownButton">
 		    <span> Private </span>
 			<div dojoType="dijit.Menu">
 			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">Private</div>
 			<div dojoType="dijit.MenuItem" onClick="showPublicIdeas()">Public</div>
 			<div dojoType="dijit.MenuSeparator"></div>
-			<? while ($group = dbFetchObject($groups)) {?>
-			<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>
-			<?}?>
-			<div dojoType="dijit.MenuSeparator"></div>
+			<?if ($groups && dbNumRows($groups) > 0 ) {
+				while ($group = dbFetchObject($groups)) {?>
+					<div dojoType="dijit.MenuSeparator"></div>
+					<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>
+				<?}
+			}?>	
 			<div iconClass="dijitEditorIcon dijitEditorIconCopy" dojoType="dijit.MenuItem" onClick="showGroups()">Manage Groups</div>
 			</div>
 		</div>
-	<?} else {
-		echo "None";
-	}
-}
-
+<?}
 
 function renderIdeaGroupsSelectForUser($uid) {
 	import("group.service");

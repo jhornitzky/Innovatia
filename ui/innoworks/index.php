@@ -130,9 +130,7 @@ function printIdea(id) {
 		sendId = currentIdeaId;
 	}
 	newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + sendId);
-	//newWin.document.write($('#ideasPopup').html());
 	newWin.print();
-	//newWin.close();
 }
 </script>
 

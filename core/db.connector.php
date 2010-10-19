@@ -5,9 +5,31 @@ function getRefDataForTable($table) {
 	return dbQuery("SELECT * FROM ReferenceData WHERE key1 = '$table' ORDER BY value");
 }
 
+function cleansePureString($str, $char = '\\')
+{
+	///[^a-zA-Z0-9\s]/ NON ALPHA
+	$cleansed = preg_replace("/[%_'\"]/", '', $str); //_, % and '
+	//logDebug("CLEANSED VAL: ".$cleansed);
+    return $cleansed;
+}
+
+function cleanseArray($opts) {
+	$cleansedArray = array();
+	$keys = array_keys($opts);
+	$vals = array_values($opts);
+
+	for ($i = 0; $i < count($keys); $i++) {
+		$newKey = cleansePureString($keys[$i],"'");
+		$newVal = cleansePureString($vals[$i],"'");
+		$cleansedArray[$newKey] = $newVal;
+	}
+	return $cleansedArray;
+}
+
 //////////////// GENERIC CRUD FUNCTIONS ////////////
 
 function genericCreate($tablename, $opts) {
+	$opts = cleanseArray($opts);
 	$comma_keys = implode(",", array_keys($opts));
 	$comma_vals = dbValImplode(array_values($opts));
 
@@ -19,6 +41,7 @@ function genericCreate($tablename, $opts) {
 }
 
 function genericUpdate($tablename, $opts, $where) {
+	$opts = cleanseArray($opts);
 	$keys = array_keys($opts);
 	$vals = array_values($opts);
 
@@ -40,13 +63,14 @@ function genericUpdate($tablename, $opts, $where) {
 
 	$sql = "UPDATE $tablename SET ".$setString." WHERE ".$whereString;
 
-	logDebug("SQL TO CREATE KEYS: ".$sql);
+	logDebug("SQL TO Update KEYS: ".$sql);
 
 	return dbQuery($sql);
 
 }
 
 function genericDelete($tablename, $opts) {
+	$opts = cleanseArray($opts);
 	$keys = array_keys($opts);
 	$vals = array_values($opts);
 
@@ -87,7 +111,6 @@ function dbAlive($upLink)
 
 function dbQuery($sqlQuery)
 {
-	logDebug($sqlQuery);
 	$argv = func_get_args();
 	$argc = func_num_args();
 	switch ($argc)
@@ -131,49 +154,20 @@ function dbQuery($sqlQuery)
 function dbQuery_Auto($sqlQuery)
 {
 	$dbUplink = dbConnect();
-	$queryResult = mysqli_query($dbUplink, $sqlQuery);
+	$queryResult = dbQuery_Manual($dbUplink, $sqlQuery);
 	dbClose($dbUplink);
 	return $queryResult;
-
-	/*
-	 if ($queryResult)
-	 {
-		if (is_object($queryResult))
-		{
-		$dataSet = array();
-		for ($Iter = 0; $dataRow = mysqli_fetch_object($queryResult); $Iter++)
-		{
-		$dataSet[$Iter] = $dataRow;
-		}
-		dbRelease($queryResult);
-		dbClose($dbUplink);
-		return $dataSet;
-		} else {
-		dbClose($dbUplink);
-		return $queryResult;
-		}
-		}
-		*/
 }
 
 function dbQuery_Manual($dbUplink, $sqlQuery)
 {
-	return mysqli_query($dbUplink, $sqlQuery);
-	/*
-	 if ($queryResult)
-	 {
-		if (is_object($queryResult))
-		{
-		$dataSet = array();
-		for ($Iter = 0; $dataRow = mysqli_fetch_object($queryResult); $Iter++)
-		{
-		$dataSet[$Iter] = $dataRow;
-		}
-		return $dataSet;
-		}
-		}
-		return false;
-		*/
+	$result = mysqli_query($dbUplink, $sqlQuery);
+	
+	if (mysqli_errno($dbUplink)) {
+		logError("Error msg: " . mysqli_errorno($dbUplink) . mysqli_error($dbUplink));
+		die(getCommonErrorString(mysqli_error($dbUplink)));
+	}
+	return $result;
 }
 
 function countQuery($sql) {
@@ -195,7 +189,7 @@ function dbClose($link)
 //////////////////////////////////////////////
 
 function dbAffectedId($result) {
-	return mysqli_insert_id($result); //FIXME
+	return mysqli_insert_id($result);
 }
 
 function dbNumAffectedRows($result) {
@@ -235,10 +229,6 @@ function dbFetchAll($results) {
 function dbRelease($result)
 {
 	@mysqli_free_result($result);
-}
-
-function execQuery($link, $sqlQuery) {
-	return mysqli_query($link, $sqlQuery);
 }
 
 function cleanseString($link, $str) {
