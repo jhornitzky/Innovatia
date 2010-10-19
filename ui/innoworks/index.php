@@ -4,6 +4,7 @@
  */
 require_once("thinConnector.php");
 requireLogin();
+import("mobile.functions");
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -39,17 +40,9 @@ var formArray; // Temp holder for form value functions
 var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
 		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};
 var selectedChild;
+var isMobile = <?= (isMobile()) ? "true" : "false"; ?>;
 
 /////// START UP ///////
-dojo.require("dijit.Dialog");
-dojo.require("dijit.form.Button");
-dojo.require("dijit.form.ComboBox");
-dojo.require("dijit.form.Textarea");
-dojo.require("dijit.layout.TabContainer");
-dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.Menu");
-dojo.require("dojo.parser");
-
 $(document).ready(function() {
 	//Loading animation for all ajax operations
 	/*
@@ -63,13 +56,26 @@ $(document).ready(function() {
 	
 	//Show default
 	showDash();
+
+	//Start server polling
+	setInterval(pollServer, 5000);
 });
 
 dojo.addOnLoad(function(){
+	dojo.require("dijit.Dialog");
+	dojo.require("dijit.form.Button");
+	dojo.require("dijit.layout.TabContainer");
+	dojo.require("dijit.layout.ContentPane");
+	dojo.require("dijit.Menu");
+	dojo.require("dojo.parser");
+	dojo.require("dijit.form.ComboBox");
+	dojo.require("dijit.form.Textarea");
+	
+	if (isMobile) {
+		dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
+	}
+	
 	//Parse controls
-	//dojo.parser.instantiate(dojo.query("#ideasPopup *")); 
-	//dojo.parser.instantiate(dojo.query("#commonPopup *")); 
-	//dojo.parser.instantiate(dojo.query("#morelnk *")); 
 	dojo.parser.parse();
 	
 	//Setup stuff for tab menus
@@ -83,9 +89,6 @@ dojo.addOnLoad(function(){
 		subscribeForChild(child);
 	});
 	
-
-	//Start server polling
-	setInterval(pollServer, 5000);
 });
 
 function subscribeForChild(child) {
