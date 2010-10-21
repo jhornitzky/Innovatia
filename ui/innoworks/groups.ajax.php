@@ -29,18 +29,15 @@ if (isset($_POST) && $_POST != '') {
 			echo "Creating Group.. ";
 			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
 			unset($opts['action']);
-			$group = createGroup($opts);
-			echo "Response Code: ".$group;
+			renderServiceResponse(createGroup($opts));
 			break;
 		case "deleteGroup":
 			echo "Deleting Group... ";
-			$group = deleteGroup($_POST['groupId'],$_SESSION['innoworks.ID']);
-			echo "Response Code: ".$group;
+			renderServiceResponse(deleteGroup($_POST['groupId'],$_SESSION['innoworks.ID']));
 			break;
 		case "linkUserToGroup":
 			echo "Creating Link.. ";
-			$group = linkGroupToUser($_POST['groupId'],$_POST['userId']);
-			echo "Response Code: ".$group;
+			renderServiceResponse(linkGroupToUser($_POST['groupId'],$_POST['userId']));
 			break;
 		case "linkIdeaToGroup":
 			echo "Creating Link... ";
@@ -49,13 +46,11 @@ if (isset($_POST) && $_POST != '') {
 			break;
 		case "unlinkUserToGroup":
 			echo "Unlink.. ";
-			$group = unlinkGroupToUser($_POST['groupId'],$_POST['userId']);
-			echo "Response Code: ".$group;
+			renderServiceResponse(unlinkGroupToUser($_POST['groupId'],$_POST['userId']));
 			break;
 		case "unlinkIdeaToGroup":
 			echo "Unlink... "; 
-			$group = unlinkIdeaToGroup($_POST['groupId'],$_POST['ideaId']);
-			echo "Response Code: ".$group;
+			renderServiceResponse(unlinkIdeaToGroup($_POST['groupId'],$_POST['ideaId']));
 			break;
 	}
 }

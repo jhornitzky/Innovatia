@@ -18,8 +18,7 @@ if (isset($_POST) && $_POST != '') {
 			$opts = $_POST;
 			$opts['userId'] = $_SESSION['innoworks.ID'];
 			unset($opts['action']); 
-			$resp = updateUser($opts);
-			echo $resp;
+			renderServiceResponse(updateUser($opts));
 			break;
 	}
 }

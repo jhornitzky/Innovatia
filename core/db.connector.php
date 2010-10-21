@@ -164,7 +164,7 @@ function dbQuery_Manual($dbUplink, $sqlQuery)
 	$result = mysqli_query($dbUplink, $sqlQuery);
 	
 	if (mysqli_errno($dbUplink)) {
-		logError("Error msg: " . mysqli_errorno($dbUplink) . mysqli_error($dbUplink));
+		logError("Error msg: " . mysqli_errno($dbUplink) . mysqli_error($dbUplink));
 		die(getCommonErrorString(mysqli_error($dbUplink)));
 	}
 	return $result;

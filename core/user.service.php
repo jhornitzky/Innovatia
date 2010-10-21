@@ -144,9 +144,9 @@ function getUserInfo($userId)
 
 function getSimilarUserProfiles($userId) {
 	$info = getUserInfo($userId);
-	$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') ORDER BY createdTime LIMIT 5");
+	$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') AND isPublic='1' ORDER BY createdTime LIMIT 5");
 	if ($rs && dbNumRows($rs) == 0) {
-		$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' ORDER BY createdTime LIMIT 5");
+		$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND isPublic='1' ORDER BY createdTime LIMIT 5");
 	}
 	return $rs;
 }

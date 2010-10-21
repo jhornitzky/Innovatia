@@ -140,8 +140,8 @@ function printIdea(id) {
 <div id="head">
 <div id="leftAlignMenu">
 <ul class="tabMenu">
-	<li style="height: 3.0em; width: 3.0em; margin-right:0.7em">
-		<img id="logo" style="width:100%;height:100%" src="<?= $serverRoot?>ui/style/kubu.png" />
+	<li style="margin-right:0.7em">
+		<img id="logo"  style="width: 93px; height: 50px;"  src="<?= $serverRoot?>ui/style/kubu.png" />
 	</li>
 	
 	<li class="selMenu">

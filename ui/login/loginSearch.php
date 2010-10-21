@@ -2,11 +2,11 @@
 require_once("thinConnector.php");
 import("search.service");
 
-$searchTerms = $_GET['searchTerms'];
+$searchTerms = $_GET['q'];
 
 function hasSearchTerms() {
 	global $searchTerms;
-	if (!isset($_GET['searchTerms']) || $searchTerms == null || $searchTerms == "" || $searchTerms == "undefined") 
+	if (!isset($_GET['q']) || $searchTerms == null || $searchTerms == "" || $searchTerms == "undefined") 
 		return false;
 	return true;
 }
@@ -14,7 +14,7 @@ function hasSearchTerms() {
 ?>
 <form id="searchForm" onsubmit="showSearch();return false;" style="font-size:1.5em">
 	<div style="border:1px solid #444444; position: relative; float:left;">
-		<input id="searchInput" type="text" name="input" value="<?if (hasSearchTerms()) echo $_GET['searchTerms']; ?>" style="width:20em; border:none"/>
+		<input id="searchInput" type="text" name="input" value="<?if (hasSearchTerms()) echo $_GET['searchTerms']; ?>" style="width:14em; font-size:0.9em; border:none"/>
 		<input type="submit" value="Search" />
 	</div>
 </form>

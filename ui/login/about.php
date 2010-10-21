@@ -1,4 +1,5 @@
-<p>Innoworks is an open innovation tool that allows you to collect and refine their ideas with others. Innoworks lets you...</p>
+<? require_once("thinConnector.php");?>
+<p>Innoworks is an open innovation tool that allows you to collect and refine your ideas with others. Innoworks lets you...</p>
 <p><img style="height: 2em; width: 2em;" src="ui/style/innovate.png"/>Innovate<br/>
 <span class="subtext">Record, compare and select ideas through a managed simple process</span>
 </p>
@@ -8,9 +9,4 @@
 <p><img style="height: 2em; width: 2em;" src="ui/style/tools.png"/>Get stuff done<br/>
 <span class="subtext">Use tools like search and timelines to help you implement ideas faster</span>
 </p>
-<p>Innoworks is being developed at the University of Technology, Sydney under the guidance of Professor Igor Hawryszkiewycz. For more information you can contact the main <a href="mailto:james.hornitzky@gmail.com" style="font-size:1.0em">developer</a>.</p>
-	
-
-	
-	
-	
+<p>Innoworks is being developed at the University of Technology, Sydney under the guidance of Professor Igor Hawryszkiewycz. For more information you can contact the main <a href="mailto:<?= $serverAdminEmail?>" style="font-size:1.0em">developer</a>.</p>

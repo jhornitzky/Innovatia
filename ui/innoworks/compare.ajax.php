@@ -35,28 +35,24 @@ if (isset($_POST) && $_POST != '') {
 			echo "Creating Risk Item.. ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$risk = createRiskItem($opts);
-			echo "Response Code: ".$risk;
+			renderServiceResponse(createRiskItem($opts));
 			break;
 		case "createRiskItemForGroup":
 			echo "Creating Risk Item.. ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$risk = createRiskItemForGroup($opts);
-			echo "Response Code: ".$risk;
+			renderServiceResponse(createRiskItemForGroup($opts));
 			break;
 		case "deleteRiskItem":
 			echo "Deleting Group... ";
-			$resp = deleteRiskItem($_POST['riskEvaluationId'],$_SESSION['innoworks.ID']);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(deleteRiskItem($_POST['riskEvaluationId'],$_SESSION['innoworks.ID']));
 			break;
 		case "updateRiskItem":
 			echo "Updating Risk Item... ";
 			$opts = $_POST;
 			unset($opts['action']);
 			unset($opts['idea']);
-			$resp = updateRiskItem($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(updateRiskItem($opts));
 			break;	
 	}
 }

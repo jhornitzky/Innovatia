@@ -59,128 +59,104 @@ if (isset($_POST) && $_POST != '') {
 			echo "Creating Idea.. ";
 			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
 			unset($opts['action']);
-			$idea = createIdea($opts);
-			echo "Response Code: ".$idea;
+			renderServiceResponse(createIdea($opts));
 			break;
 		case "deleteIdea":
 			echo "Deleting Idea... ";
 			$opts = array('ideaId' => $_POST['ideaId'], 'userId' => $_SESSION['innoworks.ID']);
 			unset($opts['action']);
-			$idea = deleteIdea($opts);
-			echo "Response Code: ".$idea;
+			renderServiceResponse(deleteIdea($opts));
 			break;
 		case "updateIdeaDetails":
 			echo "Updating Idea... ";
 			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
 			unset($opts['action']);
-			$idea = updateIdeaDetails($opts);
-			echo "Response Code: ".$idea;
+			renderServiceResponse(updateIdeaDetails($opts));
 			break;
 		case "addFeature":
 			echo "Adding Feature... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$feature = createFeature($opts);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(createFeature($opts));
 			break;
 		case "deleteFeature":
 			echo "Deleting Feature... ";
-			$feature = deleteFeature($_POST['actionId']);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(deleteFeature($_POST['actionId']));
 			break;
 		case "addRole":
 			echo "Adding Role... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$feature = createRole($opts);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(createRole($opts));
 			break;
 		case "deleteRole":
 			echo "Deleting Role... ";
-			//$opts = array_merge($_POST['actionId'], array("userId" => $_SESSION['innoworks.ID']));
-			$feature = deleteRole($_POST['actionId']);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(deleteRole($_POST['actionId']));
 			break;
 		case "addComment":
 			echo "Adding Comment... ";
 			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
 			unset($opts['action']);
-			$comment = createComment($opts);
-			echo "Response Code: ".$comment;
+			renderServiceResponse( createComment($opts));
 			break;
 		case "deleteComment":
 			echo "Deleting Comment... ";
-			//$opts = array_merge($_POST['actionId'], (array) $_SESSION['innoworks.ID']);
-			$feature = deleteComment($_POST['commentId']);
-			echo "Response Code: " . $feature;
+			renderServiceResponse(deleteComment($_POST['commentId']));
 			break;
 		case "createFeatureItem":
 			echo "Adding Item... ";
 			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
 			unset($opts['action']);
-			$resp = createFeatureItem($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(createFeatureItem($opts));
 			break;
 		case "updateFeatureItem":
 			echo "Updating Item... ";
 			$opts = $_POST;
 			unset($opts['action']);
 			unset($opts['feature']);
-			$resp = updateFeatureItem($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(updateFeatureItem($opts));
 			break;
 		case "deleteFeatureItem":
 			echo "Deleting Item... ";
-			$feature = deleteFeatureItem($_POST['featureEvaluationId']);
-			echo "Response Code: " . $feature;
+			renderServiceResponse(deleteFeatureItem($_POST['featureEvaluationId']));
 			break;
 		case "updateRole":
 			echo "Updating Role... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$feature = createRole($opts);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(createRole($opts));
 			break;
 		case "updateFeature":
 			echo "Updating Feature... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$feature = updateFeature($opts);
-			echo "Response Code: ".$feature;
+			renderServiceResponse(updateFeature($opts));
 			break;
 		case "createFeatureEvaluation":
 			echo "Adding Item... ";
 			logDebug("IDEA ID: ". $_POST['ideaId']);
 			$opts = array_merge($_POST, array("userId" => $_SESSION['innoworks.ID']));
 			unset($opts['action']);
-			$resp = createFeatureEvaluation($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(createFeatureEvaluation($opts));
 			break;
 		case "updateFeatureEvaluation":
 			echo "Updating Item... ";
 			$opts = $_POST;
 			unset($opts['action']);
 			unset($opts['feature']);
-			$resp = updateFeatureEvaluation($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(updateFeatureEvaluation($opts));
 			break;
 		case "deleteFeatureEvaluation":
 			echo "Deleting Item... ";
-			$feature = deleteFeatureEvaluation($_POST['actionId']);
-			echo "Response Code: " . $feature;
+			renderServiceResponse(deleteFeatureEvaluation($_POST['actionId']));
 			break;
 		case "addAttachment":
 			echo "Creating Attachment.. ";
-			logDebug('Create Attach!!!!!');
-			//$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
-			//unset($opts['action']);
-			$idea = createAttachment($_POST);
-			echo $idea;
+			renderServiceResponse(createAttachment($_POST));
 			break;
 		case "deleteAttachment":
 			echo "Deleting Item... ";
-			$feature = deleteAttachment($_POST['actionId']);
-			echo "Response Code: " . $feature;
+			renderServiceResponse(deleteAttachment($_POST['actionId']));
 			break;
 	}
 }

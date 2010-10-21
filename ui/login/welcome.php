@@ -17,7 +17,7 @@ require_once("core/innoworks.config.php");
 	type="text/css">
 <link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet"
 	type="text/css">
-	
+
 <script type="text/javascript">
 
 $(document).ready( function () { 
@@ -29,33 +29,44 @@ $(document).ready( function () {
 
 <body>
 
-<div id="head">
-<div id="rightAlignMenu"><? require_once("login.html"); ?></div>
-</div>
+<div id="head" style="height:2.0em;"><div id="rightAlignMenu"><? require_once("login.html"); ?></div></div>
 
 <div id="loginContent">
-<table style="width: 100%; font-size: 1em;">
+<table style="width: 100%; font-size: 1em;" cellspacing="0"
+	cellpadding="0">
 	<tr>
-		<td colspan="2" style="height: 1.5em; min-height:48px;">
-			<div id="Responses">
-				<div id="Wait" class="loadingAnim"></div>
-			</div>
+		<td style="height:1.5em;" colspan="2">
+			<div id="Responses"><div id="Wait" class="loadingAnim"></div></div>
 		</td>
 	</tr>
 	<tr>
-		<td style="vertical-align:top ;width:45%">
-		<h1 style="vertical-align:middle;"><img id="logo" style="width: 1.75em; height: 1.75em"
-			src="<?= $serverRoot?>ui/style/kubu.png" /> Innoworks</h1>
+		<td style="vertical-align: top; width: 30%; min-width: 11em;">
+		<table style="vertical-align: middle; margin-top: 0.7em">
+			<tr>
+				<td><img id="logo" style="width: 90px; height: 55px;"
+					src="<?= $serverRoot?>ui/style/kubu.png" /></td>
+				<td><span
+					style="font-size: 2.0em; font-weight: bold; padding-left: 0.1em;">Innoworks</span>
+				</td>
+			</tr>
+		</table>
 		<noscript>You must have javascript enabled to use Innoworks</noscript>
 		<ul id="submenu">
-			<li><a href="javascript:showAbout();">What is innoworks?</a></li>
-			<li><a href="#" onClick="showSearch();">Search</a></li>
-			<li><a href="#" onClick="showIdeas();">Latest ideas</a></li>
-			<li><a href="#" onClick="showInnovators();">Innovators</a></li>
-			<li><a href="javascript:registerUser();">Register now</a></li>
+			<li id="aboutlnk"><a href="javascript:showAbout();">What is
+			innoworks?</a></li>
+			<li id="reglnk"><a href="javascript:registerUser();">Register now</a></li>
+			<li id="searchlnk"><a href="#" onClick="showSearch();">Search</a></li>
+			<li id="ideaInnolnk"><a href="#" onClick="showIdeas();">Latest ideas</a></li>
+			<li id="innovatorslnk"><a href="#" onClick="showInnovators();">Innovators</a></li>
 		</ul>
-		</td>
-		<td style="width:55%">
+		<!-- 
+			<ul class="footmenu" style="margin-top:5em;">
+				<li>Innogames</li>
+				<li>Privacy Policy</li>
+				<li>Copyright 2010 Rave X Digital</li>
+			</ul>
+			 --></td>
+		<td id="ajaxContent" class="ui-corner-all">
 		<div id="AjaxForm"
 			style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
 		</td>

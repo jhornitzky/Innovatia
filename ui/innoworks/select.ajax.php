@@ -32,20 +32,18 @@ if (isset($_POST) && $_POST != '') {
 			echo "Add selection... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$resp = createIdeaSelect($opts);
+			renderServiceResponse(createIdeaSelect($opts));
 			echo $resp;
 			break;
 		case "deleteSelection":
 			echo "Deleting selection... ";
-			$resp = deleteIdeaSelect(array("selectionId" => $_POST['selectionId']));
-			echo $resp;
+			renderServiceResponse(deleteIdeaSelect(array("selectionId" => $_POST['selectionId'])));
 			break;
 		case "updateSelection":
 			echo "Updating selection... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$resp = updateIdeaSelect($opts);
-			echo "Response Code: ".$resp;
+			renderServiceResponse(updateIdeaSelect($opts));
 			break;	
 	}
 }

@@ -37,11 +37,19 @@ function mainMenu() {
 	});
 }
 
+function updateForSelect(name) {
+	$("#submenu li").removeClass("selected");
+	$("#submenu li#" + name + "lnk").addClass("selected");
+	$("#ajaxContent").removeClass();
+	$("#ajaxContent").addClass(name);
+}
+
 function showAbout() {
+	updateForSelect("about");
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
-		$.get("ui/login/about.html", function(data) {
+		$.get("ui/login/about.php", function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
 		});
@@ -50,6 +58,7 @@ function showAbout() {
 
 
 function showIdeas() {
+	updateForSelect("ideaInno");
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
@@ -61,6 +70,7 @@ function showIdeas() {
 }
 
 function showInnovators() {
+	updateForSelect("innovators");
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
@@ -71,7 +81,9 @@ function showInnovators() {
 	});
 }
 
-function showSearch(query) {
+function showSearch() {
+	updateForSelect("search");
+	query = $("#searchInput").val();
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
@@ -83,6 +95,7 @@ function showSearch(query) {
 }
 
 function registerUser() {
+	updateForSelect("reg");
 	hideResponse();
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);

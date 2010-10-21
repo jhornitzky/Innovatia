@@ -2,6 +2,7 @@
 body {
 	text-align:left;
 	#background-color:#E8F7FF;
+	background:#ffffff url('bg.jpg') no-repeat right top;
 }
 
 .idea table {
@@ -74,7 +75,7 @@ a {
 	width:100%;
 	padding:0%;
 	#position:relative;
-	background-color:#FFFFFF;
+	#background-color:#FFFFFF;
 }
 
 #content > *{ 

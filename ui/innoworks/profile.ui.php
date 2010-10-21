@@ -36,6 +36,6 @@ function renderDefault() {
 } 
 
 function renderOtherProfile($profile) {
-	echo  "<p>".$profile->username." <a href='mailto:$profile->email'>$profile->email</p>";	
+	echo  "<li>".$profile->username." <a href='mailto:$profile->email'>$profile->email</a></li>";	
 }
 ?>

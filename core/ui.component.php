@@ -265,9 +265,9 @@ function getColumnDescription($refDataArray) {
 
 function renderServiceResponse($resp) {
 	if ($resp) {
-		return "<span style='color:green;font-weight:bold;'>Success</span> ";	
+		echo "<span style='color:green;font-weight:bold;'>Success</span> ";	
 	} else {
-		return getCommonErrorString("Unknown");
+		echo getCommonErrorString("Unknown");
 	}
 	
 }

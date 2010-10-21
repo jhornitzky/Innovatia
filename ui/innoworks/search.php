@@ -30,27 +30,27 @@ if (!hasSearchTerms()) {
 	echo "<b>".(dbNumRows($ideas) + dbNumRows($users) + dbNumRows($groups) )."</b> result(s) for terms: " . $searchTerms;
 	echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
 	if ($ideas && dbNumRows($ideas) > 0){
-		while ($idea = dbFetchObject($ideas)) {
-			echo "<p>".$idea->title."</a></p>";
-		}
+		while ($idea = dbFetchObject($ideas)) {?>
+			<p> <a href="javascript:logAction()" onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> <?= $idea->title?> </a> </p> 
+		<?}
 	} else {
 		echo "<p>No ideas</p>";
 	}
 	
 	echo "<p>".dbNumRows($users)." <b>profile(s)</b></p>";
 	if ($users && dbNumRows($users) > 0){
-		while ($user = dbFetchObject($users)) {
-			echo "<p>".$user->username."</p>";
-		}
+		while ($user = dbFetchObject($users)) { ?>
+			<p><a href="mailto:<?= $user->email?>"><?= $user->username?></a></p>
+		<?}
 	} else {
 		echo "<p>No people</p>";
 	}
 	 
 	echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
 	if ($groups && dbNumRows($groups) > 0){
-		while ($group = dbFetchObject($groups)) {
-			echo "<p>".$group->title."</p>";
-		}
+		while ($group = dbFetchObject($groups)) {?>
+			<p><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()"><?= $group->title; ?></a></p>
+		<?}
 	} else {
 		echo "<p>No groups</p>";
 	}

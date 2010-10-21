@@ -22,7 +22,7 @@ function getRiskItems($user) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user AND (RiskEvaluation.groupId IS NULL OR RiskEvaluation.groupId = '0')");
 }
 
-function getPublicRiskItems($user) {
+function getPublicRiskItems() {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.isPublic='1'");
 }

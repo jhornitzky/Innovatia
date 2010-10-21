@@ -219,10 +219,10 @@ function renderIdeaGroupsForUser($uid) {
 			<div dojoType="dijit.MenuSeparator"></div>
 			<?if ($groups && dbNumRows($groups) > 0 ) {
 				while ($group = dbFetchObject($groups)) {?>
-					<div dojoType="dijit.MenuSeparator"></div>
 					<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>
 				<?}
 			}?>	
+			<div dojoType="dijit.MenuSeparator"></div>
 			<div iconClass="dijitEditorIcon dijitEditorIconCopy" dojoType="dijit.MenuItem" onClick="showGroups()">Manage Groups</div>
 			</div>
 		</div>

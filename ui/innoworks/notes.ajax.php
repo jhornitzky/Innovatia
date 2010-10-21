@@ -11,8 +11,7 @@ if (isset($_POST) && $_POST != '') {
 			$array['fromUserId'] = $_SESSION['innoworks.ID'];
 			$array['toUserId'] = getUserIdForUsername($_POST['toUserId']);
 			$array['noteText'] = $_POST['noteText'];
-			$idea = createNote($array);
-			echo $idea;
+			renderServiceResponse(createNote($array));
 			break;
 	}
 }
