@@ -194,8 +194,6 @@ select {
 	font-weight: bold;
 }
 
-div.loadingSpinner {}
-
 #timelineTab table, #compareList table
 {
 text-align: center;

@@ -43,8 +43,7 @@ $(document).ready( function () {
 		<td style="vertical-align: top; width: 30%; min-width: 11em;">
 		<table style="vertical-align: middle; margin-top: 0.7em">
 			<tr>
-				<td><img id="logo" style="width: 90px; height: 55px;"
-					src="<?= $serverRoot?>ui/style/kubu.png" /></td>
+				<td><img id="logo" style="width: 90px; height: 55px;" src="<?= $serverRoot?>ui/style/kubu.png" /></td>
 				<td><span
 					style="font-size: 2.0em; font-weight: bold; padding-left: 0.1em;">Innoworks</span>
 				</td>
@@ -59,13 +58,12 @@ $(document).ready( function () {
 			<li id="ideaInnolnk"><a href="#" onClick="showIdeas();">Latest ideas</a></li>
 			<li id="innovatorslnk"><a href="#" onClick="showInnovators();">Innovators</a></li>
 		</ul>
-		<!-- 
-			<ul class="footmenu" style="margin-top:5em;">
-				<li>Innogames</li>
-				<li>Privacy Policy</li>
-				<li>Copyright 2010 Rave X Digital</li>
-			</ul>
-			 --></td>
+		<ul class="footmenu" style="margin-top:5em;">
+			<!-- <li>Innogames</li>  -->
+			<li>Beta Version</li>
+			<li>Privacy Policy</li>
+			<li>Copyright 2010 UTS</li>
+		</ul></td>
 		<td id="ajaxContent" class="ui-corner-all">
 		<div id="AjaxForm"
 			style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
@@ -73,7 +71,6 @@ $(document).ready( function () {
 	</tr>
 </table>
 </div>
-
 </body>
 
 </html>

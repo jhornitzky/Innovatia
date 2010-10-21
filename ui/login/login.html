@@ -2,13 +2,15 @@
 	onSubmit="authenUser(); return false;">
 	<table>
 	<tr>
-		<th>Username:</th>
+		<td rowspan="2"><img src="ui/style/task.png" /></td>
+		<th>Username / eMail:</th>
+		<th>Password:</th>
+		<td></td>
+	</tr>
+	<tr>
 		<td><input type="text" name="username" size="20" /></td>
-		<th>Passphrase:</th>
 		<td><input type="password" name="password" size="20" /></td>
 		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /> 
-		<input type="hidden" name="triedLogin"
-			value="true" /></td>
 	</tr>
 	</table>
 </form>

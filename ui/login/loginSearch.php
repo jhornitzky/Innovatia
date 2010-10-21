@@ -18,10 +18,10 @@ function hasSearchTerms() {
 		<input type="submit" value="Search" />
 	</div>
 </form>
-<hr/>
+<br/>
 <?
 if (!hasSearchTerms()) {
-	echo "<p>Enter some search terms from above</p>";
+	echo "<p>Enter some search terms</p>";
 } else {
 	$ideas = getSearchIdeas($searchTerms, $_SESSION['innoworks.ID']);
 	$users = getSearchPeople($searchTerms, $_SESSION['innoworks.ID']);
