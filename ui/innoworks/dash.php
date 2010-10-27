@@ -4,7 +4,7 @@ import("dash.service");
 ?>
 <div class="dashHeader" style="width:100%; display:none;"><b>Notifications</b></div>
 <div id="dashui" class="threeColumnContainer">
-	<div class="col1 ui-corner-all" style="margin-right:1%;width:32%;position:relative; float:left; overflow:auto; background-color:#CCFFFF">
+	<div class="threecol col1 ui-corner-all" style="background-color:#CCFFFF">
 		<div class="widget ui-corner-all" style="padding:1%; height:80%;">
 			<h2><a href="javascript:showIdeas();">Explore</a></h2>
 			<p>Record, manage and explore your ideas to help them take shape and grow.</p>
@@ -20,7 +20,7 @@ import("dash.service");
 			} ?>
 		</div>
 	</div>
-	<div class="col2 ui-corner-all" style="margin-right:1%;width:32%;position:relative; float:left; overflow:auto; background-color:#CCCCFF">
+	<div class="threecol col2 ui-corner-all" style="background-color:#CCCCFF">
 		<div class="widget ui-corner-all" style="padding:1%; height:60%;">
 			<h2><a href="javascript:showCompare();">Compare</a></h2>
 			<p>Contrast and compare your existing ideas and work to improve them.</p>
@@ -36,7 +36,7 @@ import("dash.service");
 			}?>
 		</div>
 	</div>
-	<div class="col3 ui-corner-all" style="width:32%; position:relative; float:left; overflow:auto; ">
+	<div class="threecol col3 ui-corner-all">
 		<div class="widget ui-corner-all" style="height:40%;width:98%;background-color:#00AADD; padding:1%;">
 			<h2><a href="javascript:showSelect();">Select</a></h2>
 			<p>Choose ideas to work on, and manage their priorities and tasks.</p>

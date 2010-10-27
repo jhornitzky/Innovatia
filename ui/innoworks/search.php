@@ -21,38 +21,46 @@ function hasSearchTerms() {
 <hr/>
 <?
 if (!hasSearchTerms()) {
-	echo "<p>Enter some search terms from above</p>";
+	echo "<p>Enter some search terms above to find ideas, people and groups</p>";
 } else {
 	$ideas = getSearchIdeas($searchTerms, $_SESSION['innoworks.ID']);
 	$users = getSearchPeople($searchTerms, $_SESSION['innoworks.ID']);
-	$groups = getSearchGroups($searchTerms, $_SESSION['innoworks.ID']);
+	$groups = getSearchGroups($searchTerms, $_SESSION['innoworks.ID']);?>
+	<br/>
+	<? echo "<b>".(dbNumRows($ideas) + dbNumRows($users) + dbNumRows($groups) )."</b> result(s) for terms: " . $searchTerms;?>	
+	<div id="searchui" class="threeColumnContainer">
+		<div class="threecol"> 
+		<? echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
+		if ($ideas && dbNumRows($ideas) > 0){
+			while ($idea = dbFetchObject($ideas)) {?>
+				<p> <a href="javascript:logAction()" onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> <?= $idea->title?> </a> </p> 
+			<?}
+		} else {
+			echo "<p>No ideas</p>";
+		}?>
+		</div>
+		
+		<div class="threecol"> 
+		<? echo "<p>".dbNumRows($users)." <b>profile(s)</b></p>";
+		if ($users && dbNumRows($users) > 0){
+			while ($user = dbFetchObject($users)) { ?>
+				<p><a href="javascript:showProfileSummary('<?=$user->userId?>')"><?=$user->username?></a><a href="mailto:<?= $user->email?>"><?= $user->email?></a></p>
+			<?}
+		} else {
+			echo "<p>No people</p>";
+		} ?>
+		</div>
 	
-	echo "<b>".(dbNumRows($ideas) + dbNumRows($users) + dbNumRows($groups) )."</b> result(s) for terms: " . $searchTerms;
-	echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
-	if ($ideas && dbNumRows($ideas) > 0){
-		while ($idea = dbFetchObject($ideas)) {?>
-			<p> <a href="javascript:logAction()" onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> <?= $idea->title?> </a> </p> 
-		<?}
-	} else {
-		echo "<p>No ideas</p>";
-	}
-	
-	echo "<p>".dbNumRows($users)." <b>profile(s)</b></p>";
-	if ($users && dbNumRows($users) > 0){
-		while ($user = dbFetchObject($users)) { ?>
-			<p><a href="mailto:<?= $user->email?>"><?= $user->username?></a></p>
-		<?}
-	} else {
-		echo "<p>No people</p>";
-	}
-	 
-	echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
-	if ($groups && dbNumRows($groups) > 0){
-		while ($group = dbFetchObject($groups)) {?>
-			<p><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()"><?= $group->title; ?></a></p>
-		<?}
-	} else {
-		echo "<p>No groups</p>";
-	}
-}
-?>
+		<div class="threecol">
+		<? echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
+		if ($groups && dbNumRows($groups) > 0){
+			while ($group = dbFetchObject($groups)) {?>
+				<p><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()"><?= $group->title; ?></a></p>
+			<?}
+		} else {
+			echo "<p>No groups</p>";
+		}
+		?>
+		</div>
+	</div>
+<?}?>

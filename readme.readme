@@ -11,3 +11,7 @@ The innoworks folder cotains a number of php files that are modelled on a modula
 All DB/model layer functions reside as services within the core/ directory. Some common ajax functions also reside there.
 
 For more info on Innoworks and open innovation head to http://innovatia.org to get a better perspective on how innovation works!
+
+SELECT Users.* FROM Users, GroupUsers WHERE (username LIKE '%mj%' OR firstName LIKE '%mj%' OR lastName LIKE '%mj%') AND (GroupUsers.userId = Users.userId AND 
+GroupUsers.groupId IN 
+(SELECT GroupUsers.groupId FROM Users, GroupUsers WHERE Users.userId='3' AND GroupUsers.userId = Users.userId))

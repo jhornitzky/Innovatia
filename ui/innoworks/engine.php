@@ -121,17 +121,6 @@ function subscribeForChild(child) {
 	} 
 	selectedChild = child.id;
 }
-
-function printIdea(id) {
-	var sendId;
-	if (id != null && id != undefined) {
-		sendId = id;
-	} else {
-		sendId = currentIdeaId;
-	}
-	newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + sendId);
-	newWin.print();
-}
 </script>
 
 </head>
@@ -184,6 +173,7 @@ function printIdea(id) {
 </div>
 
 <div id="content">
+
 <div id="ideaResponses" class="responses ui-corner-all"></div>
 
 <div id="dashTab" class="tabBody"></div>
@@ -241,9 +231,13 @@ Click here to select an idea <input type='button' onclick='showAddSelectIdea()' 
 </div>
 <div id="groupsList" style="padding: 10px; margin-top: 1em"></div>
 </div>
-<div id="groupDetails" class="two-column ui-corner-all"
-	style="padding: 10px; border: 1px solid #000000"> << Select one of the groups on the left to see its details</div>
+
+<div id="groupDetailsCont" class="two-column ui-corner-all" style="padding: 10px; border: 1px solid #000000">
+	<div class="rightAlignMenu"><a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
+	<div id="groupDetails"> << Select one of the groups on the left to see its details</div>
 </div>
+</div>
+
 
 <div id="noteTab" class="tabBody"></div>
 
@@ -267,6 +261,7 @@ Click here to select an idea <input type='button' onclick='showAddSelectIdea()' 
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
 </table>
+
 <div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 	style="width: 55em; height: 25em;">
 	<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true">

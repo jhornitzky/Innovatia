@@ -3,7 +3,6 @@ require_once("thinConnector.php");
 import("group.service");
  
 function renderDefault() {
-	
 	echo "<div>";
 	echo "<h3>My Groups</h3>";
 	$groups = getGroupsForCreatorUser($_SESSION['innoworks.ID']);
@@ -60,15 +59,16 @@ function renderDetails($currentGroupId) {
 	if ($groups && (dbNumRows($groups) == 1)) {
 		$group = dbFetchObject($groups); 
 		
-		echo "<h2>".$group->title."</h2>";
-		echo "<h3>Users</h3>";
+		echo "<h2> Details for ".$group->title."</h2>";
+		echo "<h3>Users";
 		if ($group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value=' + ' onclick='showAddGroupUser()'/>";
+		echo "</h3>";
 		
 		$groupUsers = getUsersForGroup($currentGroupId);
 		if ($groupUsers && dbNumRows($groupUsers) > 0) {
 			echo "<ul>";
 			while ($user = dbFetchObject($groupUsers)) {
-				echo "<li>" . $user->username;
+				echo "<li>" . "<a href='javascript:showProfileSummary(\"$user->userId\")'>" . $user->username . "</a>";
 				if ($group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delUserFromCurGroup($user->userId)'/>";
 				echo "</li>";
 			}
@@ -77,13 +77,12 @@ function renderDetails($currentGroupId) {
 			echo "<p>None</p>";
 		}
 		
-		echo "<h3>Ideas</h3>";
-		echo "<input type='button' value=' + ' onclick='showAddGroupIdea()'/>";
+		echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea()'/></h3>";
 		$groupIdeas = getIdeasForGroup($currentGroupId);
 		if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 			echo "<ul>";
 			while ($idea = dbFetchObject($groupIdeas)) {
-				echo "<li>" . $idea->title;
+				echo "<li><a href=\"javascript:showIdeaDetails('$idea->ideaId')\" >" . $idea->title . "</a>";
 				if ($idea->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)'/>";
 				echo "</li>";
 			}
@@ -91,8 +90,11 @@ function renderDetails($currentGroupId) {
 		} else {
 			echo "<p>None</p>";
 		}
+		
+		echo "<h3>Attachments</h3>";
+		echo "<iframe style='width:100%;height:5em;' src='attachment.php?groupId=$group->groupId'></iframe>";
 	} else {
-		echo "Error. Group Not Found.";
+		die("Error. Group Not Found");
 	}
 }
 

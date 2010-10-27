@@ -8,6 +8,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getProfile":
 			renderDefault();
 			break;
+		case "getProfileSummary":
+			renderSummaryProfile($_GET['actionId']);
+			break;
 	}
 }
 

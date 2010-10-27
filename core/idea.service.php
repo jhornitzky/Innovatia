@@ -12,6 +12,11 @@ function getIdeas($userid) {
 	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId");
 }
 
+function getProfileIdeas($userid) {
+	$sql = "SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId";
+	return dbQuery($sql);
+}
+
 function getAddIdeas($userid) {
 	return dbQuery("SELECT * FROM Ideas WHERE userId = '".$userid."'");
 }
@@ -159,8 +164,8 @@ function createAttachment() {
 			$fileName = addslashes($fileName);
 		}
 
-		$query = "INSERT INTO Attachments (ideaId, title, data, type, size ) VALUES ('".$_POST['ideaId']."', '$fileName', '$content', '$fileType', '$fileSize')";
-		return dbQuery($query) or die('Error, query failed');
+		$query = "INSERT INTO Attachments (ideaId, groupId, title, data, type, size ) VALUES ('".$_POST['ideaId']."', '".$_POST['groupId']."','$fileName', '$content', '$fileType', '$fileSize')";
+		return dbQuery($query);
 	}
 }
 
@@ -170,6 +175,10 @@ function deleteAttachment($id) {
 
 function getAttachmentsForIdea($ideaId) {
 	return dbQuery("SELECT * FROM Attachments WHERE ideaId = '$ideaId'");
+}
+
+function getAttachmentsForGroup($groupId) {
+	return dbQuery("SELECT * FROM Attachments WHERE groupId = '$groupId'");
 }
 
 function retrieveAttachment($id) {

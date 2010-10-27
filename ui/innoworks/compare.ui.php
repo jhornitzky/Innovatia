@@ -117,7 +117,7 @@ function renderIdeaSummary($ideaId) {?>
 	<?
 	import("idea.service");
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
-	renderGenericInfoForm(null, $idea, null);
+	renderGenericInfoForm(null, $idea, array());
 	?>
 	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Open</a>
 	<?		
