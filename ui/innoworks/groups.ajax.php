@@ -52,6 +52,14 @@ if (isset($_POST) && $_POST != '') {
 			echo "Unlink... "; 
 			renderServiceResponse(unlinkIdeaToGroup($_POST['groupId'],$_POST['ideaId']));
 			break;
+		case "acceptGroup":
+			echo "Accept invite... "; 
+			renderServiceResponse(acceptGroupInvitation($_POST['actionId'],$_SESSION['innoworks.ID']));
+			break;
+		case "refuseGroup":
+			echo "Refuse invite... "; 
+			renderServiceResponse(unlinkGroupToUser($_POST['actionId'],$_SESSION['innoworks.ID']));
+			break;
 	}
 }
 ?>

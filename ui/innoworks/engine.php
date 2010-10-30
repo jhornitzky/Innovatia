@@ -72,7 +72,8 @@ dojo.addOnLoad(function(){
 	dojo.require("dijit.form.Textarea");
 	
 	if (isMobile) {
-		dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
+		//dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
+		dojo.declare("dijit.form.Textarea",null,null); //TODO test if this actually fixes the ipad problem
 	}
 	
 	//Parse controls
@@ -91,36 +92,6 @@ dojo.addOnLoad(function(){
 	
 });
 
-function subscribeForChild(child) {
-	if (child.id == "ideaComments") {
-		getCommentsForIdea();
-	}
-	else if (child.id == "ideaFeatureEvaluationList") {
-		getFeatureEvaluationsForIdea();
-	}
-	else if (child.id == "ideaMission") {
-		getMission("ideaMission",currentIdeaId);
-	}
-	else if (child.id == "ideaFeatures") {
-		getFeaturesForm("ideaFeatures",currentIdeaId);
-	}
-	else if (child.id == "ideaRoles") {
-		getRolesForm("ideaRoles",currentIdeaId);
-	} 
-	else if (child.id == "ideaAttachments") {
-		getAttachments("ideaAttachments",currentIdeaId);
-	} 
-	else if (child.id == "ideaShare") {
-		getShareForIdea();
-	} 
-	else if (child.id == "ideaSelect") {
-		getSelectForIdea();
-	} 
-	else if (child.id == "ideaRiskEval") {
-		getRiskEvalForIdea("ideaRisks",currentIdeaId);
-	} 
-	selectedChild = child.id;
-}
 </script>
 
 </head>
@@ -222,13 +193,10 @@ Click here to select an idea <input type='button' onclick='showAddSelectIdea()' 
 
 <div id="groupTab" class="tabBody">
 <div id="groupSelect" class="two-column">
-<div class="formHeadContain" style="width: 100%">
-<form id="addGroupForm" class="addForm ui-corner-all"
-	onsubmit="addGroup(); return false;"><span>New Group</span> <input
-	name="title" type="text" /> <input type="submit" value=" + "
-	title="Create a group" /> <input type="hidden" name="action"
-	value="addGroup" /></form>
-</div>
+<!-- <div class="formHeadContain" style="width: 100%">
+	<a href="javascript:logAction()" onclick="showGroups()">Groups</a>
+	<a href="javascript:logAction()" onclick="showGroupReqs()">Requests</a>
+</div>-->
 <div id="groupsList" style="padding: 10px; margin-top: 1em"></div>
 </div>
 

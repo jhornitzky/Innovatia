@@ -194,4 +194,13 @@ function retrieveAttachment($id) {
 		exit;
 	}
 }
+
+function grantEditToIdea($ideaId, $groupId) {
+	return dbQuery(); 	
+}
+
+function hasAccessToIdea($ideaId, $userId) {
+	return (dbNumRows(dbQuery("SELECT * FROM Users, Ideas")));
+}
+
 ?>

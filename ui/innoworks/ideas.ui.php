@@ -107,9 +107,8 @@ Role | </span> <input type="text" name="role" /> <input type="hidden"
 }
 
 function renderIdeaMission($ideaId) {
-	$rs = getIdeaDetails($ideaId);
-	$idea = dbFetchObject($rs);
-	?>
+	
+	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
 <div class="formBody">
 <div class="ideaDetails subform">
 <form id="ideadetails_form_<?= $idea->ideaId?>">
@@ -321,7 +320,7 @@ function renderFeatureEvaluationTable($id) {
 
 function renderFeatureItem($featureItems, $featureItem) {?>
 <tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
-<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"), "FeatureEvaluation");?>
+<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"), "FeatureEvaluation", null);?>
 	<td>Score: <span class="itemTotal">0 </span> <input type="hidden"
 		name="featureEvaluationId"
 		value="<?= $featureItem->featureEvaluationId ?>" /> <input

@@ -11,4 +11,5 @@ require_once("page.session.php");
 require_once("db.connector.php");
 require_once("debug.logger.php");
 require_once("ui.component.php");
+require_once("auto.object.php");
 ?>

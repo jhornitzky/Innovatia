@@ -1,6 +1,6 @@
 <? 
 /**
- * Rendering functions for various cpomarison activities i.e. Risk/CommercialEvaluation
+ * Rendering functions for various comparison activities i.e. Risk / Commercial Evaluation
  */
 require_once("thinConnector.php");  
 

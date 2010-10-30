@@ -47,6 +47,10 @@ function getGroupWithId($groupId, $userId) {
 	return dbQuery("SELECT Groups.* FROM Groups WHERE Groups.groupId = '".$groupId."'");
 }
 
+function getGroupUserEntryWithId($groupId, $userId) {
+	return dbQuery("SELECT GroupUsers.* FROM GroupUsers WHERE GroupUsers.groupId = '".$groupId."' AND GroupUsers.userId = '".$userId."'");
+}
+
 function createGroup($opts) {
 	genericCreate("Groups",$opts);
 }
@@ -69,10 +73,18 @@ function unlinkIdeaToGroup($groupId, $groupid) {
 }
 
 function linkGroupToUser($groupid, $userid) {
-	return dbQuery("INSERT INTO GroupUsers (groupId,userId) VALUES ('$groupid','$userid')");
+	return dbQuery("INSERT INTO GroupUsers (groupId,userId,approved) VALUES ('$groupid','$userid',1)");
 }
 
 function unlinkGroupToUser($groupid, $userid) {
 	return dbQuery("DELETE FROM GroupUsers WHERE groupId = '$groupid' AND userId = '$userid'");
+}
+
+function approveGroupUser($groupid, $userid) {
+	return dbQuery("UPDATE GroupUsers SET approved=1 WHERE groupId = '$groupid' AND userId = '$userid'");
+}
+
+function acceptGroupInvitation($groupid, $userid) {
+	return dbQuery("UPDATE GroupUsers SET accepted=1 WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 ?>

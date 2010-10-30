@@ -21,7 +21,7 @@ function hasSearchTerms() {
 <br/>
 <?
 if (!hasSearchTerms()) {
-	echo "<p>Enter some search terms</p>";
+	echo "<p>Enter some search terms above to find ideas, people and groups</p>";
 } else {
 	$ideas = getSearchIdeas($searchTerms, $_SESSION['innoworks.ID']);
 	$users = getSearchPeople($searchTerms, $_SESSION['innoworks.ID']);

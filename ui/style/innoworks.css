@@ -60,8 +60,9 @@ a {
 #rightAlignMenu {
 	top:0px;
 	right: 0px;
-	position: absolute;
+	position: relative;
 	text-align:right;
+	float:right
 }
 
 .addForm {
@@ -277,7 +278,7 @@ table td input[type=text] {
 
 
 .threeColumnContainer > * {
-	opacity:0.95;
+	opacity:0.8;
 }
 
 ul.tabMenu .menulnk {
@@ -324,4 +325,8 @@ ul.tabMenu .menulnk {
 	border:1px solid #000000;
 	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
 	padding:1%;
+}
+
+.threecol {
+	margin-right:1%; width:32%; position:relative; float:left; overflow:auto; 
 }
