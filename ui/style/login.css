@@ -1,23 +1,37 @@
 html, body {
 	font-size:1.3em;
 	background:none;
-	background: #FFFFFF url('bg.jpg') no-repeat left top;
+	background: #FFFFFF url('bg.jpg') no-repeat right top;
+}
+
+a {
+	padding:0;
 }
 
 #Responses {
 	font-weight:bold;
 	color:#43a2e5;
-	text-shadow: #999 1px 1px 3px; /* Safari */
-	filter: Shadow(Color=#999, Direction=135, Strength=3); /* Internet Explorer */
-	text-align:center;
-	width:100%;
-	height:100%;
-	font-size:0.9em;
+	text-align:left;
+	font-size:15px;
 }
 
 #head, #loginContent {
-	width:80%;
-	margin:auto;
+	width:1000px;
+	margin:0 auto;
+}
+
+#head {
+	padding-top:0.5em;
+	padding-bottom:0.0em;
+	color:#FFFFFF;
+}
+
+#head th {	
+	color:#FFFFFF;
+}
+
+#headSurround {
+	background-color: #444444;
 }
 
 #loginContent {
@@ -25,36 +39,44 @@ html, body {
 	#background:#ffffff url('bg.jpg') no-repeat left top;
 }
 
-#head {
-	padding-top:0.5em;
-	padding-bottom:0.0em;
+ul#submenu {
+	text-decoration:none;
+	list-style:none;
+	text-indent:0;
+	padding:0;
+	margin:0;
 }
 
-#headSurround {
-	background-color: #cfffff;
+ul#submenu li {
+	float:left;
+	position:relative;
+	margin-right:0.5em;
+	text-indent:0px;
+	margin-left:0px; 
+	list-style: none;
 }
 
-#submenu li, .footmenu li {
+.footmenu li {
 	float:none;
 	list-style: none;
 }
 
-#submenu li.selected {
+ul#submenu li.selected {
 	color: #FFFFFF;
 	background-color:#444; 
-	-moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 
-#submenu li.selected a {
+ul#submenu li.selected a {
 	color: #FFFFFF;
 	border:none;
 }
 
 #ajaxContent {
-	border:2px solid #444; 
-	width:70%; padding:1%;
+	padding:3px;
+	width:75%;
 	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
-	background-image:url('content.png');
+	font-size:0.75em;
 }
 
 .footmenu li {
@@ -76,4 +98,24 @@ span.subtext {
 
 #rightAlignMenu input {
 	border:1px solid #000000;
+}
+
+.widgetized {
+	border:2px solid #DDD;
+	background-color:#666;
+	color: white;
+	-moz-border-radius-topleft: 8px; -webkit-border-top-left-radius: 8px; border-top-left-radius: 8px;
+	-moz-border-radius-bottomright: 8px; -webkit-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px; 
+}
+
+.vAlign_Outer {
+	display:table;
+	overflow:hidden;
+	height:100%;
+	color:white;
+	width:100%;
+}
+.vAlign_Middle {
+	display:table-cell;
+	vertical-align:middle;
 }

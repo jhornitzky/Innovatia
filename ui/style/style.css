@@ -7,17 +7,17 @@ html, body {
 	width:100%;
 	height:100%;
 }
+
 th, label {
 	font-size:0.8em;
+	text-align:left;
 }
+
 input {
 	font-family:Calibri, Tahoma, Arial;
 	font-size:0.8em;
 }
-th {
-	text-align:right;
-	font-weight:bold;
-}
+
 a {
 	border-bottom:1px dotted;
 	border-color:#555;
@@ -27,6 +27,7 @@ a {
 	color:#666;
 	font-size:0.8em;
 }
+
 a:hover {
 	font-weight:bold; 
 }
@@ -37,4 +38,29 @@ div.loadingAnim {
 	background-position: center center;
 	width:100%;
 	height:100%;
+}
+
+#leftAlignMenu {
+	top:0px;
+	left:0px;
+	position: relative;
+	float:left;
+}
+
+#rightAlignMenu {
+	top:0px;
+	right: 0px;
+	position: relative;
+	text-align:right;
+	float:right;
+}
+
+#head {
+	width:100%;
+	height:3.5em;
+	margin-bottom:0.3em;
+	padding-top:0.5em;
+	padding-bottom:0.5em;
+	color:#FFFFFF;
+	background-color: #444444;
 }
