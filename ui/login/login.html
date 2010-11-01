@@ -1,16 +1,19 @@
-<form action="#" id="LoginForm" method="post"
-	onSubmit="authenUser(); return false;">
-	<table>
+<form id="LoginForm" onSubmit="authenUser(); return false;">
+<table>
 	<tr>
-		<td rowspan="2"><img src="ui/style/task.png" style="width:40px;height:40px;"/></td>
 		<th>Username / eMail:</th>
 		<th>Password:</th>
-		<td></td>
+		<th></th>
 	</tr>
 	<tr>
 		<td><input type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
-		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /> 
+		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /></td>
 	</tr>
-	</table>
+	<tr>
+		<td colspan="3">
+			<div id="Responses"><div id="Wait" class="loadingAnim"></div></div>
+		</td>
+	</tr>
+</table>
 </form>

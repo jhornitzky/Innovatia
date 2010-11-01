@@ -101,7 +101,7 @@ dojo.addOnLoad(function(){
 <div id="leftAlignMenu">
 <ul class="tabMenu">
 	<li style="margin-right:0.5em">
-		<img id="logo"  style="width: 81px; height: 50px;"  src="<?= $serverRoot?>ui/style/kubu.png" />
+		<img id="logo"  style="width: 230px; height: 50px;"  src="<?= $serverRoot?>ui/style/kubu.png" />
 	</li>
 	
 	<li class="selMenu">
@@ -137,7 +137,7 @@ dojo.addOnLoad(function(){
 
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li><span style="font-size:0.925em;opacity:0.8em;"><?= $_SESSION['innoworks.username']; ?> | Innoworks </span><br/>
+	<li><span style="font-size:0.925em;opacity:0.8em; padding-right:0.3em;"><?= $_SESSION['innoworks.username']; ?> <!-- | Innoworks  --></span><br/>
 	<a href="javascript:logout()">Logout</a><a href="javascript:showFeedback()">Feedback</a></li>
 </ul>
 </div>

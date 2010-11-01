@@ -1,10 +1,7 @@
 <? require_once("thinConnector.php");?>
-<p>Innoworks is an open innovation tool that allows you to collect and
-refine your ideas with others. Innoworks lets you...</p>
-<table style="font-size:1.0em; " cellpadding="1.0em" cellspacing="1.0em">
+<table style="font-size:1.0em; margin-top:1em;" cellpadding="1.0em" cellspacing="1.0em">
 	<tr>
-		<td><img style="height: 3em; width: 3em;" src="ui/style/innovate.png" />
-		</td>
+		<td><img style="height: 3em; width: 3em;" src="ui/style/innovate.png" /></td>
 		<td>Innovate<br />
 		<span class="subtext">Record, compare and select ideas through a
 		managed simple process</span></td>

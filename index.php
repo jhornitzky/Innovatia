@@ -10,6 +10,7 @@ if(isLoggedIn())
 }
 else
 {
+	//require_once("ui/login.slide/welcome.php"); 
 	require_once("ui/login/welcome.php"); 
 }
 ?>
