@@ -61,6 +61,7 @@ $(document).ready( function () {
 </div>
 
 <div id="loginContent">
+
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; ">
 	<div style="float:left;  width:560px; text-align:left; font-size:22px;">
 		<p>Innoworks is an open innovation tool that allows you to collect and refine your ideas with others.</p>
@@ -82,16 +83,17 @@ $(document).ready( function () {
 </div>
 
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; clear:both ">
-<ul id="submenu">
-	<li id="ideaInnolnk"><div class="marker orange"></div><a href="#" onClick="showIdeas();">Innovations</a></li> 
-	<li id="aboutlnk"><div class="marker green"></div><a href="javascript:showAbout();">Features</a></li>
-	<li id="reglnk"><div class="marker blue"></div><a href="javascript:registerUser();">Register</a></li>
-</ul>
+	<ul id="submenu" style="clear:both ">
+		<li id="ideaInnolnk"><div class="marker orange"></div><a href="#" onClick="showIdeas();">Innovations</a></li> 
+		<li id="aboutlnk"><div class="marker green"></div><a href="javascript:showAbout();">Features</a></li>
+		<li id="reglnk"><div class="marker blue"></div><a href="javascript:registerUser();">Register</a></li>
+	</ul>
 
-<div id="ajaxContent" class="ui-corner-all">
-<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
+	<div id="ajaxContent" style="clear:both">
+		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
+	</div>
 </div>
-</div>
+
 </div>
 
 </body>

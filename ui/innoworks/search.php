@@ -33,7 +33,7 @@ if (!hasSearchTerms()) {
 </form>
 <br />
 
-<div id="searchui" class="threeColumnContainer">
+<div id="searchui" class="threeColumnContainer" style="clear:both">
 <div class="threecol">
 <? echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
 	if ($ideas && dbNumRows($ideas) > 0){

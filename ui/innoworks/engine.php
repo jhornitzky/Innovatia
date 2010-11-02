@@ -101,12 +101,12 @@ dojo.addOnLoad(function(){
 <div id="leftAlignMenu">
 <ul class="tabMenu">
 	<li style="margin-right:0.5em">
-		<img id="logo"  style="width: 230px; height: 50px;"  src="<?= $serverRoot?>ui/style/kubu.png" />
+		<img id="dashlnk" class="menulnk" style="width: 226px; height: 48px;" src="<?= $serverRoot?>ui/style/kubu.png" onclick="showDash(this)"/>
 	</li>
 	
 	<li class="selMenu">
 	<div class="marker blue"></div>&nbsp;Ideas<br/>
-	<a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a>
+	<!-- <a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a> -->
 	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Explore</a>
 	<a id="comparelnk" class="menulnk"
 		href="javascript:showCompare(this)">Compare</a>
