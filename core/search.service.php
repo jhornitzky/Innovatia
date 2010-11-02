@@ -10,7 +10,6 @@ function getSearchIdeas($criteria, $user) {
 
 function getSearchGroups($criteria, $user) {
 	$criteria = cleansePureString($criteria);
-	
 	return dbQuery("SELECT * FROM Groups WHERE title LIKE '%$criteria%'");
 }
 

@@ -54,6 +54,7 @@ ul#submenu li {
 	text-indent:0px;
 	margin-left:0px; 
 	list-style: none;
+	padding:2px;
 }
 
 .footmenu li {
@@ -74,9 +75,13 @@ ul#submenu li.selected a {
 
 #ajaxContent {
 	padding:3px;
-	width:75%;
+	width:100%;
 	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 	font-size:0.75em;
+}
+
+#AjaxForm {
+	padding-top:10px;
 }
 
 .footmenu li {
@@ -98,6 +103,11 @@ span.subtext {
 
 #rightAlignMenu input {
 	border:1px solid #000000;
+}
+
+#regForm {
+	border:1px solid #DDDDDD; min-width:30em;
+	-moz-border-radius: 0.2em; -webkit-border-radius: 0.2em; border-radius: 0.2em;
 }
 
 .widgetized {

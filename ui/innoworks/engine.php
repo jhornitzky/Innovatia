@@ -105,7 +105,7 @@ dojo.addOnLoad(function(){
 	</li>
 	
 	<li class="selMenu">
-	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/innovate.png"/>Ideas<br/>
+	<div class="marker blue"></div>&nbsp;Ideas<br/>
 	<a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a>
 	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Explore</a>
 	<a id="comparelnk" class="menulnk"
@@ -115,7 +115,7 @@ dojo.addOnLoad(function(){
 	</li>
 	
 	<li>
-	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/collab.png"/>Collaborate<br/>
+	<div class="marker green"></div>&nbsp;Collaborate<br/>
 	<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a>
 	<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)">Profiles</a>
 	<a id="noteslnk" class="menulnk"
@@ -123,7 +123,7 @@ dojo.addOnLoad(function(){
 	</li>
 	
 	<li>
-	<img style="height: 1.5em; width: 1.5em;" src="<?= $serverRoot?>ui/style/tools.png"/>Tools<br/>
+	<div class="marker orange"></div>&nbsp;Tools<br/>
 	<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)">Search</a>
 	<a id="timelinelnk" class="menulnk" href="javascript:showTimelines(this)">Timelines</a>
 	<!-- <a id="adminlnk" class="menulnk"

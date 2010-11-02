@@ -36,7 +36,27 @@ $(document).ready( function () {
 	</tr>
 </table>
 </div>
-<div id="rightAlignMenu"><? require_once("login.html"); ?></div>
+<div id="rightAlignMenu">
+<form id="LoginForm" onSubmit="authenUser(); return false;">
+<table cellpadding="2px" cellspacing="2px">
+	<tr>
+		<th style="padding-left:3px;">Username / eMail:</th>
+		<th style="padding-left:3px;">Password:</th>
+		<th></th>
+	</tr>
+	<tr>
+		<td><input type="text" name="username" size="20" /></td>
+		<td><input type="password" name="password" size="20" /></td>
+		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<div id="Responses"><div id="Wait" class="loadingAnim"></div></div>
+		</td>
+	</tr>
+</table>
+</form>
+</div>
 </div>
 </div>
 
@@ -44,30 +64,34 @@ $(document).ready( function () {
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; ">
 	<div style="float:left;  width:560px; text-align:left; font-size:22px;">
 		<p>Innoworks is an open innovation tool that allows you to collect and refine your ideas with others.</p>
-		<noscript>You must have javascript enabled to use Innoworks</noscript>
+		<noscript><span><b>You must have javascript enabled to use Innoworks</b></span></noscript>
 	</div>
+	<!-- <div>
+		<div style="text-align:right; padding-right:10px; float:right; width:300px;">
+			<p style="font-size:22px;">
+			<span style="font-size:10px;">
+				Copyright &copy; UTS 2010 | BETA<br/>
+				<br/>
+				Privacy<br/>
+				<br/>
+				More
+			</span>
+			</p>
+		</div>
+	</div>-->
 </div>
 
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; clear:both ">
-
 <ul id="submenu">
-	<li id="ideaInnolnk"><a href="#" onClick="showIdeas();">Innovations</a></li>
-	<li id="aboutlnk"><a href="javascript:showAbout();">Features</a></li>
-	<li id="reglnk"><a href="javascript:registerUser();">Register now</a></li>
-	<!-- <li id="searchlnk"><a href="#" onClick="showSearch();">Find</a></li>
-	<li id="innovatorslnk"><a href="#" onClick="showInnovators();">Innovators</a></li>-->
-	<!-- <li><span style="font-size:0.8em;">Find</span> </li>
-	<li><div style="border:1px solid #444444; float:left; width:10em;">
-		<input id="searchInput" type="text" name="input" style="font-size:1.0em; width:100%;border:none"/>
-		<input type="submit" value="Search" style="display:none;" />
-	</div></li> -->
+	<li id="ideaInnolnk"><div class="marker orange"></div><a href="#" onClick="showIdeas();">Innovations</a></li> 
+	<li id="aboutlnk"><div class="marker green"></div><a href="javascript:showAbout();">Features</a></li>
+	<li id="reglnk"><div class="marker blue"></div><a href="javascript:registerUser();">Register</a></li>
 </ul>
 
 <div id="ajaxContent" class="ui-corner-all">
-	<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
+<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
 </div>
 </div>
-
 </div>
 
 </body>

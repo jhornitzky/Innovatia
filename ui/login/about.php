@@ -1,4 +1,5 @@
 <? require_once("thinConnector.php");?>
+<span>Innoworks has a number of features that help you...</span>
 <table style="font-size:1.0em; margin-top:1em;" cellpadding="1.0em" cellspacing="1.0em">
 	<tr>
 		<td><img style="height: 3em; width: 3em;" src="ui/style/innovate.png" /></td>
@@ -22,7 +23,8 @@
 		</td>
 	</tr>
 </table>
-<p>Innoworks was partially conceived as part of an Honours year project, and is currently being developed at the University of Technology, Sydney
-under the guidance of Professor Igor Hawryszkiewycz. For more
-information you can contact the main <a
-	href="mailto:<?= $serverAdminEmail?>" style="font-size: 1.0em">developer</a>.</p>
+<p>Innoworks is currently being developed at the University of Technology, Sydney<br/>
+under the guidance of Professor Igor Hawryszkiewycz.<br/> 
+<br/> 
+For more information you can contact the main 
+<a href="mailto:<?= $serverAdminEmail?>" style="font-size: 1.0em">developer</a>.</p>

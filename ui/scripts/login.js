@@ -56,38 +56,18 @@ function showAbout() {
 	});
 }
 
-
 function showIdeas() {
 	updateForSelect("ideaInno");
-	hideResponse();
+	var searchTerms = $("#searchInput").val();
+	
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
-		$.get("ui/login/loginIdeas.php", function(data) {
-			$("#AjaxForm").html(data);
-			hideWait();
-		});
-	});
-}
-
-function showInnovators() {
-	updateForSelect("innovators");
-	hideResponse();
-	$("#AjaxForm").fadeOut(250, function() {
-		$("#Wait").fadeIn(250);
-		$.get("ui/login/loginInnovators.php", function(data) {
-			$("#AjaxForm").html(data);
-			hideWait();
-		});
-	});
-}
-
-function showSearch() {
-	updateForSelect("search");
-	query = $("#searchInput").val();
-	hideResponse();
-	$("#AjaxForm").fadeOut(250, function() {
-		$("#Wait").fadeIn(250);
-		$.get("ui/login/loginSearch.php?q=" + query, function(data) {
+		
+		url = "ui/login/loginSearch.php";
+		if (searchTerms != undefined)
+			url += "?searchTerms="+searchTerms; 
+		
+		$.get(url, function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
 		});

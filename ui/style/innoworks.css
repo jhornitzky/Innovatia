@@ -266,11 +266,6 @@ table td input[type=text] {
 	display:none;
 }
 
-
-.threeColumnContainer > * {
-	opacity:0.8;
-}
-
 ul.tabMenu .menulnk {
 	cursor:pointer;
 }
@@ -317,6 +312,6 @@ ul.tabMenu .menulnk {
 	padding:1%;
 }
 
-.threecol {
-	margin-right:1%; width:32%; position:relative; float:left; overflow:auto; 
+ul#selMenu li div.marker{
+	margin-right:5px;
 }

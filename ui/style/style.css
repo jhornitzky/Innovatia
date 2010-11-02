@@ -64,3 +64,46 @@ div.loadingAnim {
 	color:#FFFFFF;
 	background-color: #444444;
 }
+
+.threeColumnContainer > * {
+	#opacity:0.8;
+}
+
+.threecol {
+	margin-right:1%; width:32%; position:relative; float:left; overflow:auto; 
+}
+
+.marker {
+	border:1px solid #000000;
+	background-color:#FFFFFF;
+	width:0.9em;
+	height:0.9em;
+	position:relative;
+	float:left;
+	-moz-border-radius: 0.2em; -webkit-border-radius: 0.2em; border-radius: 0.2em;
+}
+
+.orange {
+	background-color:#ffad26;
+	border-color:#ffca6a;
+}
+
+.blue {
+	background-color:#539dff;
+	border-color:#7db4ff;
+}
+
+.green {
+	background-color:#b6f26b;
+	border-color:#bbef8e;
+}
+
+.grey {
+	background-color:#dddddd;
+	border-color:#eeeeee;
+}
+
+.red {
+	background-color:red;
+	border-color:red;
+}

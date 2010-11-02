@@ -282,7 +282,10 @@ function getReports() {
 function getSearch() {
 	var searchTerms = $("#searchInput").val();
 	showLoading("#searchTab");
-	$("#searchTab").load("search.php?searchTerms="+searchTerms);
+	url = "search.php";
+	if (searchTerms != undefined)
+		url += "?searchTerms="+searchTerms; 
+	$("#searchTab").load(url);
 }
 
 function getAdmin(){}
