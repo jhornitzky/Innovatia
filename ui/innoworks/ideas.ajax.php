@@ -12,7 +12,7 @@ if (isset($_GET) && $_GET != '') {
 			renderPublicIdeas();
 			break;
 		case "getIdeaGroupsForUser":
-			renderIdeaGroupsForUser($_SESSION['innoworks.ID']);
+			renderIdeaGroupsListForUser($_SESSION['innoworks.ID']);
 			break;
 		case "getIdeasForGroup":
 			renderIdeasForGroup($_GET['groupId']);

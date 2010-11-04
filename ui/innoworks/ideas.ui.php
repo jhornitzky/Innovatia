@@ -28,7 +28,6 @@ function renderIdeasForGroup($groupId) {
 	import("group.service");
 	$ideas = getIdeasForGroup($groupId) or die("Error retrieving ideas. Report to IT Support.");
 	if ($ideas && dbNumRows($ideas) > 0 ) {
-		//echo "<h3>Ideas for group</h3>";
 		while ($idea = dbFetchObject($ideas)) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
@@ -38,15 +37,12 @@ function renderIdeasForGroup($groupId) {
 }
 
 function renderJustIdea($ideas, $idea, $user) {?>
-<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all"
-	onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
-<div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a>
+<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
+<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a><br/>
 <span class="ideaoptions">
-<?= $idea->username?>
-<?if ($idea->userId == $user) { ?> <input type="button" value=" - "
-	onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
-</span></div>
+by <?= $idea->username?>
+<?if ($idea->userId == $user) { ?> <input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
+</span>
 </div>
 <?}
 
@@ -244,13 +240,15 @@ function renderIdeaGroupsSelectForUser($uid) {
 
 function renderIdeaGroupsListForUser($uid) {
 	import("group.service");
-	$groups = getAllGroupsForUser($uid);
-	if ($groups && dbNumRows($groups) > 0 ) {
+	$groups = getAllGroupsForUser($uid);?>
+	<div><p><a class='private' href="javascript:logAction()" onclick="showDefaultIdeas()">Private</a></p></div>
+	<div><p><a class='public' href="javascript:logAction()" onclick="showPublicIdeas()">Public</a></p></div>
+	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
-			echo "<a groupId='$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a>";
+			echo "<div><p><a class='groupSel_$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a></p></div>";
 		}
 	} else {
-		echo "None";
+		echo "No groups for user";
 	}
 }
 
@@ -371,6 +369,6 @@ function renderAttachmentsIframe($ideaId, $userId) {?>
 
 function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));
-	echo "<b style='font-size:1.2em'>".$details->title."</b> ".$details->username." ".$details->createdTime;
+	echo "<b style='font-size:1.2em'>".$details->title."</b> by ".$details->username." | last updated ".$details->createdTime;
 }
 ?>

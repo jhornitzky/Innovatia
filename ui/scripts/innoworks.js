@@ -158,9 +158,17 @@ function showIdeaDetails(ideaId) {
 function showIdeaGroupsForUser() {
 	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
-		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
-		dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
-		$("button span.dijitButtonText").html(currentGroupName);
+		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
+		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
+		//$("button span.dijitButtonText").html(currentGroupName);
+		$(".ideaGroupsList div p a").removeClass("selected");
+		if (currentGroupName == "Public") {
+			$(".ideaGroupsList div p a.public").addClass("selected");
+		} else if (currentGroupName == "Private") {
+			$(".ideaGroupsList div p a.private").addClass("selected");
+		} else {
+			$(".ideaGroupsList div p a.groupSel_"+currentGroupId).addClass("selected");
+		}
 	});
 }
 
@@ -281,11 +289,11 @@ function getReports() {
 
 function getSearch() {
 	var searchTerms = $("#searchInput").val();
-	showLoading("#searchTab");
+	showLoading("#searchTab #searchResults");
 	url = "search.php";
 	if (searchTerms != undefined)
 		url += "?searchTerms="+searchTerms; 
-	$("#searchTab").load(url);
+	$("#searchTab #searchResults").load(url);
 }
 
 function getAdmin(){}
@@ -551,14 +559,14 @@ function addNote(element) {
 }
 
 /////// IDEA FUNCTIONS /////////
-function addIdea() {
+function addIdea(elem) {
 	if(currentGroupId == null) {
 		$.post("ideas.ajax.php", $("#addIdeaForm").serialize(), function(data) {
 			showResponses("#ideaResponses", data, true);
 			getIdeas();
 		});
 	} else {
-		showAddGroupIdea();
+		showAddGroupIdea(elem);
 	}
 }
 
@@ -597,7 +605,6 @@ function updateRole(id,form, ideaId) {
 	});
 }
 
-
 function genericAdd(selector) {
 	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses("#ideaResponses", data, true);
@@ -624,14 +631,16 @@ function addGroup() {
 }
 
 function deleteGroup(gId) {
-	$.post("groups.ajax.php", {action: "deleteGroup", groupId:gId}, function(data) {
+	if (confirm(removeString)) {
+		$.post("groups.ajax.php", {action: "deleteGroup", groupId:gId}, function(data) {
 		showResponses("#ideaResponses", data, true);
 		if (gId == currentGroupId) {
 			currentGroupId = null;
 			$("#groupDetails").empty();
 		}
 		getGroups();
-	});
+		});
+	}
 }
 
 function showGroupDetails() {
@@ -654,17 +663,15 @@ function updateForGroup(id,name) {
 	showIdeaGroupsForUser();
 }
 
-function showAddGroupIdea() {
-	$('#commonPopup #actionDetails').empty();
-	dijit.byId('commonPopup').show();
+function showAddGroupIdea(elem) {
+	showCommonPopup(elem);
 	$.get("groups.ajax.php?action=getAddIdea", function(data) {
 		$("#actionDetails").html(data);
 	});
 }
 
-function showAddGroupUser() {
-	$('#commonPopup #actionDetails').empty();
-	dijit.byId('commonPopup').show();
+function showAddGroupUser(elem) {
+	showCommonPopup(elem);
 	$.get("groups.ajax.php?action=getAddUser", function(data) {
 		$("#actionDetails").html(data);
 	});
@@ -721,9 +728,20 @@ function delIdeaFromCurGroup(id) {
 }
 
 ///////////// RISK EVALUATION /////////////
-function showAddRiskItem() {
+
+function showCommonPopup(elem) {
+	var popup = dijit.byId('commonPopup');
 	$('#commonPopup #actionDetails').empty();
-	dijit.byId('commonPopup').show();
+	popup.show();	
+	if (elem != undefined) {
+		var elemInfo = dojo.position(elem, true);
+		$("#commonPopup").animate({left: Math.floor(elemInfo.x) + "px",
+        top: Math.floor(elemInfo.y + elemInfo.h) + "px"});
+	}
+}
+
+function showAddRiskItem(elem) {
+	showCommonPopup(elem);
 	if (currentGroupId == null ) {
 		$.get("compare.ajax.php?action=getAddRisk", function(data) {
 			$("#commonPopup #actionDetails").html(data);
@@ -866,9 +884,8 @@ function updateProfile(form){
 }
 
 //////////////// SELECTIONS ////////////////
-function showAddSelectIdea() {
-	$('#commonPopup #actionDetails').empty();
-	dijit.byId('commonPopup').show();
+function showAddSelectIdea(elem) {
+	showCommonPopup(elem);
 	if (currentGroupId == null ) {
 		$.get("select.ajax.php?action=getAddSelect", function(data) {
 			$("#commonPopup #actionDetails").html(data);

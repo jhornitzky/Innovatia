@@ -5,23 +5,23 @@ require_once("core/innoworks.config.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- <base href="<?= $serverUrl.$serverRoot?>ui/login/"/> -->
 <title>innoWorks</title>
+<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>ui/style/favicon.ico" type="image/x-icon" />
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/login.js"></script>
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
 	type="text/css">
-<!-- <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"
-	type="text/css"> -->
 <link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet"
 	type="text/css">
+	
 <script type="text/javascript">
 $(document).ready( function () { 
 	showIdeas();
 });
 </script>
+
 </head>
 <body>
 
@@ -32,6 +32,11 @@ $(document).ready( function () {
 	<tr>
 		<td>
 			<img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" />
+		</td>
+	</tr>
+	<tr>
+		<td style="color:#FFFFFF; padding-left:10px;">
+			The open innovation tool for everyone
 		</td>
 	</tr>
 </table>
@@ -61,10 +66,8 @@ $(document).ready( function () {
 </div>
 
 <div id="loginContent">
-
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; ">
 	<div style="float:left;  width:560px; text-align:left; font-size:22px;">
-		<p>Innoworks is an open innovation tool that allows you to collect and refine your ideas with others.</p>
 		<noscript><span><b>You must have javascript enabled to use Innoworks</b></span></noscript>
 	</div>
 	<!-- <div>

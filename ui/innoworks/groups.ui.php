@@ -2,27 +2,16 @@
 require_once("thinConnector.php");
 import("group.service");
 
-function renderDefault() {?>
-<form id="addGroupForm" class="addForm ui-corner-all"
-	onsubmit="addGroup(); return false;"><span>New Group</span> <input
-	name="title" type="text" /> <input type="submit" value=" + "
-	title="Create a group" /> <input type="hidden" name="action"
-	value="addGroup" /></form>
-<?
-echo "<div>";
-echo "<h3>My Groups</h3>";
+function renderDefault() {
 $groups = getGroupsForCreatorUser($_SESSION['innoworks.ID']);
 if ($groups && dbNumRows($groups) > 0 ) {
 	while ($group = dbFetchObject($groups)) {
 		renderGroup($groups,$group);
 	}
 } else {
-	echo "<p>No groups</p>";
+	echo "<p>No groups created</p>";
 }
-echo "</div>";
 
-echo "<div>";
-echo "<h3>Groups I'm part of</h3>";
 $groups = getPartOfGroupsForUser($_SESSION['innoworks.ID']);
 if ($groups && dbNumRows($groups) > 0 ) {
 	while ($group = dbFetchObject($groups)) {
@@ -31,10 +20,7 @@ if ($groups && dbNumRows($groups) > 0 ) {
 } else {
 	echo "<p>No groups that Im just part of</p>";
 }
-echo "</div>";
 
-echo "<div>";
-echo "<h3>Other Groups</h3>";
 $groups = getOtherGroupsForUser($_SESSION['innoworks.ID']);
 if ($groups && dbNumRows($groups) > 0 ) {
 	while ($group = dbFetchObject($groups)) {
@@ -43,16 +29,15 @@ if ($groups && dbNumRows($groups) > 0 ) {
 } else {
 	echo "<p>No other groups</p>";
 }
-echo "</div>";
 }
 
 function renderGroup($groups, $group) {
-	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
-	echo "<input type='button' onclick='deleteGroup(" . $group->groupId .")' value=' - ' />";
+	echo "<p><a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
+	echo "<input type='button' onclick='deleteGroup(" . $group->groupId .")' value=' - ' /></p>";
 }
 
 function renderPartOfGroups($groups, $group) {
-	echo "<a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
+	echo "<p><a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a></p>";
 }
 
 function renderOtherGroup($groups, $group) {
@@ -81,12 +66,13 @@ function renderDetails($currentGroupId) {
 	} else if ($groupUser->approved == 1 && $groupUser->accepted == 0) {
 		echo "You have not accepted your invitation. Click <a href='javascript:logAction()' onclick='acceptGroup();'>here</a> to accept or <a href='javascript:logAction()' onclick='refuseGroup();'>here</a> to turn down the invitation.";
 	} else if (($groupUser->approved == 1 && $groupUser->accepted == 1) || $group->userId == $_SESSION['innoworks.ID']) {
-		if ($groups && (dbNumRows($groups) == 1)) {
-			echo "<h2> Details for ".$group->title."</h2>";
-
+		if ($groups && (dbNumRows($groups) == 1)) {?>
+			<h2> Details for <?= $group->title?></h2>
+			<div class="rightAlignMenu"><a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
+			<?
 			echo "<h3>Users";
 			if ($group->userId == $_SESSION['innoworks.ID'])
-			echo "<input type='button' value=' + ' onclick='showAddGroupUser()'/>";
+			echo "<input type='button' value=' + ' onclick='showAddGroupUser(this)'/>";
 			echo "</h3>";
 			$groupUsers = getUsersForGroup($currentGroupId);
 			if ($groupUsers && dbNumRows($groupUsers) > 0) {
@@ -101,7 +87,7 @@ function renderDetails($currentGroupId) {
 				echo "<p>None</p>";
 			}
 
-			echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea()'/></h3>";
+			echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)'/></h3>";
 			$groupIdeas = getIdeasForGroup($currentGroupId);
 			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 				echo "<ul>";

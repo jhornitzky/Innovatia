@@ -3,9 +3,14 @@ require_once("thinConnector.php");
 import("note.service");
 import("user.service");
 ?>
-<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
-	Send Note to
+<div style="width:100%;">
+		<div class="fixed-left">
+			<h2 id="pgName">Notes</h2>
+		</div>	
+		<div class="fixed-right">
+<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;" style="max-width:25em; ">
 	<input type="hidden" name="action" value="addNote"/>
+	Send note to
 	<select class="toUserNote" dojoType="dijit.form.ComboBox" name="toUserId">
 		<?
 			$users = getAllUsers();
@@ -14,8 +19,15 @@ import("user.service");
 			}
 		?>
 	</select>
-	<input type="submit" value=" + " title = "Send"/>
+	<table style="100%">
+	<tr>
+	<td style="width:90%;">
 	<input type="text" name="noteText" class="noteText" dojoType="dijit.form.Textarea" />
+	</td>
+	<td style="width:9%;">
+		<input type="submit" value=" + " title = "Send"/>
+	</td>
+	</tr></table>
 </form>
 
 <script type="text/javascript">
@@ -26,7 +38,7 @@ import("user.service");
 <?
 $notes = getAllNotes($_SESSION['innoworks.ID']);
 if ($notes && dbNumRows($notes) > 0 ) {
-	echo "<table cellpadding='3px'>";
+	echo "<div id='notePadder'>";
 	while ($note = dbFetchObject($notes)) {
 		$class;
 		if ($note->toUserId == $_SESSION['innoworks.ID']) 
@@ -34,18 +46,21 @@ if ($notes && dbNumRows($notes) > 0 ) {
 		else 
 			$class = "outgoing";	
 		?>
-		<tr class="<?= $class ?>">
-			<td class="first"><i><?= $note->createdTime ?></i></td>
-			<td><b><?= getUserInfo($note->fromUserId)->username ?></b></td>
-			<td>></td>
-		    <td><b><?= getUserInfo($note->toUserId)->username ?></b></td>
-			<td class="last"><?= $note->noteText ?></td>
-		</tr>
+		<div class="<?= $class ?>">
+			<span><?= $note->noteText ?></span><br/>
+			<span class="noteData">
+				<?= $note->createdTime ?>&nbsp;
+				<?= getUserInfo($note->fromUserId)->username ?>&nbsp;
+				&gt;&nbsp;
+		    	<?= getUserInfo($note->toUserId)->username ?>&nbsp;
+		    </span>
+		</div>
 	<?}
-	echo "</table>";
+	echo "</div>";
 	markNotesAsRead($_SESSION['innoworks.ID']);
 } else {
 	echo "<p>No inbox notes yet</p>";
 }
 ?>
-
+</div>
+</div>

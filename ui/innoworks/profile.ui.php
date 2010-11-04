@@ -3,39 +3,49 @@ require_once("thinConnector.php");
 import("user.service");
  
 function renderDefault() {
+	global $serverRoot;
 	$userDetails = getUserInfo($_SESSION['innoworks.ID']);
 	$profiles = getSimilarUserProfiles($_SESSION['innoworks.ID']);
 	?>
 	<div style="width:100%;">
-	
-	<div style="width:58%; position:relative; float:left; padding: 1%;">
-		<h2>Your Profile</h2>
-		<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
-		<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
-		<input type="hidden" name="action" value="updateProfile" /> 
-		<input type="submit" value="Update" /></form>
+		<div class="fixed-left">
+			<h2 id="pgName">Profiles</h2>
+			<div class="bordRight" style="padding-right:5px">
+			<p>Other profiles like yours</p>
+			<?if ($profiles && dbNumRows($profiles) > 0) { 
+				echo "<ul class='simProfiles'>";
+				while ($profile = dbFetchObject($profiles)) {
+					renderOtherProfile($profile);
+				}
+				echo "</ul>";
+			} else {
+				echo "<p>No similar profiles</p>";
+			}?>
+			</div>
+		</div>
+		<div class="fixed-right">
+			<div style="width:58%; position:relative; float:left;">
+			<img src="<?= $serverRoot ?>ui/style/userIcon.png" style="width:125px;height:125px;"/>
+			<h3 style="margin-bottom:0;">Your Profile</h3>
+			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
+			<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
+			<input type="hidden" name="action" value="updateProfile" /> 
+			<input type="submit" value="Update" /></form>
+			</div>
+			<!-- 
+			<div style="width:37%; position:relative; float:left;">
+			<div class="blue">&nbsp;</div>
+			<div style="padding: 1%; ">
+			<h3>Profiles like yours</h3>
+			</div>
+			</div>
+			 -->
+		</div>
 	</div>
-	
-	<div style="width:37%; padding: 1%; position:relative; float:left; border:1px solid #000000" class="ui-corner-all">
-		<h2>Profiles like yours</h2>
-		<?
-		if ($profiles && dbNumRows($profiles) > 0) { 
-			echo "<ul>";
-			while ($profile = dbFetchObject($profiles)) {
-				renderOtherProfile($profile);
-			}
-			echo "</ul>";
-		} else {
-			echo "<p>No similar profiles</p>";
-		}
-		?>
-	</div>
-	</div>
-<?
-} 
+<?} 
 
 function renderOtherProfile($profile) {?>
- 	<li><a href="javascript:showProfileSummary('<?=$profile->userId?>')"><?=$profile->username?></a><a href='mailto:<?=$profile->email?>'><?=$profile->email?></a></li>	
+ 	<li><a href="javascript:showProfileSummary('<?=$profile->userId?>')"><?=$profile->username?></a></li>	
 <?}
 
 function renderSummaryProfile($userId) {

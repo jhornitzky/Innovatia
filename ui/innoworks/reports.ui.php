@@ -1,16 +1,23 @@
 <? 
 require_once("thinConnector.php");  
 
-function renderDetails() {?>
-<h3>Details for everbody</h3>
+function renderDetails() {
+$noOfIdeas = countQuery("SELECT COUNT(*) FROM Ideas WHERE userId='".$_SESSION['innoworks.ID']."'");
+$noOfSelectedIdeas = countQuery("SELECT COUNT(*) FROM Selections, Ideas WHERE Ideas.userId='".$_SESSION['innoworks.ID']."' and Ideas.ideaId = Selections.ideaId");
+?>
+<h3>Stats on yourself</h3>
+<p>Number of ideas : <?= $noOfIdeas ?></p>
+<p>Number of selected ideas : <?= $noOfSelectedIdeas ?></p>
+<p>Number of groups created : <? echo countQuery("SELECT COUNT(*) FROM Groups WHERE userId='".$_SESSION['innoworks.ID']."'"); ?></p>
+<p>Selected idea ratio : <?= $noOfSelectedIdeas/$noOfIdeas ?></p>
+<p>Number of groups part of : <? echo countQuery("SELECT COUNT(*) FROM GroupUsers WHERE userId='".$_SESSION['innoworks.ID']."'"); ?></p>
+<br/>
+<h3>Stats on everybody</h3>
 <p>Number of ideas : <? echo countQuery("SELECT COUNT(*) FROM Ideas"); ?></p>
+<p>Number of selected ideas : <? echo countQuery("SELECT COUNT(*) FROM Selections"); ?></p>
+<p>Selected idea ratio : <? echo countQuery("SELECT COUNT(*) FROM Selections")/countQuery("SELECT COUNT(*) FROM Ideas"); ?></p>
 <p>Number of groups : <? echo countQuery("SELECT COUNT(*) FROM Groups"); ?></p>
 <p>Number of innovators : <? echo countQuery("SELECT COUNT(*) FROM Users"); ?></p>
-
-<h3>Details for yourself</h3>
-<p>Number of ideas : <? echo countQuery("SELECT COUNT(*) FROM Ideas WHERE userId='".$_SESSION['innoworks.ID']."'"); ?></p>
-<p>Number of groups created : <? echo countQuery("SELECT COUNT(*) FROM Groups WHERE userId='".$_SESSION['innoworks.ID']."'"); ?></p>
-<p>Number of groups part of : <? echo countQuery("SELECT COUNT(*) FROM GroupUsers WHERE userId='".$_SESSION['innoworks.ID']."'"); ?></p>
 <?}
 
 function renderGraphs() {?>

@@ -44,7 +44,7 @@ function renderPublicRiskItems() {
 function renderComparisonForGroup($groupId) {
 	$riskItems = getRiskItemsForGroup($groupId);
 	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table id='riskEvaluation'>";
+		echo "<table id='riskEvaluation' class='ui-corner-all'>";
 		renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
 		while ($riskItem = dbFetchObject($riskItems)) {
 			renderRiskItem($riskItems, $riskItem);
@@ -63,24 +63,23 @@ function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
 		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation","renderRiskItemCallbackRow");?>
 		<td>
-			Score: <span class="itemTotal">0 </span>
-			<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
-			<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a>
-			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
-			<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')" title="Update this risk item"  value=" U "/>
-			<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
 		</td>
 	</tr>
 	
 <?}
 
-function renderRiskItemCallbackRow($key, $value) {
-	if ($key == "idea") {
-		logDebug("ITS AN IDEA!");
-		echo "<td>";
-		echo $value;
-		echo "</td>";
-		return true;
+function renderRiskItemCallbackRow($key, $value, $riskItem) {
+	if ($key == "idea") {?>
+		<td>
+		<span class="itemTotal" style="1.5em; font-weight:bold">0</span>
+		<span class="itemName"><?= $value ?></span> <br/>
+		<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
+		<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a><br/>
+		<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
+		<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')" title="Update this risk item"  value=" U "/>
+		<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
+		</td>
+		<?return true;
 	} else {
 		return false;
 	}

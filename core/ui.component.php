@@ -154,7 +154,7 @@ function renderGenericUpdateRowWithRefData($rs,$row,$omitArray,$tableName, $rend
 
 	foreach($row as $key => $value) {
 		if ($renderCallback != null) 
-			eval('$rendered='.$renderCallback.'($key, $value);');
+			eval('$rendered='.$renderCallback.'($key, $value, $row);');
 			
 		if (!in_array($key, $omitArray) && !$rendered) {
 			$metaArray = findColumnMetadata($refdata, $key);

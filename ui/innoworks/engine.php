@@ -11,6 +11,7 @@ import("mobile.functions");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
 <title>innoWorks</title>
+<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>ui/style/favicon.ico" type="image/x-icon" />
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript"
@@ -61,15 +62,16 @@ $(document).ready(function() {
 	setInterval(pollServer, 5000);
 });
 
-dojo.addOnLoad(function(){
+dojo.addOnLoad(function(){	
+
 	dojo.require("dijit.Dialog");
 	dojo.require("dijit.form.Button");
 	dojo.require("dijit.layout.TabContainer");
 	dojo.require("dijit.layout.ContentPane");
 	dojo.require("dijit.Menu");
-	dojo.require("dojo.parser");
 	dojo.require("dijit.form.ComboBox");
 	dojo.require("dijit.form.Textarea");
+	dojo.require("dojo.parser");
 	
 	if (isMobile) {
 		//dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
@@ -96,7 +98,8 @@ dojo.addOnLoad(function(){
 
 </head>
 <body class="tundra">
-
+<!-- HEADER BAR -->
+<div id="headSurround">
 <div id="head">
 <div id="leftAlignMenu">
 <ul class="tabMenu">
@@ -106,7 +109,6 @@ dojo.addOnLoad(function(){
 	
 	<li class="selMenu">
 	<div class="marker blue"></div>&nbsp;Ideas<br/>
-	<!-- <a id="dashlnk" class="menulnk" href="javascript:showDash(this)">Dash</a> -->
 	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Explore</a>
 	<a id="comparelnk" class="menulnk"
 		href="javascript:showCompare(this)">Compare</a>
@@ -126,15 +128,12 @@ dojo.addOnLoad(function(){
 	<div class="marker orange"></div>&nbsp;Tools<br/>
 	<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)">Search</a>
 	<a id="timelinelnk" class="menulnk" href="javascript:showTimelines(this)">Timelines</a>
-	<!-- <a id="adminlnk" class="menulnk"
-		href="javascript:showAdmin(this)">Admin</a> -->
 	<a id="reportslnk" class="menulnk"
 		href="javascript:showReports(this)">Reports</a>
 	</li>
 	
 </ul>
 </div>
-
 <div id="rightAlignMenu">
 <ul class="tabMenu">
 	<li><span style="font-size:0.925em;opacity:0.8em; padding-right:0.3em;"><?= $_SESSION['innoworks.username']; ?> <!-- | Innoworks  --></span><br/>
@@ -142,49 +141,78 @@ dojo.addOnLoad(function(){
 </ul>
 </div>
 </div>
+</div>
 
+<!-- PAGE CONTENT -->
 <div id="content">
 
-<div id="ideaResponses" class="responses ui-corner-all"></div>
+<div id="ideaResponses" class="responses"></div>
 
 <div id="dashTab" class="tabBody"></div>
 
 <div id="ideaTab" class="tabBody">
-<div id="ideaTabHead" class=" addForm ui-corner-all">
-<h2>Explore <span class="ideaGroupsList"></span> ideas</h2>
-<form id="addIdeaForm" onsubmit="addIdea(); return false;">Add new idea <input id="addIdeaTitle" name="title" type="text"></input> <input
-	type="submit" value=" + " title="Add idea" /> <input type="hidden"
-	name="action" value="addIdea" /></form>
-
-<!-- <div class="rightBox">Search ideas on this page <input type="text"
-	value="Show" onclick="$(this).val('')" onkeyup="filterIdeas(this)"
-	onchange="filterIdeas(this)" /> </div>-->
+<div style="width:100%;">
+	<div class="fixed-left">
+		<h2 id="pgName">Explore ideas</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+		<form id="addIdeaForm" onsubmit="addIdea(); return false;">
+		<span>Add new idea</span> 
+		<input id="addIdeaTitle" name="title" type="text"/> 
+		<input type="submit" value=" + " title="Add idea" /> 
+		<input type="hidden" name="action" value="addIdea" /></form>
+	</div>
+</div> 
+<div style="width:100%; clear:left">
+	<div class="fixed-left bordRight">
+		<span class="ideaGroupsList"></span>
+	</div>
+	<div class="fixed-right">
+		<div id="ideasList"></div>
+	</div>
+</div>
 </div>
 
-<div id="ideasList"></div>
-</div>
-
-<div id="compareTab" class="tabBody"><!-- <h2>R-W-W</h2>
-	<p>The R-W-W method phrases key questions around the risks involved with each idea, allowing you to select and rank which ideas you feel are best.</p> -->
-<div class="addform ui-corner-all">
-<h2>Compare <span class="ideaGroupsList">My</span> ideas</h2>
-Click here to add idea to comparison
-<input type='button' onclick='showAddRiskItem()' value=' + '
-	title="Add an idea to comparison" />
-<!-- <div class="ideaGroups ui-corner-all"><a
-	href="javascript:showDefaultIdeas()">My Ideas</a> Groups <span
-	class="ideaGroupsList">None</span></div>-->
-</div>
-<div id="compareList">
+<div id="compareTab" class="tabBody">
+<div style="width:100%;">
+	<div class="fixed-left">
+		<h2 id="pgName">Compare ideas</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+	<form>
+		Click here to add idea to comparison
+		<input id="riskItemBtn" type='button' onclick='showAddRiskItem(this)' value=' + ' title="Add an idea to comparison" />
+	</form>
+	</div>
+</div> 
+<div style="width:100%; clear:left">
+	<div class="fixed-left bordRight">
+		<span class="ideaGroupsList"></span>
+	</div>
+	<div class="fixed-right">
+		<div id="compareList"></div>
+	</div>
 </div>
 </div>
 
 <div id="selectTab" class="tabBody">
-<div class="addform ui-corner-all">
-<h2>Select <span class="ideaGroupsList">My</span> ideas</h2> 
-Click here to select an idea <input type='button' onclick='showAddSelectIdea()' value=' + ' title="Select an idea to work on" />
-</div>
-<div id="selectList">
+<div style="width:100%;">
+	<div class="fixed-left">
+		<h2 id="pgName">Select ideas</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+		<form>
+		Click here to select an idea 
+		<input type='button' onclick='showAddSelectIdea(this)' value=' + ' title="Select an idea to work on" /></form>
+	</div>
+</div> 
+<div style="width:100%; clear:left;">
+	<div class="fixed-left bordRight">
+		<span class="ideaGroupsList"></span>
+	</div>
+	<div class="fixed-right">
+		<div id="selectList"></div>
+	</div>
 </div>
 </div>
 
@@ -192,31 +220,53 @@ Click here to select an idea <input type='button' onclick='showAddSelectIdea()' 
 <div id="profileTab" class="tabBody"></div>
 
 <div id="groupTab" class="tabBody">
-<div id="groupSelect" class="two-column">
-<!-- <div class="formHeadContain" style="width: 100%">
-	<a href="javascript:logAction()" onclick="showGroups()">Groups</a>
-	<a href="javascript:logAction()" onclick="showGroupReqs()">Requests</a>
-</div>-->
-<div id="groupsList" style="padding: 10px; margin-top: 1em"></div>
+<div style="width:100%;">
+	<div class="fixed-left">
+		<h2 id="pgName">Groups</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+		<form id="addGroupForm" onsubmit="addGroup(); return false;"><span>Create new group</span> 
+		<input name="title" type="text" /> 
+		<input type="submit" value=" + " title="Create a group" /> 
+		<input type="hidden" name="action" value="addGroup" /></form>
+	</div>
+</div> 
+<div style="width:100%;">
+	<div class="fixed-left bordRight">
+		<div id="groupsList" style="padding-right: 5px;">&nbsp;</div>
+	</div>
+	<div class="fixed-right">
+		<div id="groupDetailsCont" class="two-column">
+			<div id="groupDetails"> &lt;&lt; Select one of the groups on the left to see its details</div>
+		</div>
+	</div>
 </div>
 
-<div id="groupDetailsCont" class="two-column ui-corner-all" style="padding: 10px; border: 1px solid #000000">
-	<div class="rightAlignMenu"><a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
-	<div id="groupDetails"> << Select one of the groups on the left to see its details</div>
-</div>
+
 </div>
 
 
 <div id="noteTab" class="tabBody"></div>
 
-<div id="searchTab" class="tabBody"></div>
+<div id="searchTab" class="tabBody">
+	<div class="fixed-left">
+		<h2 id="pgName">Search</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+		<div id="searchResults"></div>
+	</div>
+</div>
 
 <div id="timelineTab" class="tabBody"></div>
 
 <div id="reportTab" class="tabBody">
-<div id="reportDetails" class="two-column ui-corner-all"
-	style="padding: 10px">Loading reports...</div>
-<div id="reportList" class="two-column" style="padding: 10px"></div>
+	<div class="fixed-left">
+		<h2 id="pgName">Reports</h2>
+	</div>
+	<div class="fixed-right" style="padding-top:0.3em;">
+		<div id="reportDetails">Loading reports...</div>
+		<div id="reportList" class="two-column" style="padding: 10px"></div>
+	</div>
 </div>
 
 <div id="adminTab" class="tabBody"></div>
