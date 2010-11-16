@@ -28,8 +28,9 @@ function renderDefault() {
 			<img src="<?= $serverRoot ?>ui/style/userIcon.png" style="width:125px;height:125px;"/>
 			<h3 style="margin-bottom:0;">Your Profile</h3>
 			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
-			<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
-			<input type="hidden" name="action" value="updateProfile" /> 
+				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
+				<input type="hidden" name="action" value="updateProfile" /> 
+			</form>
 			</div>
 			<!-- 
 			<div style="width:37%; position:relative; float:left;">
