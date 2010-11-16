@@ -85,6 +85,14 @@ dojo.addOnLoad(function(){
 </script>
 <!--[if IE]>
 	<style>
+	html, body {
+		font-size:0.95em;
+	}
+	
+	form  {
+		margin-top:2px;
+	}
+	
 	#searchTab * .threecol {
 		margin-right:2%; 
 		width:23%; 
@@ -93,10 +101,8 @@ dojo.addOnLoad(function(){
 		overflow:auto; 
 	}
 	
-	div#compareList table {
-		display:block:
-		width:500px;
-		float:left
+	#timelineTab table, #compareTab table, div.fixed-right #reportDetails  {
+		width:750px;
 	}
 	</style>
 <![endif]-->
