@@ -1,16 +1,27 @@
 <?
 require_once("innoworks.connector.php");
 
+function getGroupDetails($gid) {
+	return dbFetchObject(dbQuery("SELECT Groups.* FROM Groups WHERE groupId = $gid"));
+}
+
 function getAllGroupsForUser($user) {
 	return dbQuery("SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE (GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId) OR (Groups.userId = $user) GROUP BY Groups.groupId");
 }
 
 function getPartOfGroupsForUser($user) {
-	return dbQuery("SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId AND Groups.userId != $user");
+	$sql = "SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user'";
+	logDebug($sql);
+	return dbQuery($sql);
 }
 
 function getOtherGroupsForUser($user) {
-	return dbQuery("SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE (Groups.userId != $user AND GroupUsers.userId != '$user' AND GroupUsers.groupId = Groups.groupId)");
+	$sql = "SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId != '$user' AND Groups.userId != '$user' 
+	AND Groups.groupId NOT IN (SELECT Groups.groupId FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' GROUP BY Groups.groupId)
+	UNION SELECT Groups.groupId, Groups.title FROM Groups WHERE Groups.userId != '$user' AND Groups.groupId 
+	NOT IN (SELECT DISTINCT groupId FROM GroupUsers)";
+	logDebug($sql);
+	return dbQuery($sql);
 }
 
 function getIdeasForUserinGroup($user, $group) {
@@ -24,7 +35,7 @@ function getGroupsForCreatorUser($user) {
 }
 
 function getUsersForGroup($id) {
-	return dbQuery("SELECT Users.userId, Users.username FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId");
+	return dbQuery("SELECT Users.userId, Users.username, GroupUsers.* FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId");
 }
 
 function getIdeasForGroup($id) {
@@ -52,10 +63,12 @@ function getGroupUserEntryWithId($groupId, $userId) {
 }
 
 function createGroup($opts) {
-	genericCreate("Groups",$opts);
+	return genericCreate("Groups",$opts);
 }
 
 function deleteGroup($id, $user) {
+	import("note.service");
+	createNoteForGroup($_SESSION['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . "has been deleted");
 	$success = dbQuery("DELETE FROM Groups WHERE groupId = '$id' AND userId = '$user'" );
 	if ($success) {
 		$success = dbQuery("DELETE FROM GroupUsers WHERE groupId = '$id'");
@@ -64,27 +77,68 @@ function deleteGroup($id, $user) {
 }
 
 function linkIdeaToGroup($groupId, $ideaId) {
-	$sql = "INSERT INTO GroupIdeas (groupId,ideaId) VALUES ('$groupId','$ideaId')";
-	return dbQuery($sql);
+	import("note.service");
+	createNoteForGroup($_SESSION['innoworks.ID'], $groupId, "An idea has been added to the group " . getGroupDetails($groupId)->title);
+	return dbQuery("INSERT INTO GroupIdeas (groupId,ideaId) VALUES ('$groupId','$ideaId')");
 }
 
-function unlinkIdeaToGroup($groupId, $groupid) {
-	return dbQuery("DELETE FROM GroupIdeas WHERE groupId = '$groupId' AND ideaId = '$groupid'");
+function unlinkIdeaToGroup($groupId, $ideaId) {
+	import("note.service");
+	createNoteForGroup($_SESSION['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupid)->title);
+	return dbQuery("DELETE FROM GroupIdeas WHERE groupId = '$groupId' AND ideaId = '$ideaId'");
 }
 
 function linkGroupToUser($groupid, $userid) {
+	import("note.service");
+	$array = array();
+	$array['fromUserId'] = $_SESSION['innoworks.ID'];
+	$array['toUserId'] = $userid;
+	$array['noteText'] = "You have been asked to join the group " . getGroupDetails($groupid)->title;
+	createNote($array);
 	return dbQuery("INSERT INTO GroupUsers (groupId,userId,approved) VALUES ('$groupid','$userid',1)");
 }
 
 function unlinkGroupToUser($groupid, $userid) {
+	import("note.service");
+	$array = array();
+	$array['fromUserId'] = $_SESSION['innoworks.ID'];
+	$array['toUserId'] = $userid;
+	$array['noteText'] = "You have been removed from the group " . getGroupDetails($groupid)->title;
+	createNote($array);
 	return dbQuery("DELETE FROM GroupUsers WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 
 function approveGroupUser($groupid, $userid) {
+	import("note.service");
+	$array = array();
+	$array['fromUserId'] = $_SESSION['innoworks.ID'];
+	$array['toUserId'] = $userid;
+	$array['noteText'] = "You have been approved for the group " . getGroupDetails($groupid)->title;
+	createNote($array);
 	return dbQuery("UPDATE GroupUsers SET approved=1 WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 
 function acceptGroupInvitation($groupid, $userid) {
+	import("note.service");
+	$array = array();
+	$array['fromUserId'] = $_SESSION['innoworks.ID'];
+	$array['toUserId'] = getGroupDetails($groupid)->userId;
+	$array['noteText'] = "I have joined the group " . getGroupDetails($groupid)->title;
+	createNote($array);
 	return dbQuery("UPDATE GroupUsers SET accepted=1 WHERE groupId = '$groupid' AND userId = '$userid'");
+}
+
+function requestGroupAccess($groupid, $userid) {
+	import("note.service");
+	$array = array();
+	$array['fromUserId'] = $_SESSION['innoworks.ID'];
+	$array['toUserId'] = getGroupDetails($groupid)->userId;
+	$array['noteText'] = "I want to join the group " . getGroupDetails($groupid)->title;
+	createNote($array);
+	return dbQuery("INSERT INTO GroupUsers (groupId,userId,accepted) VALUES ('$groupid','$userid',1)");
+}
+
+function addIdeaToPublic($ideaId, $userId) {
+	return dbQuery("UPDATE Ideas SET isPublic=1 WHERE ideaId=$ideaId AND userId=$userId");
 }
 ?>

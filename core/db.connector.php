@@ -161,11 +161,14 @@ function dbQuery_Auto($sqlQuery)
 
 function dbQuery_Manual($dbUplink, $sqlQuery)
 {
+	if (is_string($sqlQuery)) 
+		logDebug($sqlQuery);
+		
 	$result = mysqli_query($dbUplink, $sqlQuery);
 	
 	if (mysqli_errno($dbUplink)) {
-		logError("Error msg: " . mysqli_errno($dbUplink) . mysqli_error($dbUplink));
-		die(getCommonErrorString(mysqli_error($dbUplink)));
+		logError(mysqli_errno($dbUplink) . " " . mysqli_error($dbUplink));
+		die(getCommonErrorString(mysqli_errno($dbUplink) . " " . mysqli_error($dbUplink)));
 	}
 	return $result;
 }
@@ -242,5 +245,9 @@ function dbCloseRollback($link) {
 
 function dbInsertedId($link) {
 	return mysqli_insert_id($link);
+}
+
+function dbRowSeek($rs, $no) {
+	return mysqli_data_seek($rs, $no);
 }
 ?>

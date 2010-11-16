@@ -117,7 +117,7 @@ function createFeatureEvaluation($opts) {
 
 function updateFeatureEvaluation($opts) {
 	$where = array("featureEvaluationId");
-	return genericUpdate("IdeaFeatureEvaluations", $opts, $where);
+	return genericUpdate("FeatureEvaluation", $opts, $where);
 }
 
 function deleteFeatureEvaluation($id) {
@@ -196,11 +196,18 @@ function retrieveAttachment($id) {
 }
 
 function grantEditToIdea($ideaId, $groupId) {
-	return dbQuery(); 	
+	return dbQuery("UPDATE GroupUsers SET canEdit = '1' WHERE ideaId = '$ideaId' and groupId = '$groupId'"); 	
 }
 
-function hasAccessToIdea($ideaId, $userId) {
-	return (dbNumRows(dbQuery("SELECT * FROM Users, Ideas")));
+function revokeEditToIdea($ideaId, $groupId) {
+	return dbQuery("UPDATE GroupUsers SET canEdit = '0' WHERE ideaId = '$ideaId' and groupId = '$groupId'"); 	
 }
 
+function hasAccessToIdea($ideaId, $userId) { 
+	return (dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' OR Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId")));
+}
+
+function hasEditAccessToIdea($ideaId, $userId) { 
+	return (dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId AND GroupIdeas.canEdit = 1")));
+}
 ?>

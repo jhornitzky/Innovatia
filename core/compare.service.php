@@ -1,10 +1,10 @@
 <?
 function createRiskItem($opts) {
-	genericCreate("RiskEvaluation",$opts);
+	return genericCreate("RiskEvaluation",$opts);
 }
 
 function createRiskItemForGroup($opts) {
-	genericCreate("RiskEvaluation",$opts);
+	return genericCreate("RiskEvaluation",$opts);
 }
 
 function updateRiskItem($opts) {
@@ -34,5 +34,17 @@ function getRiskItemsForGroup($group) {
 
 function getRiskItemForIdea($ideaId, $user) {
 	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation WHERE RiskEvaluation.ideaId = '$ideaId'"); //FIXME
+}
+
+function getCompareComments($uId) {
+	return dbQuery("SELECT *  FROM Comments WHERE ideaId IS NULL AND groupId IS NULL AND userId=$uId"); 
+}
+
+function getPublicCompareComments($uId) {
+	return null;
+}
+
+function getCompareCommentsForGroup($uId, $groupId) {
+	return dbQuery("SELECT * FROM Comments WHERE groupId = $groupId"); 
 }
 ?>

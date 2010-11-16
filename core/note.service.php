@@ -5,6 +5,30 @@ function createNote($opts) {
 	return genericCreate("Notes", $opts);
 }
 
+function createNoteForGroup($senderid,$groupid, $msg) {
+	//Dim array
+	$array = array();
+	$array['fromUserId'] = $senderid;
+	$array['noteText'] = $msg;
+	
+	import("group.service");
+	//Send to leader first
+	$group = getGroupDetails($groupid);
+	$array['toUserId'] = $group->userId;
+	createNote($array);
+	
+	//Now send to group members
+	$groupUsers = getUsersForGroup($groupid);
+	if ($groupUsers && dbNumRows($groupUsers) > 0) {
+		while ($groupUser = dbFetchObject($groupUsers)) {
+			$array['toUserId'] = $groupUser->userId;
+			createNote($array);
+		}
+	}
+	
+	return true;
+}
+
 function deleteNote($opts) {
 	return genericDelete("Notes", $opts);
 }

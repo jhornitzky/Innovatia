@@ -33,7 +33,6 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 }
 
 function renderGenericUpdateForm($rs,$row,$omitArray) {
-	//print_r($row);
 	echo "<table>";
 	foreach($row as $key => $value) {
 		echo "<tr>";
@@ -250,13 +249,11 @@ function getColumnType($refDataArray) {
 }
 
 function getColumnDescription($refDataArray) {
-	//logDebug("In get col description");
 	if (!$refDataArray)
-	return $refDataArray;
+		return $refDataArray;
 
 	foreach ($refDataArray as $refDataValue) {
 		if ($refDataValue["key3"] == "H") {
-			//logDebug("return refdata value");
 			return $refDataValue["value"];
 		}
 	}
@@ -269,7 +266,6 @@ function renderServiceResponse($resp) {
 	} else {
 		echo getCommonErrorString("Unknown");
 	}
-	
 }
 
 function getCommonErrorString($cause) {
