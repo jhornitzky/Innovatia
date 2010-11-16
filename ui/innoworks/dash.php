@@ -22,7 +22,6 @@ import("dash.service");
 		<div class="widget ui-corner-all">
 			<h2><a href="javascript:showIdeas();">Explore</a></h2>
 			<p class="subhead">Record, manage and explore your ideas to help them take shape and grow.</p>
-			<!-- <p><i>Your ideas</i></p> -->
 			<?
 			$ideas = getDashIdeas($_SESSION['innoworks.ID']);
 			if ($ideas && dbNumRows($ideas) > 0 ) {
@@ -39,7 +38,6 @@ import("dash.service");
 		<div class="widget ui-corner-all">
 			<h2><a href="javascript:showCompare();">Compare</a></h2>
 			<p class="subhead">Contrast and compare your existing ideas and work to improve them.</p>
-			<!-- <p><i>Your ideas</i></p> -->
 			<?
 			$items = getDashCompare($_SESSION['innoworks.ID']);
 			if ($items && dbNumRows($items) > 0 ) {
@@ -53,10 +51,9 @@ import("dash.service");
 	</div>
 	<div class="threecol col3">
 		<div class="orange" style="height:1.5em">&nbsp;</div>
-		<div class="widget" style="width:98%;">
+		<div class="widget ui-corner-all">
 			<h2><a href="javascript:showSelect();">Select</a></h2>
 			<p class="subhead">Choose ideas to work on, and manage their priorities and tasks.</p>
-			<!-- <p><i>Your ideas</i></p> -->
 			<?
 			$selections = getDashSelect($_SESSION['innoworks.ID']);
 			if ($selections && dbNumRows($selections) > 0 ) {

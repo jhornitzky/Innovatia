@@ -26,6 +26,15 @@ if (isset($_GET) && $_GET != '') {
 		case "getRiskEvalForIdea":
 			renderIdeaRiskEval($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
+		case "getCompareComments":
+			renderCompareComments($_SESSION['innoworks.ID']);
+			break;
+		case "getPublicCompareComments":
+			renderPublicCompareComments($_SESSION['innoworks.ID']);
+			break;
+		case "getCompareCommentsForGroup":
+			renderCompareCommentsForGroup($_SESSION['innoworks.ID'], $_GET['actionId']);
+			break;
 	}
 }
 

@@ -7,9 +7,7 @@ if ($notes && dbNumRows($notes) > 0) {
 	echo "<table>";
 	while ($note = dbFetchObject($notes)) {?>
 		<tr>
-			<td><b><?= getUserInfo($note->fromUserId)->username  ?></b></td>
-			<td>></td>
-			<td>you</td>
+			<td><b><?= getUserInfo($note->fromUserId)->username  ?></b> : </td>
 			<td><?= $note->noteText ?></td>
 		</tr>
 	<?}

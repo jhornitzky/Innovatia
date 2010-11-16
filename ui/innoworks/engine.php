@@ -18,8 +18,8 @@ import("mobile.functions");
 	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
 <script type="text/javascript"
 	src="<?= $serverRoot?>ui/scripts/innoworks.js"></script>
-<link href="<?= $serverRoot?>ui/scripts/cssjQuery.css" rel="stylesheet"
-	type="text/css" />
+<script type="text/javascript"
+	src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
@@ -38,9 +38,8 @@ var currentGroupName = "Private";
 var currentPersonId;
 var currentPersonName;
 var formArray; // Temp holder for form value functions
-var targets = {"ideas": "ideas.ajax.php",  "groups": "groups.ajax.php",  
-		"compare": "compare.ajax.php", "reports": "reports.ajax.php"};
-var selectedChild;
+var targets = {ideas: "ideas.ajax.php",  groups: "groups.ajax.php",  
+		compare: "compare.ajax.php", reports: "reports.ajax.php"};
 var isMobile = <?= (isMobile()) ? "true" : "false"; ?>;
 
 /////// START UP ///////
@@ -59,20 +58,10 @@ $(document).ready(function() {
 	showDash();
 
 	//Start server polling
-	setInterval(pollServer, 5000);
+	setInterval(pollServer, 15000);
 });
 
 dojo.addOnLoad(function(){	
-
-	dojo.require("dijit.Dialog");
-	dojo.require("dijit.form.Button");
-	dojo.require("dijit.layout.TabContainer");
-	dojo.require("dijit.layout.ContentPane");
-	dojo.require("dijit.Menu");
-	dojo.require("dijit.form.ComboBox");
-	dojo.require("dijit.form.Textarea");
-	dojo.require("dojo.parser");
-	
 	if (isMobile) {
 		//dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
 		dojo.declare("dijit.form.Textarea",null,null); //TODO test if this actually fixes the ipad problem
@@ -93,11 +82,27 @@ dojo.addOnLoad(function(){
 	});
 	
 });
-
 </script>
-
+<!--[if IE]>
+	<style>
+	#searchTab * .threecol {
+		margin-right:2%; 
+		width:23%; 
+		position:relative; 
+		float:left; 
+		overflow:auto; 
+	}
+	
+	div#compareList table {
+		display:block:
+		width:500px;
+		float:left
+	}
+	</style>
+<![endif]-->
 </head>
 <body class="tundra">
+
 <!-- HEADER BAR -->
 <div id="headSurround">
 <div id="head">
@@ -136,7 +141,7 @@ dojo.addOnLoad(function(){
 </div>
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li><span style="font-size:0.925em;opacity:0.8em; padding-right:0.3em;"><?= $_SESSION['innoworks.username']; ?> <!-- | Innoworks  --></span><br/>
+	<li style="padding-top:0.05em; "><span style="font-size:0.9em; 	padding-right:0.3em;"><?= $_SESSION['innoworks.username']; ?></span><br/>
 	<a href="javascript:logout()">Logout</a><a href="javascript:showFeedback()">Feedback</a></li>
 </ul>
 </div>
@@ -156,11 +161,13 @@ dojo.addOnLoad(function(){
 		<h2 id="pgName">Explore ideas</h2>
 	</div>
 	<div class="fixed-right" style="padding-top:0.3em;">
-		<form id="addIdeaForm" onsubmit="addIdea(); return false;">
-		<span>Add new idea</span> 
-		<input id="addIdeaTitle" name="title" type="text"/> 
-		<input type="submit" value=" + " title="Add idea" /> 
-		<input type="hidden" name="action" value="addIdea" /></form>
+		<form id="addIdeaForm" onsubmit="addIdea(this);return false;">
+			<span>Add new idea</span> 
+			<input id="addIdeaTitle" name="title" type="text"/> 
+			<input type="button" value=" + " title="Add idea" onclick="addIdea(this)"/> 
+			<input style="display:none" type="submit" /> 
+			<input type="hidden" name="action" value="addIdea" />
+		</form>
 	</div>
 </div> 
 <div style="width:100%; clear:left">
@@ -191,6 +198,14 @@ dojo.addOnLoad(function(){
 	</div>
 	<div class="fixed-right">
 		<div id="compareList"></div>
+		<div id="compareComments" style="margin-top:1em;">
+			<form id="addCompareCommentForm" class="addForm" onsubmit="addCompareComment();return false;">
+				<input type="hidden" name="action" value="addComment" />
+				Comments <input type="submit" value=" + " /> 
+				<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> 
+			</form>
+			<div id="compareCommentList">No comments yet</div>
+		</div>
 	</div>
 </div>
 </div>
@@ -241,10 +256,7 @@ dojo.addOnLoad(function(){
 		</div>
 	</div>
 </div>
-
-
 </div>
-
 
 <div id="noteTab" class="tabBody"></div>
 
@@ -273,8 +285,8 @@ dojo.addOnLoad(function(){
 
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
-<span class="ideaDetailsOptions" style="position:relative; float:right;">
-<a href="javascript:printIdea()">Print</a> </span>
+<div id="ideaPopupResponses" class="responses"></div>
+<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea()">Print</a></span>
 <table><tr>
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
@@ -291,12 +303,11 @@ dojo.addOnLoad(function(){
 	<div id="ideasPopupReview" dojoType="dijit.layout.TabContainer" title="Review" nested="true">
 		<div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
 			<div id="addComment">
-			<form id="addCommentForm" class="addForm ui-corner-all"
-				onsubmit="addComment();return false;">New Comment <input type="submit"
-				value=" + " /> <!-- <input type="text" name="text" style="width:100%"/> -->
-			<textarea id="textarea2" name="text" dojoType="dijit.form.Textarea"
-				style="width: 100%;"></textarea> <input type="hidden" name="action"
-				value="addComment" /></form>
+			<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
+				New Comment <input type="submit" value=" + " /> 
+				<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%;"></textarea> 
+				<input type="hidden" name="action" value="addComment" />
+			</form>
 			</div>
 			<div id="commentList">No comments yet</div>
 		</div>
@@ -311,7 +322,6 @@ dojo.addOnLoad(function(){
 	
 	<div id="ideaShare" dojoType="dijit.layout.ContentPane"
 		title="Share"></div>
-	
 </div>
 </div>
 

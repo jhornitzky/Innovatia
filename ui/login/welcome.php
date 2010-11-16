@@ -18,7 +18,7 @@ require_once("core/innoworks.config.php");
 	
 <script type="text/javascript">
 $(document).ready( function () { 
-	showIdeas();
+	showSearch();
 });
 </script>
 

@@ -8,7 +8,7 @@ a {
 	padding:0;
 }
 
-#Responses {
+#Responses, #regResponse {
 	font-weight:bold;
 	color:#43a2e5;
 	text-align:left;

@@ -124,7 +124,7 @@ if (isset($_POST) && $_POST != '') {
 			echo "Updating Role... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			renderServiceResponse(createRole($opts));
+			renderServiceResponse(updateRole($opts));
 			break;
 		case "updateFeature":
 			echo "Updating Feature... ";

@@ -4,80 +4,51 @@
  */
 require_once("thinConnector.php");  
 
+/* RENDER COMPARE ITEMS (RISK EVALUATION) */
 function renderDefault($user) {
-	$riskItems = getRiskItems($user);
-	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table id='riskEvaluation'>";
-		renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
-		while ($riskItem = dbFetchObject($riskItems)) {
-			renderRiskItem($riskItems, $riskItem);
-		}
-		echo "</table>";?>
-		<script type="text/javascript">
-			initFormSelectTotals('table#riskEvaluation');
-		</script>
-		<?
-	} else {
-		echo "<p>No items yet. Add some items by clicking the '+' above. </p>";
-	}
+	renderCommon(getRiskItems($user));
 } 
 
 function renderPublicRiskItems() {
-	$riskItems = getPublicRiskItems();
-	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table id='riskEvaluation'>";
-		renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
-		while ($riskItem = dbFetchObject($riskItems)) {
-			renderRiskItem($riskItems, $riskItem);
-		}
-		echo "</table>";?>
-		<script type="text/javascript">
-			initFormSelectTotals('table#riskEvaluation');
-		</script>
-		<?
-	} else {
-		echo "<p>No items yet. Add some items by clicking the '+' above. </p>";
-	}
+	renderCommon(getPublicRiskItems());
 } 
 
-
 function renderComparisonForGroup($groupId) {
-	$riskItems = getRiskItemsForGroup($groupId);
+	renderCommon(getRiskItemsForGroup($groupId));
+}
+
+function renderCommon($riskItems) {
 	if ($riskItems && dbNumRows($riskItems) > 0){
 		echo "<table id='riskEvaluation' class='ui-corner-all'>";
-		renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
-		while ($riskItem = dbFetchObject($riskItems)) {
-			renderRiskItem($riskItems, $riskItem);
-		}
-		echo "</table>";?>
-		<script type="text/javascript">
-			initFormSelectTotals('table#riskEvaluation');
-		</script>
-		<?
+		echo "<thead>";
+			renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
+		echo "</thead>";
+		echo "<tbody>";
+			while ($riskItem = dbFetchObject($riskItems)) {
+				renderRiskItem($riskItems, $riskItem);
+			}
+		echo "</tbody>";
+		echo "</table>";
 	} else {
-	echo "<p>No items for group. Add some items by clicking the '+' above.</p>";
+		echo "<p>No items for group</p>";
 	}
 }
 
 function renderRiskItem($riskItems, $riskItem) {?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
 		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation","renderRiskItemCallbackRow");?>
-		<td>
-		</td>
 	</tr>
-	
 <?}
 
 function renderRiskItemCallbackRow($key, $value, $riskItem) {
 	if ($key == "idea") {?>
 		<td>
-		<span class="itemTotal" style="1.5em; font-weight:bold">0</span>
-		<span class="itemName"><?= $value ?></span> <br/>
-		<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
-		<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a><br/>
-		<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
-		<input type="button" onclick="updateRisk('<?= $riskItem->riskEvaluationId ?>','riskform_<?= $riskItem->riskEvaluationId ?>')" title="Update this risk item"  value=" U "/>
-		<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
+			<span class="itemTotal" style="1.5em; font-weight:bold">0</span>
+			<span class="itemName"><?= $value ?></span> <br/>
+			<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
+			<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a>
+			<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
+			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
 		</td>
 		<?return true;
 	} else {
@@ -113,31 +84,51 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 
 function renderIdeaSummary($ideaId) {?>
 <span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea('<?= $ideaId?>')">Print</a> </span>
-	<?
-	import("idea.service");
+	<?import("idea.service");
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
-	renderGenericInfoForm(null, $idea, array());
-	?>
+	renderGenericInfoForm(null, $idea, array());?>
 	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Open</a>
-	<?		
-}
+<?}
 
 function renderIdeaRiskEval($ideaId, $userId) {
 	import("compare.service");
 	$item = getRiskItemForIdea($ideaId,$userId);
 	if ($item && dbNumRows($item) > 0) {
-		$item = dbFetchObject($item);
-		?>
-		<form id="ideaRiskEvalDetails" onsubmit="updateRisk('<?= $item->riskEvaluationId ?>','ideaRiskEvalDetails'); return false;">
+		$item = dbFetchObject($item);?>
+		<form id="ideaRiskEvalDetails">
 		<? renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId"), "RiskEvaluation");?>
 		<input type="hidden" name="riskEvaluationId" value="<?= $item->riskEvaluationId ?>"/>
 		<input type="hidden" name="action" value="updateRiskEval" />
-		<input type="submit" value="Update" /></form>
 		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a> to edit data
 	<?} else {?>
 		<p>No compare data for idea</p>
 		<p>Add comparison data for idea <a onclick="addRiskItem('<?= $ideaId ?>');loadPopupShow()" href="javascript:logAction()">now</a> </p> 
 		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
 	<?}
+}
+
+/* RENDER COMPARE COMMENTS */
+function renderCompareComments($uId) {
+	import("compare.service");
+	renderCommonComments(getCompareComments($uId));
+}
+
+function renderPublicCompareComments($uId) {
+	return null;
+}
+
+function renderCompareCommentsForGroup($uId, $gId) {
+	import("compare.service");
+	renderCommonComments(getCompareCommentsForGroup($uId, $gId));
+}
+
+function renderCommonComments($comments) {
+	if ($comments && dbNumRows($comments) > 0) {
+		while ($comment = dbFetchObject($comments)) {
+			echo $comment->text. "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '><br/>";
+		}
+	} else {
+		echo "No comments";
+	}
 }
 ?>

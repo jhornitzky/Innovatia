@@ -17,6 +17,9 @@ if (isset($_GET) && $_GET != '') {
 		case "getAddIdea":
 			renderAddIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
+		case "getPublicAddIdea":
+			renderPublicAddIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
+			break;
 		case "getShareForIdea":
 			renderIdeaShare($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
@@ -59,6 +62,18 @@ if (isset($_POST) && $_POST != '') {
 		case "refuseGroup":
 			echo "Refuse invite... "; 
 			renderServiceResponse(unlinkGroupToUser($_POST['actionId'],$_SESSION['innoworks.ID']));
+			break;
+		case "requestGroup":
+			echo "Request access... "; 
+			renderServiceResponse(requestGroupAccess($_POST['actionId'],$_SESSION['innoworks.ID']));
+			break;
+		case "approveGroupUser":
+			echo "Accept new member... "; 
+			renderServiceResponse(approveGroupUser($_POST['actionId'],$_POST['userId']));
+			break;
+		case "addIdeaToPublic":
+			echo "Adding idea to public... "; 
+			renderServiceResponse(addIdeaToPublic($_POST['actionId'],$_SESSION['innoworks.ID']));
 			break;
 	}
 }

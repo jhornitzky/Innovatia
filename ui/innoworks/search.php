@@ -23,9 +23,9 @@ if (!hasSearchTerms()) {
 <div style="border: 1px solid #444444; position: relative; float: left;">
 <table cellpadding="0" cellspacing="0">
 <tr><td><input id="searchInput" type="text"  name="input"
-	value="<?= $_GET['searchTerms'] ?>";
+	value="<?= $_GET['searchTerms'] ?>"; 
 	placeholder=" . . ."
-	style="font-size:1.2em; width:15.5em; border: none" /> </td><td><img src="<?= $serverRoot."ui/style/glass.png"?>" onclick="showIdeas()" style="width:30px; height:24px; margin:2px;cursor:pointer"/>
+	style="font-size:1.2em; width:15.5em; border: none" /> </td><td><img src="<?= $serverRoot."ui/style/glass.png"?>" onclick="showSearch()" style="width:30px; height:24px; margin:2px;cursor:pointer"/>
 	</td></tr>
 </table>
 <input id="searchBtn" type="submit" value="" style="display:none;"/>
@@ -52,7 +52,6 @@ if ($users && dbNumRows($users) > 0){
 	while ($user = dbFetchObject($users)) { ?>
 <p>
 <a href="javascript:showProfileSummary('<?=$user->userId?>')"><?=$user->username?></a>
-<a href="mailto:<?= $user->email?>"><?= $user->email?></a>
 </p>
 	<?}
 } else {

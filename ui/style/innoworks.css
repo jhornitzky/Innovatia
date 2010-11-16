@@ -1,7 +1,7 @@
 /* COMMON */
 body {
 	text-align:left;
-	background:#ffffff url('bg.jpg') no-repeat right top;
+	/*background:#ffffff url('bg.jpg') no-repeat right top;*/
 	min-width:1024px;
 }
 
@@ -19,9 +19,14 @@ a:hover {
 	color:#000000;
 }
 
-
 div.tabBody div.loadingAnim {
 	height:50%;
+}
+
+.90-deg {
+	-webkit-transform: rotate(-90deg); 
+	-moz-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
 /* DOJO OVERRIDES */
@@ -177,6 +182,7 @@ div#content {
 	max-height:3em;
 	color:#000000;
 	background-color:#FFFFFF;
+	overflow:hidden;
 }
 
 .tabBody {
@@ -223,6 +229,10 @@ div#content {
 	position:relative;
 	float:left;
 	background-color:#FFF;
+	text-align:center;
+	width:8em;
+	height:8em;
+	overflow:hidden;
 }
 
 .ideaoptions {
@@ -236,9 +246,12 @@ div#content {
 }
 
 .ideaGroupsList div p a.selected {
-	border-right:3px solid #DDD;
+	border-right:5px solid #CCC;
 	border-bottom:none;
 	font-weight: bold;
+	padding-left:2em;
+	background-color:#AAA;
+	color:#FFFFFF;
 }
 
 /* Other tabs styling */
@@ -300,8 +313,12 @@ table td input[type=text] {
 	min-height:25em; #ie-only fix
 }
 
-/*
+#dashui .threeCol {
+	/*background-color:#FFFFFF;*/
+	background-image: url('content.png');
+}
 
+/*
 #noteTab table {
 	#max-height:30em;
 }
@@ -361,8 +378,7 @@ table td input[type=text] {
 }
 
 span.ideaGroupsList {
-	color:#666;
-	font-size:0.9em;	
+	color:#666;	
 }
 
 div#groupDetails {
@@ -418,3 +434,11 @@ div#head, div#content {
 	width:1024px; 
 	margin:0 auto;
 }
+
+/*
+#riskEvaluation * span.helper{
+	writing-mode: tb-rl; 
+	-webkit-transform: rotate(-90deg); 
+	-moz-transform: rotate(-90deg);
+}
+*/

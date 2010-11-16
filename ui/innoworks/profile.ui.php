@@ -30,13 +30,11 @@ function renderDefault() {
 			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
 			<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
 			<input type="hidden" name="action" value="updateProfile" /> 
-			<input type="submit" value="Update" /></form>
 			</div>
 			<!-- 
 			<div style="width:37%; position:relative; float:left;">
 			<div class="blue">&nbsp;</div>
 			<div style="padding: 1%; ">
-			<h3>Profiles like yours</h3>
 			</div>
 			</div>
 			 -->

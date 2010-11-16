@@ -36,84 +36,27 @@ function renderIdeasForGroup($groupId) {
 	}
 }
 
-function renderJustIdea($ideas, $idea, $user) {?>
+function renderJustIdea($ideas, $idea, $user) {
+	global $serverRoot;
+	?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
-<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a><br/>
+<img src="<?= $serverRoot ?>ui/style/innovate.png"/><br/>
 <span class="ideaoptions">
-by <?= $idea->username?>
+<?= $idea->username?>
 <?if ($idea->userId == $user) { ?> <input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
-</span>
+</span><br/>
+<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a><br/>
 </div>
 <?}
 
-function renderIdea($ideas, $idea, $user) { ?>
-<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all"
-	onmouseover="showIdeaOptions(this)" onmouseout="hideIdeaOptions(this)">
-
-<div class="formHead"><!--  <input name="title" type="text" onchange="updateValue()" value="<?=$idea->title?>">-->
-<span class="ideatitle"><?=$idea->title?></span> <span
-	class="ideaoptions"> <a
-	href="javascript:showDetails('ideadetails_form_<?= $idea->ideaId?>')">Mission</a>
-<a href="javascript:showDetails('ideafeatures_form_<?= $idea->ideaId?>')">Features</a>
-<a href="javascript:showDetails('idearoles_form_<?= $idea->ideaId?>')">Roles</a>
-<a href="javascript:showIdeaReviews('<?= $idea->ideaId?>');">Review</a>
-<?if ($idea->userId == $user) { ?> <input type="button" value=" - "
-	onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
-</span></div>
-
-<div class="formBody">
-<div class="ideaDetails subform">
-<form id="ideadetails_form_<?= $idea->ideaId?>" style="display: none;">
-<? renderGenericUpdateForm($ideas ,$idea, array("ideaId", "title","userId", "createdTime")); ?>
-<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
-	type="hidden" name="action" value="updateIdeaDetails" /> <input
-	type="button"
-	onclick="updateIdeaDetails('#ideadetails_form_<?= $idea->ideaId?>')"
-	value="Update" /></form>
-</div>
-
-<div class="ideaFeatures subform">
-<div id="ideafeatures_form_<?= $idea->ideaId?>" style="display: none;">
-<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span>
-New Feature | </span> <input type="text" name="feature" /> <input
-	type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
-	type="hidden" name="action" value="addFeature" /> <input type="button"
-	onclick="genericAdd('addfeature_form_<?= $idea->ideaId?>');getFeatures('ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
-	value=" + " /></form>
-<div id="ideafeatures_<?= $idea->ideaId?>"><? renderIdeaFeatures($idea->ideaId); ?></div>
-</div>
-</div>
-
-<div class="ideaRoles subform">
-<div id="idearoles_form_<?= $idea->ideaId?>" style="display: none;">
-<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New
-Role | </span> <input type="text" name="role" /> <input type="hidden"
-	name="ideaId" value="<?= $idea->ideaId?>" /> <input type="hidden"
-	name="action" value="addRole" /> <input type="button"
-	onclick="genericAdd('addrole_form_<?= $idea->ideaId?>');getRoles('idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
-	value=" + " /></form>
-<div id="idearoles_<?= $idea->ideaId?>"><? renderIdeaRoles($idea->ideaId); ?>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-<?
-}
-
-function renderIdeaMission($ideaId) {
-	
+function renderIdeaMission($ideaId) {	
 	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
 <div class="formBody">
 <div class="ideaDetails subform">
 <form id="ideadetails_form_<?= $idea->ideaId?>">
 <? renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username")); ?>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
-	type="hidden" name="action" value="updateIdeaDetails" /> <input
-	type="button"
-	onclick="updateIdeaDetails('#ideadetails_form_<?= $idea->ideaId?>')"
-	value="Update" /></form>
+	type="hidden" name="action" value="updateIdeaDetails" /> </form>
 </div>
 </div>
 	<?}
@@ -148,7 +91,6 @@ Role </span> <input type="text" name="role" /> <input type="hidden"
 <div id="idearoles_<?= $idea->ideaId?>"><? renderIdeaRoles($idea->ideaId); ?>
 </div>
 </div>
-</div>
 		<?}
 
 		function renderIdeaFeatures($ideaId) {
@@ -168,10 +110,7 @@ Role </span> <input type="text" name="role" /> <input type="hidden"
 		function renderFeature($features, $feature) {?>
 <tr id="featureform_<?= $feature->featureId ?>">
 <?renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
-	<td><input type="hidden" name="featureId"
-		value="<?= $feature->featureId?>" /> <input type="button"
-		onclick="updateFeature('<?= $feature->featureId ?>','featureform_<?= $feature->featureId ?>','<?= $feature->ideaId ?>')"
-		value=" U " /> <input type="button"
+	<td><input type="button"
 		onclick="genericDelete('deleteFeature','<?= $feature->featureId ?>');getFeatures('ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
 		value=" - " /></td>
 </tr>
@@ -192,12 +131,10 @@ function renderIdeaRoles($ideaId) {
 }
 
 function renderRole($roles, $role) {?>
-<tr id="roleform_<?= $role->roleId ?>'">
+<tr id="roleform_<?= $role->roleId ?>">
 	<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
 	<td><input type="hidden" name="roleId" value="<?= $role->roleId ?>" />
 	<input type="button"
-		onclick="updateRole('<?= $role->roleId ?>','roleform_<?= $role->roleId ?>','<?= $role->roleId ?>')"
-		value=" U " /> <input type="button"
 		onclick="genericDelete('deleteRole','<?= $role->roleId ?>');getRoles('idearoles_<?= $role->ideaId?>','<?= $role->ideaId ?>');"
 		value=" - " /></td>
 </tr>
@@ -223,29 +160,15 @@ function renderIdeaGroupsForUser($uid) {
 		</div>
 <?}
 
-function renderIdeaGroupsSelectForUser($uid) {
-	import("group.service");
-	$groups = getAllGroupsForUser($uid);
-	if ($groups && dbNumRows($groups) > 0 ) {?>
-		<select dojoType="dijit.form.ComboBox" class="ideaGroupsSel" onchange="alert('Changed');">
-		<option value="default" selected="selected">My Own </option>
-	    <? while ($group = dbFetchObject($groups)) {?>
-    		<option value="<?= ($group->groupId)?>"> <?= $group->title ?> </option>
-		<?}?>
-		</select>
-	<?} else {
-		echo "None";
-	}
-}
-
 function renderIdeaGroupsListForUser($uid) {
+	global $serverRoot;
 	import("group.service");
 	$groups = getAllGroupsForUser($uid);?>
 	<div><p><a class='private' href="javascript:logAction()" onclick="showDefaultIdeas()">Private</a></p></div>
 	<div><p><a class='public' href="javascript:logAction()" onclick="showPublicIdeas()">Public</a></p></div>
 	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
-			echo "<div><p><a class='groupSel_$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a></p></div>";
+			echo "<div><p><img src='".$serverRoot."ui/style/collab.png' style='width:20px;height:20px'/><a class='groupSel_$group->groupId' href=\"javascript:showIdeasForGroup($group->groupId)\">" . $group->title . "</a></p></div>";
 		}
 	} else {
 		echo "No groups for user";
@@ -265,17 +188,15 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	value=" + " /></form>
 	<?
 	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
-
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
 		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {?>
 <div id="featureEvaluationContainer_<?= $featureEvaluation->ideaFeatureEvaluationId ?>" class="featureEvaluation">
 <hr />
-<span class="evalTotal">0</span> <b><?=$featureEvaluation->title?></b>
-<input
-	type="button"
-	onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
+<span class="evalTotal">0</span> 
+<b><?=$featureEvaluation->title?></b>
+<input type="button" onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
 	title="Delete feature evaluation" value=" - " />
-		<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);?>
+<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);?>
 </div>
 		<?}
 	} else {
@@ -285,14 +206,13 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 
 function renderFeatureEvaluationForIdea($id, $evalId) {
 	$featureList = getFeaturesForIdea($id);
-
 	if ($featureList && dbNumRows($featureList) > 0 ) {?>
-<div dojoType="dijit.form.DropDownButton"><span> Add feature </span>
-<div dojoType="dijit.Menu"><?while ($feature = dbFetchObject($featureList)) {?>
-<div dojoType="dijit.MenuItem"
+	<div dojoType="dijit.form.DropDownButton"><span> Add feature </span>
+	<div dojoType="dijit.Menu">
+	<?while ($feature = dbFetchObject($featureList)) {?>
+	<div dojoType="dijit.MenuItem"
 	onClick="addFeatureItem(<?=$feature->featureId?>,<?=$evalId?>)"><?=$feature->feature?></div>
-	<?}?></div>
-</div>
+	<?}?></div></div>
 	<?
 	renderFeatureEvaluationTable($evalId);
 	} else {
@@ -321,10 +241,8 @@ function renderFeatureItem($featureItems, $featureItem) {?>
 <?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"), "FeatureEvaluation", null);?>
 	<td>Score: <span class="itemTotal">0 </span> <input type="hidden"
 		name="featureEvaluationId"
-		value="<?= $featureItem->featureEvaluationId ?>" /> <input
-		type="button"
-		onclick="updateFeatureItem('<?= $featureItem->featureEvaluationId ?>','featureitemform_<?= $featureItem->featureEvaluationId ?>')"
-		value=" U " /> <input type="button"
+		value="<?= $featureItem->featureEvaluationId ?>" />
+		<input type="button"
 		onclick="deleteFeatureItem('<?= $featureItem->featureEvaluationId ?>')"
 		value=" - " /></td>
 </tr>
@@ -353,7 +271,7 @@ function renderAttachments($ideaId, $userId) {?>
 	<input type="submit" value=" + " title="Add attachment" />
 	</form>
 	<?
-	$attachs=getAttachmentsForIdea($ideaId);
+	$attachs = getAttachmentsForIdea($ideaId);
 	if ($attachs && dbNumRows($attachs)) {
 		while ($attach = dbFetchObject) {
 			echo $attach->title;
@@ -369,6 +287,6 @@ function renderAttachmentsIframe($ideaId, $userId) {?>
 
 function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));
-	echo "<b style='font-size:1.2em'>".$details->title."</b> by ".$details->username." | last updated ".$details->createdTime;
+	echo "<form id='ideaNameDetails'><input type='hidden' name='action' value='updateIdeaDetails'><input type='hidden' name='ideaId' value='$ideaId'><input name='title' style='font-size:1.2em' value='".$details->title."' onblur='updateIdeaDetails(\"form#ideaNameDetails\")'/> by ".$details->username." | last updated ".$details->createdTime."</form>";
 }
 ?>

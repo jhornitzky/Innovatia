@@ -2,6 +2,9 @@
 require_once("thinConnector.php");
 import("note.service");
 import("user.service");
+import("search.service");
+$users = getSearchPeople("",$_SESSION['innoworks.ID']);
+$notes = getAllNotes($_SESSION['innoworks.ID']);
 ?>
 <div style="width:100%;">
 		<div class="fixed-left">
@@ -13,7 +16,13 @@ import("user.service");
 	Send note to
 	<select class="toUserNote" dojoType="dijit.form.ComboBox" name="toUserId">
 		<?
-			$users = getAllUsers();
+			if ($notes && dbNumRows($notes) > 0 ) {
+				$firstNote = dbFetchObject($notes);
+				if ($firstNote->fromUserId == $_SESSION['innoworks.ID']) 
+					echo "<option value='$firstNote->toUserId'>".getUserInfo($firstNote->toUserId)->username."</option>";
+				else
+					echo "<option value='$firstNote->fromUserId'>".getUserInfo($firstNote->fromUserId)->username."</option>"; 
+			}
 			while ($user = dbFetchObject($users)) {
 				echo "<option value='$user->userId'>$user->username</option>"; 
 			}
@@ -36,8 +45,8 @@ import("user.service");
 </script>
 
 <?
-$notes = getAllNotes($_SESSION['innoworks.ID']);
 if ($notes && dbNumRows($notes) > 0 ) {
+	dbRowSeek($notes, 0);
 	echo "<div id='notePadder'>";
 	while ($note = dbFetchObject($notes)) {
 		$class;

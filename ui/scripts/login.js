@@ -56,7 +56,7 @@ function showAbout() {
 	});
 }
 
-function showIdeas() {
+function showSearch() {
 	updateForSelect("ideaInno");
 	var searchTerms = $("#searchInput").val();
 	
@@ -92,7 +92,7 @@ function registerNewUser() {
 			function() {
 				$("#Wait").fadeIn(250);
 				$.post("core/register.registerUser.php", $("#registerform").serialize(), function(data) {
-					$("#Responses").html(data);
+					$("#regResponse").html(data);
 					hideWait();
 					showResponse();
 				});

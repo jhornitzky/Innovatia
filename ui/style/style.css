@@ -79,7 +79,11 @@ div.loadingAnim {
 }
 
 .threecol {
-	margin-right:1%; width:32%; position:relative; float:left; overflow:auto; 
+	margin-right:1%; 
+	width:32%; 
+	position:relative; 
+	float:left; 
+	overflow:auto; 
 }
 
 .marker {
