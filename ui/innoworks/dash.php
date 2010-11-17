@@ -53,7 +53,7 @@ import("dash.service");
 		<div class="orange" style="height:1.5em">&nbsp;</div>
 		<div class="widget ui-corner-all">
 			<h2><a href="javascript:showSelect();">Select</a></h2>
-			<p class="subhead">Choose ideas to work on, and manage their priorities and tasks.</p>
+			<p class="subhead">Choose ideas to work on, and then manage their priorities and tasks.</p>
 			<?
 			$selections = getDashSelect($_SESSION['innoworks.ID']);
 			if ($selections && dbNumRows($selections) > 0 ) {

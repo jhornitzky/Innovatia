@@ -18,7 +18,7 @@ if (isset($_GET) && $_GET != '') {
 			renderIdeasForGroup($_GET['groupId']);
 			break;
 		case "getCommentsForIdea":
-			renderCommentsForIdea($_GET['actionId']);
+			renderCommentsForIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 		case "getIdeaFeatureEvaluationsForIdea":
 			renderIdeaFeatureEvaluationsForIdea($_GET['actionId']);

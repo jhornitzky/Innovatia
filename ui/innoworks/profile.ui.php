@@ -13,11 +13,9 @@ function renderDefault() {
 			<div class="bordRight" style="padding-right:5px">
 			<p>Other profiles like yours</p>
 			<?if ($profiles && dbNumRows($profiles) > 0) { 
-				echo "<ul class='simProfiles'>";
 				while ($profile = dbFetchObject($profiles)) {
 					renderOtherProfile($profile);
 				}
-				echo "</ul>";
 			} else {
 				echo "<p>No similar profiles</p>";
 			}?>
@@ -25,7 +23,7 @@ function renderDefault() {
 		</div>
 		<div class="fixed-right">
 			<div style="width:58%; position:relative; float:left;">
-			<img src="<?= $serverRoot ?>ui/style/userIcon.png" style="width:125px;height:125px;"/>
+			<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="width:125px;height:125px;"/>
 			<h3 style="margin-bottom:0;">Your Profile</h3>
 			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
 				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
@@ -44,7 +42,12 @@ function renderDefault() {
 <?} 
 
 function renderOtherProfile($profile) {?>
- 	<li><a href="javascript:showProfileSummary('<?=$profile->userId?>')"><?=$profile->username?></a></li>	
+ 	<div class="itemHolder clickable" onclick="showProfileSummary('<?=$profile->userId?>')">
+ 		<img src="retrieveImage.php?action=userImg&actionId=<?= $profile->userId ?>" style="width:2em;height:2em"/><br/>
+ 		<span><?=$profile->username?></span><br/>
+ 		<span><?=$profile->firstname . " " . $profile->lastname?></span><br/>
+ 		<span><?=$profile->organization?></span>
+ 	</div>	
 <?}
 
 function renderSummaryProfile($userId) {

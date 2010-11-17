@@ -1,5 +1,3 @@
-var removeString = "Are you sure you wish to remove this item and associated data?";
-
 function logAction(action) {}
 
 function pollServer() {
@@ -124,17 +122,24 @@ function showIdeaReviews(ideaId) {
 }
  
 function showIdeaSummary(id) {
-	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id});
+	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
 function showProfileSummary(id) {
-	var profile = new dijit.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id});
+	var profile = new dijit.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
 	dojo.body().appendChild(profile.domNode);
 	profile.startup();
 	profile.show();
+}
+
+function showGroupSummary(id) {
+	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupDetails&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
+	dojo.body().appendChild(group.domNode);
+	group.startup();
+	group.show();
 }
 
 function showIdeaDetails(ideaId) { 
@@ -149,13 +154,13 @@ function showIdeaGroupsForUser() {
 		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
 		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
 		//$("button span.dijitButtonText").html(currentGroupName);
-		$(".ideaGroupsList div p a").removeClass("selected");
+		$(".ideaGroupsList div").removeClass("selected");
 		if (currentGroupName == "Public") {
-			$(".ideaGroupsList div p a.public").addClass("selected");
+			$(".ideaGroupsList div.public").addClass("selected");
 		} else if (currentGroupName == "Private") {
-			$(".ideaGroupsList div p a.private").addClass("selected");
+			$(".ideaGroupsList div.private").addClass("selected");
 		} else {
-			$(".ideaGroupsList div p a.groupSel_"+currentGroupId).addClass("selected");
+			$(".ideaGroupsList div.groupSel_"+currentGroupId).addClass("selected");
 		}
 	});
 }
@@ -836,7 +841,6 @@ function updateRisk(riskform){
 	formData['action'] = 'updateRiskItem';
 	$.post("compare.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
-		showCompare();
 	});
 }
 

@@ -8,9 +8,6 @@ if (isset($_GET) && $_GET != '') {
 		case "getReportDetails":
 			renderDetails();
 			break;
-		case "getReportGraphs":
-			renderGraphs();
-			break;
 	}
 }
 ?>

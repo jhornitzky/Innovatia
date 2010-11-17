@@ -110,7 +110,7 @@ function renderIdeaRiskEval($ideaId, $userId) {
 /* RENDER COMPARE COMMENTS */
 function renderCompareComments($uId) {
 	import("compare.service");
-	renderCommonComments(getCompareComments($uId));
+	renderCommonComments(getCompareComments($uId), $uId);
 }
 
 function renderPublicCompareComments($uId) {
@@ -119,13 +119,20 @@ function renderPublicCompareComments($uId) {
 
 function renderCompareCommentsForGroup($uId, $gId) {
 	import("compare.service");
-	renderCommonComments(getCompareCommentsForGroup($uId, $gId));
+	renderCommonComments(getCompareCommentsForGroup($uId, $gId), $uId);
 }
 
-function renderCommonComments($comments) {
+function renderCommonComments($comments, $uId) {
+	$userService = new AutoObject("user.service");
 	if ($comments && dbNumRows($comments) > 0) {
 		while ($comment = dbFetchObject($comments)) {
-			echo $comment->text. "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '><br/>";
+			echo "<div class='itemHolder'>";
+			echo "<span class='title'>".$userService->getUserInfo($comment->userId)->username."</span><span class='timestamp'>$comment->timestamp</span>";
+			if ($comment->userId == $uId)
+				echo "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '>";
+			echo "<br/>";
+			echo $comment->text;
+			echo "</div>";
 		}
 	} else {
 		echo "No comments";

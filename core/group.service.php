@@ -6,7 +6,7 @@ function getGroupDetails($gid) {
 }
 
 function getAllGroupsForUser($user) {
-	return dbQuery("SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE (GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId) OR (Groups.userId = $user) GROUP BY Groups.groupId");
+	return dbQuery("SELECT groupId, title FROM Groups WHERE userId = $user UNION SELECT Groups.groupId, Groups.title FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId");
 }
 
 function getPartOfGroupsForUser($user) {

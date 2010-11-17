@@ -58,17 +58,25 @@ function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {
+			
 			$metaArray = findColumnMetadata($refdata, $key);
+			
+			echo '<td style="width: 10%">';
 			if ($metaArray){
 				$metaHelp = getColumnDescription($metaArray);
 				if ($metaHelp) {?>
-					<td style="width: 10%"><span class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($key) ?></span></td>
+					<span class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($key) ?></span>
 				<?} else {?>
-					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+					<label><?=fromCamelCase($key)?></label>
 				<?}
-			}
+			} else {?>
+				<label><?=fromCamelCase($key)?></label>
+			<?}
+			echo '</td>';
 			
 			$metaArray = findColumnMetadata($refdata, $key);
+			
+			echo '<td style="width: 90%">';
 			//If metadata then render appropriate input dialog
 			if ($metaArray){
 				//Get column type, if column type, then render appropriate input
@@ -76,17 +84,12 @@ function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
 				if ($metaType) {
 					renderMetaType($metaType, $key, $value);
 				} else {?>
-					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
-					<td style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-						<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-					</td>
+					<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
 				<?}
 			} else {?>
-					<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
-					<td style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-						<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-					</td>
+				<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
 			<?}
+			echo '</td>';
 		}
 		echo "</tr>";
 	}

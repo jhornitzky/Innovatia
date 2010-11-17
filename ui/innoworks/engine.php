@@ -30,6 +30,7 @@ import("mobile.functions");
 <script type="text/javascript">
 //////// VARS //////////
 var serverRoot = '<?=$serverRoot?>';
+var removeString = "Are you sure you wish to remove this item and associated data?";
 var ctime;
 var currentIdeaId;
 var currentIdeaName;
@@ -155,10 +156,11 @@ dojo.addOnLoad(function(){
 </div>
 
 <!-- PAGE CONTENT -->
-<div id="content">
-
+<div class="respSurround">
 <div id="ideaResponses" class="responses"></div>
+</div>
 
+<div id="content">
 <div id="dashTab" class="tabBody"></div>
 
 <div id="ideaTab" class="tabBody">
@@ -169,7 +171,7 @@ dojo.addOnLoad(function(){
 	<div class="fixed-right" style="padding-top:0.3em;">
 		<form id="addIdeaForm" onsubmit="addIdea(this);return false;">
 			<span>Add new idea</span> 
-			<input id="addIdeaTitle" name="title" type="text"/> 
+			<input id="addIdeaTitle" name="title" type="text" dojoType="dijit.form.TextBox"/> 
 			<input type="button" value=" + " title="Add idea" onclick="addIdea(this)"/> 
 			<input style="display:none" type="submit" /> 
 			<input type="hidden" name="action" value="addIdea" />
@@ -205,7 +207,7 @@ dojo.addOnLoad(function(){
 	<div class="fixed-right">
 		<div id="compareList"></div>
 		<div id="compareComments" style="margin-top:1em;">
-			<form id="addCompareCommentForm" class="addForm" onsubmit="addCompareComment();return false;">
+			<form id="addCompareCommentForm" class="smallAddForm" onsubmit="addCompareComment();return false;">
 				<input type="hidden" name="action" value="addComment" />
 				Comments <input type="submit" value=" + " /> 
 				<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> 
@@ -246,8 +248,9 @@ dojo.addOnLoad(function(){
 		<h2 id="pgName">Groups</h2>
 	</div>
 	<div class="fixed-right" style="padding-top:0.3em;">
-		<form id="addGroupForm" onsubmit="addGroup(); return false;"><span>Create new group</span> 
-		<input name="title" type="text" /> 
+		<form id="addGroupForm" onsubmit="addGroup(); return false;">
+		<span>Create new group</span> 
+		<input name="title" type="text" dojoType="dijit.form.TextBox"/> 
 		<input type="submit" value=" + " title="Create a group" /> 
 		<input type="hidden" name="action" value="addGroup" /></form>
 	</div>
@@ -257,7 +260,7 @@ dojo.addOnLoad(function(){
 		<div id="groupsList" style="padding-right: 5px;">&nbsp;</div>
 	</div>
 	<div class="fixed-right">
-		<div id="groupDetailsCont" class="two-column">
+		<div id="groupDetailsCont">
 			<div id="groupDetails"> &lt;&lt; Select one of the groups on the left to see its details</div>
 		</div>
 	</div>
@@ -281,9 +284,8 @@ dojo.addOnLoad(function(){
 	<div class="fixed-left">
 		<h2 id="pgName">Reports</h2>
 	</div>
-	<div class="fixed-right" style="padding-top:0.3em;">
+	<div class="fixed-right">
 		<div id="reportDetails">Loading reports...</div>
-		<div id="reportList" class="two-column" style="padding: 10px"></div>
 	</div>
 </div>
 
@@ -292,7 +294,9 @@ dojo.addOnLoad(function(){
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
 <div id="ideaPopupResponses" class="responses"></div>
-<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea()">Print</a></span>
+<span class="ideaDetailsOptions" style="position:relative; float:right;">
+<a href="javascript:printIdea()">Print</a>
+</span>
 <table><tr>
 <td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
@@ -332,7 +336,7 @@ dojo.addOnLoad(function(){
 </div>
 
 <div id="commonPopup" dojoType="dijit.Dialog" style="width: 15em; height: 300px;">
-<div id="actionDetails" dojoType="dijit.layout.ContentPane"></div>
+	<div id="actionDetails" dojoType="dijit.layout.ContentPane"></div>
 </div>
 
 </div>

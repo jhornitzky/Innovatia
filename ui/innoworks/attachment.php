@@ -40,7 +40,9 @@ if (isset($_POST) && $_POST != '') {
 <form method="post" enctype="multipart/form-data"
 	action="./attachment.php"><input type="hidden" name="MAX_FILE_SIZE"
 	value="2000000"> <input name="userfile" type="file" id="userfile"> <input
-	type="hidden" name="action" value="addAttachment" /> <?if (isset($ideaId)) 
+	type="hidden" name="action" value="addAttachment" /> 
+	<?
+	if (isset($ideaId)) 
 		echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
 	else if (isset($groupId))
 		echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> <input
@@ -53,17 +55,22 @@ if (isset($_POST) && $_POST != '') {
 		$attachs = getAttachmentsForGroup($groupId);
 		
 	if ($attachs && dbNumRows($attachs)) {
-		while ($attach = dbFetchObject($attachs)) {?>
-<form method="post" action="./attachment.php"><a
-	href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>"><?= $attach->title;?></a>
-<input type="hidden" name="actionId"
-	value="<?= $attach->attachmentId;?>" /> <input type="hidden"
-	name="action" value="deleteAttachment" /> <?if (isset($ideaId)) 
-		echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
-	else if (isset($groupId))
-		echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> <input
-	type="submit" value=" - " title="Delete attachment" /></form>
-	<?}
+		while ($attach = dbFetchObject($attachs)) {
+			logDebug(strpos($attach->type, "image"));
+			if (strpos($attach->type, "image") >= 0) 
+				echo "<img src='$attach->path' style='width:100px;height:75px'/>";?>
+			<form method="post" action="./attachment.php">
+			<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>">
+			<?= $attach->title;?></a>
+			<input type="hidden" name="actionId" value="<?= $attach->attachmentId;?>" /> 
+			<input type="hidden" name="action" value="deleteAttachment" /> 
+			<?if (isset($ideaId)) 
+				echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
+			else if (isset($groupId))
+				echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> 
+			<input type="submit" value=" - " title="Delete attachment" />
+			</form>
+		<?}
 	} else {
 		echo "<p>No attachments</p>";
 	}?>

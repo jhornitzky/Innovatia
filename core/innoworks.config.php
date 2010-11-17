@@ -8,6 +8,8 @@ $dbSchema = "innovation_works";
 //PATHS
 $serverUrl = "http://localhost";
 $serverRoot = "/innovation/"; 
+$usersRoot = $serverRoot."users/"; 
+$uiRoot = $serverRoot."ui/"; 
 $serverAdminEmail="james.hornitzky@uts.edu.au";
 
 //OTHER PROPERTIES

@@ -38,9 +38,9 @@ if (!hasSearchTerms()) {
 <? echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
 	if ($ideas && dbNumRows($ideas) > 0){
 		while ($idea = dbFetchObject($ideas)) {?>
-		<p><a href="javascript:logAction()" onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> 
+		<div class='itemHolder clickable' onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> 
 		<?= $idea->title?>
-		</a></p>
+		</div>
 	<?}
 } else {
 	echo "<p>No ideas</p>";
@@ -50,9 +50,9 @@ if (!hasSearchTerms()) {
 <div class="threecol"><? echo "<p>".dbNumRows($users)." <b>profile(s)</b></p>";
 if ($users && dbNumRows($users) > 0){
 	while ($user = dbFetchObject($users)) { ?>
-<p>
-<a href="javascript:showProfileSummary('<?=$user->userId?>')"><?=$user->username?></a>
-</p>
+<div class='itemHolder clickable' onclick="showProfileSummary('<?=$user->userId?>')">
+<?=$user->username?>
+</div>
 	<?}
 } else {
 	echo "<p>No people</p>";
@@ -61,7 +61,9 @@ if ($users && dbNumRows($users) > 0){
 <div class="threecol"><? echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
 if ($groups && dbNumRows($groups) > 0){
 	while ($group = dbFetchObject($groups)) {?>
-<p><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()"><?= $group->title; ?></a></p>
+	<div class='itemHolder clickable' onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()">
+		<?= $group->title; ?>
+	</div>
 	<?}
 } else {
 	echo "<p>No groups</p>";

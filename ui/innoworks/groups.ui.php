@@ -24,17 +24,24 @@ function renderDefault() {
 }
 
 function renderGroup($groups, $group) {
-	echo "<p><a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
-	echo "<input type='button' onclick='deleteGroup(" . $group->groupId .")' value=' - ' alt='Delete group' /></p>";
+	echo "<div class='itemHolder clickable' onclick='updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>";
+	echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
+	echo $group->title . "<br/>";
+	echo "<input type='button' onclick='deleteGroup(" . $group->groupId .")' value=' - ' alt='Delete group' />";
+	echo "</div>";
 }
 
 function renderPartOfGroups($groups, $group) {
-	echo "<p><a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a>";
-	echo "<input type='button' onclick='currentGroupId=$group->groupId; delUserFromCurGroup(" . $_SESSION['innoworks.ID'] .")' value=' Leave ' alt='Leave group' /></p>";
+	echo "<div class='itemHolder clickable' onclick='updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "<br/>";
+	echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
+	echo "<input type='button' onclick='currentGroupId=$group->groupId; delUserFromCurGroup(" . $_SESSION['innoworks.ID'] .")' value=' Leave ' alt='Leave group' />";
+	echo "</div>";
 }
 
 function renderOtherGroup($groups, $group) {
-	echo "<p><a href='javascript:updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>". $group->title . "</a></p>";
+	echo "<div class='itemHolder clickable' onclick='updateForGroup(\"".$group->groupId."\",\"".$group->title."\")'>";
+	echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
+	echo $group->title . "</div>";
 }
 
 function renderDetails($currentGroupId) {
@@ -44,15 +51,15 @@ function renderDetails($currentGroupId) {
 	$group;
 	$groupUser;
 	if ($groups && dbNumRows($groups) > 0)
-	$group = dbFetchObject($groups);
+		$group = dbFetchObject($groups);
 	if ($groupUserEntry && dbNumRows($groupUserEntry) > 0)
-	$groupUser = dbFetchObject($groupUserEntry);
+		$groupUser = dbFetchObject($groupUserEntry);
 
 	if ($group == null && $groupUser == null)
 		die("No group exists");
 	
 	$userService = new AutoObject("user.service");
-	?><h3> Details for <?= $group->title?></h3><?
+	?><h3 style="margin-bottom:0.5em;"><?= $group->title?></h3><?
 	if ($groupUser->approved == 0 && $groupUser->accepted == 1) {
 		echo "You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".";
 	} else if ($groupUser->approved == 1 && $groupUser->accepted == 0) {
@@ -60,10 +67,28 @@ function renderDetails($currentGroupId) {
 	} else if (($groupUser->approved == 1 && $groupUser->accepted == 1) || $group->userId == $_SESSION['innoworks.ID']) {
 		if ($groups && (dbNumRows($groups) == 1)) {
 			$userService = new AutoObject("user.service");?>
-			<div>Leader: <?= $userService->getUserInfo($group->userId)->username?><a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
-			<?echo "<h3>Users";
+			<div style="margin-bottom:1.0em"><span class="title"><?= $userService->getUserInfo($group->userId)->username?></span> <span class="timestamp"><?= $group->timestamp ?></span> | <a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
+			<?
+			echo '<div class="two-column" style="border-top:1px solid #EEE">';
+			echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></h3>";
+			$groupIdeas = getIdeasForGroup($currentGroupId);
+			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
+				echo "<ul>";
+				while ($idea = dbFetchObject($groupIdeas)) {
+					echo "<li><a href=\"javascript:showIdeaDetails('$idea->ideaId')\" >" . $idea->title . "</a>";
+					if ($idea->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' alt='Remove this idea from the group'/>";
+					echo "</li>";
+				}
+				echo "</ul>";
+			} else {
+				echo "<p>None</p>";
+			}
+			echo "</div>";
+			
+			echo "<div class='two-column' style='margin-left:2%; border-top:1px solid #EEE'>";
+			echo "<h3>Users";
 			if ($group->userId == $_SESSION['innoworks.ID'])
-			echo "<input type='button' value=' + ' onclick='showAddGroupUser(this)' alt='Add user to group'/>";
+				echo "<input type='button' value=' + ' onclick='showAddGroupUser(this)' alt='Add user to group'/>";
 			echo "</h3>";
 			$groupUsers = getUsersForGroup($currentGroupId);
 			if ($groupUsers && dbNumRows($groupUsers) > 0) {
@@ -78,23 +103,10 @@ function renderDetails($currentGroupId) {
 			} else {
 				echo "<p>None</p>";
 			}
-
-			echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></h3>";
-			$groupIdeas = getIdeasForGroup($currentGroupId);
-			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
-				echo "<ul>";
-				while ($idea = dbFetchObject($groupIdeas)) {
-					echo "<li><a href=\"javascript:showIdeaDetails('$idea->ideaId')\" >" . $idea->title . "</a>";
-					if ($idea->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' alt='Remove this idea from the group'/>";
-					echo "</li>";
-				}
-				echo "</ul>";
-			} else {
-				echo "<p>None</p>";
-			}
-
+			
 			echo "<h3>Attachments</h3>";
 			echo "<iframe style='width:100%;height:8em;' src='attachment.php?groupId=$group->groupId'></iframe>";
+			echo "</div>";
 		} 
 	} else {
 		echo "<p>You have no access to this group. You can request access be clicking <a href='javascript:logAction()' onclick='requestGroup()'>here</a> Please contact the lead ".$userService->getUserInfo($group->userId)->username ." for all other queries.</p>";
@@ -163,11 +175,10 @@ function renderIdeaShare($ideaId, $userId) {
 	if ($item && dbNumRows($item) > 0) {
 		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
 		echo "<a href='javascript:logAction()' onclick=''>Remove from this group</a>"; //FIXME
-		echo "Go to <a href='javascript:logAction()' onclick='showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a> to edit data";
+		echo 'Go to <a href="javascript:logAction()" onclick="showGroups(); dijit.byId(\'ideasPopup\').hide()">Groups</a> to edit data';
 	} else {?>
 	<p>No share data for this idea</p>
 	<p>Share idea with a group:</p>
-
 <ul>
 <?
 if ($groups && dbNumRows($groups) > 0 ) {
@@ -182,8 +193,7 @@ if ($othergroups && dbNumRows($othergroups) > 0 ) {
 }
 ?>
 </ul>
-Show
-<a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a>
+Show <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a>
 <?}
 }
 

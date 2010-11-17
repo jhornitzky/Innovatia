@@ -147,30 +147,51 @@ function updateRole($opts) {
 	return genericUpdate("Roles", $opts, $where);
 }
 
-function createAttachment() {
+function createAttachmentFS($destFilePath) {
+	if(move_uploaded_file($_FILES['userfile']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].$destFilePath)) {
+		chmod($_SERVER['DOCUMENT_ROOT'].$destFilePath, 0444);
+		return true;
+	} else {
+		echo "Error [" . $_FILES['userfile']['error'] . "] uploading file...";
+		return false;
+	}
+}
+
+function createAttachmentDb($destFilePath) {
+	$fileName = $_FILES['userfile']['name'];
+	$tmpName  = $_FILES['userfile']['tmp_name'];
+	$fileSize = $_FILES['userfile']['size'];
+	$fileType = $_FILES['userfile']['type'];
+
+	if(!get_magic_quotes_gpc())
+		$fileName = addslashes($fileName);
+	
+	$query;
+	if (isset($_POST['groupId']))
+		$query = "INSERT INTO Attachments (groupId, title, path, type, size, userId) VALUES ('".$_POST['groupId']."','$fileName', '$destFilePath', '$fileType', '$fileSize', '".$_SESSION['innoworks.ID']."')";
+	else if (isset($_POST['ideaId']))
+		$query = "INSERT INTO Attachments (ideaId, title, path, type, size, userId) VALUES ('".$_POST['ideaId']."','$fileName', '$destFilePath', '$fileType', '$fileSize', '".$_SESSION['innoworks.ID']."')";
+	return dbQuery($query);
+}
+
+function createAttachment($postArray) {
 	if ($_FILES['userfile']['size'] > 0) {
-		$fileName = $_FILES['userfile']['name'];
-		$tmpName  = $_FILES['userfile']['tmp_name'];
-		$fileSize = $_FILES['userfile']['size'];
-		$fileType = $_FILES['userfile']['type'];
-
-		$fp      = fopen($tmpName, 'r');
-		$content = fread($fp, filesize($tmpName));
-		$content = addslashes($content);
-		fclose($fp);
-
-		if(!get_magic_quotes_gpc())
-		{
-			$fileName = addslashes($fileName);
-		}
-
-		$query = "INSERT INTO Attachments (ideaId, groupId, title, data, type, size ) VALUES ('".$_POST['ideaId']."', '".$_POST['groupId']."','$fileName', '$content', '$fileType', '$fileSize')";
-		return dbQuery($query);
+		global $usersRoot;
+		$info = pathinfo($_FILES['userfile']['name']);
+		$newName = $_SESSION['innoworks.ID'] . $_FILES['userfile']['name'] . $info['extension'];
+		$destFileName = sha1($newName);
+		$destFilePath = $usersRoot.$destFileName; 
+		if (createAttachmentDb($destFilePath))
+			return createAttachmentFS($destFilePath);
 	}
 }
 
 function deleteAttachment($id) {
-	return dbQuery("DELETE FROM Attachments WHERE Attachments.attachmentId='$id'");
+	if(isset($id)) {
+		$attach = getAttachmentById($id);
+		unlink($_SERVER['DOCUMENT_ROOT'].$attach->path);
+		return dbQuery("DELETE FROM Attachments WHERE Attachments.attachmentId='$id'");
+	}
 }
 
 function getAttachmentsForIdea($ideaId) {
@@ -181,17 +202,18 @@ function getAttachmentsForGroup($groupId) {
 	return dbQuery("SELECT * FROM Attachments WHERE groupId = '$groupId'");
 }
 
+function getAttachmentById($id) {
+	return dbFetchObject(dbQuery("SELECT * FROM Attachments WHERE attachmentId = '$id'"));
+}
+
 function retrieveAttachment($id) {
 	if(isset($id)) {
-		logDebug("ID IS: " + $id);
-		$query = "SELECT * FROM Attachments WHERE attachmentId = '$id'";
-		$result = dbQuery($query) or die('Error, query failed');
-		$attach = dbFetchObject($result);
+		$attach = getAttachmentById($id);
 		header("Content-length: $attach->size");
 		header("Content-type: $attach->type");
 		header("Content-Disposition: attachment; filename=$attach->title");
-		echo $attach->data; 
-		exit;
+		//echo $attach->data; 
+		readfile($_SERVER['DOCUMENT_ROOT'].$attach->path);
 	}
 }
 

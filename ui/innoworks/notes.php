@@ -50,10 +50,10 @@ if ($notes && dbNumRows($notes) > 0 ) {
 	echo "<div id='notePadder'>";
 	while ($note = dbFetchObject($notes)) {
 		$class;
-		if ($note->toUserId == $_SESSION['innoworks.ID']) 
-			$class = "incoming";
+		if ($note->fromUserId == $_SESSION['innoworks.ID']) 
+			$class = "outgoing";
 		else 
-			$class = "outgoing";	
+			$class = "incoming";	
 		?>
 		<div class="<?= $class ?>">
 			<span><?= $note->noteText ?></span><br/>
