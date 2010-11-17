@@ -5,6 +5,17 @@ body {
 	min-width:1024px;
 }
 
+hr {
+	background-color:#EEE;
+	color:#EEE;
+	border:none;
+}
+
+h3 {
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+}
+
 select {
 	width:5em;
 }
@@ -185,6 +196,22 @@ div#content {
 	overflow:hidden;
 }
 
+.respSurround {
+	background-color:#444444
+}
+
+.respSurround .responses {
+	padding-left:10px;
+	max-height:3em;
+	color:#FFFFFF;
+	overflow:hidden;
+	width:1000px; 
+	margin:auto; 
+	color:#FFFFFF;
+	background:none;
+	border:none;
+}
+
 .tabBody {
 	display:none;
 }
@@ -310,42 +337,13 @@ table td input[type=text] {
 #dashui {
 	border:none;
 	width:100%;
-	min-height:25em; #ie-only fix
+	min-height:25em;
 }
 
-#dashui .threeCol {
-	/*background-color:#FFFFFF;*/
-	background-image: url('content.png');
+#dashui .threeCol a {
+	margin-left:0;
+	margin-right:0;
 }
-
-/*
-#noteTab table {
-	#max-height:30em;
-}
-
-#noteTab table tr {
-	width:100%;
-}
-
-#noteTab table tr.outgoing {
-	background-color:#BFFFC0;
-}
-
-#noteTab table tr.outgoing td.first {
-	-moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px;
-}
-
-#noteTab table tr.incoming {
-	background-color:#FFF8BF;	
-}
-
-#noteTab table tr.incoming td.first {
-}
-
-#noteTab table tr.incoming td.last {
-	-moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px;
-}
-*/
 
 #noteTab #notePadder div {
 	padding:0.2em;
@@ -381,28 +379,8 @@ span.ideaGroupsList {
 	color:#666;	
 }
 
-div#groupDetails {
-	margin-left:1%;
-}
-
-#groupsList div { 
-	margin-bottom: 1.0em;
-	border:1px solid #000000;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; 
-	padding:1%;
-}
-
-#reportDetails h3 {
-	margin-top:0px
-}
-
 #dashui .moreInfo p span {
 	font-size:0.9em;
-}
-
-.widget p.subhead {
-	padding-left:5px;
-	padding-right:5px;
 }
 
 h2#pgName {
@@ -442,3 +420,35 @@ div#head, div#content {
 	-moz-transform: rotate(-90deg);
 }
 */
+
+span.timestamp {
+	padding-left:0.5em;
+	padding-right:0.5em;
+	font-style:italic;
+	font-size:0.85em;
+}
+
+span.title {
+	font-weight:bold;
+}
+
+.smallAddForm {
+	border-top:1px solid #EEE;
+	border-bottom:1px solid #EEE;
+}
+
+#groupDetails * ul{
+	padding-left:1em;
+}
+
+ul.tabMenu li a {
+	margin-left:0;
+}
+
+div#groupDetails {
+	border-top:1px solid #EEE;
+}
+
+div.itemHolder a {
+	margin:0;
+}
