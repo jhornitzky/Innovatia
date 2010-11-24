@@ -51,14 +51,16 @@ function renderOtherProfile($profile) {?>
 <?}
 
 function renderSummaryProfile($userId) {
+	global $serverUrl, $uiRoot;
 	import("idea.service");
 	import("user.service");
 	
-	$userDetails = getUserInfo($userId);
-	echo "<h2>$userDetails->username Details</h2>";
+	$userDetails = getUserInfo($userId);?>
+	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width:2em; height:2em;"/>
+	<?echo "<h3>$userDetails->username</h3>";
 	renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password"));
 	$ideas = getProfileIdeas($userId);
-	echo "<h2>Ideas</h2>";
+	echo "<h3>Ideas</h3>";
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {?>
 			<p><a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a></p>
@@ -68,7 +70,7 @@ function renderSummaryProfile($userId) {
 	}
 	
 	$groups = getUserGroups($userId);
-	echo "<h2>Groups</h2>";
+	echo "<h3>Groups</h3>";
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
 			<p><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId?>; showGroups()"><span class="ideatitle"><?=$group->title?></span></a></p>

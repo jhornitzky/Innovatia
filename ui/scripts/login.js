@@ -100,3 +100,9 @@ function registerNewUser() {
 				});
 			});
 }
+
+function showIdeaSummary(id) {}
+
+function showProfileSummary(id) {}
+
+function showGroupSummary(id) {}

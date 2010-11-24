@@ -136,7 +136,7 @@ function showProfileSummary(id) {
 }
 
 function showGroupSummary(id) {
-	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupDetails&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
+	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();
@@ -146,6 +146,8 @@ function showIdeaDetails(ideaId) {
 	currentIdeaId = ideaId;
 	loadPopupShow();
 }
+
+function moveDialogsToSide() {}
 
 ///// GROUP SELECTION////////////
 function showIdeaGroupsForUser() {

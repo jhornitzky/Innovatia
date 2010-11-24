@@ -46,7 +46,7 @@ else
 <? echo "<p>".dbNumRows($ideas)." <b>idea(s)</b></p>";
 	if ($ideas && dbNumRows($ideas) > 0){
 		while ($idea = dbFetchObject($ideas)) {?>
-		<div class='itemHolder clickable' onclick="showIdeaDetails(<?= $idea->ideaId?>); showIdeas()"> 
+		<div class='itemHolder clickable' onclick="showIdeaSummary(<?= $idea->ideaId?>);"> 
 		<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
 		<?= $idea->title?>
 		</div>
@@ -69,10 +69,11 @@ if ($users && dbNumRows($users) > 0){
 } ?>
 </div>
 
-<div class="threecol"><? echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
+<div class="threecol">
+<? echo "<p>".dbNumRows($groups)." <b>group(s)</b></p>";
 if ($groups && dbNumRows($groups) > 0){
 	while ($group = dbFetchObject($groups)) {?>
-	<div class='itemHolder clickable' onclick="currentGroupId=<?= $group->groupId; ?>; showGroups()">
+	<div class='itemHolder clickable' onclick="showGroupSummary(<?= $group->groupId; ?>);">
 	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/>
 		<?= $group->title; ?>
 	</div>

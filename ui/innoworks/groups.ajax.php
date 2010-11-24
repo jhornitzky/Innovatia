@@ -11,6 +11,9 @@ if (isset($_GET['action'])) {
 		case "getGroupDetails":
 			renderDetails($_GET['actionId']);
 			break;
+		case "getGroupSummary":
+			renderSummary($_GET['actionId']);
+			break;
 		case "getAddUser":
 			renderAddUser($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;

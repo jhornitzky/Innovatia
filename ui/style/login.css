@@ -127,3 +127,7 @@ span.subtext {
 	display:table-cell;
 	vertical-align:middle;
 }
+
+div.clickable {
+	cursor:auto;
+}

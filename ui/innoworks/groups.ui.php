@@ -125,6 +125,69 @@ function renderDetails($currentGroupId) {
 	}
 }
 
+function renderSummary($currentGroupId) {
+	global $serverUrl, $uiRoot;
+	$groups = getGroupWithId($currentGroupId, $_SESSION['innoworks.ID']);
+	$groupUserEntry = getGroupUserEntryWithId($currentGroupId, $_SESSION['innoworks.ID']);
+
+	$group;
+	$groupUser;
+	if ($groups && dbNumRows($groups) > 0)
+		$group = dbFetchObject($groups);
+	if ($groupUserEntry && dbNumRows($groupUserEntry) > 0)
+		$groupUser = dbFetchObject($groupUserEntry);
+
+	if ($group == null && $groupUser == null)
+		die("No group exists");
+	
+	$userService = new AutoObject("user.service");?>
+	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:2em; height:2em;"/>
+	<h3 style="margin-bottom:0.5em;"><?= $group->title?></h3>
+	<?
+	if ($groupUser->approved == 0 && $groupUser->accepted == 1) {
+		echo "You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".";
+	} else if ($groupUser->approved == 1 && $groupUser->accepted == 0) {
+		echo "You have not accepted your invitation.";
+	} else if (($groupUser->approved == 1 && $groupUser->accepted == 1) || $group->userId == $_SESSION['innoworks.ID']) {
+		if ($groups && (dbNumRows($groups) == 1)) {
+			$userService = new AutoObject("user.service");?>
+			<div style="margin-bottom:1.0em"><span class="title"><?= $userService->getUserInfo($group->userId)->username?></span> <span class="timestamp"><?= $group->timestamp ?></span> | <a href="javascript:logAction()" onclick="printGroup()">Print</a></div>
+			<?
+			echo "<h3>Ideas</h3>";
+			$groupIdeas = getIdeasForGroup($currentGroupId);
+			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
+				echo "<ul>";
+				while ($idea = dbFetchObject($groupIdeas)) {
+					echo "<li>" . $idea->title . "</a>";
+					if ($idea->canEdit == 1)
+						echo "Editable";
+					else 
+						echo "Not editable";
+					echo "</li>";
+				}
+				echo "</ul>";
+			} else {
+				echo "<p>None</p>";
+			}
+			
+			echo "<h3>Users</h3>";
+			$groupUsers = getUsersForGroup($currentGroupId);
+			if ($groupUsers && dbNumRows($groupUsers) > 0) {
+				echo "<ul>";
+				while ($user = dbFetchObject($groupUsers)) {
+					echo "<li>$user->username</li>";
+				}
+				echo "</ul>";
+			} else {
+				echo "<p>None</p>";
+			}
+		} 
+	} else {
+		echo "<p>You have no access to this group. You can request access be clicking <a href='javascript:logAction()' onclick='requestGroup()'>here</a> Please contact the lead ".$userService->getUserInfo($group->userId)->username ." for all other queries.</p>";
+	}?>
+	<a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId ?>;showGroups();">Edit group</a>
+<?}
+
 /* POPUP BOX OPTIONS FOR GROUPS */
 
 function renderAddUser() {

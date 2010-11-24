@@ -103,12 +103,15 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 	}
 }
 
-function renderIdeaSummary($ideaId) {?>
-<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea('<?= $ideaId?>')">Print</a> </span>
-	<?import("idea.service");
-	$idea = dbFetchObject(getIdeaDetails($ideaId));
-	renderGenericInfoForm(null, $idea, array());?>
-	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Open</a>
+function renderIdeaSummary($ideaId) {
+	global $serverUrl , $uiRoot;
+	import("idea.service");
+	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
+	<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea('<?= $ideaId?>')">Print</a> </span>
+	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width:2em; height:2em;"/>
+	<h3><?= $idea->title ?></h3>
+	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));?>
+	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a>
 <?}
 
 function renderIdeaRiskEval($ideaId, $userId) {

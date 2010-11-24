@@ -129,3 +129,8 @@ div.clickable {
 div.clickable:hover, div.hoverable:hover {
 	background-color: #EEE;
 }
+
+.dijitDialogPaneContent {
+	overflow:auto;
+	max-height:90%;
+}
