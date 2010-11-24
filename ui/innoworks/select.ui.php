@@ -38,14 +38,14 @@ function renderSelectForGroup($groupId, $userId) {
 
 function renderSelectIdea($ideas,$idea,$user) {
 global $serverRoot;?>
-<div id="selectideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
+<div id="selectideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
 <!-- <img src="<?= $serverRoot ?>ui/style/innovate.png"/><br/> -->
 <img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
 <span class="ideaoptions">
 <?= $idea->username?>
 <?if ($idea->userId == $user) { ?> <input type="button" value=" - " onclick="deleteSelectIdea(<?= $idea->selectionId?>)" title="Delete this idea" /> <?}?>
 </span><br/>
-<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a><br/>
+<span class="ideatitle"><a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"><?=$idea->title?></a></span><br/>
 </div>
 <?}
 

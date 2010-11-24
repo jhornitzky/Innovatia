@@ -3,7 +3,7 @@ require_once("thinConnector.php");
 require_once("select.ui.php");
 import("idea.service");
 
-if (isset($_GET) && $_GET != '') {
+if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getSelection":
 			renderSelectDefault($_SESSION['innoworks.ID']);
@@ -26,7 +26,7 @@ if (isset($_GET) && $_GET != '') {
 	}
 }
 
-if (isset($_POST) && $_POST != '') {
+if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "createSelection":
 			echo "Add selection... ";

@@ -3,7 +3,7 @@ require_once("thinConnector.php");
 require_once("groups.ui.php");
 import("group.service");
 
-if (isset($_GET) && $_GET != '') {
+if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getGroups":
 			renderDefault();
@@ -26,7 +26,7 @@ if (isset($_GET) && $_GET != '') {
 	}
 }
 
-if (isset($_POST) && $_POST != '') {
+if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "addGroup":
 			echo "Creating Group.. ";
@@ -74,6 +74,14 @@ if (isset($_POST) && $_POST != '') {
 		case "addIdeaToPublic":
 			echo "Adding idea to public... "; 
 			renderServiceResponse(addIdeaToPublic($_POST['actionId'],$_SESSION['innoworks.ID']));
+			break;
+		case "editIdeaToGroup":
+			echo "Adding edit permissions... "; 
+			renderServiceResponse(assignEditToGroup($_POST['ideaId'],$_POST['groupId'],$_SESSION['innoworks.ID']));
+			break;
+		case "rmEditIdeaToGroup":
+			echo "Removing edit permissions... "; 
+			renderServiceResponse(assignRemoveFromGroup($_POST['ideaId'],$_POST['groupId'],$_SESSION['innoworks.ID']));
 			break;
 	}
 }

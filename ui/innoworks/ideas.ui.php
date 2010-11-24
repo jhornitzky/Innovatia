@@ -39,22 +39,30 @@ function renderIdeasForGroup($groupId) {
 function renderJustIdea($ideas, $idea, $user) {
 	global $serverRoot;
 	?>
-<div id="ideaform_<?= $idea->ideaId?>" class="idea ui-corner-all">
+<div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
 <img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
 <span class="ideaoptions">
 <?= $idea->username?>
-<?if ($idea->userId == $user) { ?> <input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> <?}?>
+<?if ($idea->userId == $user) { ?> 
+<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
+<?}?>
 </span><br/>
-<a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a><br/>
+<span class="ideatitle"><a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"><?=$idea->title?></a></span><br/>
 </div>
 <?}
 
 function renderIdeaMission($ideaId) {	
+	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
 <div class="formBody">
 <div class="ideaDetails subform">
 <form id="ideadetails_form_<?= $idea->ideaId?>">
-<? renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username")); ?>
+<? 
+if ($canEdit)
+	renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score")); 
+else 
+	renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score"));
+?>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="updateIdeaDetails" /> </form>
 </div>
@@ -63,40 +71,51 @@ function renderIdeaMission($ideaId) {
 
 function renderIdeaFeaturesForm($ideaId) {
 		$rs = getIdeaDetails($ideaId);
-		$idea = dbFetchObject($rs);?>
+		$idea = dbFetchObject($rs);
+		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
+	?>
 <div class="ideaFeatures subform">
+<? if ($canEdit) { ?>
 <form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span>
 New Feature </span> <input type="text" name="feature" /> <input
 	type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="addFeature" /> <input type="button"
 	onclick="genericAdd('addfeature_form_<?= $idea->ideaId?>');getFeatures('ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
 	value=" + " /></form>
-<div id="ideafeatures_<?= $idea->ideaId?>"><? renderIdeaFeatures($idea->ideaId); ?></div>
+<?} ?>
+<div id="ideafeatures_<?= $idea->ideaId?>">
+<? renderIdeaFeatures($idea->ideaId); ?>
+</div>
 </div>
 <?}
 
 function renderIdeaRolesForm($ideaId) {
 		$rs = getIdeaDetails($ideaId);
-		$idea = dbFetchObject($rs);?>
+		$idea = dbFetchObject($rs);
+		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);?>
 <div class="ideaRoles subform">
+<? if ($canEdit) { ?>
 <form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New
 Role </span> <input type="text" name="role" /> <input type="hidden"
 	name="ideaId" value="<?= $idea->ideaId?>" /> <input type="hidden"
 	name="action" value="addRole" /> <input type="button"
 	onclick="genericAdd('addrole_form_<?= $idea->ideaId?>');getRoles('idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
 	value=" + " /></form>
-<div id="idearoles_<?= $idea->ideaId?>"><? renderIdeaRoles($idea->ideaId); ?>
+<? } ?>
+<div id="idearoles_<?= $idea->ideaId?>">
+<? renderIdeaRoles($idea->ideaId); ?>
 </div>
 </div>
 <?}
 
 function renderIdeaFeatures($ideaId) {
+	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 			$features = getFeaturesForIdea($ideaId);
 			if ($features && dbNumRows($features) > 0 ) {
 				echo "<table id='featureTable_$ideaId'>";
 				renderGenericHeader($features, array("featureId", "ideaId"));
 				while ($feature = dbFetchObject($features)) {
-					renderFeature($features, $feature);
+					renderFeature($features, $feature,$canEdit);
 				}
 				echo "</table>";
 			} else {
@@ -104,22 +123,28 @@ function renderIdeaFeatures($ideaId) {
 			}
 }
 
-function renderFeature($features, $feature) {?>
+function renderFeature($features, $feature,$canEdit) {?>
 <tr id="featureform_<?= $feature->featureId ?>">
-<?renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
+	<?
+	if ($canEdit) {
+		renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
 	<td><input type="button"
 		onclick="genericDelete('deleteFeature','<?= $feature->featureId ?>');getFeatures('ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
 		value=" - " /></td>
+	<?} else { 
+		renderGenericInfoRow($features, $feature, array("featureId", "ideaId"));
+	}?>
 </tr>
 <?}
 
 function renderIdeaRoles($ideaId) {
+	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 	$roles = getRolesForIdea($ideaId);
 	if ($roles && dbNumRows($roles) > 0 ) {
 		echo "<table>";
 		renderGenericHeader($roles, array("roleId", "ideaId"));
 		while ($role = dbFetchObject($roles)) {
-			renderRole($roles, $role);
+			renderRole($roles, $role, $canEdit);
 		}
 		echo "</table>";
 	} else {
@@ -127,13 +152,19 @@ function renderIdeaRoles($ideaId) {
 	}
 }
 
-function renderRole($roles, $role) {?>
+function renderRole($roles, $role, $canEdit) {?>
 <tr id="roleform_<?= $role->roleId ?>">
-	<?renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
+	<?
+	if ($canEdit) {
+	renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
 	<td><input type="hidden" name="roleId" value="<?= $role->roleId ?>" />
 	<input type="button"
 		onclick="genericDelete('deleteRole','<?= $role->roleId ?>');getRoles('idearoles_<?= $role->ideaId?>','<?= $role->ideaId ?>');"
 		value=" - " /></td>
+	<?} else { 
+		renderGenericInfoRow($features, $feature, array("featureId", "ideaId"));
+	}?>
+
 </tr>
 <?}
 
@@ -179,14 +210,14 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	$rs = getIdeaDetails($id);
 	$idea = dbFetchObject($rs);
 	?>
-<form id="addFeatureEvaluationContainer_<?= $idea->ideaId?>"
-	class="addForm"><span> New feature evaluation </span> <input
-	type="text" name="title" /> <input type="hidden" name="ideaId"
-	value="<?= $idea->ideaId?>" /> <input type="hidden" name="action"
-	value="createFeatureEvaluation" /> <input type="button"
-	onclick="addFeatureEvaluation('addFeatureEvaluationContainer_<?= $idea->ideaId?>');"
-	value=" + " /></form>
-	
+<form id="addFeatureEvaluationContainer_<?= $idea->ideaId?>" class="addForm">
+	<span> New feature evaluation </span> 
+	<input type="text" name="title" /> 
+	<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> 
+	<input type="hidden" name="action" value="createFeatureEvaluation" /> 
+	<input type="button" 
+	onclick="addFeatureEvaluation('addFeatureEvaluationContainer_<?= $idea->ideaId?>');" value=" + " />
+	</form>
 	<?
 	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
@@ -228,22 +259,18 @@ function renderFeatureEvaluationForIdea($id, $evalId) {
 function renderFeatureEvaluationTable($id) {
 	$featureItems = getFeatureEvaluationForIdea($id);
 	if ($featureItems && dbNumRows($featureItems) > 0){
-		echo "<table id='featureEvaluation_$id'>";
-		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"));
+		echo "<table id='featureEvaluation_$id' class='featureEvaluationBit'>";
+		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId","score"));
 		while ($featureItem = dbFetchObject($featureItems)) {
 			renderFeatureItem($featureItems, $featureItem);
 		}
-		echo "</table>";?>
-		<script type="text/javascript">
-			initFormSelectTotals('#featureEvaluation_<?= $id?>', '#featureEvaluationContainer_<?= $id?>');
-		</script>
-		<?
+		echo "</table>";
 	}
 }
 
 function renderFeatureItem($featureItems, $featureItem) {?>
 <tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
-<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId"), "FeatureEvaluation", null);?>
+<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId", "score"), "FeatureEvaluation", null);?>
 	<td>Score: <span class="itemTotal">0 </span> <input type="hidden"
 		name="featureEvaluationId"
 		value="<?= $featureItem->featureEvaluationId ?>" />
@@ -269,10 +296,6 @@ function renderCommentsForIdea($id, $uId) {
 	} else {
 		echo "<p>None</p>";
 	}
-}
-
-function renderShare($ideaId) {
-	echo "<p>Sharing to come</p>";
 }
 
 function renderAttachments($ideaId, $userId) {?>

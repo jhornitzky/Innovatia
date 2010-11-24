@@ -4,15 +4,13 @@ import("dash.service");
 ?>
 <div style="width:100%; vertical-align:bottom;">
 <div class="fixed-left">
-	<h2 id="pgName">Dashboard</h2>
-	<div class="bordRight">
-	<p><a href="javascript:showGroups();">Groups</a><br/><span>Share your ideas</span></p>
-	<p><a href="javascript:showProfile();">Profiles</a><br/><span>Find expert innovators</span></p>
-	<p><a href="javascript:showNotes();">Notes</a><br/><span>Communicate in real-time</span></p>
-	<p><a href="javascript:showSearch();">Search</a><br/><span>Find ideas, people or groups</span></p>
-	<p><a href="javascript:showTimelines();">Timelines</a><br/><span>Review your schedule</span></p>
-	<p><a href="javascript:showReports();">Reports</a><br/><span>View statistics for innoworks</span></p>
-	</div>
+	<h2 id="pgName" style="margin-bottom:0.5em;">Dashboard</h2>
+	<div class="itemHolder clickable" onclick="showGroups();">Groups<br/><span>Share your ideas</span></div>
+	<div class="itemHolder clickable" onclick="showProfile();">Profiles<br/><span>Find expert innovators</span></div>
+	<div class="itemHolder clickable" onclick="showNotes();">Notes<br/><span>Communicate in real-time</span></div>
+	<div class="itemHolder clickable" onclick="showSearch();">Search<br/><span>Find ideas, people or groups</span></div>
+	<div class="itemHolder clickable" onclick="showTimelines();">Timelines<br/><span>Review your schedule</span></div>
+	<div class="itemHolder clickable" onclick="showReports();">Reports<br/><span>View statistics for innoworks</span></div>
 </div>
 <div class="fixed-right">
 <div class="dashHeader" style="width:100%; display:none;"><b>Notifications</b></div>
@@ -26,7 +24,7 @@ import("dash.service");
 			$ideas = getDashIdeas($_SESSION['innoworks.ID']);
 			if ($ideas && dbNumRows($ideas) > 0 ) {
 			while ($idea = dbFetchObject($ideas)) {?>
-				<p><a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><?= $idea->title ?></a></p>
+				<div onclick="showIdeaDetails('<?= $idea->ideaId?>');" class="itemHolder clickable"><img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId ?>" style="width:1em;height:1em;"/><?= $idea->title ?></div>
 				<?}
 			} else {
 				echo "<p>No ideas yet</p>";
@@ -42,7 +40,7 @@ import("dash.service");
 			$items = getDashCompare($_SESSION['innoworks.ID']);
 			if ($items && dbNumRows($items) > 0 ) {
 			while ($item = dbFetchObject($items)) {?>
-				<p><a href="javascript:showIdeaDetails('<?= $item->ideaId?>');"><?= $item->title ?></a></p>
+				<div onclick="showIdeaDetails('<?= $item->ideaId?>');" class="itemHolder clickable"><img src="retrieveImage.php?action=ideaImg&actionId=<?= $item->ideaId ?>" style="width:1em;height:1em;"/><?= $item->title ?></div>
 				<?}
 			}else {
 				echo "<p>No compares yet</p>";
@@ -58,7 +56,7 @@ import("dash.service");
 			$selections = getDashSelect($_SESSION['innoworks.ID']);
 			if ($selections && dbNumRows($selections) > 0 ) {
 			while ($selection = dbFetchObject($selections)) {?>
-				<p><a href="javascript:showIdeaDetails('<?= $selection->ideaId?>');"><?= $selection->title?></a></p>
+				<div onclick="showIdeaDetails('<?= $selection->ideaId?>');" class="itemHolder clickable"><img src="retrieveImage.php?action=ideaImg&actionId=<?= $selection->ideaId ?>" style="width:1em;height:1em;"/><?= $selection->title ?></div>
 				<?}
 			} else {
 				echo "<p>No selections yet</p>";

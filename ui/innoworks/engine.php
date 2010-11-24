@@ -59,13 +59,14 @@ $(document).ready(function() {
 	showDash();
 
 	//Start server polling
+	pollServer();
 	setInterval(pollServer, 15000);
 });
 
 dojo.addOnLoad(function(){	
 	if (isMobile) {
 		//dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
-		dojo.declare("dijit.form.Textarea",null,null); //TODO test if this actually fixes the ipad problem
+		dojo.declare("dijit.form.Textarea",null,null);
 	}
 	
 	//Parse controls
@@ -104,6 +105,22 @@ dojo.addOnLoad(function(){
 	
 	#timelineTab table, #compareTab table, div.fixed-right #reportDetails  {
 		width:750px;
+	}
+	
+	.respSurround {
+		background-color:#FFFFFF;
+		max-height:3em;
+	}
+
+	.respSurround .responses {
+		padding-left:10px;
+		max-height:3em;
+		overflow:hidden;
+		width:1000px; 
+		margin:auto; 
+		color:#000000;
+		background:none;
+		border:none;
 	}
 	</style>
 <![endif]-->
@@ -161,6 +178,7 @@ dojo.addOnLoad(function(){
 </div>
 
 <div id="content">
+
 <div id="dashTab" class="tabBody"></div>
 
 <div id="ideaTab" class="tabBody">
@@ -298,7 +316,7 @@ dojo.addOnLoad(function(){
 <a href="javascript:printIdea()">Print</a>
 </span>
 <table><tr>
-<td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/innovate.png"/></td>
+<td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/defGear.png"/></td>
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
 </table>
 

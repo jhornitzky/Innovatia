@@ -122,10 +122,10 @@ div.itemHolder.selected {
 	background-color:#DDD;
 }
 
-div.itemHolder.clickable {
+div.clickable {
 	cursor:pointer; 
 }
 
-div.itemHolder.clickable:hover {
+div.clickable:hover, div.hoverable:hover {
 	background-color: #EEE;
 }

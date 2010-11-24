@@ -1,3 +1,5 @@
+function logAction() {}
+
 function authenUser() {
 	hideResponse();
 	$("#Wait").fadeIn(250);

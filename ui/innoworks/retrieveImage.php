@@ -2,7 +2,7 @@
 require_once("thinConnector.php");
 import("attach.service");
 
-if (isset($_GET) && $_GET != '') {
+if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "ideaImg":
 			retrieveImageForIdea($_GET['actionId']); 

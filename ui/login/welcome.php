@@ -1,20 +1,14 @@
-<?
-require_once("core/innoworks.config.php");
-?>
+<?require_once("core/innoworks.config.php");?>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>innoWorks</title>
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>ui/style/favicon.ico" type="image/x-icon" />
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/login.js"></script>
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
-	type="text/css">
-<link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet"
-	type="text/css">
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/login.js"></script>
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css">
+<link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet" type="text/css">
 	
 <script type="text/javascript">
 $(document).ready( function () { 
@@ -70,28 +64,14 @@ $(document).ready( function () {
 	<div style="float:left;  width:560px; text-align:left; font-size:22px;">
 		<noscript><span><b>You must have javascript enabled to use Innoworks</b></span></noscript>
 	</div>
-	<!-- <div>
-		<div style="text-align:right; padding-right:10px; float:right; width:300px;">
-			<p style="font-size:22px;">
-			<span style="font-size:10px;">
-				Copyright &copy; UTS 2010 | BETA<br/>
-				<br/>
-				Privacy<br/>
-				<br/>
-				More
-			</span>
-			</p>
-		</div>
-	</div>-->
 </div>
 
 <div style="width:100%; font-size:1em; padding:0.2em; text-align:left; clear:both ">
 	<ul id="submenu" style="clear:both ">
-		<li id="ideaInnolnk"><div class="marker orange"></div><a href="#" onClick="showIdeas();">Innovations</a></li> 
-		<li id="aboutlnk"><div class="marker green"></div><a href="javascript:showAbout();">Features</a></li>
-		<li id="reglnk"><div class="marker blue"></div><a href="javascript:registerUser();">Register</a></li>
+		<li id="ideaInnolnk"><div class="marker orange"></div><a href="javascript:logAction();" onclick="showSearch();">Innovations</a></li> 
+		<li id="aboutlnk"><div class="marker green"></div><a href="javascript:logAction();" onclick="showAbout();">Features</a></li>
+		<li id="reglnk"><div class="marker blue"></div><a href="javascript:logAction();" onclick="registerUser();">Register</a></li>
 	</ul>
-
 	<div id="ajaxContent" style="clear:both">
 		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
 	</div>

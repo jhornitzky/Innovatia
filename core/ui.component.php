@@ -107,7 +107,7 @@ function renderGenericHeader($rs, $omitArray) {
 	echo "</tr>";
 }
 
-function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
+function renderGenericHeaderWithRefData($rs, $omitArray, $tableName, $renderCallback) {
 	$refdata = getRefDataForTable($tableName);
 
 	if ($refdata && dbNumRows($refdata) > 0)
@@ -115,7 +115,10 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
 
 	echo "<tr>";
 	while ($field = dbFetchField($rs)) {
-		if (!in_array($field->name, $omitArray)) {
+		if ($renderCallback != null) 
+			eval('$rendered='.$renderCallback.'($field->name);');
+			
+		if (!in_array($field->name, $omitArray)&& !$rendered) {
 			//logDebug("Field name: ".$field->name);
 			$metaArray = findColumnMetadata($refdata, $field->name);
 			//logDebug("Col Head meta array: ".$metaArray);
@@ -125,7 +128,7 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName) {
 			if ($metaArray){
 				$metaHelp = getColumnDescription($metaArray);
 				if ($metaHelp) {?>
-					<span class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($field->name) ?></span>
+					<div class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($field->name) ?></span>
 				<?}
 			} else {
 				echo fromCamelCase($field->name);
@@ -144,6 +147,14 @@ function renderGenericUpdateRow($rs,$row,$omitArray) {
 <td><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
 <textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
 </td>
+		<?}
+	}
+}
+
+function renderGenericInfoRow($rs,$row,$omitArray) {
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray)) {?>
+			<td><?=$value?></td>
 		<?}
 	}
 }

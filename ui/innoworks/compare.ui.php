@@ -18,10 +18,11 @@ function renderComparisonForGroup($groupId) {
 }
 
 function renderCommon($riskItems) {
+	import("idea.service");
 	if ($riskItems && dbNumRows($riskItems) > 0){
-		echo "<table id='riskEvaluation' class='ui-corner-all'>";
+		echo "<table id='riskEvaluation'>";
 		echo "<thead>";
-			renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId"),"RiskEvaluation");
+			renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId", "score"),"RiskEvaluation","renderRiskItemHeadCallback");
 		echo "</thead>";
 		echo "<tbody>";
 			while ($riskItem = dbFetchObject($riskItems)) {
@@ -34,21 +35,41 @@ function renderCommon($riskItems) {
 	}
 }
 
-function renderRiskItem($riskItems, $riskItem) {?>
+function renderRiskItemHeadCallback($key) {
+	if ($key == "idea") {?>
+		<th class="headcol">
+			<?= fromCamelCase($key); ?>
+		</th>
+		<?return true;
+	} else {
+		return false;
+	}
+	
+}
+
+function renderRiskItem($riskItems, $riskItem) {
+	$featuresTotal = getFeatureEvaluationTotalForIdea($riskItem->ideaId, $_SESSION['innoworks.ID']);?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
-		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId"), "RiskEvaluation","renderRiskItemCallbackRow");?>
+		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId", "score"), "RiskEvaluation","renderRiskItemCallbackRow");?>
+		<td class="totalCol">
+			<span class="itemTotal" title="Risk evaluation score">0</span> |
+			<span class="featureTotal" title="Feature evaluation score"><?= $featuresTotal ?></span>
+			<!-- = <span class="grandTotal" style="font-size:2em; font-weight:bold">0</span> -->
+		</td>
 	</tr>
 <?}
 
 function renderRiskItemCallbackRow($key, $value, $riskItem) {
 	if ($key == "idea") {?>
-		<td>
-			<span class="itemTotal" style="1.5em; font-weight:bold">0</span>
-			<span class="itemName"><?= $value ?></span> <br/>
-			<a href="javascript:showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
-			<a href="javascript:showIdeaSummary('<?= $riskItem->ideaId?>');">Summary</a>
-			<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>')" title="Delete this risk item" value=" - "/>
-			<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
+		<td class="headCol">
+			<div class="hoverable">
+				<span class="itemName">
+				<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $riskItem->ideaId?>')"><?= $value ?></a>
+				</span><br/>
+				<a href="javascript:logAction()" onclick="showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
+				<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>');" title="Delete this risk item" value=" - "/>
+				<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
+			</div>
 		</td>
 		<?return true;
 	} else {
@@ -76,7 +97,7 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 	if ($ideas && dbNumRows($ideas) > 0) { 
 		echo "<ul>";
 		while ($idea = dbFetchObject($ideas)) {
-			echo  "<li><a href='javascript:addRiskItemForGroup(\"$idea->ideaId\", \"$groupId\")'>".$idea->title. "</a></li>";
+			echo "<li><a href='javascript:addRiskItemForGroup(\"$idea->ideaId\", \"$groupId\")'>".$idea->title. "</a></li>";
 		}
 		echo "</ul>";
 	}

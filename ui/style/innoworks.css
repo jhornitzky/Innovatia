@@ -131,18 +131,19 @@ ul.tabMenu li.menulnk {
 }
 
 ul.tabMenu li.selMenu {
-	color:#FFFFFF;
+	/*color:#FFFFFF;*/
 }
 
 ul.tabMenu li.selMenu a.selLnk {
 	text-decoration: underline;
 	font-weight: bold;
 	font-size: 1.0em;
+	color:#FFFFFF;
 }
 
 ul.tabMenu li.selMenu a {
-	color:#FFFFFF;
-	border-bottom:none;
+	/*color:#FFFFFF;
+	border-bottom:none;*/
 }
 
 ul.tabMenu li.selMenu a:hover {
@@ -152,7 +153,7 @@ ul.tabMenu li.selMenu a:hover {
 /* CONTENT AND COMMON */
 
 .bordRight {
-	border-right:1px solid #DDDDDD;
+	/*border-right:1px solid #DDDDDD;*/
 }
 
 div#content { 
@@ -207,7 +208,6 @@ div#content {
 	overflow:hidden;
 	width:1000px; 
 	margin:auto; 
-	color:#FFFFFF;
 	background:none;
 	border:none;
 }
@@ -257,7 +257,7 @@ div#content {
 	float:left;
 	background-color:#FFF;
 	text-align:center;
-	width:8em;
+	width:8.35em;
 	height:8em;
 	overflow:hidden;
 }
@@ -282,34 +282,6 @@ div#content {
 }
 
 /* Other tabs styling */
-#compareList table
-{
-	text-align: center;
-	font-weight: normal;
-	width: 100%;
-	border-collapse: collapse;
-	border-spacing: 0px;
-	border: 1px solid #EEEEEE;
-}
-
-#compareList table td
-{
-	background-color: #FFF;
-	color: #000;
-	padding: 4px;
-	text-align: left;
-	border: 1px solid #EEEEEE;
-}
-
-#compareList table th 
-{
-	background-color: #EEEEEE;
-	color: #111;
-	padding: 4px;
-	text-align: left;
-	font-weight: bold;
-}
-
 #timelineTab table
 {
 	font-weight: normal;
@@ -321,7 +293,7 @@ div#content {
 
 #timelineTab table td
 {
-	color: #000;
+	/*color: #000;*/
 	padding: 4px;
 	text-align: left;
 	border: none;
@@ -413,13 +385,99 @@ div#head, div#content {
 	margin:0 auto;
 }
 
-/*
-#riskEvaluation * span.helper{
+#compareList table
+{
+	text-align: center;
+	font-weight: normal;
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border:none;
+}
+
+#compareList table td
+{
+	background-color: #FFF;
+	/*color: #000;*/
+	padding: 4px;
+	text-align: left;
+	border: 1px solid #EEEEEE;
+}
+
+#compareList table th 
+{
+	/*background-color: #EEEEEE;
+	color: #111;*/
+	padding: 4px;
+	text-align: left;
+	font-weight: bold;
+	border:none;
+	border-right:1px solid #EEEEEE;
+}
+
+#riskEvaluation * div.helper {
+	width:2em;
+	height:2em;
+	overflow:visible;
 	writing-mode: tb-rl; 
 	-webkit-transform: rotate(-90deg); 
 	-moz-transform: rotate(-90deg);
+}	
+
+#riskEvaluation tr th {
+	overflow:hidden;
+	height:7em; 
+	width:2em;
+	text-align:left;
+	vertical-align:bottom;
 }
-*/
+
+#riskEvaluation tr td {
+	font-size:0.9em;
+	max-height:5em;
+	width:2em;
+}
+
+#riskEvaluation tr:hover td {
+	background-color:#DDDDDD;
+}
+
+#riskEvaluation select {
+	width:3em;
+}
+
+#riskEvaluation tr td.headcol {
+	width:15em;	
+	border-left:none;	
+}
+
+#riskEvaluation tr th.headcol {
+	font-weight:normal;
+	font-size:1.0em;	
+}
+
+#riskEvaluation tr td.totalCol {
+	width:2em;
+} 
+
+/*div#compareList { 
+	width: 500px; 
+ 	overflow-x:auto;  
+   	margin-left:7.5em; 
+   	overflow-y:visible;
+}
+#riskEvaluation tr td.headcol {
+	position:absolute; 
+  	width:7.5em; 
+  	left:260px; 
+  	top:auto;
+  	overflow:hidden;
+}
+#riskEvaluation tbody {
+	height: 20em; 
+	overflow-x: hidden;
+	overflow-y: auto;
+}*/
 
 span.timestamp {
 	padding-left:0.5em;
@@ -451,4 +509,16 @@ div#groupDetails {
 
 div.itemHolder a {
 	margin:0;
+}
+
+div.itemHolder span {
+	font-size:0.9em;
+}
+
+span.itemTotal{
+	font-size:1.5em; font-weight:bold
+}
+
+span.itemName {
+	font-size:1.2em;
 }

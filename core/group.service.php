@@ -39,11 +39,15 @@ function getUsersForGroup($id) {
 }
 
 function getIdeasForGroup($id) {
-	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId");
+	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId");
 }
 
 function getIdeaShareDetails($id) {
-	return dbQuery("SELECT Groups.* FROM Ideas,Groups,GroupIdeas WHERE Ideas.ideaId='$id' AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId");
+	return dbQuery("SELECT * FROM GroupIdeas WHERE ideaId = $id");
+}
+
+function getGroupsWithIdeaDetails($id) {
+	return dbQuery("SELECT Groups.*, GroupIdeas.* FROM Ideas,Groups,GroupIdeas WHERE Ideas.ideaId='$id' AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId");
 }
 
 function getRiskEvaluationForGroup($id) {
@@ -84,7 +88,7 @@ function linkIdeaToGroup($groupId, $ideaId) {
 
 function unlinkIdeaToGroup($groupId, $ideaId) {
 	import("note.service");
-	createNoteForGroup($_SESSION['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupid)->title);
+	createNoteForGroup($_SESSION['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupId)->title);
 	return dbQuery("DELETE FROM GroupIdeas WHERE groupId = '$groupId' AND ideaId = '$ideaId'");
 }
 
@@ -140,5 +144,13 @@ function requestGroupAccess($groupid, $userid) {
 
 function addIdeaToPublic($ideaId, $userId) {
 	return dbQuery("UPDATE Ideas SET isPublic=1 WHERE ideaId=$ideaId AND userId=$userId");
+}
+
+function assignEditToGroup($ideaId, $groupid, $userid) {
+	return dbQuery("UPDATE GroupIdeas SET canEdit=1 WHERE groupId = '$groupid' AND ideaId = '$ideaId'");
+}
+
+function assignRemoveFromGroup($ideaId, $groupid, $userid) {
+	return dbQuery("UPDATE GroupIdeas SET canEdit=0 WHERE groupId = '$groupid' AND ideaId = '$ideaId'");
 }
 ?>

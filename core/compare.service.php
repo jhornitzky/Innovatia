@@ -19,7 +19,7 @@ function deleteRiskItem($id, $user) {
 
 function getRiskItems($user) {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
-	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user AND (RiskEvaluation.groupId IS NULL OR RiskEvaluation.groupId = '0')");
+	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND Ideas.userId=$user AND (RiskEvaluation.groupId IS NULL OR RiskEvaluation.groupId = '0') ORDER BY RiskEvaluation.score DESC");
 }
 
 function getPublicRiskItems() {
@@ -29,11 +29,11 @@ function getPublicRiskItems() {
 
 function getRiskItemsForGroup($group) {
 	return dbQuery("SELECT Ideas.title as 'idea', RiskEvaluation.*  FROM RiskEvaluation, Ideas 
-	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group"); //FIXME
+	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group");
 }
 
 function getRiskItemForIdea($ideaId, $user) {
-	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation WHERE RiskEvaluation.ideaId = '$ideaId'"); //FIXME
+	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation WHERE RiskEvaluation.ideaId = '$ideaId'");
 }
 
 function getCompareComments($uId) {

@@ -15,12 +15,15 @@ function retrieveImageForUser($userId) {
 }
 
 function genericRetrieveImage($imgs, $defImg) {
-	global $uiRoot;
+	global $uiRoot, $usersRoot, $serverUrl;
+	//if false
 	if ($imgs && dbNumRows($imgs) > 0) {
-		$img = dbFetchObject($imgs);
-		readfile($_SERVER['DOCUMENT_ROOT'].$img->path);
+		$img = dbFetchObject($imgs); 
+		header("Location: ".$serverUrl.$usersRoot.$img->path);
+		//readfile($_SERVER['DOCUMENT_ROOT'].$userRoot.$img->path);
 	} else {
-		readfile($_SERVER['DOCUMENT_ROOT'].$uiRoot."style/".$defImg); 
+		header("Location: ".$serverUrl.$uiRoot."style/".$defImg);
+		//readfile($_SERVER['DOCUMENT_ROOT'].$uiRoot."style/".$defImg); 
 	}
 }
 ?>

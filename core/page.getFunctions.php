@@ -1,6 +1,6 @@
 <?
 	require_once("user.service.php");
-	if ($_GET['logOut'])
+	if (isset($_GET['logOut']))
 	{
 		include("login.logout.php");	
 	}

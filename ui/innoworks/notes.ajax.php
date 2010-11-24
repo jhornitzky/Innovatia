@@ -2,7 +2,7 @@
 require_once("thinConnector.php");
 import("note.service");
 
-if (isset($_POST) && $_POST != '') {
+if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "addNote":
 			import("user.service");

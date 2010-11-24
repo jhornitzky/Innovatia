@@ -14,7 +14,7 @@ if (isset($_POST['ideaId'])) {
 	$groupId =  $_GET['groupId'];
 }
 
-if (isset($_POST) && $_POST != '') {
+if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "addAttachment":
 			echo "Creating Attachment.. ";
@@ -32,12 +32,16 @@ if (isset($_POST) && $_POST != '') {
 <head>
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
 	type="text/css" />
-<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"
-	type="text/css" />
+<style>
+html, body {
+	text-align:left;
+}
+</style>
 </head>
 
 <body>
-<form method="post" enctype="multipart/form-data"
+	<? if (isset($groupId) || (isset($ideaId) && hasEditAccessToIdea($ideaId,$_SESSION['innoworks.ID']))) { ?>
+	<form method="post" enctype="multipart/form-data"
 	action="./attachment.php"><input type="hidden" name="MAX_FILE_SIZE"
 	value="2000000"> <input name="userfile" type="file" id="userfile"> <input
 	type="hidden" name="action" value="addAttachment" /> 
@@ -45,9 +49,12 @@ if (isset($_POST) && $_POST != '') {
 	if (isset($ideaId)) 
 		echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
 	else if (isset($groupId))
-		echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> <input
-	type="submit" value=" + " title="Add attachment" /></form>
+		echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> 
+	<input type="submit" value=" + " title="Add attachment" /></form>
 	<?
+	}
+	
+	global $usersRoot;
 	$attachs;
 	if (isset($ideaId))
 		$attachs = getAttachmentsForIdea($ideaId);
@@ -56,19 +63,21 @@ if (isset($_POST) && $_POST != '') {
 		
 	if ($attachs && dbNumRows($attachs)) {
 		while ($attach = dbFetchObject($attachs)) {
-			logDebug(strpos($attach->type, "image"));
-			if (strpos($attach->type, "image") >= 0) 
-				echo "<img src='$attach->path' style='width:100px;height:75px'/>";?>
+			if (preg_match("/^[image]/",$attach->type)) 
+				echo "<img src='$usersRoot$attach->path' style='width:100px;height:75px'/>";?>
 			<form method="post" action="./attachment.php">
 			<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>">
 			<?= $attach->title;?></a>
-			<input type="hidden" name="actionId" value="<?= $attach->attachmentId;?>" /> 
-			<input type="hidden" name="action" value="deleteAttachment" /> 
 			<?if (isset($ideaId)) 
 				echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
 			else if (isset($groupId))
-				echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> 
+				echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';
+			
+			if (isset($groupId) || (isset($ideaId) && hasEditAccessToIdea($ideaId,$_SESSION['innoworks.ID']))) { ?> 
+			<input type="hidden" name="actionId" value="<?= $attach->attachmentId;?>" /> 
+			<input type="hidden" name="action" value="deleteAttachment" /> 
 			<input type="submit" value=" - " title="Delete attachment" />
+			<?}?>
 			</form>
 		<?}
 	} else {

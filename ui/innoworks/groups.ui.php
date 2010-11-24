@@ -76,7 +76,19 @@ function renderDetails($currentGroupId) {
 				echo "<ul>";
 				while ($idea = dbFetchObject($groupIdeas)) {
 					echo "<li><a href=\"javascript:showIdeaDetails('$idea->ideaId')\" >" . $idea->title . "</a>";
-					if ($idea->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' alt='Remove this idea from the group'/>";
+					if ($idea->userId == $_SESSION['innoworks.ID']){
+						if ($idea->canEdit == 1)
+							$checked = "checked";
+						else 
+							$checked="";
+						echo "<input type='checkbox' onclick='toggleGroupEditIdea(this, $idea->ideaId, $idea->groupId)' alt='Assign edit access to group' $checked/>";
+						echo "<input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' alt='Remove this idea from the group'/>";
+					} else {
+						if ($idea->canEdit == 1)
+							echo "Editable";
+						else 
+							echo "Not editable";
+					}
 					echo "</li>";
 				}
 				echo "</ul>";
@@ -105,7 +117,7 @@ function renderDetails($currentGroupId) {
 			}
 			
 			echo "<h3>Attachments</h3>";
-			echo "<iframe style='width:100%;height:8em;' src='attachment.php?groupId=$group->groupId'></iframe>";
+			echo "<iframe style='width:100%;height:15em; padding:1px; border:1px solid #EEEEEE; background-color:#EEEEEE;' src='attachment.php?groupId=$group->groupId'></iframe>";
 			echo "</div>";
 		} 
 	} else {
@@ -168,36 +180,87 @@ function renderIdeaRiskEval($ideaId, $userId) {
 
 function renderIdeaShare($ideaId, $userId) {
 	import("group.service");
+	import("idea.service");
+	$idea = dbFetchObject(getIdeaDetails($ideaId));
+	if (hasEditAccessToIdea($idea->ideaId,$_SESSION['innoworks.ID'])) {
+	$groups = getAllGroupsForUser($_SESSION['innoworks.ID']);
+	$items = dbFetchAll(getIdeaShareDetails($ideaId));
+	?>
+	<form>
+	Share idea in public 
+	<input id="ideaIsPublic" type="checkbox" onclick="togglePublicIdea(this)" <? if ($idea->isPublic == 1) echo "checked"; ?>/>
+	</form>
+	<p>Share idea with one of your groups</p>
+	<ul>
+	<?
+	if ($groups && dbNumRows($groups) > 0 ) {
+		while ($group = dbFetchObject($groups)) {
+			renderIdeaGroupItem($idea, $group, $items);
+		}
+	}
+	?>
+	</ul>
+	Show <a href='javascript:showGroups(); dijit.byId("ideasPopup").hide()'>Groups</a>
+<?	} else {
+		echo "You do not own this idea, and therefore cannot control sharing. If you want edit access to this idea, contact the owner.";
+	}
+}
+
+function renderIdeaGroupItem($idea, $group, $items) {
+	$shared = false;
+	$canEdit = false;
+	foreach($items as $item) {
+		$item = (object) $item;
+		if ($item->groupId == $group->groupId) {
+			$shared = true;
+			logDebug("Can edit.. " . $item->canEdit);
+			if ($item->canEdit == 1) {
+				$canEdit = true; 
+			}
+		}
+	}
+	if (is_array($items) && in_array($group->groupId, $items))
+		$shared = true;?>
+	<li>
+		<?= $group->title ?>
+		<input type="checkbox" onclick="toggleGroupShareIdea(this, <?= $group->groupId ?>)" <? if ($shared) echo "checked"; ?>/>
+		| Edit <input type='checkbox' onclick='toggleGroupEditIdea(this, <?= $idea->ideaId ?>, <?= $group->groupId ?>)' alt='Assign edit access to group' <? if ($canEdit) echo "checked"; ?>/>
+	</li>
+<?}
+
+//////////////////////// DEPRECATED ////////////////////////
+function renderIdeaGroupItemOld($ideaId, $group) { ?>
+<li><a href="javascript:logAction()"
+	onclick="addIdeaToGroup('<?= $ideaId ?>','<?= $group->groupId ?>');loadPopupShow()"><?= $group->title ?></a></li>
+<?}
+
+function renderIdeaShareOld($ideaId, $userId) {
+	import("group.service");
 	$item = getIdeaShareDetails($ideaId);
 	$groups = getGroupsForCreatorUser($_SESSION['innoworks.ID']);
 	$othergroups = getPartOfGroupsForUser($_SESSION['innoworks.ID']);
 
 	if ($item && dbNumRows($item) > 0) {
 		renderGenericInfoForm(array(), dbFetchObject($item), array("riskEvaluationId","groupId","userId","ideaId"));
-		echo "<a href='javascript:logAction()' onclick=''>Remove from this group</a>"; //FIXME
+		echo "<a href='javascript:logAction()' onclick='unlinkIdea()'>Remove from this group</a><br/>"; 
 		echo 'Go to <a href="javascript:logAction()" onclick="showGroups(); dijit.byId(\'ideasPopup\').hide()">Groups</a> to edit data';
 	} else {?>
 	<p>No share data for this idea</p>
 	<p>Share idea with a group:</p>
-<ul>
-<?
-if ($groups && dbNumRows($groups) > 0 ) {
-	while ($group = dbFetchObject($groups)) {
-		renderIdeaGroupItem($ideaId, $group);
+	<ul>
+	<?
+	if ($groups && dbNumRows($groups) > 0 ) {
+		while ($group = dbFetchObject($groups)) {
+			renderIdeaGroupItem($ideaId, $group);
+		}
 	}
-}
-if ($othergroups && dbNumRows($othergroups) > 0 ) {
-	while ($group = dbFetchObject($othergroups)) {
-		renderIdeaGroupItem($ideaId, $group);
+	if ($othergroups && dbNumRows($othergroups) > 0 ) {
+		while ($group = dbFetchObject($othergroups)) {
+			renderIdeaGroupItem($ideaId, $group);
+		}
 	}
-}
-?>
-</ul>
-Show <a href='javascript:showGroups(); dijit.byId(\"ideasPopup\").hide()'>Groups</a>
+	?>
+	</ul>
+	Show <a href='javascript:showGroups(); dijit.byId("ideasPopup").hide()'>Groups</a>
 <?}
 }
-
-function renderIdeaGroupItem($ideaId, $group) { ?>
-<li><a href="javascript:logAction()"
-	onclick="addIdeaToGroup('<?= $ideaId ?>','<?= $group->groupId ?>');loadPopupShow()"><?= $group->title ?></a></li>
-<?}?>

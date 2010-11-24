@@ -3,7 +3,7 @@ require_once("thinConnector.php");
 require_once("profile.ui.php");
 import("user.service");
 
-if (isset($_GET) && $_GET != '') {
+if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getProfile":
 			renderDefault();
@@ -14,7 +14,7 @@ if (isset($_GET) && $_GET != '') {
 	}
 }
 
-if (isset($_POST) && $_POST != '') {
+if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "updateProfile":
 			echo "Updating Profile... ";
