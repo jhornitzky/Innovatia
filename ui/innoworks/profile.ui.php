@@ -26,7 +26,8 @@ function renderDefault() {
 			<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="width:125px;height:125px;"/>
 			<h3 style="margin-bottom:0;">Your Profile</h3>
 			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;">
-				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password")); ?>
+				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", "isAdmin", "lastUpdateTime")); ?>
+				<p>Admin: <?= $userDetails->isAdmin ?></p>
 				<input type="hidden" name="action" value="updateProfile" /> 
 			</form>
 			</div>
@@ -56,9 +57,13 @@ function renderSummaryProfile($userId) {
 	import("user.service");
 	
 	$userDetails = getUserInfo($userId);?>
-	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width:2em; height:2em;"/>
-	<?echo "<h3>$userDetails->username</h3>";
-	renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password"));
+	<table>
+	<tr>
+	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width:2em; height:2em;"/></td>
+	<td><h3><?= $userDetails->username?></h3></td>
+	</tr>
+	</table>
+	<?renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password"));
 	$ideas = getProfileIdeas($userId);
 	echo "<h3>Ideas</h3>";
 	if ($ideas && dbNumRows($ideas) > 0 ) {

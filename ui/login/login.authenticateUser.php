@@ -2,8 +2,8 @@
 	/**
 	 * Handles the authentication upon login
 	 */
-	require_once("innoworks.connector.php");
-	require_once("user.service.php");
+	require_once("thinConnector.php");
+	import("user.service");
 	global $serverRoot;
 	
 	//If user is found

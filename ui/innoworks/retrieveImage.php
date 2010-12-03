@@ -1,5 +1,5 @@
 <?
-require_once("thinConnector.php");
+require_once("pureConnector.php");
 import("attach.service");
 
 if (isset($_GET['action'])) {

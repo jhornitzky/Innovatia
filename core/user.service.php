@@ -16,6 +16,10 @@ function loginUser($username,$password)
 		$_SESSION['innoworks.ID'] = $userObj->userId;
 		$_SESSION['innoworks.username'] = $userObj->username;
 		$_SESSION['isAuthen'] = true;
+		if ($userObj->isAdmin == 1)
+			$_SESSION['innoworks.isAdmin'] = true;
+		else 
+			$_SESSION['innoworks.isAdmin'] = false;
 		return true;
 	}
 	return false;
@@ -35,7 +39,7 @@ function authenticateUser($username,$password)
 		if ($ldapdn != 0) {
 			if (checkUsernameExists($ldapdn)) 
 				registerUser(array("username" => $ldapdn));	
-			return getUserIdForUsername($ldapdn);
+			return getUserInfo(getUserIdForUsername($ldapdn));
 		}
 	}
 	return false;
@@ -50,11 +54,11 @@ function authenticateDb($username,$password)
 
 	$db = dbConnect();
 	//FIXME remove these unencrypted bits
-	$query = sprintf("SELECT userId, username FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), cleanseString($db, $password));
+	$query = sprintf("SELECT userId, username, isAdmin FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), cleanseString($db, $password));
 	$result = dbQuery($query);
 	if (dbNumRows($result) == 0) {
 		$pass = sha1($salt.$password);
-		$query = sprintf("SELECT userId, username FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), $pass);
+		$query = sprintf("SELECT userId, username, isAdmin FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), $pass);
 		$result = dbQuery($query);
 	}
 	dbClose($db);
@@ -112,12 +116,13 @@ function registerUser($postArgs) {
 	$pass = sha1($salt.$postArgs['password']);
 
 	//Now prepare and run this query
-	$sql = sprintf("INSERT INTO Users (`username`, `password`, `firstName`, `lastName`, `email`) VALUES ('%s','%s','%s','%s', '%s')",
+	$sql = sprintf("INSERT INTO Users (username, password, firstName, lastName, email,createdTime) VALUES ('%s','%s','%s','%s', '%s', '%s')",
 	cleanseString($link,$postArgs['username']),
 	$pass,
 	cleanseString($link,$postArgs['firstName']),
 	cleanseString($link,$postArgs['lastName']),
-	cleanseString($link,$postArgs['email'])
+	cleanseString($link,$postArgs['email']),
+	date_create()->format('Y-m-d H:i:sP')
 	);
 
 	logDebug("Register user: " . $sql);
@@ -142,11 +147,9 @@ function registerUser($postArgs) {
 				  </table>
 				</body>
 				</html>';
-
 	$headers = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: Innoworks Registration' . "\r\n";
-
+	$headers .= 'From: Innoworks' . "\r\n";
 	mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
 
 	//Tidy up
@@ -156,9 +159,11 @@ function registerUser($postArgs) {
 }
 
 /*
- * Check is a username already exists. Can't have duplicate usernames.
+ * Check if a username already exists. Can't have duplicate usernames.
  */
 function checkUsernameExists($username) {
+	logDebug("Checking for username: " . $username);
+	
 	//First open a connection
 	$link = dbConnect();
 
@@ -168,10 +173,9 @@ function checkUsernameExists($username) {
 
 	$result = dbQuery($link, $sql);
 
-	$found=false;
-	if (dbNumRows($result) > 0) {
-		$found=true;
-	}
+	$found = false;
+	if ($result && dbNumRows($result) > 0)
+		$found = true;
 
 	//Tidy up
 	dbRelease($result);
@@ -207,8 +211,11 @@ function isLoggedIn()
 function getUserInfo($userId)
 {
 	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
-	$row = dbFetchObject($rs);
-	return $row;
+	if($rs && dbNumRows($rs) > 0) {
+		$row = dbFetchObject($rs);
+		return $row;
+	}
+	return false;
 }
 
 function getSimilarUserProfiles($userId) {
@@ -229,7 +236,7 @@ function getUserGroups($user) {
 }
 
 function getAllUsers() {
-	return dbQuery("SELECT * FROM Users");
+	return dbQuery("SELECT * FROM Users ORDER BY username");
 }
 
 function updateUser($opts) {

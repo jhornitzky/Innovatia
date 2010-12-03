@@ -33,7 +33,7 @@ function getRiskItemsForGroup($group) {
 }
 
 function getRiskItemForIdea($ideaId, $user) {
-	return dbQuery("SELECT RiskEvaluation.*  FROM RiskEvaluation WHERE RiskEvaluation.ideaId = '$ideaId'");
+	return dbQuery("SELECT RiskEvaluation.*, Ideas.ideaId  FROM RiskEvaluation, Ideas WHERE RiskEvaluation.ideaId = '$ideaId' AND RiskEvaluation.ideaId = Ideas.ideaId");
 }
 
 function getCompareComments($uId) {

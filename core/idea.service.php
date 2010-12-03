@@ -115,6 +115,11 @@ function createFeatureEvaluation($opts) {
 	return genericCreate("IdeaFeatureEvaluations", $opts);
 }
 
+function updateIdeaFeatureEvaluation($opts) {
+	$where = array("ideaFeatureEvaluationId");
+	return genericUpdate("IdeaFeatureEvaluations", $opts, $where);
+}
+
 function updateFeatureEvaluation($opts) {
 	$where = array("featureEvaluationId");
 	return genericUpdate("FeatureEvaluation", $opts, $where);
@@ -224,14 +229,16 @@ function retrieveAttachment($id) {
 }
 
 function hasAccessToIdea($ideaId, $userId) { 
-	if (dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId")) > 0)
+	$numRows =dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId"));
+	if ($numRows > 0 || $_SESSION['innoworks.isAdmin'])
 		return true;
 	else
 		return false;
 }
 
 function hasEditAccessToIdea($ideaId, $userId) { 
-	if (dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId AND GroupIdeas.canEdit = 1")) > 0)
+	$numRows = dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId AND GroupIdeas.canEdit = 1"));
+	if ($numRows > 0 || $_SESSION['innoworks.isAdmin'])
 		return true;
 	else
 		return false;

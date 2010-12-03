@@ -1,1 +1,7 @@
-<? require_once($_SERVER['DOCUMENT_ROOT']."/innovation/core/innoworks.connector.php");?>
+<? 
+require_once("pureConnector.php"); 
+import("user.service");
+if (!isLoggedIn()){
+	die("You need to login to access this resource");
+}
+?>

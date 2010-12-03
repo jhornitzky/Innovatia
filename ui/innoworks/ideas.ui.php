@@ -59,9 +59,9 @@ function renderIdeaMission($ideaId) {
 <form id="ideadetails_form_<?= $idea->ideaId?>">
 <? 
 if ($canEdit)
-	renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score")); 
+	renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime")); 
 else 
-	renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score"));
+	renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime"));
 ?>
 <input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 	type="hidden" name="action" value="updateIdeaDetails" /> </form>
@@ -110,17 +110,17 @@ Role </span> <input type="text" name="role" /> <input type="hidden"
 
 function renderIdeaFeatures($ideaId) {
 	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
-			$features = getFeaturesForIdea($ideaId);
-			if ($features && dbNumRows($features) > 0 ) {
-				echo "<table id='featureTable_$ideaId'>";
-				renderGenericHeader($features, array("featureId", "ideaId"));
-				while ($feature = dbFetchObject($features)) {
-					renderFeature($features, $feature,$canEdit);
-				}
-				echo "</table>";
-			} else {
-				echo "<p>No features</p>";
-			}
+	$features = getFeaturesForIdea($ideaId);
+	if ($features && dbNumRows($features) > 0 ) {
+		echo "<table id='featureTable_$ideaId'>";
+		renderGenericHeader($features, array("featureId", "ideaId"));
+		while ($feature = dbFetchObject($features)) {
+			renderFeature($features, $feature,$canEdit);
+		}
+		echo "</table>";
+	} else {
+		echo "<p>No features</p>";
+	}
 }
 
 function renderFeature($features, $feature,$canEdit) {?>
@@ -128,7 +128,11 @@ function renderFeature($features, $feature,$canEdit) {?>
 	<?
 	if ($canEdit) {
 		renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
-	<td><input type="button"
+	<td>
+	<input type="hidden"
+		name="featureId"
+		value="<?= $feature->featureId ?>" />
+	<input type="button"
 		onclick="genericDelete('deleteFeature','<?= $feature->featureId ?>');getFeatures('ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
 		value=" - " /></td>
 	<?} else { 
@@ -200,9 +204,7 @@ function renderIdeaGroupsListForUser($uid) {
 			echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
 			echo $group->title . "</div>";
 		}
-	} else {
-		echo "No groups for user";
-	}
+	} 
 }
 
 function renderIdeaFeatureEvaluationsForIdea($id) {
@@ -221,14 +223,28 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	<?
 	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
-		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {?>
+		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {
+		$canEdit = false;
+		if ($featureEvaluation->userId == $_SESSION['innoworks.ID'] || $_SESSION['innoworks.isAdmin'])
+			$canEdit = true;?>
 <div id="featureEvaluationContainer_<?= $featureEvaluation->ideaFeatureEvaluationId ?>" class="featureEvaluation itemHolder">
 <span class="evalTotal">0</span> 
 <span class="title"><?=$featureEvaluation->title?></span><br/>
-<span class="timestamp"><?= getUserInfo($featureEvaluation->userId)->username ?></span> <input type="button" 
+<span class="timestamp"><?= getUserInfo($featureEvaluation->userId)->username ?></span> 
+
+<? if ($canEdit) { ?>
+<input type="button" 
 	onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
 	title="Delete feature evaluation" value=" - " />
-<?renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId);?>
+<?}
+
+renderFeatureEvaluationForIdea($featureEvaluation->ideaId, $featureEvaluation->ideaFeatureEvaluationId, $canEdit);
+
+if ($canEdit) {?>
+<textarea dojoType="dijit.form.Textarea" onblur="updateFeatureEvalSummary(this, '<?= $featureEvaluation->ideaFeatureEvaluationId?>')"><?= $featureEvaluation->summary ?></textarea>
+<? } else { ?>
+<div><?= $featureEvaluation->summary ?></div>
+<? } ?>
 </div>
 		<?}
 	} else {
@@ -236,9 +252,10 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	}
 }
 
-function renderFeatureEvaluationForIdea($id, $evalId) {
+function renderFeatureEvaluationForIdea($id, $evalId, $canEdit) {
 	$featureList = getFeaturesForIdea($id);
-	if ($featureList && dbNumRows($featureList) > 0 ) {?>
+	if ($featureList && dbNumRows($featureList) > 0 ) {
+		if ($canEdit) { ?>
 		<div dojoType="dijit.form.DropDownButton">
 			<span> Add feature </span>
 			<div dojoType="dijit.Menu">
@@ -249,34 +266,39 @@ function renderFeatureEvaluationForIdea($id, $evalId) {
 				</div>
 			<?}?>
 			</div>
-		</div><?
-		renderFeatureEvaluationTable($evalId);
+		</div>
+		<?}
+		renderFeatureEvaluationTable($evalId, $canEdit);
 	} else {
 		echo "<p>No features to rate</p>";
 	}
 }
 
-function renderFeatureEvaluationTable($id) {
+function renderFeatureEvaluationTable($id, $canEdit) {
 	$featureItems = getFeatureEvaluationForIdea($id);
 	if ($featureItems && dbNumRows($featureItems) > 0){
 		echo "<table id='featureEvaluation_$id' class='featureEvaluationBit'>";
 		renderGenericHeader($featureItems, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId","score"));
 		while ($featureItem = dbFetchObject($featureItems)) {
-			renderFeatureItem($featureItems, $featureItem);
+			renderFeatureItem($featureItems, $featureItem, $canEdit);
 		}
-		echo "</table>";
+		echo "</table><br/>";
 	}
 }
 
 function renderFeatureItem($featureItems, $featureItem) {?>
 <tr id="featureitemform_<?= $featureItem->featureEvaluationId ?>">
-<?renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId", "score"), "FeatureEvaluation", null);?>
+<? if ($canEdit) {
+	renderGenericUpdateRowWithRefData($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId", "score"), "FeatureEvaluation", null);?>
 	<td>Score: <span class="itemTotal">0 </span> <input type="hidden"
 		name="featureEvaluationId"
 		value="<?= $featureItem->featureEvaluationId ?>" />
 		<input type="button"
 		onclick="deleteFeatureItem('<?= $featureItem->featureEvaluationId ?>')"
 		value=" - " /></td>
+<?} else { 
+	renderGenericInfoRow($featureItems, $featureItem, array("featureId","featureEvaluationId","groupId", "userId","ideaFeatureEvaluationId", "score"), "FeatureEvaluation", null);?>
+<?}?>
 </tr>
 <?}
 
@@ -287,7 +309,7 @@ function renderCommentsForIdea($id, $uId) {
 		while ($comment = dbFetchObject($comments)) {
 			echo "<div class='itemHolder'>";
 			echo "<span class='title'>".$userService->getUserInfo($comment->userId)->username."</span><span class='timestamp'>$comment->timestamp</span>";
-			if ($comment->userId == $uId)
+			if ($comment->userId == $uId || $_SESSION['innoworks.isAdmin'])
 				echo "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '>";
 			echo "<br/>";
 			echo $comment->text;
@@ -322,6 +344,6 @@ function renderAttachmentsIframe($ideaId, $userId) {?>
 
 function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));
-	echo "<form id='ideaNameDetails'><input type='hidden' name='action' value='updateIdeaDetails'><input type='hidden' name='ideaId' value='$ideaId'><input name='title' style='font-size:1.2em' value='".$details->title."' onblur='updateIdeaDetails(\"form#ideaNameDetails\")'/> by ".$details->username." | last updated ".$details->createdTime."</form>";
+	echo "<form id='ideaNameDetails'><input type='hidden' name='action' value='updateIdeaDetails'><input type='hidden' name='ideaId' value='$ideaId'><input name='title' style='font-size:1.2em' value='".$details->title."' onblur='updateIdeaDetails(\"form#ideaNameDetails\")'/> by ".$details->username." | last updated ".$details->lastUpdateTime."</form>";
 }
 ?>

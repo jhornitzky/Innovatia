@@ -33,7 +33,7 @@ if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "addGroup":
 			echo "Creating Group.. ";
-			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
+			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID'], 'createdTime' => date_create()->format('Y-m-d H:i:sP'));
 			unset($opts['action']);
 			renderServiceResponse(createGroup($opts));
 			break;
@@ -47,8 +47,7 @@ if (isset($_POST['action'])) {
 			break;
 		case "linkIdeaToGroup":
 			echo "Creating Link... ";
-			$group = linkIdeaToGroup($_POST['groupId'],$_POST['ideaId']);
-			echo "Response Code: ".$group;
+			renderServiceResponse(linkIdeaToGroup($_POST['groupId'],$_POST['ideaId']));
 			break;
 		case "unlinkUserToGroup":
 			echo "Unlink.. ";

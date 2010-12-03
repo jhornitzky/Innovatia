@@ -44,6 +44,7 @@ if (isset($_POST['action'])) {
 			echo "Creating Risk Item.. ";
 			$opts = $_POST;
 			unset($opts['action']);
+			$opts['userId'] = $_SESSION['userId'];
 			renderServiceResponse(createRiskItem($opts));
 			break;
 		case "createRiskItemForGroup":
@@ -61,6 +62,7 @@ if (isset($_POST['action'])) {
 			$opts = $_POST;
 			unset($opts['action']);
 			unset($opts['idea']);
+			$opts['userId'] = $_SESSION['innoworks.ID'];
 			renderServiceResponse(updateRiskItem($opts));
 			break;	
 	}

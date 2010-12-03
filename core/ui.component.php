@@ -96,11 +96,14 @@ function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
 	echo "</table>";
 }
 
-function renderGenericHeader($rs, $omitArray) {
+function renderGenericHeader($rs, $omitArray, $camelcase = true) {
 	echo "<tr>";
 	while ($field = dbFetchField($rs)) {
 		if (!in_array($field->name, $omitArray)) {
-			echo "<th>". fromCamelCase($field->name). "</th>";
+			if ($camelcase) 
+				echo "<th>" . fromCamelCase($field->name) . "</th>";
+			else 
+				echo "<th>" . $field->name . "</th>";
 		}
 	}
 	echo "<th></th>"; //EXTRA For actions
@@ -276,14 +279,14 @@ function getColumnDescription($refDataArray) {
 
 function renderServiceResponse($resp) {
 	if ($resp) {
-		echo "<span style='color:green;font-weight:bold;'>Success</span> ";	
+		echo "<span class='serviceResponseSuccess'>Success</span> ";	
 	} else {
 		echo getCommonErrorString("Unknown");
 	}
 }
 
 function getCommonErrorString($cause) {
-	return "<span style='color:red;font-weight:bold;'>Error occurred:</span> " . $cause . "<br/> Please review your input in light of error. If problem exists please notify support thru feedback.";
+	return "<span class='serviceResponseFail'>Error occurred:</span> " . $cause . "<br/> Please review your input in light of error. If problem exists please notify support thru feedback.";
 } 
 
 ///////////////////////// Camel Case util functions courtesy of  //////////////////////////////

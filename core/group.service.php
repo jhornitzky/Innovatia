@@ -72,7 +72,7 @@ function createGroup($opts) {
 
 function deleteGroup($id, $user) {
 	import("note.service");
-	createNoteForGroup($_SESSION['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . "has been deleted");
+	createNoteForGroup($_SESSION['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . " has been deleted");
 	$success = dbQuery("DELETE FROM Groups WHERE groupId = '$id' AND userId = '$user'" );
 	if ($success) {
 		$success = dbQuery("DELETE FROM GroupUsers WHERE groupId = '$id'");

@@ -1,4 +1,4 @@
-function logAction(action) {}
+function logAction() {}
 
 function pollServer() {
 	$.get("poll.php", function(data){
@@ -102,6 +102,12 @@ function getFeatures(formId,actionId) {
 	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+		$("#featureTable_" + currentIdeaId + " tr").each(function() {
+			var fId = $(this).attr("id");
+			$(this).find(":input").blur(function() {
+				updateFeature(fId);
+			});
+		});
 	});
 }
 
@@ -110,6 +116,12 @@ function getRoles(formId,actionId) {
 	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
+		$("#idearoles_" + currentIdeaId + " table tr").each(function() {
+			var fId = $(this).attr("id");
+			$(this).find(":input").blur(function() {
+				updateRole(fId);
+			});
+		});
 	});
 }
 
@@ -310,12 +322,12 @@ function getReports() {
 }
 
 function getSearch() {
-	var searchTerms = $("#searchInput").val();
+	var data = $("#searchForm").serialize();
 	showLoading("#searchTab #searchResults");
-	url = "search.php";
-	if (searchTerms != undefined)
-		url += "?searchTerms="+searchTerms; 
-	$("#searchTab #searchResults").load(url);
+	url = "search.php?" + data;
+	$("#searchTab #searchResults").load(url, function() {
+		dojo.parser.instantiate(dojo.query("#searchOptions *")); 
+	});
 }
 
 function getAdmin(){}
@@ -900,6 +912,7 @@ function getFeatureEvaluationsForIdea() {
 	$.get("ideas.ajax.php?action=getIdeaFeatureEvaluationsForIdea&actionId="+currentIdeaId, function(data) {
 		$("#ideaFeatureEvaluationList").html(data);
 		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList *'));
+		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList * textarea'));
 		
 		$(".featureEvaluationBit").each(function() {
 			initFormSelectTotals("#" + $(this).attr("id"), "#" + $(this).parent().attr("id"));
@@ -1049,12 +1062,20 @@ function updateSelection(selectform){
 	});
 }
 
-function printIdea(id) {
-	genericPrint("compare.ajax.php?action=getIdeaSummary&actionId=", id);
+function printIdea(urlE) {
+	genericPrintViewer("viewer.php?print=true" + urlEnd);
 }
 
-function printGroup() {
-	genericPrint("groups.ajax.php?action=getGroupDetails&actionId=", currentGroupId);
+function printUser(urlE) {
+	genericPrintViewer("viewer.php?print=true" + urlEnd);
+}
+
+function printGroup(urlE) {
+	genericPrintViewer("viewer.php?print=true&group=" + currentGroupId);
+}
+
+function genericPrintViewer(url) {
+	window.open(url);
 }
 
 function genericPrint(url, id) {
@@ -1118,4 +1139,15 @@ function removeEditPermToGroup(elem, iId, gId) {
 	$.post("groups.ajax.php", {action: "rmEditIdeaToGroup", ideaId:iId, groupId:gId}, function(data) {
 		showResponses( data, true);
 	});
+}
+
+function updateFeatureEvalSummary(elem, id) { 
+	$.post("ideas.ajax.php", {action: "updateIdeaFeatureEvaluation", ideaFeatureEvaluationId:id, summary:$(elem).val()}, function(data) {
+		showResponses(data, true);
+	});
+}
+
+function toggleSearchOptions() {
+	$("#searchHider").toggle();
+	$("#searchOptions").toggle();
 }

@@ -60,12 +60,23 @@ function renderRiskItem($riskItems, $riskItem) {
 <?}
 
 function renderRiskItemCallbackRow($key, $value, $riskItem) {
+	import("user.service");
+	global $serverRoot, $serverUrl, $uiRoot;
+	$name = getUserInfo($riskItem->userId);
+	$renderName = '';
+	if ($name) 
+		$renderName = $name->username;
+		
 	if ($key == "idea") {?>
 		<td class="headCol">
 			<div class="hoverable">
+			<div style="float:left; position:relative">
+			<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $riskItem->ideaId?>" style="width:2.5em; height:2.5em;"/>
+			</div>
 				<span class="itemName">
-				<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $riskItem->ideaId?>')"><?= $value ?></a>
+					<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $riskItem->ideaId?>')"><?= $value ?></a>
 				</span><br/>
+				<?= $renderName ?>
 				<a href="javascript:logAction()" onclick="showIdeaReviews('<?= $riskItem->ideaId?>');">Comments</a>
 				<input type="button" onclick="deleteRisk('<?= $riskItem->riskEvaluationId ?>');" title="Delete this risk item" value=" - "/>
 				<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId ?>"/>
@@ -107,28 +118,40 @@ function renderIdeaSummary($ideaId) {
 	global $serverUrl , $uiRoot;
 	import("idea.service");
 	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
-	<span class="ideaDetailsOptions" style="position:relative; float:right;"><a href="javascript:printIdea('<?= $ideaId?>')">Print</a> </span>
-	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width:2em; height:2em;"/>
+	<table>
+	<tr>
+	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width:3em; height:3em;"/></td>
+	<td> 
 	<h3><?= $idea->title ?></h3>
-	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));?>
-	<a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a>
-<?}
+	<a href="javascript:printIdea('<?= $ideaId?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a></td>
+	</tr>
+	</table>
+	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));
+}
 
 function renderIdeaRiskEval($ideaId, $userId) {
-	import("compare.service");
+	import("idea.service");
+	
 	$item = getRiskItemForIdea($ideaId,$userId);
 	if ($item && dbNumRows($item) > 0) {
-		$item = dbFetchObject($item);?>
+		$item = dbFetchObject($item);
+		$canEdit = false;
+		if (hasEditAccessToIdea($ideaId, $userId) || $_SESSION['innoworks.isAdmin'])
+			$canEdit = true;?>
 		<form id="ideaRiskEvalDetails">
-		<? renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId"), "RiskEvaluation");?>
+		<?if ($canEdit) 
+			renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score"), "RiskEvaluation");
+		else 
+			renderGenericInfoForm(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score"));?>
 		<input type="hidden" name="riskEvaluationId" value="<?= $item->riskEvaluationId ?>"/>
 		<input type="hidden" name="action" value="updateRiskEval" />
-		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a> to edit data
+		</form>
+		<a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
 	<?} else {?>
 		<p>No compare data for idea</p>
 		<p>Add comparison data for idea <a onclick="addRiskItem('<?= $ideaId ?>');loadPopupShow()" href="javascript:logAction()">now</a> </p> 
 		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
-	<?}
+	<?} 
 }
 
 /* RENDER COMPARE COMMENTS */
@@ -152,7 +175,7 @@ function renderCommonComments($comments, $uId) {
 		while ($comment = dbFetchObject($comments)) {
 			echo "<div class='itemHolder'>";
 			echo "<span class='title'>".$userService->getUserInfo($comment->userId)->username."</span><span class='timestamp'>$comment->timestamp</span>";
-			if ($comment->userId == $uId)
+			if ($comment->userId == $uId || $_SESSION['innoworks.isAdmin'])
 				echo "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '>";
 			echo "<br/>";
 			echo $comment->text;

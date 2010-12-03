@@ -7,3 +7,4 @@ dojo.require("dijit.form.ComboBox");
 dojo.require("dijit.form.Textarea");
 dojo.require("dojo.parser");
 dojo.require("dijit.form.TextBox");
+dojo.require("dijit.form.DateTextBox");

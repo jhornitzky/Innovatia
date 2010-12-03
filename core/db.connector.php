@@ -250,4 +250,8 @@ function dbInsertedId($link) {
 function dbRowSeek($rs, $no) {
 	return mysqli_data_seek($rs, $no);
 }
+
+function dbFetchNumArray($results) {
+	return mysqli_fetch_array($results);
+}
 ?>

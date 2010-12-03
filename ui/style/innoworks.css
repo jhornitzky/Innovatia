@@ -71,6 +71,7 @@ div.tabBody div.loadingAnim {
 
 ._underlay {
 	display:none;
+	background-image:none;
 }
 
 /* Page header */
@@ -186,15 +187,13 @@ div#content {
 }
 
 .responses {
-	border-top:1px solid #000000;
-	border-bottom:1px solid #000000;
-	display:none;
 	padding:5px;
 	padding-left:10px;
 	max-height:3em;
 	color:#000000;
-	background-color:#FFFFFF;
+	background-color:#EEEEEE;
 	overflow:hidden;
+	display:none;
 }
 
 .respSurround {
@@ -210,6 +209,10 @@ div#content {
 	margin:auto; 
 	background:none;
 	border:none;
+}
+
+.respSurround .responses * {
+	color:#FFFFFF;
 }
 
 .tabBody {
@@ -496,7 +499,12 @@ span.title {
 }
 
 #groupDetails * ul{
-	padding-left:1em;
+	padding-left:0em;
+	list-style:none;
+}
+
+#groupDetails * ul li {
+	margin-left:0;
 }
 
 ul.tabMenu li a {

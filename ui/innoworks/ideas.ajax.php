@@ -57,7 +57,7 @@ if (isset($_POST['action'])) {
 	switch ($_POST['action']) {
 		case "addIdea":
 			echo "Creating Idea.. ";
-			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID']);
+			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID'], 'createdTime' => date_create()->format('Y-m-d H:i:sP'));
 			unset($opts['action']);
 			renderServiceResponse(createIdea($opts));
 			break;
@@ -145,6 +145,12 @@ if (isset($_POST['action'])) {
 			unset($opts['action']);
 			unset($opts['feature']);
 			renderServiceResponse(updateFeatureEvaluation($opts));
+			break;
+		case "updateIdeaFeatureEvaluation";
+			echo "Updating Evaluation... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			renderServiceResponse(updateIdeaFeatureEvaluation($opts));
 			break;
 		case "deleteFeatureEvaluation":
 			echo "Deleting Item... ";

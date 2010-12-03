@@ -3,8 +3,8 @@
  * Main view for all logged in innowroks users.
  */
 require_once("thinConnector.php");
-requireLogin();
 import("mobile.functions");
+import("user.service");
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -45,16 +45,6 @@ var isMobile = <?= (isMobile()) ? "true" : "false"; ?>;
 
 /////// START UP ///////
 $(document).ready(function() {
-	//Loading animation for all ajax operations
-	/*
-	$("body").ajaxStart(function() {
-		$("#logo").attr("src",'<?= $serverRoot?>ui/style/ajaxLoader.gif');		
-	});
-	$("body").ajaxStop(function() {
-		$("#logo").attr("src",'<?= $serverRoot?>ui/style/kubu.png');
-	});
-	*/
-	
 	//Show default
 	showDash();
 
@@ -84,6 +74,10 @@ dojo.addOnLoad(function(){
 	});
 	
 });
+
+function openAdmin() {
+	window.open(serverRoot + "ui/admin"); 
+}
 </script>
 <!--[if IE]>
 	<style>
@@ -165,7 +159,11 @@ dojo.addOnLoad(function(){
 </div>
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li style="padding-top:0.05em; "><span style="font-size:0.9em; 	padding-right:0.3em;"><?= $_SESSION['innoworks.username']; ?></span><br/>
+	<li style="padding-top:0.05em; ">
+	<? if (getUserInfo($_SESSION['innoworks.ID'])->isAdmin == 1) { ?><a href="javascript:logAction()" onclick="openAdmin()" style="font-size:1.0em; color:#EEE">admin&gt;&gt;</a> <? } ?>
+	<span style="font-size:0.9em; padding-right:0.3em;">
+		<?= $_SESSION['innoworks.username']; ?>
+	</span><br/>
 	<a href="javascript:logout()">Logout</a><a href="javascript:showFeedback()">Feedback</a></li>
 </ul>
 </div>

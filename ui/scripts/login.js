@@ -3,7 +3,7 @@ function logAction() {}
 function authenUser() {
 	hideResponse();
 	$("#Wait").fadeIn(250);
-	$.post("core/login.authenticateUser.php", $("#LoginForm").serialize(),
+	$.post("ui/login/login.authenticateUser.php", $("#LoginForm").serialize(),
 			function(data) {
 				$("#Responses").html(data);
 				hideWait();
@@ -60,18 +60,19 @@ function showAbout() {
 
 function showSearch() {
 	updateForSelect("ideaInno");
-	var searchTerms = $("#searchInput").val();
+	var searchTerms = $("#searchForm").serialize();
 	
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
 		
 		url = "ui/login/loginSearch.php";
 		if (searchTerms != undefined)
-			url += "?searchTerms="+searchTerms; 
+			url += "?"+searchTerms; 
 		
 		$.get(url, function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
+			//FIXME add dojo loading here
 		});
 	});
 }
@@ -93,7 +94,7 @@ function registerNewUser() {
 	$("#AjaxForm").fadeOut(250,
 			function() {
 				$("#Wait").fadeIn(250);
-				$.post("core/register.registerUser.php", $("#registerform").serialize(), function(data) {
+				$.post("ui/login/register.registerUser.php", $("#registerform").serialize(), function(data) {
 					$("#regResponse").html(data);
 					hideWait();
 					showResponse();
@@ -106,3 +107,10 @@ function showIdeaSummary(id) {}
 function showProfileSummary(id) {}
 
 function showGroupSummary(id) {}
+
+function verifyusername() {}
+
+function toggleSearchOptions() {
+	$("#searchHider").toggle();
+	$("#searchOptions").toggle();
+}
