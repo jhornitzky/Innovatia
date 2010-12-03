@@ -47,17 +47,6 @@ function loadPopupShow() {
 	});
 }
 
-function printIdea(id) {
-	var sendId;
-	if (id != null && id != undefined) {
-		sendId = id;
-	} else {
-		sendId = currentIdeaId;
-	}
-	newWin = window.open("compare.ajax.php?action=getIdeaSummary&actionId=" + sendId);
-	newWin.print();
-}
-
 function getMission(formId,actionId) { 
 	showLoading("#"+formId);
 	$.get("ideas.ajax.php?action=getMission&actionId=" + actionId, function (data) {
@@ -134,21 +123,21 @@ function showIdeaReviews(ideaId) {
 }
  
 function showIdeaSummary(id) {
-	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
+	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
 function showProfileSummary(id) {
-	var profile = new dijit.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
+	var profile = new dijit.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(profile.domNode);
 	profile.startup();
 	profile.show();
 }
 
 function showGroupSummary(id) {
-	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;max-height:500px; scroll:auto"});
+	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();
@@ -1063,11 +1052,11 @@ function updateSelection(selectform){
 }
 
 function printIdea(urlE) {
-	genericPrintViewer("viewer.php?print=true" + urlEnd);
+	genericPrintViewer("viewer.php?print=true" + urlE);
 }
 
 function printUser(urlE) {
-	genericPrintViewer("viewer.php?print=true" + urlEnd);
+	genericPrintViewer("viewer.php?print=true" + urlE);
 }
 
 function printGroup(urlE) {

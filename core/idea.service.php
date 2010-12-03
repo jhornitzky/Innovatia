@@ -186,7 +186,7 @@ function createAttachment($postArray) {
 	if ($_FILES['userfile']['size'] > 0) {
 		global $usersRoot;
 		$info = pathinfo($_FILES['userfile']['name']);
-		$newName = $_SESSION['innoworks.ID'] . $_FILES['userfile']['name'] . $info['extension'];
+		$newName = date(DATE_ATOM) . $_SESSION['innoworks.ID'] . $_FILES['userfile']['name'] . $info['extension'];
 		$destFileName = sha1($newName);
 		if (createAttachmentDb($destFileName))
 			return createAttachmentFS($destFileName);

@@ -33,22 +33,30 @@ function dbValImplode($array) {
 	return $arrayString;
 }
 
-function createIv() {
-	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-    return mcrypt_create_iv($iv_size, MCRYPT_RAND);
+////////////SAFE URL ENCODE FUNCTIONS /////////////////
+
+function base64_url_encode($input)
+{
+    return strtr(base64_encode($input), '+/=', '-_,');
 }
 
-function encrypt($data, $iv) {
+function base64_url_decode($input)
+{
+    return base64_decode(strtr($input, '-_,', '+/='));
+}
+
+function createIv() {
+	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+    return trim(mcrypt_create_iv($iv_size, MCRYPT_RAND));
+}
+
+function encrypt($data, $iv) { 
 	global $salt;
-    $key = $salt;
-    $text = $data;
-    $crypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $text, MCRYPT_MODE_ECB, $iv);
-   	return htmlspecialchars(base64_encode($crypttext));
+    return trim(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $salt, $data, MCRYPT_MODE_CBC, $iv));
 }
 
 function decrypt($data, $iv) {
 	global $salt;
-	$data = htmlspecialchars_decode(base64_decode($data));
-	return mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $salt , $data , MCRYPT_MODE_ECB, $iv);
+	return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $salt , $data , MCRYPT_MODE_CBC, $iv));
 }
 ?>

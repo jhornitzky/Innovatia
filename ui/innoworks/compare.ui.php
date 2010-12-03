@@ -117,13 +117,16 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 function renderIdeaSummary($ideaId) {
 	global $serverUrl , $uiRoot;
 	import("idea.service");
-	$idea = dbFetchObject(getIdeaDetails($ideaId));?>
+	$idea = dbFetchObject(getIdeaDetails($ideaId));
+	$iv = createIv();
+	$ideaEnc = encrypt($ideaId, $iv); 
+	$ideaUrl = '&idea=' . base64_url_encode($ideaEnc) . '&iv=' . base64_url_encode($iv);?>
 	<table>
 	<tr>
 	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width:3em; height:3em;"/></td>
 	<td> 
 	<h3><?= $idea->title ?></h3>
-	<a href="javascript:printIdea('<?= $ideaId?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a></td>
+	<a href="javascript:printIdea('<?= $ideaUrl ?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a></td>
 	</tr>
 	</table>
 	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));

@@ -40,6 +40,29 @@ function renderJustIdea($ideas, $idea, $user) {
 	global $serverRoot;
 	?>
 <div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
+<table>
+<tr>
+<td class="image">
+<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
+</td>
+<td>
+<span class="ideaoptions">
+<?= $idea->username?>
+<?if ($idea->userId == $user) { ?> 
+<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
+<?}?>
+</span><br/>
+<span class="ideatitle"><a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"><?=trim($idea->title)?></a></span><br/>
+</td>
+</tr>
+</table>
+</div>
+<?}
+
+function renderJustIdeaBox($ideas, $idea, $user) {
+	global $serverRoot;
+	?>
+<div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
 <img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
 <span class="ideaoptions">
 <?= $idea->username?>

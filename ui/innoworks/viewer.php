@@ -1,28 +1,12 @@
 <? 
 require_once("pureConnector.php");
 
-$action;
-$actionId;
-
-if ( isset($_GET['idea']) ) {
-	$action='showIdeaSummary';
-	$actionId = $_GET['idea'];
-} else if ( isset($_GET['group']) ) {
-	$action='showGroupSummary';
-	$actionId = $_GET['group'];
-} else if ( isset($_GET['profile']) ) {
-	$action='showProfileSummary';
-	$actionId = $_GET['profile'];
-}
-	
-if (!isset($action) )
+if (!(isset($_GET['idea']) || isset($_GET['group']) || isset($_GET['profile']))) 
 	die();
-	
+
 $print = 'false';
-if ( isset($_GET['print']) )
+if (isset($_GET['print']) )
 	$print = 'true';
-	
-$actionString = $action . "('" . $actionId . "', " . $print . ")";
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -44,35 +28,32 @@ $actionString = $action . "('" . $actionId . "', " . $print . ")";
 	type="text/css" />
 <script>
 $(document).ready(function() {
-	<?= $actionString ?>;
+	if(<?= $print ?>)
+		printThis();
 });
 
 function printThis() {
 	window.print();
 }
-
-function showIdeaSummary(id,print) {
-	$("body").load("compare.ajax.php?action=getIdeaSummary&actionId="+id, function () {
-		if (print)
-			printThis();
-	});
-}
-
-function showProfileSummary(id,print) {
-	$("body").load("profile.ajax.php?action=getProfileSummary&actionId="+id, function () {
-		if (print)
-			printThis();
-	});
-}
-
-function showGroupSummary(id,print) {
-	$("body").load("groups.ajax.php?action=getGroupSummary&actionId="+id, function () {
-		if (print)
-			printThis();
-	});
-}
 </script>
 </head>
 <body class="tundra">
+<?
+if ( isset($_GET['iv']) && isset($_GET['idea'])) {
+	require_once("compare.ui.php");
+	$iv = base64_url_decode($_GET['iv']);
+	$actionId = decrypt(base64_url_decode($_GET['idea']), $iv);
+	renderIdeaSummary($actionId);
+}else if ( isset($_GET['idea']) ) {
+	require_once("compare.ui.php");
+	renderIdeaSummary($_GET['idea']);
+} else if ( isset($_GET['group']) ) {
+	require_once("group.ui.php");
+	renderSummary($_GET['group']);
+} else if ( isset($_GET['profile']) ) {
+	require_once("profile.ui.php");
+	renderSummaryProfile($_GET['profile']);
+}
+?>
 </body>
 </html>

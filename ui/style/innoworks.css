@@ -252,7 +252,16 @@ div#content {
 	width:100%;
 }
 
-.idea {
+.idea table tr td.image {
+	width:64px;
+}
+
+.idea table tr td {
+	text-align:left;
+	vertical-align:top;
+}
+
+/* .idea {
 	margin-bottom: 1.0em;
 	margin-right: 1.0em;
 	border: 1px solid #CCC;
@@ -263,6 +272,23 @@ div#content {
 	width:8.35em;
 	height:8em;
 	overflow:hidden;
+} */
+
+.idea {
+	margin-bottom: 1.0em;
+	margin-right: 1.0em;
+	border: 1px solid #CCC;
+	position:relative;
+	float:left;
+	background-color:#FFF;
+	text-align:left;
+	width: 14.5em;
+	height:70px;
+	overflow:hidden;
+}
+
+.idea a {
+	margin:0;
 }
 
 .ideaoptions {
