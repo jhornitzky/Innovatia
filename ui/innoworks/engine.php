@@ -133,26 +133,22 @@ function openAdmin() {
 	<li class="selMenu">
 	<div class="marker blue"></div>&nbsp;Ideas<br/>
 	<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)">Explore</a>
-	<a id="comparelnk" class="menulnk"
-		href="javascript:showCompare(this)">Compare</a>
-	<a id="selectlnk" class="menulnk"
-		href="javascript:showSelect(this)">Select</a>
+	<a id="comparelnk" class="menulnk" href="javascript:showCompare(this)">Compare</a>
+	<a id="selectlnk" class="menulnk" href="javascript:showSelect(this)">Select</a>
 	</li>
 	
 	<li>
 	<div class="marker green"></div>&nbsp;Collaborate<br/>
 	<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)">Groups</a>
 	<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)">Profiles</a>
-	<a id="noteslnk" class="menulnk"
-		href="javascript:showNotes(this)">Notes</a>
+	<a id="noteslnk" class="menulnk" href="javascript:showNotes(this)">Notes</a>
 	</li>
 	
 	<li>
 	<div class="marker orange"></div>&nbsp;Tools<br/>
 	<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)">Search</a>
 	<a id="timelinelnk" class="menulnk" href="javascript:showTimelines(this)">Timelines</a>
-	<a id="reportslnk" class="menulnk"
-		href="javascript:showReports(this)">Reports</a>
+	<a id="reportslnk" class="menulnk" href="javascript:showReports(this)">Reports</a>
 	</li>
 	
 </ul>
@@ -318,16 +314,15 @@ function openAdmin() {
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
 </table>
 
-<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
-	style="width: 55em; height: 25em;">
-	<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true">
-		<div id="ideaMission" dojoType="dijit.layout.ContentPane" title="Mission"></div>
-		<div id="ideaFeatures" dojoType="dijit.layout.ContentPane" title="Features"></div>
-		<div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles"></div>
-		<div id="ideaAttachments" dojoType="dijit.layout.ContentPane" title="Attachments"></div>
+<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 25em;">
+	<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true" iconClass="dijitEditorIcon dijitEditorIconSelectAll">
+		<div id="ideaMission" dojoType="dijit.layout.ContentPane" title="Mission" iconClass="dijitEditorIcon dijitEditorIconViewSource"></div>
+		<div id="ideaFeatures" dojoType="dijit.layout.ContentPane" title="Features" iconClass="dijitEditorIcon dijitEditorIconViewSource"></div>
+		<div id="ideaRoles" dojoType="dijit.layout.ContentPane" title="Roles" iconClass="dijitEditorIcon dijitEditorIconViewSource" ></div>
+		<div id="ideaAttachments" dojoType="dijit.layout.ContentPane" title="Attachments" iconClass="dijitEditorIcon dijitEditorIconInsertImage"></div>
 	</div>
-	<div id="ideasPopupReview" dojoType="dijit.layout.TabContainer" title="Review" nested="true">
-		<div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments">
+	<div id="ideasPopupReview" dojoType="dijit.layout.TabContainer" title="Review" nested="true" iconClass="dijitEditorIcon dijitEditorIconSelectAll">
+		<div id="ideaComments" dojoType="dijit.layout.ContentPane" title="Comments" iconClass="dijitEditorIcon dijitEditorIconWikiword">
 			<div id="addComment">
 			<form id="addCommentForm" class="addForm ui-corner-all" onsubmit="addComment();return false;">
 				New Comment <input type="submit" value=" + " /> 
@@ -337,17 +332,11 @@ function openAdmin() {
 			</div>
 			<div id="commentList">No comments yet</div>
 		</div>
-		<div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane"
-			title="Feature Evaluation"></div>
-		<div id="ideaRiskEval" dojoType="dijit.layout.ContentPane"
-			title="Risk Evaluation"></div>
+		<div id="ideaFeatureEvaluationList" dojoType="dijit.layout.ContentPane" title="Feature Evaluation" iconClass="dijitEditorIcon dijitEditorIconInsertTable"></div>
+		<div id="ideaRiskEval" dojoType="dijit.layout.ContentPane" title="Risk Evaluation" iconClass="dijitEditorIcon dijitEditorIconInsertTable"></div>
 	</div>
-	
-	<div id="ideaSelect" dojoType="dijit.layout.ContentPane"
-		title="Select"></div>
-	
-	<div id="ideaShare" dojoType="dijit.layout.ContentPane"
-		title="Share"></div>
+	<div id="ideaSelect" dojoType="dijit.layout.ContentPane" title="Select" iconClass="dijitEditorIcon dijitEditorIconSelectAll"></div>
+	<div id="ideaShare" dojoType="dijit.layout.ContentPane" title="Share" iconClass="dijitEditorIcon dijitEditorIconCopy"></div>
 </div>
 </div>
 

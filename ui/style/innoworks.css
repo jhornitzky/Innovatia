@@ -72,6 +72,8 @@ div.tabBody div.loadingAnim {
 ._underlay {
 	display:none;
 	background-image:none;
+	width:0;
+	height:0;
 }
 
 /* Page header */
