@@ -32,11 +32,7 @@ function genericCreate($tablename, $opts) {
 	$opts = cleanseArray($opts);
 	$comma_keys = implode(",", array_keys($opts));
 	$comma_vals = dbValImplode(array_values($opts));
-
 	$sql = "INSERT INTO $tablename (".$comma_keys.") VALUES (".$comma_vals.")";
-
-	logDebug("SQL TO CREATE KEYS: ".$sql);
-
 	return dbQuery($sql);
 }
 
@@ -76,10 +72,10 @@ function genericDelete($tablename, $opts) {
 
 	$whereString;
 	for ($i = 0; $i < count($keys); $i++) {
-		if ($i == (count($keys) - 1))
-		$whereString = $whereString.$keys[$i]." = '".$vals[$i]."'";
+		if ($i == 0)
+			$whereString = $keys[$i]." = '".$vals[$i]."'";
 		else
-		$whereString = $whereString.$keys[$i]." = '".$vals[$i]."' AND ";
+			$whereString = $whereString." AND " . $keys[$i]." = '".$vals[$i]."'";
 	}
 
 	$sql = "DELETE FROM ". $tablename . " WHERE " . $whereString;

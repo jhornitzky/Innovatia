@@ -23,6 +23,10 @@ require_once("thinConnector.php");
 		function showAdminDash() {
 			$(".adminContent iframe").attr("src", "adminDash.php");
 		}	
+		
+		function showLDAP() {
+			$(".adminContent iframe").attr("src", "ldap.php");
+		}	
 	</script>
 	<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 	<style>
@@ -42,7 +46,7 @@ require_once("thinConnector.php");
 			border-bottom:1px solid #444;
 		} 
 	</style>
-	<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>ui/style/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <div id="headSurround">
@@ -52,6 +56,7 @@ require_once("thinConnector.php");
 	<a href="javascript:logAction()" onclick="showAnnouncement()">Announcements</a>	
 	<a href="javascript:logAction()" onclick="showUsers()">Users</a>
 	<a href="javascript:logAction()" onclick="showTables()">Tables</a>
+	<a href="javascript:logAction()" onclick="showLDAP()">LDAP</a>
 	<div style="position:absolute; top:18px; color:#AAA; left:235px; font-weight:bold; font-size:1.5em;">admin</div>
 </div>
 </div>

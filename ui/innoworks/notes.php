@@ -3,7 +3,7 @@ require_once("thinConnector.php");
 import("note.service");
 import("user.service");
 import("search.service");
-$users = getSearchPeople("",$_SESSION['innoworks.ID']);
+$users = getSearchPeople("",$_SESSION['innoworks.ID'], array());
 $notes = getAllNotes($_SESSION['innoworks.ID']);
 ?>
 <div style="width:100%;">
@@ -11,7 +11,7 @@ $notes = getAllNotes($_SESSION['innoworks.ID']);
 			<h2 id="pgName">Notes</h2>
 		</div>	
 		<div class="fixed-right">
-<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;" style="max-width:25em; ">
+<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
 	<input type="hidden" name="action" value="addNote"/>
 	Send note to
 	<select class="toUserNote" dojoType="dijit.form.ComboBox" name="toUserId">
@@ -54,12 +54,16 @@ if ($notes && dbNumRows($notes) > 0 ) {
 			$class = "outgoing";
 		else 
 			$class = "incoming";	
+		$fromUser = '';
+		$from = getUserInfo($note->fromUserId);
+		if ($from) 
+			$fromUser = $from->username;
 		?>
 		<div class="<?= $class ?>">
 			<span><?= $note->noteText ?></span><br/>
 			<span class="noteData">
 				<?= $note->createdTime ?>&nbsp;
-				<?= getUserInfo($note->fromUserId)->username ?>&nbsp;
+				<?= $fromUser ?>&nbsp;
 				&gt;&nbsp;
 		    	<?= getUserInfo($note->toUserId)->username ?>&nbsp;
 		    </span>

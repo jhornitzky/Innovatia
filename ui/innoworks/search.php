@@ -53,7 +53,7 @@ else
 <div id="searchHider" style="clear:left;padding:0.25em;border:1px solid #DDD; background-color:#EEE; float:left;">
 <a href="javascript:logAction()" onclick="toggleSearchOptions()" style="font-size:0.6em; margin:0;">More &gt;&gt;</a>
 </div>
-<div id="searchOptions" style="display:none; clear:left; font-size:0.7em; padding:0.25em; border:1px solid #DDD; background-color:#EEE">
+<div id="searchOptions" style="display:none; clear:left; font-size:0.7em; padding:0.25em; border:1px solid #DDD; background-color:#EEE; float:left">
 <a href="javascript:logAction()" onclick="toggleSearchOptions()" style="margin:0; margin-bottom:0.5em;">&lt;&lt;Less</a><br/>
 Date from <input type="text" name="dateFrom" dojoType="dijit.form.DateTextBox" value="<?= $dateFrom ?>"/>
 Date to <input type="text" name="dateTo" dojoType="dijit.form.DateTextBox" value="<?= $dateTo ?>"/>

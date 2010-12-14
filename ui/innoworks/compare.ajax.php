@@ -6,7 +6,7 @@ import("compare.service");
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getComparison":
-			renderDefault($_SESSION['innoworks.ID']);
+			renderCompareDefault($_SESSION['innoworks.ID']);
 			break;
 		case "getPublicComparison":
 			renderPublicRiskItems($_SESSION['innoworks.ID']);
@@ -21,6 +21,8 @@ if (isset($_GET['action'])) {
 			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
 			break;
 		case "getIdeaSummary":
+			import("idea.service");
+			registerIdeaView($_GET['actionId'], $_SESSION['innoworks.ID']);
 			renderIdeaSummary($_GET['actionId']);
 			break;
 		case "getRiskEvalForIdea":

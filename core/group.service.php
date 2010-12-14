@@ -70,6 +70,11 @@ function createGroup($opts) {
 	return genericCreate("Groups",$opts);
 }
 
+function updateGroup($opts) {
+	$where = array("groupId");
+	return genericUpdate("Groups",$opts, $where);
+}
+
 function deleteGroup($id, $user) {
 	import("note.service");
 	createNoteForGroup($_SESSION['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . " has been deleted");

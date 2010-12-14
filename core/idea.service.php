@@ -13,7 +13,7 @@ function getIdeas($userid) {
 }
 
 function getProfileIdeas($userid) {
-	$sql = "SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId";
+	$sql = "SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userid' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId";
 	return dbQuery($sql);
 }
 
@@ -100,7 +100,11 @@ function getFeatureEvaluationForIdea($id) {
 }
 
 function getCommentsForIdea($id) {
-	return dbQuery("SELECT * FROM Comments WHERE ideaId = '$id'");
+	return dbQuery("SELECT * FROM Comments WHERE ideaId = '$id' ORDER BY timestamp DESC");
+}
+
+function getViewsForIdea($id) {
+	return dbQuery("SELECT * FROM Views WHERE ideaId = '$id'");
 }
 
 function createComment($opts) {
@@ -179,6 +183,8 @@ function createAttachmentDb($destFileName) {
 		$query = "INSERT INTO Attachments (groupId, title, path, type, size, userId) VALUES ('".$_POST['groupId']."','$fileName', '$destFileName', '$fileType', '$fileSize', '".$_SESSION['innoworks.ID']."')";
 	else if (isset($_POST['ideaId']))
 		$query = "INSERT INTO Attachments (ideaId, title, path, type, size, userId) VALUES ('".$_POST['ideaId']."','$fileName', '$destFileName', '$fileType', '$fileSize', '".$_SESSION['innoworks.ID']."')";
+	else 
+		$query = "INSERT INTO Attachments (title, path, type, size, userId) VALUES ('$fileName', '$destFileName', '$fileType', '$fileSize', '".$_SESSION['innoworks.ID']."')";
 	return dbQuery($query);
 }
 
@@ -205,11 +211,15 @@ function deleteAttachment($id) {
 }
 
 function getAttachmentsForIdea($ideaId) {
-	return dbQuery("SELECT * FROM Attachments WHERE ideaId = '$ideaId'");
+	return dbQuery("SELECT * FROM Attachments WHERE ideaId = '$ideaId' ORDER BY isDp");
 }
 
 function getAttachmentsForGroup($groupId) {
-	return dbQuery("SELECT * FROM Attachments WHERE groupId = '$groupId'");
+	return dbQuery("SELECT * FROM Attachments WHERE groupId = '$groupId' ORDER BY isDp");
+}
+
+function getAttachmentsForUser($userId) {
+	return dbQuery("SELECT * FROM Attachments WHERE userId = '$userId' AND ideaId IS NULL AND groupId IS NULL UNION SELECT * FROM Attachments WHERE userId = '$userId' AND (ideaId IS NOT NULL OR groupId IS NOT NULL)  ORDER BY isDp DESC");
 }
 
 function getAttachmentById($id) {
@@ -223,7 +233,6 @@ function retrieveAttachment($id) {
 		header("Content-length: $attach->size");
 		header("Content-type: $attach->type");
 		header("Content-Disposition: attachment; filename=$attach->title");
-		//echo $attach->data; 
 		readfile($_SERVER['DOCUMENT_ROOT'].$usersRoot.$attach->path);
 	}
 }
@@ -237,7 +246,7 @@ function hasAccessToIdea($ideaId, $userId) {
 }
 
 function hasEditAccessToIdea($ideaId, $userId) { 
-	$numRows = dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId AND GroupIdeas.canEdit = 1"));
+	$numRows = dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = '$ideaId' AND GroupIdeas.canEdit = 1"));
 	if ($numRows > 0 || $_SESSION['innoworks.isAdmin'])
 		return true;
 	else
@@ -245,11 +254,12 @@ function hasEditAccessToIdea($ideaId, $userId) {
 }
 
 function getFeatureEvaluationTotalForIdea($ideaId, $userId) {
-	$score = dbFetchObject(dbQuery("SELECT AVG(FeatureEvaluation.score) AS score FROM IdeaFeatureEvaluations, FeatureEvaluation WHERE IdeaFeatureEvaluations.ideaId = '$ideaId' AND FeatureEvaluation.ideaFeatureEvaluationId = IdeaFeatureEvaluations.ideaFeatureEvaluationId"));;
+	$score = dbFetchObject(dbQuery("SELECT AVG(FeatureEvaluation.score) AS score FROM IdeaFeatureEvaluations, FeatureEvaluation WHERE IdeaFeatureEvaluations.ideaId = '$ideaId' AND FeatureEvaluation.ideaFeatureEvaluationId = IdeaFeatureEvaluations.ideaFeatureEvaluationId"));
+	logDebug("FeatureEvaluation score is: " . $score->score);
 	if ($score->score == null)
 		return 0;
 	else
-		return round($score);
+		return round($score->score);
 }
 
 function getRiskEvaluationTotalForIdea($ideaId, $userId) {
@@ -257,6 +267,14 @@ function getRiskEvaluationTotalForIdea($ideaId, $userId) {
 	if ($score->score == null)
 		return 0;
 	else
-		return round($score); 
+		return round($score->score); 
+}
+
+function registerIdeaView($ideaId, $userId) {
+	$opts = array();
+	$opts['ideaId'] = $ideaId;
+	$opts['userId'] = $userId;
+	$opts['ip'] = $_SERVER['REMOTE_ADDR'];
+	genericCreate("Views",$opts);
 }
 ?>

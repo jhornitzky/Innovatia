@@ -58,7 +58,7 @@ function getSearchIdeas($criteria, $user, $filters) {
 
 function getSearchGroups($criteria, $user, $filters) {
 	$criteria = cleansePureString($criteria);
-	$criteriaString = createCriteriaString($criteria, array("title"));
+	$criteriaString = createCriteriaString($criteria, array("title", "tags", "description"));
 	$filters = cleanseArray($filters);
 	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Groups"); 
 	return dbQuery("SELECT * FROM Groups WHERE $criteriaString $filterString ORDER BY lastUpdateTime DESC");

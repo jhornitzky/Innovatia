@@ -2,10 +2,11 @@
 /**
  * Rendering functions for various comparison activities i.e. Risk / Commercial Evaluation
  */
-require_once("thinConnector.php");  
+require_once("pureConnector.php");  
+import("compare.service");
 
 /* RENDER COMPARE ITEMS (RISK EVALUATION) */
-function renderDefault($user) {
+function renderCompareDefault($user) {
 	renderCommon(getRiskItems($user));
 } 
 
@@ -22,7 +23,7 @@ function renderCommon($riskItems) {
 	if ($riskItems && dbNumRows($riskItems) > 0){
 		echo "<table id='riskEvaluation'>";
 		echo "<thead>";
-			renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId", "score"),"RiskEvaluation","renderRiskItemHeadCallback");
+			renderGenericHeaderWithRefData($riskItems, array("ideaId","riskEvaluationId","groupId", "userId", "score", "createdTime", "lastUpdateTime"),"RiskEvaluation","renderRiskItemHeadCallback");
 		echo "</thead>";
 		echo "<tbody>";
 			while ($riskItem = dbFetchObject($riskItems)) {
@@ -31,14 +32,14 @@ function renderCommon($riskItems) {
 		echo "</tbody>";
 		echo "</table>";
 	} else {
-		echo "<p>No items for group</p>";
+		echo "<p>No risk items</p>";
 	}
 }
 
 function renderRiskItemHeadCallback($key) {
 	if ($key == "idea") {?>
 		<th class="headcol">
-			<?= fromCamelCase($key); ?>
+			Idea
 		</th>
 		<?return true;
 	} else {
@@ -50,11 +51,10 @@ function renderRiskItemHeadCallback($key) {
 function renderRiskItem($riskItems, $riskItem) {
 	$featuresTotal = getFeatureEvaluationTotalForIdea($riskItem->ideaId, $_SESSION['innoworks.ID']);?>
 	<tr id="riskform_<?= $riskItem->riskEvaluationId ?>">
-		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId", "score"), "RiskEvaluation","renderRiskItemCallbackRow");?>
+		<?renderGenericUpdateRowWithRefData($riskItems, $riskItem, array("ideaId","riskEvaluationId","groupId", "userId", "score", "createdTime", "lastUpdateTime"), "RiskEvaluation","renderRiskItemCallbackRow");?>
 		<td class="totalCol">
 			<span class="itemTotal" title="Risk evaluation score">0</span> |
 			<span class="featureTotal" title="Feature evaluation score"><?= $featuresTotal ?></span>
-			<!-- = <span class="grandTotal" style="font-size:2em; font-weight:bold">0</span> -->
 		</td>
 	</tr>
 <?}
@@ -115,8 +115,12 @@ function renderAddRiskIdeaForGroup($groupId, $userId) {
 }
 
 function renderIdeaSummary($ideaId) {
-	global $serverUrl , $uiRoot;
+	global $serverUrl, $uiRoot;
 	import("idea.service");
+	import("group.service");
+	import("user.service");
+	require_once("ideas.ui.php");
+	
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
 	$iv = createIv();
 	$ideaEnc = encrypt($ideaId, $iv); 
@@ -126,16 +130,25 @@ function renderIdeaSummary($ideaId) {
 	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width:3em; height:3em;"/></td>
 	<td> 
 	<h3><?= $idea->title ?></h3>
-	<a href="javascript:printIdea('<?= $ideaUrl ?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a></td>
+	<span class="summaryActions"><a href="javascript:printIdea('<?= $ideaUrl ?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit idea</a></span></td>
 	</tr>
 	</table>
-	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));
-}
+	<?renderGenericInfoForm(null, $idea, array("ideaId","userId", "title"));?>
+	<h3>Roles</h3>
+	<?renderIdeaRoles($ideaId);?>
+	<h3>Features</h3>
+	<?renderIdeaFeatures($ideaId);?>
+	<h3>Comments</h3>
+	<?renderCommentsForIdea($ideaId, $_SESSION['innoworks.ID']);?>
+	<h3>Feature Evaluations</h3>
+	<?renderIdeaFeatureEvaluationsForIdea($ideaId);?>
+	<h3>Risk Evaluations</h3>
+	<?renderIdeaRiskEval($ideaId, $_SESSION['innoworks.ID']);?>
+<?}
 
-function renderIdeaRiskEval($ideaId, $userId) {
+function renderIdeaRiskEvalForm($ideaId, $userId) {
 	import("idea.service");
-	
-	$item = getRiskItemForIdea($ideaId,$userId);
+	$items = getRiskItemsForIdea($ideaId,$userId);
 	if ($item && dbNumRows($item) > 0) {
 		$item = dbFetchObject($item);
 		$canEdit = false;
@@ -143,9 +156,9 @@ function renderIdeaRiskEval($ideaId, $userId) {
 			$canEdit = true;?>
 		<form id="ideaRiskEvalDetails">
 		<?if ($canEdit) 
-			renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score"), "RiskEvaluation");
+			renderGenericUpdateFormWithRefData(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score", "createdTime", "lastUpdateTime"), "RiskEvaluation");
 		else 
-			renderGenericInfoForm(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score"));?>
+			renderGenericInfoForm(array(), $item, array("riskEvaluationId","groupId","userId","ideaId", "score", "createdTime", "lastUpdateTime"));?>
 		<input type="hidden" name="riskEvaluationId" value="<?= $item->riskEvaluationId ?>"/>
 		<input type="hidden" name="action" value="updateRiskEval" />
 		</form>
@@ -155,6 +168,45 @@ function renderIdeaRiskEval($ideaId, $userId) {
 		<p>Add comparison data for idea <a onclick="addRiskItem('<?= $ideaId ?>');loadPopupShow()" href="javascript:logAction()">now</a> </p> 
 		Go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
 	<?} 
+}
+
+function renderIdeaRiskEval($ideaId, $userId) {
+	global $serverUrl, $uiRoot;
+	import("user.service");
+	import("idea.service");
+	import("group.service");
+	$items = getRiskItemsForIdea($ideaId,$userId);
+	if ($items && dbNumRows($items) > 0) {
+		echo "<table class='evaluation'>";
+		renderGenericHeaderWithRefData($items,array("ideaId","riskEvaluationId","groupId","userId","score"),"RiskEvaluation", "renderMeCallback");
+		while($item = dbFetchObject($items)) {?>
+			<tr>
+			<td class="headcol">
+			<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userId ?>" style="width:2em; height:2em;"/>
+			<?= getUserInfo($userId)->username ?><br/>
+			<span style="font-size:0.8em;">
+				<? if(isset($item->groupId)) { echo getGroupDetails($item->groupId)->title; } ?>
+			</span>
+			</td>
+			<?renderGenericInfoRow($items,$item,array("title","ideaId","riskEvaluationId","groupId","userId", "score"), "");	?>
+			<td style="font-weight:bold; font-size:2em">
+			<?= $item->score ?>
+			</td>
+			</tr>
+		<?}
+		echo "</table>";
+	} else {?>
+		<p>No compare data for idea</p> 
+	<?}?>
+	<p>You must go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a> to edit data</p>
+<?}
+
+function renderMeCallback($key) {
+	if ($key == "title") {?>
+		<th class="headcol">Reviewer</th>	
+		<?return true;
+	}
+	return false;
 }
 
 /* RENDER COMPARE COMMENTS */

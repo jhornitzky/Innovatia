@@ -54,6 +54,8 @@ function createNote($opts) {
 		$headers .= 'Innoworks' . "\r\n";
 		mail($userDetails->email, "Innoworks update", $message, $headers);
 	}
+	if ($success)
+		return true;
 	return false;
 }
 

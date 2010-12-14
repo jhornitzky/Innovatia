@@ -32,12 +32,12 @@ function getRiskItemsForGroup($group) {
 	WHERE RiskEvaluation.ideaId = Ideas.ideaId AND RiskEvaluation.groupId=$group");
 }
 
-function getRiskItemForIdea($ideaId, $user) {
-	return dbQuery("SELECT RiskEvaluation.*, Ideas.ideaId  FROM RiskEvaluation, Ideas WHERE RiskEvaluation.ideaId = '$ideaId' AND RiskEvaluation.ideaId = Ideas.ideaId");
+function getRiskItemsForIdea($ideaId, $user) {
+	return dbQuery("SELECT Ideas.title, Ideas.ideaId, RiskEvaluation.*   FROM RiskEvaluation, Ideas WHERE RiskEvaluation.ideaId = '$ideaId' AND RiskEvaluation.ideaId = Ideas.ideaId ORDER BY groupId");
 }
 
 function getCompareComments($uId) {
-	return dbQuery("SELECT *  FROM Comments WHERE ideaId IS NULL AND groupId IS NULL AND userId=$uId"); 
+	return dbQuery("SELECT * FROM Comments WHERE ideaId IS NULL AND groupId IS NULL AND userId=$uId ORDER BY timestamp DESC"); 
 }
 
 function getPublicCompareComments($uId) {
@@ -45,6 +45,6 @@ function getPublicCompareComments($uId) {
 }
 
 function getCompareCommentsForGroup($uId, $groupId) {
-	return dbQuery("SELECT * FROM Comments WHERE groupId = $groupId"); 
+	return dbQuery("SELECT * FROM Comments WHERE groupId = $groupId ORDER BY timestamp DESC"); 
 }
 ?>

@@ -7,39 +7,57 @@ require_once("innoworks.connector.php");
 /*
  * Top most method for logging in users
  */
-function loginUser($username,$password)
-{
-	$rs = authenticateUser($username,$password);
-	if (dbNumRows($rs) == 1)
-	{
-		$userObj = dbFetchObject($rs);
+function loginUser($username,$password){
+	$userObj = authenticateUser($username,$password);
+	if ($userObj) {
 		$_SESSION['innoworks.ID'] = $userObj->userId;
 		$_SESSION['innoworks.username'] = $userObj->username;
 		$_SESSION['isAuthen'] = true;
 		if ($userObj->isAdmin == 1)
-			$_SESSION['innoworks.isAdmin'] = true;
-		else 
-			$_SESSION['innoworks.isAdmin'] = false;
+		$_SESSION['innoworks.isAdmin'] = true;
+		else
+		$_SESSION['innoworks.isAdmin'] = false;
 		return true;
 	}
 	return false;
 }
 
 /*
- * Generic user authentication flow. Check DB first (its faster), and then LDAP. 
+ * Generic user authentication flow. Check DB first (its faster), and then LDAP.
  * Register LDAP user if required.
  */
-function authenticateUser($username,$password)
-{
+function authenticateUser($username,$password) {
+	global $usesLdap;
+	
+	//Authenticate against DB
 	$userObj = authenticateDb($username,$password);
-	if ($userObj != false) {
+	if ($userObj) {
 		return $userObj;
-	} else {
-		$ldapdn = authenticate_ldap($username,$password);
-		if ($ldapdn != 0) {
-			if (checkUsernameExists($ldapdn)) 
-				registerUser(array("username" => $ldapdn));	
-			return getUserInfo(getUserIdForUsername($ldapdn));
+	} else if ($usesLdap) {
+		//Otherwise authenticate against LDAP
+		if (authenticate_ldap($username,$password)) { 
+			logDebug("AUTHENTICATED an LDAP user");
+				
+			//Check if the user already exists
+			if (!checkUsernameExists($username)) { //username should be UTS ID number
+				logDebug("Need to Register an LDAP user");
+				//should register LDAP details into our DB
+				$entries = getLdapUserDetails($username);
+				if ($entries != 0) { //This is paranoia
+					$entry = $entries[0];
+					registerUser(
+					array(
+					"username" => $username, 
+					"isExternal" => 1, 
+					"firstName" => $entry['cn'][0], 
+					"email" => $entry['utsmail'][0],
+					"organization" => "UTS"
+					));
+				}
+			}
+			return getUserInfo(getUserIdForUsername($username));
+		} else {
+			logDebug("Failed LDAP user Authentication");
 		}
 	}
 	return false;
@@ -48,60 +66,76 @@ function authenticateUser($username,$password)
 /*
  * Authenticate a user against the database
  */
-function authenticateDb($username,$password)
-{
+function authenticateDb($username,$password) {
 	global $salt;
-
 	$db = dbConnect();
-	//FIXME remove these unencrypted bits
-	$query = sprintf("SELECT userId, username, isAdmin FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), cleanseString($db, $password));
+	$pass = sha1($salt.$password);
+	$query = sprintf("SELECT userId, username, isAdmin FROM Users WHERE (username = '%s' AND password = '%s') AND isExternal = 0", cleanseString($db, $username), $pass);
 	$result = dbQuery($query);
-	if (dbNumRows($result) == 0) {
-		$pass = sha1($salt.$password);
-		$query = sprintf("SELECT userId, username, isAdmin FROM Users WHERE (username = '%s' AND password = '%s')", cleanseString($db, $username), $pass);
-		$result = dbQuery($query);
-	}
 	dbClose($db);
+	if ($result && dbNumRows($result) == 1)
+	return dbFetchObject($result);
+	else
+	return false;
+}
 
-	return $result;
+/*
+ * Get a users details from LDAP. ONLY USE ON AUTHENTICATED USERS!
+ */
+function getLdapUserDetails($user) {
+	global $ldapUser, $ldapPass, $ldapPort, $ldapFullUrl;
+	$entries = 0;
+	$connection = ldap_connect($ldapFullUrl);
+	//ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3); //OPTIONAL DEPENDING ON VERSION
+	if (ldap_bind ($connection, $ldapUser, $ldapPass)) {
+		$search_result = ldap_search ($connection, "o=uts", "(&(utsaccountstatus=ACTIVE)(utsidnumber=$user))"); 
+		
+		if ($search_result && (ldap_count_entries ($connection, $search_result) == 1))
+			$entries = ldap_get_entries($connection,$search_result);
+
+	}
+	@ldap_unbind($connection);
+	@ldap_close($connection);
+	return $entries;
 }
 
 /*
  * Authenticate a user against the LDAP
  */
 function authenticate_ldap($user, $pw) {
+	global $ldapUser, $ldapPass, $ldapPort, $ldapFullUrl;
+
 	if (empty($user) || empty($pw))
-	return 0;
+	return false;
 
-	$server = $ldapHost;
-	$searchuser = $ldapUser;
-	$searchpass = $ldapPass;
-
-	$ldapConn = ldap_connect($server) or die();
-	$connection = ldapConnection($ldapConn);
-
-	if (@ldap_bind ($connection, $searchuser, $searchpass)) {
+	$connection = ldap_connect($ldapFullUrl);
+	//ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3); //OPTIONAL DEPENDING ON VERSION
+	logDebug("LDAP authentication trying BIND");
+	if (ldap_bind ($connection, $ldapUser, $ldapPass)) {
+		logDebug("LDAP Searching for user");
 		/* Search for the user */
-		$search_result = @ldap_search ($connection, "o=uts", "(utsIdNumber=$user)");
+		$search_result = ldap_search ($connection, "o=uts", "(&(utsaccountstatus=ACTIVE)(utsidnumber=$user))"); //(utsIdNumber=$user)
 
 		/* Check the result and the number of entries returned */
 		if ($search_result && (ldap_count_entries ($connection, $search_result) == 1))
 		{
-			$userdn = @ldap_get_dn($connection, @ldap_first_entry ($connection,$search_result));
-
+			$userdn = ldap_get_dn($connection, ldap_first_entry($connection,$search_result));
+			logDebug("LDAP the user dn is: " . $userdn);	
+			
 			// Rebind as the user with the supplied password and found dn
-			if (@ldap_bind ($connection, $userdn, $pw)) {
+			if (ldap_bind ($connection, $userdn, $pw)) {
+				logDebug("LDAP User authenticated");
 				@ldap_unbind($connection);
 				@ldap_close($connection);
-				return $userdn;
+				return true;
 			}
+		} else {
+			logDebug("LDAP No such user found");
 		}
 	}
-
 	@ldap_unbind($connection);
 	@ldap_close($connection);
-
-	return 0;
+	return false;
 }
 
 /*
@@ -110,27 +144,29 @@ function authenticate_ldap($user, $pw) {
 function registerUser($postArgs) {
 	global $serverRoot, $salt;
 
+	if (!isset($postArgs['isExternal']))
+	$postArgs['isExternal'] = 0;
+
 	$link = dbConnect();
 
 	//ENCRYPT PASSWORD
 	$pass = sha1($salt.$postArgs['password']);
 
 	//Now prepare and run this query
-	$sql = sprintf("INSERT INTO Users (username, password, firstName, lastName, email,createdTime) VALUES ('%s','%s','%s','%s', '%s', '%s')",
+	$sql = sprintf("INSERT INTO Users (username, password, firstName, lastName, email,isExternal,createdTime) VALUES ('%s','%s','%s','%s', '%s', '%s', '%s')",
 	cleanseString($link,$postArgs['username']),
 	$pass,
 	cleanseString($link,$postArgs['firstName']),
 	cleanseString($link,$postArgs['lastName']),
 	cleanseString($link,$postArgs['email']),
+	cleanseString($link,$postArgs['isExternal']),
 	date_create()->format('Y-m-d H:i:sP')
 	);
 
-	logDebug("Register user: " . $sql);
-
 	$success = dbQuery($link,$sql);
-
 	$successId = dbInsertedId($link);
 
+	//FIXME TEMPLATIZE
 	$message = '<html>
 				<head>
 				  <title>Innoworks Credentials</title>
@@ -163,7 +199,7 @@ function registerUser($postArgs) {
  */
 function checkUsernameExists($username) {
 	logDebug("Checking for username: " . $username);
-	
+
 	//First open a connection
 	$link = dbConnect();
 
@@ -175,7 +211,7 @@ function checkUsernameExists($username) {
 
 	$found = false;
 	if ($result && dbNumRows($result) > 0)
-		$found = true;
+	$found = true;
 
 	//Tidy up
 	dbRelease($result);

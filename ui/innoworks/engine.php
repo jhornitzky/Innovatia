@@ -1,6 +1,6 @@
 <?
 /**
- * Main view for all logged in innowroks users.
+ * Main view for all logged in innoworks users.
  */
 require_once("thinConnector.php");
 import("mobile.functions");
@@ -11,21 +11,15 @@ import("user.service");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
 <title>innoWorks</title>
-<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>ui/style/favicon.ico" type="image/x-icon" />
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/innoworks.js"></script>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
-	type="text/css" />
-<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet"
-	type="text/css" />
+<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/innoworks.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/common.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
+<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 //////// VARS //////////
@@ -45,6 +39,16 @@ var isMobile = <?= (isMobile()) ? "true" : "false"; ?>;
 
 /////// START UP ///////
 $(document).ready(function() {
+	//AJAX methods and setup
+	$.ajaxSetup ({  
+		cache: false  
+	});  
+	/*
+	$(document).ajaxStop(function() {
+		processQueuedActions();
+	});
+	*/
+	
 	//Show default
 	showDash();
 
@@ -273,7 +277,7 @@ function openAdmin() {
 	</div>
 	<div class="fixed-right">
 		<div id="groupDetailsCont">
-			<div id="groupDetails"> &lt;&lt; Select one of the groups on the left to see its details</div>
+			<div id="groupDetails"><b>Select one of the groups on the left to see its details</b></div>
 		</div>
 	</div>
 </div>
@@ -307,10 +311,10 @@ function openAdmin() {
 <div id="ideasPopup" dojoType="dijit.Dialog">
 <div id="ideaPopupResponses" class="responses"></div>
 <span class="ideaDetailsOptions" style="position:relative; float:right;">
-<a href="javascript:printIdea()">Print</a>
+<a href="javascript:printPopupIdea()">Print</a>
 </span>
 <table><tr>
-<td><img style="height: 3em; width: 3em;" src="<?= $serverRoot?>ui/style/defGear.png"/></td>
+<td><img id="popupIdeaImgMain" style="height: 3em; width: 3em;" src=""/></td>
 <td style="vertical-align:middle;"><span id="ideaName"></span></td></tr>
 </table>
 

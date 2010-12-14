@@ -6,7 +6,7 @@ import("idea.service");
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getIdeas":
-			renderDefault();
+			renderIdeasDefault();
 			break;
 		case "getPublicIdeas":
 			renderPublicIdeas();
@@ -48,6 +48,7 @@ if (isset($_GET['action'])) {
 			renderAttachmentsIframe($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 		case "getIdeaName":
+			registerIdeaView($_GET['actionId'], $_SESSION['innoworks.ID']);
 			renderIdeaName($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
 	}

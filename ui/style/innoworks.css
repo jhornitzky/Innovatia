@@ -250,6 +250,10 @@ div#content {
 }
 
 /* IDEAS */
+#selectList .selection {
+	width:46em;
+}
+
 .idea table {
 	width:100%;
 }
@@ -348,11 +352,20 @@ table td input[type=text] {
 	margin-right:0;
 }
 
+#noteTab #newNoteForm {
+	max-width:22em; 
+	-moz-border-radius-topleft: 6px; -webkit-border-top-left-radius: 6px; border-top-left-radius: 6px; 
+	-moz-border-radius-topright: 6px; -webkit-border-top-right-radius: 6px; border-top-right-radius: 6px; 
+	-moz-border-radius-bottomright: 6px; -webkit-border-bottom-right-radius: 6px; border-bottom-right-radius: 6px;
+}
+
 #noteTab #notePadder div {
 	padding:0.2em;
 	margin-bottom:0.25em;
-	float:left;
+	max-width:100%;
+	overflow:hidden;
 	clear:left;
+	float:left;
 }
 
 #noteTab div.incoming {
@@ -416,7 +429,7 @@ div#head, div#content {
 	margin:0 auto;
 }
 
-#compareList table
+#compareList table, #ideaFeatureEvaluationList table, table.evaluation
 {
 	text-align: center;
 	font-weight: normal;
@@ -426,27 +439,35 @@ div#head, div#content {
 	border:none;
 }
 
-#compareList table td
+#compareList table tr td, #ideaFeatureEvaluationList table tr td, table.evaluation tr td
 {
 	background-color: #FFF;
-	/*color: #000;*/
 	padding: 4px;
 	text-align: left;
-	border: 1px solid #EEEEEE;
+	border: 1px solid #EEE;
 }
 
-#compareList table th 
+#compareList table tr th, #ideaFeatureEvaluationList table tr th,  table.evaluation tr th
 {
-	/*background-color: #EEEEEE;
-	color: #111;*/
 	padding: 4px;
 	text-align: left;
 	font-weight: bold;
 	border:none;
-	border-right:1px solid #EEEEEE;
+	border-right:1px solid #EEE;
+	font-size:0.9em;
 }
 
-#riskEvaluation * div.helper {
+ #ideaFeatureEvaluationList table tr td, #ideaFeatureEvaluationList table tr th, table.evaluation tr th, table.evaluation tr td{
+	border-color:#DDD;
+	background-color:#EEE; 
+}
+
+#ideaFeatureEvaluationList table.titleTT tr td{
+	border:none;
+	background-color:#FFF; 
+}
+
+.featureEvaluationBit * div.helper, #riskEvaluation * div.helper, table.evaluation * div.helper {
 	width:2em;
 	height:2em;
 	overflow:visible;
@@ -455,7 +476,7 @@ div#head, div#content {
 	-moz-transform: rotate(-90deg);
 }	
 
-#riskEvaluation tr th {
+#riskEvaluation tr th, .featureEvaluationBit tr th, table.evaluation tr th {
 	overflow:hidden;
 	height:7em; 
 	width:2em;
@@ -463,52 +484,37 @@ div#head, div#content {
 	vertical-align:bottom;
 }
 
-#riskEvaluation tr td {
+#riskEvaluation tr td, .featureEvaluationBit tr td, table.evaluation tr td {
 	font-size:0.9em;
 	max-height:5em;
 	width:2em;
 }
 
-#riskEvaluation tr:hover td {
+#riskEvaluation tr:hover td, .featureEvaluationBit tr:hover td, table.evaluation tr:hover td {
 	background-color:#DDDDDD;
 }
 
-#riskEvaluation select {
+#riskEvaluation select, .featureEvaluationBit select {
 	width:3em;
 }
 
-#riskEvaluation tr td.headcol {
+#riskEvaluation tr td.headcol, .featureEvaluationBit tr td.headcol{
 	width:15em;	
 	border-left:none;	
 }
 
-#riskEvaluation tr th.headcol {
+table.evaluation tr td.headcol  {
+	width:15em;	
+}
+
+#riskEvaluation tr th.headcol, .featureEvaluationBit tr th.headcol, table.evaluation tr td.headcol {
 	font-weight:normal;
 	font-size:1.0em;	
 }
 
-#riskEvaluation tr td.totalCol {
+#riskEvaluation tr td.totalCol, .featureEvaluationBit tr td.totalCol {
 	width:2em;
 } 
-
-/*div#compareList { 
-	width: 500px; 
- 	overflow-x:auto;  
-   	margin-left:7.5em; 
-   	overflow-y:visible;
-}
-#riskEvaluation tr td.headcol {
-	position:absolute; 
-  	width:7.5em; 
-  	left:260px; 
-  	top:auto;
-  	overflow:hidden;
-}
-#riskEvaluation tbody {
-	height: 20em; 
-	overflow-x: hidden;
-	overflow-y: auto;
-}*/
 
 span.timestamp {
 	padding-left:0.5em;
@@ -557,4 +563,8 @@ span.itemTotal{
 
 span.itemName {
 	font-size:1.2em;
+}
+
+div.shareBtns img {
+	cursor:pointer;
 }

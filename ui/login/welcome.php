@@ -39,7 +39,7 @@ $(document).ready( function () {
 <form id="LoginForm" onSubmit="authenUser(); return false;">
 <table cellpadding="2px" cellspacing="2px">
 	<tr>
-		<th style="padding-left:3px;">Username / eMail:</th>
+		<th style="padding-left:3px;">Username / UTS ID:</th>
 		<th style="padding-left:3px;">Password:</th>
 		<th></th>
 	</tr>

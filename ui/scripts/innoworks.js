@@ -1,4 +1,20 @@
+var queue = new Array();
+
 function logAction() {}
+
+function queueAction(action) {
+	queue[queue.length+1] = action;
+}
+
+function processQueuedActions() {
+	if (queue.length > 0) {
+		for (x in queue) {
+			eval(queue[x]);
+		}
+  	
+		queue = new Array();
+	}
+}
 
 function pollServer() {
 	$.get("poll.php", function(data){
@@ -42,7 +58,8 @@ function loadIdeaPopupData() {
 
 function loadPopupShow() {
 	dijit.byId('ideasPopup').show();
-	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId="+currentIdeaId, function() { 
+	$("img#popupIdeaImgMain").attr("src", "retrieveImage.php?action=ideaImg&actionId=" + currentIdeaId);
+	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId=" + currentIdeaId, function() { 
 		loadIdeaPopupData();
 	});
 }
@@ -569,7 +586,7 @@ function updateFormSelectTotals(formId) {
 		}
 	}); 
 	if (count != 0)
-		$("#" + formId + " span.itemTotal").html(Math.round(total/count));
+		$("#" + formId).find("span.itemTotal").html(Math.round(total/count));
 }
 
 function updateFormTotal(formId) {
@@ -582,7 +599,7 @@ function updateFormTotal(formId) {
 		}
 	}); 
 	if (count != 0)
-		$(formId + " span.evalTotal").html(Math.round(total/count));
+		$(formId).find("span.evalTotal").html(Math.round(total/count));
 }
 
 function genericFormUpdate(target, element) {}
@@ -646,18 +663,35 @@ function updateRole(form) {
 	});
 }
 
-function genericAdd(selector) {
+function addFeature(selector, callbackForm, callbackIdea) {
 	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses( data, true);
-		getIdeas();
+		getFeatures(callbackForm, callbackIdea);
 	});	
 }
 
-function genericDelete(target, id) {
+function addRole(selector, callbackForm, callbackIdea) {
+	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+		showResponses( data, true);
+		getRoles(callbackForm, callbackIdea);
+	});	
+}
+
+function deleteFeature(target, id, callbackForm, callbackIdea) {
 	if (confirm(removeString)) {
 		$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
 			showResponses( data, true);
-			getIdeas();
+			getFeatures(callbackForm, callbackIdea);
+		});		
+	} 
+	return false;
+}
+
+function deleteRole(target, id, callbackForm, callbackIdea) {
+	if (confirm(removeString)) {
+		$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
+			showResponses( data, true);
+			getRoles(callbackForm, callbackIdea);
 		});		
 	} 
 	return false;
@@ -686,9 +720,19 @@ function deleteGroup(gId) {
 	return false;
 }
 
+function updateGroupDetails(formId) {
+	$.post("groups.ajax.php", $("#groupDetailsForm").serialize(), function(data) {
+		showResponses(data, true);
+	});
+}
+
 function showGroupDetails() {
 	$.get("groups.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
 		$("#groupDetails").html(data);
+		dojo.parser.instantiate(dojo.query('#groupDetailsForm *'));
+		$('#groupDetailsForm').find("textarea").blur(function() {
+			updateGroupDetails("#groupDetailsForm");
+		});
 	});
 }
 
@@ -1051,6 +1095,10 @@ function updateSelection(selectform){
 	});
 }
 
+function printPopupIdea() {
+	printIdea("&idea=" + currentIdeaId);
+}
+
 function printIdea(urlE) {
 	genericPrintViewer("viewer.php?print=true" + urlE);
 }
@@ -1092,7 +1140,6 @@ function unpublicIdea() {
 		showResponses( data, true);
 	});
 }
-
 
 function togglePublicIdea(elem) {
 	if($(elem).is(':checked')) {
@@ -1136,7 +1183,34 @@ function updateFeatureEvalSummary(elem, id) {
 	});
 }
 
+
+//SEARCH OPTIONS VISIBILITY
 function toggleSearchOptions() {
 	$("#searchHider").toggle();
 	$("#searchOptions").toggle();
+}
+
+//TOGGLE Profiles
+function togglePublicProfile(elem) {
+	if ($(elem).is(':checked')) {
+		$.post("profile.ajax.php", {action:'updateProfile', isPublic:1}, function(data) {
+			showResponses( data, true);
+		});
+	} else {
+		$.post("profile.ajax.php", {action:'updateProfile', isPublic:0}, function(data) {
+			showResponses( data, true);
+		});
+	}
+}
+
+function toggleSendEmail(elem) {
+	if ($(elem).is(':checked')) {
+		$.post("profile.ajax.php", {action:'updateProfile', sendEmail:1}, function(data) {
+			showResponses( data, true);
+		});
+	} else {
+		$.post("profile.ajax.php", {action:'updateProfile', sendEmail:0}, function(data) {
+			showResponses( data, true);
+		});
+	}
 }

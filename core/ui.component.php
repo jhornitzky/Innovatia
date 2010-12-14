@@ -132,7 +132,9 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName, $renderCall
 				$metaHelp = getColumnDescription($metaArray);
 				if ($metaHelp) {?>
 					<div class="helper" title="<?= $metaHelp?>"><?= fromCamelCase($field->name) ?></span>
-				<?}
+				<?} else {
+					echo fromCamelCase($field->name);
+				}
 			} else {
 				echo fromCamelCase($field->name);
 			}

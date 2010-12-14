@@ -37,6 +37,12 @@ if (isset($_POST['action'])) {
 			unset($opts['action']);
 			renderServiceResponse(createGroup($opts));
 			break;
+		case "updateGroup":
+			echo "Updating Group.. ";
+			$opts = $_POST;
+			unset($opts['action']);
+			renderServiceResponse(updateGroup($opts));
+			break;
 		case "deleteGroup":
 			echo "Deleting Group... ";
 			renderServiceResponse(deleteGroup($_POST['groupId'],$_SESSION['innoworks.ID']));

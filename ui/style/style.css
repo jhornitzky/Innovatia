@@ -18,6 +18,22 @@ input {
 	font-size:0.8em;
 }
 
+input[type=button] {
+	cursor:pointer;
+	color:#000; 
+	/* background-color:#ddd; 
+	border:1px solid; 
+	border-color: #000; 
+	 */
+}
+
+input[type=button]:hover {
+	/*color:#000; 
+	background-color:#fff; 
+	border:1px solid; 
+	border-color: #000; */
+}
+
 a {
 	border-bottom:1px dotted;
 	border-color:#555;
