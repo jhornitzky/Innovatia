@@ -138,23 +138,23 @@ function showIdeaReviews(ideaId) {
 	dijit.byId("ideasPopupTabContainer").selectChild(dijit.byId("ideasPopupReview"));
 	loadPopupShow();
 }
- 
+
 function showIdeaSummary(id) {
-	var idea = new dijit.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var idea = new inno.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
 function showProfileSummary(id) {
-	var profile = new dijit.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var profile = new inno.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(profile.domNode);
 	profile.startup();
 	profile.show();
 }
 
 function showGroupSummary(id) {
-	var group = new dijit.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var group = new inno.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();

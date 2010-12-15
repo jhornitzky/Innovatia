@@ -22,6 +22,7 @@ import("dash.service");
 			<p class="subhead">Record, manage and explore your ideas to help them take shape and grow.</p>
 			<?
 			$ideas = getDashIdeas($_SESSION['innoworks.ID']);
+			echo dbNumRows($ideas);
 			if ($ideas && dbNumRows($ideas) > 0 ) {
 			while ($idea = dbFetchObject($ideas)) {?>
 				<div onclick="showIdeaDetails('<?= $idea->ideaId?>');" class="itemHolder clickable"><img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId ?>" style="width:1em;height:1em;"/><?= $idea->title ?></div>

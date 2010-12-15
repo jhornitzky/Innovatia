@@ -7,7 +7,7 @@ require_once("thinConnector.php");
 	<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 	<script type="text/javascript">
 		function logAction() {}
-		
+			
 		function showAnnouncement() {
 			$(".adminContent iframe").attr("src", "announcement.php");
 		}

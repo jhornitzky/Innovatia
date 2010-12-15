@@ -6,7 +6,7 @@ import("user.service");
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 		case "getProfile":
-			renderDefault();
+			renderProfileDefault();
 			break;
 		case "getProfileSummary":
 			renderSummaryProfile($_GET['actionId']);

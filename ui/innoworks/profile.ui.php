@@ -2,7 +2,7 @@
 require_once("pureConnector.php"); 
 import("user.service");
  
-function renderDefault() {
+function renderProfileDefault() {
 	global $serverRoot, $serverUrl;
 	$userDetails = getUserInfo($_SESSION['innoworks.ID']);
 	$profiles = getSimilarUserProfiles($_SESSION['innoworks.ID']);
@@ -108,7 +108,7 @@ function renderSummaryProfile($userId) {
 	echo "<h3>Ideas</h3>";
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {?>
-			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/><a href="javascript:showIdeaDetails('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a></p>
+			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/><a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a></p>
 		<?}
 	} else {
 		echo "<p>No ideas yet</p>";
@@ -117,7 +117,7 @@ function renderSummaryProfile($userId) {
 	echo "<h3>Groups</h3>";
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
-			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/><a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId?>; showGroups()"><span class="ideatitle"><?=$group->title?></span></a></p>
+			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/><a href="javascript:logAction()" onclick="showGroupSummary(<?= $group->groupId?>);"><span class="ideatitle"><?=$group->title?></span></a></p>
 		<?}
 	} else {
 		echo "<p>No groups yet</p>";

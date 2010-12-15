@@ -14,10 +14,10 @@ import("user.service");
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/innoworks.js"></script>
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/common.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
+<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/dijit/themes/tundra/tundra.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 
