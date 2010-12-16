@@ -56,6 +56,15 @@ div.loadingAnim {
 	height:100%;
 }
 
+div.smallLoadingAnim {
+	background-image: url('ajaxLoader.gif');
+	background-repeat: no-repeat ;
+	background-position: center center;
+	width:100%;
+	height:25px;
+	float:left;
+}
+
 #leftAlignMenu {
 	top:0px;
 	left:0px;
@@ -90,7 +99,6 @@ div.loadingAnim {
 	width:32%; 
 	position:relative; 
 	float:left; 
-	overflow:auto; 
 }
 
 .marker {
