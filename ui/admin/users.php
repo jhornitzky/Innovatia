@@ -4,35 +4,26 @@ $users = getAllUsers();?>
 <html>
 <head>
 <?require_once('head.php')?>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/dijit/themes/tundra/tundra.css" />
+<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
 
 <script>
 function logAction() {}
 
 function showProfileSummary(uId) {
-	$("#userDetails").load("<?=$serverRoot?>ui/innoworks/profile.ajax.php?action=getProfileSummary&actionId=" + uId);
+	$("#userDetails").load("<?= $uiRoot . "innoworks/" ?>profile/profile.ajax.php?action=getProfileSummary&actionId=" + uId);
 }
 
 function showIdeaSummary(id) {
-	var idea = new inno.Dialog({href:"<?= $uiRoot . "innoworks/" ?>compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var idea = new inno.Dialog({href:"<?= $uiRoot . "innoworks/" ?>compare/compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
-/*
-function showProfileSummary(id) {
-	var profile = new inno.Dialog({href:"<?= $uiRoot . "innoworks/" ?>profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
-	dojo.body().appendChild(profile.domNode);
-	profile.startup();
-	profile.show();
-}
-*/
-
 function showGroupSummary(id) {
-	var group = new inno.Dialog({href:"<?= $uiRoot . "innoworks/" ?>groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var group = new inno.Dialog({href:"<?= $uiRoot . "innoworks/" ?>groups/groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();

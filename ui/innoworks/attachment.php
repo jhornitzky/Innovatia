@@ -32,26 +32,28 @@ if (isset($_POST['action'])) {
 ?>
 <html>
 <head>
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet"
-	type="text/css" />
+<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
+
 <style>
 html, body {
 	text-align:left;
 }
 </style>
-<script type="text/javascript"
-	src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
+
+<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 <script type="text/javascript">
+var ctime;
+
 function dpAttach(id) {
 	var post = "action=dpChange&attachmentId="+id+"&isDp=1";
-	$.post("attach.ajax.php", post, function (data) {
+	$.post("engine.ajax.php", post, function (data) {
 		showResponses( data, true);
 	});
 }
 
 function unDpAttach(id) {
 	var post = "action=dpChange&attachmentId="+id+"&isDp=0";
-	$.post("attach.ajax.php", post, function (data) {
+	$.post("engine.ajax.php", post, function (data) {
 		showResponses( data, true);
 	});
 }
@@ -63,8 +65,6 @@ function toggleDp(elem, id) {
 		unDpAttach(id);
 	}
 }
-
-var ctime;
 
 function hideResponses() {
 	$(".responses").slideUp(function () {
@@ -148,9 +148,9 @@ function showResponses(data, timeout) {
 			</tr>
 			</table>
 		<?}
-	} else {
-		echo "<p>No attachments</p>";
-	}?>
+	} else {?>
+		<p>No attachments</p>
+	<?}?>
 </body>
 
 </html>

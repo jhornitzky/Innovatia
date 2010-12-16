@@ -75,18 +75,18 @@ else if ( isset($_GET['profile']) )
 <hr/>
 <?
 if ( isset($_GET['iv']) && isset($_GET['idea'])) {
-	require_once("compare.ui.php");
+	require_once("compare/compare.ui.php");
 	$iv = base64_url_decode($_GET['iv']);
 	$actionId = decrypt(base64_url_decode($_GET['idea']), $iv);
 	renderIdeaSummary($actionId);
 }else if ( isset($_GET['idea']) ) {
-	require_once("compare.ui.php");
+	require_once("compare/compare.ui.php");
 	renderIdeaSummary($_GET['idea']);
 } else if ( isset($_GET['group']) ) {
-	require_once("groups.ui.php");
+	require_once("groups/groups.ui.php");
 	renderSummary($_GET['group']);
 } else if ( isset($_GET['profile']) ) {
-	require_once("profile.ui.php");
+	require_once("profile/profile.ui.php");
 	renderSummaryProfile($_GET['profile']);
 }
 ?>

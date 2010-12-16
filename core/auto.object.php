@@ -1,9 +1,7 @@
 <? 
 /**
  * Dynamically define any object based on existing procedural style file
- * 
- * TODO Have a look at http://www.garfieldtech.com/blog/magical-php-call
- * for more object like behaviour and static calls
+
  */
 class AutoObject {
   	private $filename;

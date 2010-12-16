@@ -1,6 +1,7 @@
+//QUEUE 
 var queue = new Array();
-
-function logAction() {}
+var loadingString = "<div class='loadingAnim'></div>";
+var smallLoadingString = "<div class='smallLoadingAnim'></div>";
 
 function queueAction(action) {
 	queue[queue.length+1] = action;
@@ -11,9 +12,27 @@ function processQueuedActions() {
 		for (x in queue) {
 			eval(queue[x]);
 		}
-  	
 		queue = new Array();
 	}
+}
+//GENERIC ACTIONS
+function logAction() {} 
+
+function doAction(jsonRequest, callback) {
+	$.post("engine.ajax.php", jsonRequest, function(data) {
+		showResponses( data, true);
+		if (callback != undefined);
+		eval(callback);
+	});
+}
+
+function loadResults(element, jsonRequest) {
+	var parent = $(element).parent();
+	$(element).remove();
+	parent.append(smallLoadingString);
+	$.get("engine.ajax.php", jsonRequest, function(data) {
+		parent.html(data); 
+	});
 }
 
 function pollServer() {
@@ -28,7 +47,7 @@ function pollServer() {
 }
 
 function showLoading(selector) {
-	$(selector).html("<div class='loadingAnim'></div>");
+	$(selector).html(loadingString);
 }
 
 function subscribeForChild(child) {
@@ -59,14 +78,14 @@ function loadIdeaPopupData() {
 function loadPopupShow() {
 	dijit.byId('ideasPopup').show();
 	$("img#popupIdeaImgMain").attr("src", "retrieveImage.php?action=ideaImg&actionId=" + currentIdeaId);
-	$("span#ideaName").load("ideas.ajax.php?action=getIdeaName&actionId=" + currentIdeaId, function() { 
+	$("span#ideaName").load("engine.ajax.php?action=getIdeaName&actionId=" + currentIdeaId, function() { 
 		loadIdeaPopupData();
 	});
 }
 
 function getMission(formId,actionId) { 
 	showLoading("#"+formId);
-	$.get("ideas.ajax.php?action=getMission&actionId=" + actionId, function (data) {
+	$.get("engine.ajax.php?action=getMission&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
 		$('#' + formId).find("textarea").blur(function() {
@@ -77,7 +96,7 @@ function getMission(formId,actionId) {
 
 function getFeaturesForm(formId,actionId) {
 	showLoading("#"+formId);
-	$.get("ideas.ajax.php?action=getFeaturesForm&actionId=" + actionId, function (data) {
+	$.get("engine.ajax.php?action=getFeaturesForm&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
 		$("#featureTable_" + currentIdeaId + " tr").each(function() {
@@ -91,7 +110,7 @@ function getFeaturesForm(formId,actionId) {
 
 function getRolesForm(formId,actionId) {
 	showLoading("#"+formId);
-	$.get("ideas.ajax.php?action=getRolesForm&actionId=" + actionId, function (data) {
+	$.get("engine.ajax.php?action=getRolesForm&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
 		$("#idearoles_" + currentIdeaId + " table tr").each(function() {
@@ -105,7 +124,7 @@ function getRolesForm(formId,actionId) {
 
 function getFeatures(formId,actionId) {
 	showLoading("#"+formId);
-	$.get("ideas.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
+	$.get("engine.ajax.php?action=getFeatures&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
 		$("#featureTable_" + currentIdeaId + " tr").each(function() {
@@ -119,7 +138,7 @@ function getFeatures(formId,actionId) {
 
 function getRoles(formId,actionId) {
 	showLoading("#"+formId);
-	$.get("ideas.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
+	$.get("engine.ajax.php?action=getRoles&actionId=" + actionId, function (data) {
 		$("#"+formId).html(data);
 		dojo.parser.instantiate(dojo.query('#' + formId + ' *'));
 		$("#idearoles_" + currentIdeaId + " table tr").each(function() {
@@ -140,21 +159,21 @@ function showIdeaReviews(ideaId) {
 }
 
 function showIdeaSummary(id) {
-	var idea = new inno.Dialog({href:"compare.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var idea = new inno.Dialog({href:"engine.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
 function showProfileSummary(id) {
-	var profile = new inno.Dialog({href:"profile.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var profile = new inno.Dialog({href:"engine.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(profile.domNode);
 	profile.startup();
 	profile.show();
 }
 
 function showGroupSummary(id) {
-	var group = new inno.Dialog({href:"groups.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var group = new inno.Dialog({href:"engine.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();
@@ -165,11 +184,9 @@ function showIdeaDetails(ideaId) {
 	loadPopupShow();
 }
 
-function moveDialogsToSide() {}
-
 ///// GROUP SELECTION////////////
 function showIdeaGroupsForUser() {
-	$.get("ideas.ajax.php?action=getIdeaGroupsForUser", function (data) {
+	$.get("engine.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
 		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
 		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
@@ -220,30 +237,30 @@ function showIdeasForGroup(gId, elem) {
 
 function getNotes() {
 	showLoading("#noteTab");
-	$("#noteTab").load("notes.php");
+	$("#noteTab").load("engine.ajax.php?action=getNotesDefault");
 }
 
 function getDash() {
 	showLoading("#dashTab");
-	$("#dashTab").load("dash.php");
+	$("#dashTab").load("engine.ajax.php?action=getDashDefault");
 }
 
 function getIdeas() {
 	showLoading("#ideasList");
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$.get("ideas.ajax.php?action=getIdeas", function (data) {
+		$.get("engine.ajax.php?action=getIdeas", function (data) {
 			$("#ideasList").html(data);
 		});
 		$("#addIdeaForm span").html("Add new idea");
 		$("#addIdeaTitle").show();
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		$.get("ideas.ajax.php?action=getPublicIdeas", function (data) {
+		$.get("engine.ajax.php?action=getPublicIdeas", function (data) {
 			$("#ideasList").html(data);
 		});
 		$("#addIdeaForm span").html("Make a private idea public");
 		$("#addIdeaTitle").hide();
 	} else { 
-		$.get("ideas.ajax.php?action=getIdeasForGroup&groupId="+currentGroupId, function (data) {
+		$.get("engine.ajax.php?action=getIdeasForGroup&groupId="+currentGroupId, function (data) {
 			$("#ideasList").html(data);
 		});
 		$("#addIdeaForm span").html("Add a private idea to the group");
@@ -264,17 +281,17 @@ function prepCompareTable() {
 function getCompare() {
 	showLoading("#compareList");
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$.get("compare.ajax.php?action=getComparison", function (data) {
+		$.get("engine.ajax.php?action=getComparison", function (data) {
 			$("#compareList").html(data);
 			prepCompareTable();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		$.get("compare.ajax.php?action=getPublicComparison", function (data) {
+		$.get("engine.ajax.php?action=getPublicComparison", function (data) {
 			$("#compareList").html(data);
 			prepCompareTable();
 		});
 	} else { 
-		$.get("compare.ajax.php?action=getComparisonForGroup&groupId="+currentGroupId, function (data) {
+		$.get("engine.ajax.php?action=getComparisonForGroup&groupId="+currentGroupId, function (data) {
 			$("#compareList").html(data);
 			prepCompareTable();
 		});
@@ -285,17 +302,17 @@ function getCompare() {
 function getSelect() {
 	showLoading("#selectList");
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$("#selectList").load("select.ajax.php?action=getSelection");
+		$("#selectList").load("engine.ajax.php?action=getSelection");
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		$("#selectList").load("select.ajax.php?action=getPublicSelection");
+		$("#selectList").load("engine.ajax.php?action=getPublicSelection");
 	} else {
-		$("#selectList").load("select.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
+		$("#selectList").load("engine.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
 	}
 }
 
 function getProfile() {
 	showLoading("#profileTab");
-	$.get("profile.ajax.php?action=getProfile", function (data) {
+	$.get("engine.ajax.php?action=getProfile", function (data) {
 		$("#profileTab").html(data);
 		dojo.parser.instantiate(dojo.query('#profileTab *'));
 		$("#profileDetailsForm").find(":input").each(function() {
@@ -308,7 +325,7 @@ function getProfile() {
 
 function getGroups() {
 	showLoading("#groupsList");
-	$.get("groups.ajax.php?action=getGroups", function (data) {
+	$.get("engine.ajax.php?action=getGroups", function (data) {
 		$("#groupsList").html(data);
 		showIdeaGroupsForUser();
 	});
@@ -319,9 +336,9 @@ function getGroups() {
 
 function getReports() {
 	showLoading("#reportList");
-	$.get("reports.ajax.php?action=getReportDetails", function (data) {
+	$.get("engine.ajax.php?action=getReportDetails", function (data) {
 		$("#reportDetails").html(data);
-		$.get("reports.ajax.php?action=getReportGraphs", function (data) {
+		$.get("engine.ajax.php?action=getReportGraphs", function (data) {
 			$("#reportList").html(data);
 		});
 	});
@@ -330,22 +347,22 @@ function getReports() {
 function getSearch() {
 	var data = $("#searchForm").serialize();
 	showLoading("#searchTab #searchResults");
-	url = "search.php?" + data;
+	var url = "engine.ajax.php?action=getSearchDefault";
+	if (data != undefined) 
+		url += "&" + data;
 	$("#searchTab #searchResults").load(url, function() {
 		dojo.parser.instantiate(dojo.query("#searchOptions *")); 
 	});
 }
 
-function getAdmin(){}
-
 function getAttachments() {
 	showLoading("#ideaAttachments");
-	$("#ideaAttachments").load("ideas.ajax.php?action=getAttachments&actionId="+currentIdeaId);
+	$("#ideaAttachments").load("engine.ajax.php?action=getAttachments&actionId="+currentIdeaId);
 }
 
 function getRiskEvalForIdea() {
 	showLoading("#ideaRiskEval");
-	$("#ideaRiskEval").load("compare.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function() {
+	$("#ideaRiskEval").load("engine.ajax.php?action=getRiskEvalForIdea&actionId="+currentIdeaId, function() {
 		$("#ideaRiskEvalDetails").find(":input").each(function() {
 			$(this).blur(function() {
 				updateRisk("ideaRiskEvalDetails");
@@ -356,12 +373,12 @@ function getRiskEvalForIdea() {
 
 function getShareForIdea() {
 	showLoading("#ideaShare");
-	$("#ideaShare").load("groups.ajax.php?action=getShareForIdea&actionId="+currentIdeaId);
+	$("#ideaShare").load("engine.ajax.php?action=getShareForIdea&actionId="+currentIdeaId);
 }
 
 function getSelectForIdea() {
 	showLoading("#ideaSelect");
-	$("#ideaSelect").load("select.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function () {
+	$("#ideaSelect").load("engine.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function () {
 		dojo.parser.instantiate(dojo.query('#ideaSelectDetails *')); 
 		$("#ideaSelectDetails").find(":input").each(function() {
 			$(this).blur(function() {
@@ -602,12 +619,8 @@ function updateFormTotal(formId) {
 		$(formId).find("span.evalTotal").html(Math.round(total/count));
 }
 
-function genericFormUpdate(target, element) {}
-
-function genericFieldUpdate(target, element) {}
-
 function addNote(element) {
-	$.post("notes.ajax.php", $(element).serialize(), function(data) {
+	$.post("engine.ajax.php", $(element).serialize(), function(data) {
 		showResponses( data, true);
 		showNotes();
 	});
@@ -616,7 +629,7 @@ function addNote(element) {
 /////// IDEA FUNCTIONS /////////
 function addIdea(elem) {
 	if(currentGroupId == null && currentGroupName == "Private") {
-		$.post("ideas.ajax.php", $("#addIdeaForm").serialize(), function(data) {
+		$.post("engine.ajax.php", $("#addIdeaForm").serialize(), function(data) {
 			showResponses( data, true);
 			getIdeas();
 		});
@@ -629,7 +642,7 @@ function addIdea(elem) {
 
 function deleteIdea(iId) {
 	if (confirm("Are you sure you wish to delete this idea?")) {
-		$.post("ideas.ajax.php", {action:"deleteIdea", ideaId:iId}, function (data) {
+		$.post("engine.ajax.php", {action:"deleteIdea", ideaId:iId}, function (data) {
 			showResponses( data, true);
 			getIdeas();
 		});
@@ -638,19 +651,15 @@ function deleteIdea(iId) {
 }
 
 function updateIdeaDetails(formId) {
-	$.post("ideas.ajax.php", $(formId).serialize(), function (data) {
+	$.post("engine.ajax.php", $(formId).serialize(), function (data) {
 		showResponses( data, true);
 	});
 }
 
-function showIdeaOptions(element) {}
-
-function hideIdeaOptions(element) {}
-
 function updateFeature(form) {
 	formData = getInputDataFromId(form);
 	formData['action'] = 'updateFeature';
-	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
 	});
 }
@@ -658,20 +667,20 @@ function updateFeature(form) {
 function updateRole(form) {
 	formData = getInputDataFromId(form);
 	formData['action'] = 'updateRole';
-	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
 	});
 }
 
 function addFeature(selector, callbackForm, callbackIdea) {
-	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+	$.post("engine.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses( data, true);
 		getFeatures(callbackForm, callbackIdea);
 	});	
 }
 
 function addRole(selector, callbackForm, callbackIdea) {
-	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+	$.post("engine.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses( data, true);
 		getRoles(callbackForm, callbackIdea);
 	});	
@@ -679,7 +688,7 @@ function addRole(selector, callbackForm, callbackIdea) {
 
 function deleteFeature(target, id, callbackForm, callbackIdea) {
 	if (confirm(removeString)) {
-		$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
+		$.post("engine.ajax.php", {actionId:id, action:target}, function(data) {
 			showResponses( data, true);
 			getFeatures(callbackForm, callbackIdea);
 		});		
@@ -689,7 +698,7 @@ function deleteFeature(target, id, callbackForm, callbackIdea) {
 
 function deleteRole(target, id, callbackForm, callbackIdea) {
 	if (confirm(removeString)) {
-		$.post("ideas.ajax.php", {actionId:id, action:target}, function(data) {
+		$.post("engine.ajax.php", {actionId:id, action:target}, function(data) {
 			showResponses( data, true);
 			getRoles(callbackForm, callbackIdea);
 		});		
@@ -700,7 +709,7 @@ function deleteRole(target, id, callbackForm, callbackIdea) {
 ///////////////// GROUP ///////////////
 
 function addGroup() {
-	$.post("groups.ajax.php", $("#addGroupForm").serialize(), function(data) {
+	$.post("engine.ajax.php", $("#addGroupForm").serialize(), function(data) {
 		showResponses( data, true);
 		getGroups();
 	});
@@ -708,7 +717,7 @@ function addGroup() {
 
 function deleteGroup(gId) {
 	if (confirm(removeString)) {
-		$.post("groups.ajax.php", {action: "deleteGroup", groupId:gId}, function(data) {
+		$.post("engine.ajax.php", {action: "deleteGroup", groupId:gId}, function(data) {
 			showResponses( data, true);
 			if (gId == currentGroupId) {
 				currentGroupId = null;
@@ -721,13 +730,13 @@ function deleteGroup(gId) {
 }
 
 function updateGroupDetails(formId) {
-	$.post("groups.ajax.php", $("#groupDetailsForm").serialize(), function(data) {
+	$.post("engine.ajax.php", $("#groupDetailsForm").serialize(), function(data) {
 		showResponses(data, true);
 	});
 }
 
 function showGroupDetails() {
-	$.get("groups.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
+	$.get("engine.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
 		$("#groupDetails").html(data);
 		dojo.parser.instantiate(dojo.query('#groupDetailsForm *'));
 		$('#groupDetailsForm').find("textarea").blur(function() {
@@ -737,7 +746,7 @@ function showGroupDetails() {
 }
 
 function acceptGroup() {
-	$.post("groups.ajax.php", {action: "acceptGroup", actionId:currentGroupId}, function(data) {
+	$.post("engine.ajax.php", {action: "acceptGroup", actionId:currentGroupId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
@@ -752,28 +761,28 @@ function updateForGroup(id,name) {
 
 function showAddGroupIdea(elem) {
 	showCommonPopup(elem);
-	$.get("groups.ajax.php?action=getAddIdea", function(data) {
+	$.get("engine.ajax.php?action=getAddIdea", function(data) {
 		$("#actionDetails").html(data);
 	});
 }
 
 function showAddPublicIdea(elem) {
 	showCommonPopup(elem);
-	$.get("groups.ajax.php?action=getPublicAddIdea", function(data) {
+	$.get("engine.ajax.php?action=getPublicAddIdea", function(data) {
 		$("#actionDetails").html(data);
 	});
 }
 
 function showAddGroupUser(elem) {
 	showCommonPopup(elem);
-	$.get("groups.ajax.php?action=getAddUser", function(data) {
+	$.get("engine.ajax.php?action=getAddUser", function(data) {
 		$("#actionDetails").html(data);
 	});
 } 
 
 function addUserToCurGroup(id) {
 	dijit.byId('commonPopup').hide();
-	$.post("groups.ajax.php", {action: "linkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
+	$.post("engine.ajax.php", {action: "linkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
@@ -781,7 +790,7 @@ function addUserToCurGroup(id) {
 
 function addIdeaToGroup(id, gId) {
 	dijit.byId('commonPopup').hide();
-	$.post("groups.ajax.php", {action: "linkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
+	$.post("engine.ajax.php", {action: "linkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
@@ -793,14 +802,14 @@ function addIdeaToCurGroup(id) {
 
 function addIdeaToPublic(id) {
 	dijit.byId('commonPopup').hide();
-	$.post("groups.ajax.php", {action: "addIdeaToPublic", actionId:id}, function(data) {
+	$.post("engine.ajax.php", {action: "addIdeaToPublic", actionId:id}, function(data) {
 		showResponses(data, true);
 		getIdeas();
 	});
 }
 
 function refuseGroup() {
-	$.post("groups.ajax.php", {action: "refuseGroup", actionId:currentGroupId}, function(data) {
+	$.post("engine.ajax.php", {action: "refuseGroup", actionId:currentGroupId}, function(data) {
 		showResponses( data, true);
 		currentGroupId = null;
 		showGroupDetails();
@@ -808,14 +817,14 @@ function refuseGroup() {
 }
 
 function requestGroup() {
-	$.post("groups.ajax.php", {action: "requestGroup", actionId:currentGroupId}, function(data) {
+	$.post("engine.ajax.php", {action: "requestGroup", actionId:currentGroupId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
 }
 
 function approveGroupUser(uId) {
-	$.post("groups.ajax.php", {action: "approveGroupUser", actionId:currentGroupId, userId:uId}, function(data) {
+	$.post("engine.ajax.php", {action: "approveGroupUser", actionId:currentGroupId, userId:uId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
@@ -823,7 +832,7 @@ function approveGroupUser(uId) {
 
 function delUserFromCurGroup(id) {
 	if (confirm("Are you sure you wish to remove the user from this group?")) {
-		$.post("groups.ajax.php", {action: "unlinkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
+		$.post("engine.ajax.php", {action: "unlinkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
 			showResponses( data, true);
 			showGroupDetails();
 			getGroups();
@@ -842,7 +851,7 @@ function delIdeaFromGroup(id, gId) {
 }
 
 function sendDelIdeaFromGroup(id, gId) {
-	$.post("groups.ajax.php", {action: "unlinkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
+	$.post("engine.ajax.php", {action: "unlinkIdeaToGroup", ideaId:id, groupId:gId}, function(data) {
 		showResponses( data, true);
 		showGroupDetails();
 	});
@@ -868,11 +877,11 @@ function showCommonPopup(elem) {
 function showAddRiskItem(elem) {
 	showCommonPopup(elem);
 	if (currentGroupId == null ) {
-		$.get("compare.ajax.php?action=getAddRisk", function(data) {
+		$.get("engine.ajax.php?action=getAddRisk", function(data) {
 			$("#commonPopup #actionDetails").html(data);
 		});
 	} else {
-		$.get("compare.ajax.php?action=getAddRiskForGroup&groupId="+currentGroupId, function(data) {
+		$.get("engine.ajax.php?action=getAddRiskForGroup&groupId="+currentGroupId, function(data) {
 			$("#commonPopup #actionDetails").html(data);
 		});
 	}
@@ -880,7 +889,7 @@ function showAddRiskItem(elem) {
 
 function addRiskItem(id) {
 	dijit.byId('commonPopup').hide();
-	$.post("compare.ajax.php", {action: "createRiskItem", ideaId:id}, function(data) {
+	$.post("engine.ajax.php", {action: "createRiskItem", ideaId:id}, function(data) {
 		showResponses( data, true);
 		showCompare();
 	});
@@ -888,7 +897,7 @@ function addRiskItem(id) {
 
 function addRiskItemForGroup(id, groupId) {
 	dijit.byId('commonPopup').hide();
-	$.post("compare.ajax.php", {action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, function(data) {
+	$.post("engine.ajax.php", {action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, function(data) {
 		showResponses( data, true);
 		showCompare();
 	});
@@ -898,14 +907,14 @@ function updateRisk(riskform){
 	formData = getInputDataFromId(riskform);
 	formData['action'] = 'updateRiskItem';
 	formData['score'] = $("#" + riskform + " span.itemTotal").html();
-	$.post("compare.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses(data, true);
 	});
 }
 
 function deleteRisk(riskid){
 	if (confirm("Are you sure you wish to remove this risk item?")) {
-		$.post("compare.ajax.php", {action: "deleteRiskItem", riskEvaluationId:riskid}, function(data) {
+		$.post("engine.ajax.php", {action: "deleteRiskItem", riskEvaluationId:riskid}, function(data) {
 			showResponses( data, true);
 			showCompare();
 		});
@@ -915,26 +924,26 @@ function deleteRisk(riskid){
 
 ///////////// REVIEWS /////////////////////
 function getCommentsForIdea() {
-	$.get("ideas.ajax.php?action=getCommentsForIdea&actionId="+currentIdeaId, function(data) {
+	$.get("engine.ajax.php?action=getCommentsForIdea&actionId="+currentIdeaId, function(data) {
 		$("#commentList").html(data);
 	});
 }
 
 function getCompareComments() {
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$.get("compare.ajax.php?action=getCompareComments", function(data) {
+		$.get("engine.ajax.php?action=getCompareComments", function(data) {
 			$("#compareCommentList").html(data);
 			$("#addCompareCommentForm").show();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		/*$.get("compare.ajax.php?action=getPublicCompareComments", function(data) {
+		/*$.get("engine.ajax.php?action=getPublicCompareComments", function(data) {
 			$("#compareCommentList").html(data);
 			$("#addCompareCommentForm").hide();
 		});*/
 		$("#compareCommentList").empty();
 		$("#addCompareCommentForm").hide();
 	} else { 
-		$.get("compare.ajax.php?action=getCompareCommentsForGroup&actionId="+currentGroupId, function(data) {
+		$.get("engine.ajax.php?action=getCompareCommentsForGroup&actionId="+currentGroupId, function(data) {
 			$("#compareCommentList").html(data);
 			$("#addCompareCommentForm").show();
 		});
@@ -942,7 +951,7 @@ function getCompareComments() {
 }
 
 function getFeatureEvaluationsForIdea() {
-	$.get("ideas.ajax.php?action=getIdeaFeatureEvaluationsForIdea&actionId="+currentIdeaId, function(data) {
+	$.get("engine.ajax.php?action=getIdeaFeatureEvaluationsForIdea&actionId="+currentIdeaId, function(data) {
 		$("#ideaFeatureEvaluationList").html(data);
 		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList *'));
 		dojo.parser.instantiate(dojo.query('#ideaFeatureEvaluationList * textarea'));
@@ -963,7 +972,7 @@ function getFeatureEvaluationsForIdea() {
 }
 
 function addComment() {
-	$.post("ideas.ajax.php", $("#addCommentForm").serialize()+"&ideaId="+currentIdeaId, function(data) {
+	$.post("engine.ajax.php", $("#addCommentForm").serialize()+"&ideaId="+currentIdeaId, function(data) {
 		showResponses( data, true);
 		getCommentsForIdea();
 	});
@@ -973,7 +982,7 @@ function addCompareComment() {
 	var urlAddition = "";
 	if (currentGroupId)
 		urlAddition = "&groupId="+currentGroupId;
-	$.post("ideas.ajax.php", $("#addCompareCommentForm").serialize()+urlAddition, function(data) {
+	$.post("engine.ajax.php", $("#addCompareCommentForm").serialize()+urlAddition, function(data) {
 		showResponses( data, true);
 		getCompareComments();
 	});
@@ -981,7 +990,7 @@ function addCompareComment() {
 
 function deleteComment(cid) {
 	if (confirm(removeString)) {
-		$.post("ideas.ajax.php", {action: "deleteComment", commentId:cid}, function(data) {
+		$.post("engine.ajax.php", {action: "deleteComment", commentId:cid}, function(data) {
 			showResponses( data, true);
 			if (dijit.byId("ideasPopup").open)
 				getCommentsForIdea();
@@ -993,7 +1002,7 @@ function deleteComment(cid) {
 }
 
 function addFeatureItem(fId, evalId) {
-	$.post("ideas.ajax.php", {action: "createFeatureItem", featureId: fId, ideaFeatureEvaluationId:evalId}, function(data) {
+	$.post("engine.ajax.php", {action: "createFeatureItem", featureId: fId, ideaFeatureEvaluationId:evalId}, function(data) {
 		showResponses( data, true);
 		getFeatureEvaluationsForIdea();
 	});
@@ -1002,14 +1011,14 @@ function addFeatureItem(fId, evalId) {
 function updateFeatureItem(featureItemId,featureForm){
 	formData = getInputDataFromId(featureForm);
 	formData['action'] = 'updateFeatureItem';
-	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
 	});
 }
 
 function deleteFeatureItem(fid){
 	if (confirm(removeString)) {
-	$.post("ideas.ajax.php", {action: "deleteFeatureItem", featureEvaluationId:fid}, function(data) {
+	$.post("engine.ajax.php", {action: "deleteFeatureItem", featureEvaluationId:fid}, function(data) {
 		showResponses( data, true);
 		getFeatureEvaluationsForIdea();
 	});
@@ -1019,7 +1028,7 @@ function deleteFeatureItem(fid){
 }
 
 function addFeatureEvaluation(selector) {
-	$.post("ideas.ajax.php", $("#"+selector).serialize(), function(data) {
+	$.post("engine.ajax.php", $("#"+selector).serialize(), function(data) {
 		showResponses( data, true);
 		getFeatureEvaluationsForIdea();
 	});
@@ -1029,14 +1038,14 @@ function updateFeatureEvaluation(featureForm){
 	formData = getInputDataFromId(featureForm);
 	formData['action'] = 'updateFeatureEvaluation';
 	formData['score'] = $("#" + featureForm + " span.itemTotal").html();
-	$.post("ideas.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
 	});
 }
 
 function deleteFeatureEvaluation(fid){
 	if (confirm(removeString)) {
-	$.post("ideas.ajax.php", {action: "deleteFeatureEvaluation", featureEvaluationId:fid}, function(data) {
+	$.post("engine.ajax.php", {action: "deleteFeatureEvaluation", featureEvaluationId:fid}, function(data) {
 		showResponses( data, true);
 		getFeatureEvaluationsForIdea();
 	});
@@ -1048,7 +1057,7 @@ function deleteFeatureEvaluation(fid){
 function updateProfile(form) {
 	formData = getInputDataFromId(form);
 	formData['action'] = 'updateProfile';
-	$.post("profile.ajax.php", getSerializedArray(formData), function(data) {
+	$.post("engine.ajax.php", getSerializedArray(formData), function(data) {
 		showResponses( data, true);
 	});
 }
@@ -1057,11 +1066,11 @@ function updateProfile(form) {
 function showAddSelectIdea(elem) {
 	showCommonPopup(elem);
 	if (currentGroupId == null ) {
-		$.get("select.ajax.php?action=getAddSelect", function(data) {
+		$.get("engine.ajax.php?action=getAddSelect", function(data) {
 			$("#commonPopup #actionDetails").html(data);
 		});
 	} else {
-		$.get("select.ajax.php?action=getAddSelectForGroup&groupId="+currentGroupId, function(data) {
+		$.get("engine.ajax.php?action=getAddSelectForGroup&groupId="+currentGroupId, function(data) {
 			$("#commonPopup #actionDetails").html(data);
 		});
 	}
@@ -1069,7 +1078,7 @@ function showAddSelectIdea(elem) {
 
 function addSelectItem(id) {
 	dijit.byId('commonPopup').hide();
-	$.post("select.ajax.php", {action: "createSelection", ideaId:id}, function(data) {
+	$.post("engine.ajax.php", {action: "createSelection", ideaId:id}, function(data) {
 		showResponses( data, true);
 		showSelect();
 	});
@@ -1077,10 +1086,7 @@ function addSelectItem(id) {
 
 function deleteSelectIdea(id){
 	if (confirm(removeString)) {
-	$.post("select.ajax.php", {action: "deleteSelection", selectionId:id}, function(data) {
-		showResponses( data, true);
-		showSelect();
-	});
+		doAction({action: "deleteSelection", selectionId:id}, 'showSelect()');
 	} else {
 		return false;
 	}
@@ -1089,10 +1095,7 @@ function deleteSelectIdea(id){
 function updateSelection(selectform){
 	formData = getInputDataFromId(selectform);
 	formData['action'] = 'updateSelection';
-	$.post("select.ajax.php", getSerializedArray(formData), function(data) {
-		showResponses( data, true);
-		showCompare();
-	});
+	doAction(getSerializedArray(formData), 'showSelect()');
 }
 
 function printPopupIdea() {
@@ -1127,25 +1130,11 @@ function genericPrint(url, id) {
 }
 
 // IDEA SHARING TOGGLING
-function publicIdea() {
-	var publicIdeaPost = "action=updateIdeaDetails&ideaId="+currentIdeaId+"&isPublic=1";
-	$.post("ideas.ajax.php", publicIdeaPost, function (data) {
-		showResponses( data, true);
-	});
-}
-
-function unpublicIdea() {
-	var publicIdeaPost = "action=updateIdeaDetails&ideaId="+currentIdeaId+"&isPublic=0";
-	$.post("ideas.ajax.php", publicIdeaPost, function (data) {
-		showResponses( data, true);
-	});
-}
-
 function togglePublicIdea(elem) {
 	if($(elem).is(':checked')) {
-		publicIdea();
+		doAction("action=updateIdeaDetails&ideaId="+currentIdeaId+"&isPublic=1");
 	} else {
-		unpublicIdea();
+		doAction("action=updateIdeaDetails&ideaId="+currentIdeaId+"&isPublic=0");
 	}
 }
 
@@ -1158,31 +1147,15 @@ function toggleGroupShareIdea(elem, id) {
 }
 
 function toggleGroupEditIdea(elem, iId, gId) {
-	if ($(elem).is(':checked')) {
-		addEditPermToGroup(elem, iId, gId);
-	} else {
-		removeEditPermToGroup(elem, iId, gId);
-	}
-}
-
-function addEditPermToGroup(elem, iId, gId) {
-	$.post("groups.ajax.php", {action: "editIdeaToGroup", ideaId:iId, groupId:gId}, function(data) {
-		showResponses( data, true);
-	});
-}
-
-function removeEditPermToGroup(elem, iId, gId) {
-	$.post("groups.ajax.php", {action: "rmEditIdeaToGroup", ideaId:iId, groupId:gId}, function(data) {
-		showResponses( data, true);
-	});
+	if ($(elem).is(':checked')) 
+		doAction({action: "editIdeaToGroup", ideaId:iId, groupId:gId});
+	else
+		doAction({action: "rmEditIdeaToGroup", ideaId:iId, groupId:gId});
 }
 
 function updateFeatureEvalSummary(elem, id) { 
-	$.post("ideas.ajax.php", {action: "updateIdeaFeatureEvaluation", ideaFeatureEvaluationId:id, summary:$(elem).val()}, function(data) {
-		showResponses(data, true);
-	});
+	doAction({action: "updateIdeaFeatureEvaluation", ideaFeatureEvaluationId:id, summary:$(elem).val()});
 }
-
 
 //SEARCH OPTIONS VISIBILITY
 function toggleSearchOptions() {
@@ -1193,24 +1166,16 @@ function toggleSearchOptions() {
 //TOGGLE Profiles
 function togglePublicProfile(elem) {
 	if ($(elem).is(':checked')) {
-		$.post("profile.ajax.php", {action:'updateProfile', isPublic:1}, function(data) {
-			showResponses( data, true);
-		});
+		doAction({action:'updateProfile', isPublic:1});
 	} else {
-		$.post("profile.ajax.php", {action:'updateProfile', isPublic:0}, function(data) {
-			showResponses( data, true);
-		});
+		doAction({action:'updateProfile', isPublic:0});
 	}
 }
 
 function toggleSendEmail(elem) {
 	if ($(elem).is(':checked')) {
-		$.post("profile.ajax.php", {action:'updateProfile', sendEmail:1}, function(data) {
-			showResponses( data, true);
-		});
+		doAction({action:'updateProfile', sendEmail:1});
 	} else {
-		$.post("profile.ajax.php", {action:'updateProfile', sendEmail:0}, function(data) {
-			showResponses( data, true);
-		});
+		doAction({action:'updateProfile', sendEmail:0});
 	}
 }

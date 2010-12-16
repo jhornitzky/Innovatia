@@ -10,23 +10,38 @@ function custom_warning_handler($errno, $errstr) {
 	logDebug($errstr);
 }
 
-function logDebug($msg) { 
-  error_log(" [DEBUG](".$_SERVER['SCRIPT_NAME'] . ") " . $msg);
-}
-
-function logInfo($msg) {
-  error_log(" [INFO](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
-}
-
-function logWarning($msg) {
-  error_log(" [WARN](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
-}
-
-function logError($msg) {
-  error_log(" [ERROR](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
+function getBacktrace() {
+	$backtrace = debug_backtrace();
+	return $backtrace[1]['file'];
 }
 
 function logAudit($msg) {
-  error_log(" [AUDIT](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
+	global $logLevel;
+	if ($logLevel < 1)
+  		error_log(" [AUDIT](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
+}
+
+function logDebug($msg) { 
+	global $logLevel;
+	if ($logLevel < 2)
+ 		error_log(" [DEBUG](".$_SERVER['SCRIPT_NAME'] . ") " . $msg);
+}
+
+function logInfo($msg) {
+	global $logLevel;
+	if ($logLevel < 3)
+  		error_log(" [INFO](".$_SERVER['SCRIPT_NAME'].  ") " .$msg);
+}
+
+function logWarning($msg) {
+	global $logLevel;
+	if ($logLevel < 4)
+  		error_log(" [WARN](".$_SERVER['SCRIPT_NAME'] .  ") " .$msg);
+}
+
+function logError($msg) {
+	global $logLevel;
+	if ($logLevel < 5)
+  		error_log(" [ERROR](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 ?>

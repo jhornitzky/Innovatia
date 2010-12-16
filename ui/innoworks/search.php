@@ -100,7 +100,6 @@ if ($groups && dbNumRows($groups) > 0){
 } else {
 	echo "<p>No groups</p>";
 }
-logDebug("Done Search");
 ?>
 </div>
 

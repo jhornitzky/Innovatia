@@ -254,12 +254,22 @@ function getUserInfo($userId)
 	return false;
 }
 
-function getSimilarUserProfiles($userId) {
+function getSimilarUserProfiles($userId, $limit) {
 	$info = getUserInfo($userId);
-	$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') AND isPublic='1' ORDER BY createdTime");
+	$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') AND isPublic='1' ORDER BY createdTime $limit");
 	if ($rs && dbNumRows($rs) == 0) {
-		$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND isPublic='1' ORDER BY createdTime LIMIT 5");
+		$rs = dbQuery("SELECT * FROM Users WHERE userId != '$userId' AND isPublic='1' ORDER BY createdTime $limit");
 	}
+	return $rs;
+}
+
+function countGetSimilarUserProfiles($userId) {
+	$info = getUserInfo($userId);
+	$rs = dbQuery("SELECT COUNT(*) FROM Users WHERE userId != '$userId' AND (interests LIKE '%".$info->interests."%' OR organization = '".$info->organization."') AND isPublic='1'");
+	if ($rs && dbNumRows($rs) == 0) {
+		$rs = dbQuery("SELECT COUNT(*) FROM Users WHERE userId != '$userId' AND isPublic='1'");
+	}
+	
 	return $rs;
 }
 

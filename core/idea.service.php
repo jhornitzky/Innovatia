@@ -8,8 +8,18 @@ function getPublicIdeas() {
 	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.isPublic = '1' AND Ideas.userId = Users.userId ORDER BY createdTime");
 }
 
-function getIdeas($userid) {
-	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId ORDER BY createdTime DESC");
+function countPublicIdeas($userid) {
+	$count = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas WHERE Ideas.isPublic = '1'"));
+	return $count[0];
+}
+
+function getIdeas($userid, $limit) {
+	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId ORDER BY createdTime DESC $limit");
+}
+
+function countIdeas($userid) {
+	$array = dbFetchArray(dbQuery("SELECT COUNT(Ideas.title) FROM Ideas, Users WHERE Ideas.userId = '".$userid."' AND Users.userId = Ideas.userId"));
+	return $array[0];
 }
 
 function getProfileIdeas($userid) {

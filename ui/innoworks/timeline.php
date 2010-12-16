@@ -3,6 +3,8 @@ require_once("thinConnector.php");
 ?>
 <div class="fixed-left">
 	<h2 id="pgName">Timelines</h2>
+	You can get more resources at
+	<a href="http://online.uts.edu.au">UTS Online</a>
 </div>
 <div class="fixed-right">		
 <table>

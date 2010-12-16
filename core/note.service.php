@@ -87,8 +87,13 @@ function deleteNote($opts) {
 	return genericDelete("Notes", $opts);
 }
 
-function getAllNotes($user) {
-	return dbQuery("SELECT Notes.* FROM Notes WHERE toUserId='$user' OR fromUserId='$user' ORDER BY createdTime DESC");
+function getAllNotes($user, $limit) {
+	return dbQuery("SELECT Notes.* FROM Notes WHERE toUserId='$user' OR fromUserId='$user' ORDER BY createdTime DESC $limit");
+}
+
+function countGetAllNotes($user) {
+	$count = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Notes WHERE toUserId='$user' OR fromUserId='$user' ORDER BY createdTime DESC"));
+	return $count[0];
 }
 
 function getAllIncomingNotes($user) {

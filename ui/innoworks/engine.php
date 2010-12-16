@@ -11,13 +11,14 @@ import("user.service");
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
 <title>innoWorks</title>
-<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>/favicon.ico" type="image/x-icon" />
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/innoworks.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/common.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/dijit/themes/tundra/tundra.css" />
+<link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<?= $uiRoot?>scripts/jQuery-Min.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
+<!-- <script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dojo/innoworks/innodojo.js"></script>-->
+<script type="text/javascript" src="<?= $uiRoot?>scripts/dojoLayer.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/innoworks.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/common.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 
@@ -59,7 +60,6 @@ $(document).ready(function() {
 
 dojo.addOnLoad(function(){	
 	if (isMobile) {
-		//dojo.declare("dijit.form.Textarea",dijit.form.SimpleTextarea,{cols:50, rows:1});
 		dojo.declare("dijit.form.Textarea",null,null);
 	}
 	

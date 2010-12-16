@@ -1,3 +1,15 @@
+var loadingString = "<div class='loadingAnim'></div>";
+var smallLoadingString = "<div class='smallLoadingAnim'></div>";
+
+function loadResults(element, jsonRequest) {
+	var parent = $(element).parent();
+	$(element).remove();
+	parent.append(smallLoadingString);
+	$.get("ui/login/login.ajax.php", jsonRequest, function(data) {
+		parent.html(data); 
+	});
+}
+
 function logAction() {}
 
 function authenUser() {
@@ -65,14 +77,13 @@ function showSearch() {
 	$("#AjaxForm").fadeOut(250, function() {
 		$("#Wait").fadeIn(250);
 		
-		url = "ui/login/loginSearch.php";
+		url = "ui/login/login.ajax.php?action=getSearchDefault";
 		if (searchTerms != undefined)
-			url += "?"+searchTerms; 
+			url += "&"+searchTerms; 
 		
 		$.get(url, function(data) {
 			$("#AjaxForm").html(data);
 			hideWait();
-			//FIXME add dojo loading here
 		});
 	});
 }
