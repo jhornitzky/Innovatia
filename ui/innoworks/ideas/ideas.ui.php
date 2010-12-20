@@ -215,10 +215,12 @@ function renderIdeaGroupsForUser($uid) {
 		</div>
 <?}
 
-function renderIdeaGroupsListForUser($uid) {
+function renderIdeaGroupsListForUser($uid, $limit) {
 	global $serverRoot;
 	import("group.service");
-	$groups = getAllGroupsForUser($uid);?>
+	$groups = getAllGroupsForUser($uid, "LIMIT $limit");
+	$countGroups = countGetAllGroupsForUser($uid);
+	?>
 	<div class='itemHolder clickable private' onclick="showDefaultIdeas()">Private</div>
 	<div class='itemHolder clickable public' onclick="showPublicIdeas()">Public</div>
 	<?if ($groups && dbNumRows($groups) > 0 ) {
@@ -226,8 +228,10 @@ function renderIdeaGroupsListForUser($uid) {
 			echo "<div class='itemHolder clickable groupSel_$group->groupId' onclick=\"showIdeasForGroup($group->groupId)\">";
 			echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
 			echo $group->title . "</div>";
-		}
-	} 
+		} if ($countGroups > dbNumRows($groups)) ?>
+			<a href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupsForUser', limit:'<?= $limit + 20; ?>'})">
+			Load more</a>
+	<?} 
 }
 
 function renderIdeaFeatureEvaluationsForIdea($id) {

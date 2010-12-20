@@ -15,7 +15,7 @@ if (isset($_GET['action'])) {
 			renderPublicIdeas($limit);
 			break;
 		case "getIdeaGroupsForUser":
-			renderIdeaGroupsListForUser($_SESSION['innoworks.ID']);
+			renderIdeaGroupsListForUser($_SESSION['innoworks.ID'], $limit);
 			break;
 		case "getIdeasForGroup":
 			renderIdeasForGroup($_GET['groupId']);

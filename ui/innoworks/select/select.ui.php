@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . "/../thinConnector.php");
 import("idea.service");
 
 function renderSelectDefault($userId) {
-	$ideas = getSelectedIdeas($userId) or die("Error retrieving ideas. Report to IT Support.");
+	$ideas = getSelectedIdeas($userId);
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderSelectIdea($ideas,$idea, $userId);
@@ -14,7 +14,7 @@ function renderSelectDefault($userId) {
 }
 
 function renderSelectPublic() {
-	$ideas = getPublicSelectedIdeas() or die("Error retrieving ideas. Report to IT Support.");
+	$ideas = getPublicSelectedIdeas();
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderSelectIdea($ideas,$idea, $userId);
@@ -25,7 +25,7 @@ function renderSelectPublic() {
 }
 
 function renderSelectForGroup($groupId, $userId) {
-	$ideas = getSelectedIdeasForGroup($groupId, $userId) or die("Error retrieving ideas. Report to IT Support.");
+	$ideas = getSelectedIdeasForGroup($groupId, $userId);
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderSelectIdea($ideas,$idea, $userId);
@@ -72,29 +72,66 @@ $views = getViewsForIdea($idea->ideaId);
 </div>
 <?}
 
-function renderAddSelectIdea() {
-	echo "Select an idea to add to risk evaluation";
-	$ideas = getIdeas($_SESSION['innoworks.ID']); 
-	if ($ideas && dbNumRows($ideas) > 0) { 
-		echo "<ul>";
-		while ($idea = dbFetchObject($ideas)) {
-			echo  "<li><a href='javascript:addSelectItem(\"$idea->ideaId\")'>".$idea->title. "</a></li>";
-		}
-		echo "</ul>";
-	}
+function renderAddSelectIdea($actionId, $user, $criteria) {
+	$limit=20;?>
+	<form id="popupAddSearch" onsubmit="findAddSelectIdeas();return false;">
+		<input id="addSelectIdeaSearchTerms" type="text" name="criteria"/> 
+		<input type="submit" value="Find Ideas"/>
+	</form>
+	<p>Select an idea to add to group</p>
+	<div>
+	<?renderAddIdeaSelectItems($criteria, $limit);?>
+	</div>
+<?}
+
+function renderAddIdeaSelectItems($criteria, $limit) {
+	import("search.service");
+	$ideas = getSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'],array(), "LIMIT $limit");
+	$countIdeas = countGetSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'],array(), "LIMIT $limit");
+	if ($ideas && dbNumRows($ideas) > 0) {
+		while ($idea = dbFetchObject($ideas)) {?>
+			<div>
+			<a href='javascript:logAction()' onclick='addSelectItem("<?$idea->ideaId?>")'>
+			<?= $idea->title ?></a></div>
+		<?}
+		if ($countIdeas > dbNumRows($ideas)) {?>
+			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getAddIdeaSelectItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
+		<?}
+	} else {?>
+		<p>No ideas found</p>
+	<?}
 }
 
 function renderAddSelectIdeaForGroup($groupId, $userId) {
+	$limit=20;?>
+	<!-- <form id="popupAddSearch" onsubmit="findAddSelectIdeas();return false;">
+		<input id="addSelectIdeaSearchTerms" type="text" name="criteria"/> 
+		<input type="submit" value="Find Ideas"/>
+	</form> -->
+	<p>Select an idea for implementation from the group</p>
+	<div>
+	<?renderAddIdeaSelectItems($groupId, $userId, $limit);?>
+	</div>
+<?}
+
+function renderAddIdeaSelectItemsForGroup($groupId, $userId, $limit) {
 	import("group.service");
-	echo "Select an idea to add to risk evaluation";
-	$ideas = getIdeasForGroup($groupId, $userId); 
-	if ($ideas && dbNumRows($ideas) > 0) { 
-		echo "<ul>";
-		while ($idea = dbFetchObject($ideas)) {
-			echo  "<li><a href='javascript:addSelectItem(\"$idea->ideaId\")'>".$idea->title. "</a></li>";
-		}
-		echo "</ul>";
-	}
+	//$ideas = getSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'],array(), "LIMIT $limit");
+	//$countIdeas = countGetSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'],array(), "LIMIT $limit");
+	$ideas = getIdeasForGroup($groupId, $userId, "LIMIT $limit");
+	$countIdeas = countGetIdeasForGroup($groupId, $userId);
+	if ($ideas && dbNumRows($ideas) > 0) {
+		while ($idea = dbFetchObject($ideas)) {?>
+			<div>
+			<a href='javascript:logAction()' onclick='addSelectItem("<?$idea->ideaId?>")'>
+			<?= $idea->title ?></a></div>
+		<?}
+		if ($countIdeas > dbNumRows($ideas)) {?>
+			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getAddIdeaSelectItemsForGroup', limit: '<?= $limit + 20; ?>'})">Load more</a>
+		<?}
+	} else {?>
+		<p>No ideas found</p>
+	<?}
 }
 
 function renderIdeaSelect($ideaId,$userId) {

@@ -79,30 +79,60 @@ function renderRiskItemCallbackRow($key, $value, $riskItem) {
 	}
 }
 
-function renderAddRiskIdea() {
-	import("idea.service");
-	echo "Select an idea to add to risk evaluation";
-	$ideas = getIdeas($_SESSION['innoworks.ID']); 
-	if ($ideas && dbNumRows($ideas) > 0) { 
-		echo "<ul>";
-		while ($idea = dbFetchObject($ideas)) {
-			echo  "<li><a href='javascript:addRiskItem(\"$idea->ideaId\")'>".$idea->title. "</a></li>";
-		}
-		echo "</ul>";
-	}
+function renderAddRiskIdea($actionId, $user, $criteria) {
+	$limit = 20;?>
+	<form id="popupAddSearch" onsubmit="findAddRiskIdeas(); return false;">
+		<input type="text" name="criteria"/> 
+		<input type="submit" value="Find Ideas"/>
+	</form>
+	<p>Select an idea to add to comparison</p>
+	<div>
+	<?renderAddRiskIdeaItems($criteria, $limit);?>
+	</div>
+<?}
+
+function renderAddRiskIdeaItems($criteria, $limit) {
+	import("search.service");
+	$ideas = getSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'], array(), "LIMIT $limit");
+	$countIdeas = countGetSearchIdeasByUser($criteria, $_SESSION['innoworks.ID'], array(), "LIMIT $limit");
+	if ($ideas && dbNumRows($ideas) > 0) {
+		while ($idea = dbFetchObject($ideas)) {?>
+			<div>
+			<a href='javascript:logAction()' onclick='addRiskItem("<?= $idea->ideaId?>")'>
+			<?= $idea->title ?></a></div>
+		<?}
+		if ($countIdeas > dbNumRows($ideas)) {?>
+			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getAddRiskIdeaItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
+		<?}
+	} else {?>
+		<p>No ideas found</p>
+	<?}
 }
 
 function renderAddRiskIdeaForGroup($groupId, $userId) {
+	$limit=20;?>
+	<p>Select an idea for comparison in the group</p>
+	<div>
+	<?renderAddRiskIdeaForGroupItems($groupId, $userId, $limit);?>
+	</div>
+<?}
+
+function renderAddRiskIdeaForGroupItems($groupId, $userId, $limit) {
 	import("group.service");
-	echo "Select an idea to add to group risk evaluation";
-	$ideas = getIdeasForGroup($groupId); 
-	if ($ideas && dbNumRows($ideas) > 0) { 
-		echo "<ul>";
-		while ($idea = dbFetchObject($ideas)) {
-			echo "<li><a href='javascript:addRiskItemForGroup(\"$idea->ideaId\", \"$groupId\")'>".$idea->title. "</a></li>";
-		}
-		echo "</ul>";
-	}
+	$ideas = getIdeasForGroup($groupId, $userId, "LIMIT $limit");
+	$countIdeas = countGetIdeasForGroup($groupId, $userId);
+	if ($ideas && dbNumRows($ideas) > 0) {
+		while ($idea = dbFetchObject($ideas)) {?>
+			<div>
+			<a href='javascript:logAction()' onclick='addRiskItemForGroup("<?$idea->ideaId?>")'>
+			<?= $idea->title ?></a></div>
+		<?}
+		if ($countIdeas > dbNumRows($ideas)) {?>
+			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getAddRiskIdeaForGroupItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
+		<?}
+	} else {?>
+		<p>No ideas found</p>
+	<?}
 }
 
 function renderIdeaSummary($ideaId) {

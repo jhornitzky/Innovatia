@@ -5,13 +5,24 @@ function getGroupDetails($gid) {
 	return dbFetchObject(dbQuery("SELECT Groups.* FROM Groups WHERE groupId = $gid"));
 }
 
-function getAllGroupsForUser($user) {
-	return dbQuery("SELECT groupId, title FROM Groups WHERE userId = $user UNION SELECT Groups.groupId, Groups.title FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId");
+function getAllGroupsForUser($user, $limit) {
+	return dbQuery("SELECT groupId, title FROM Groups WHERE userId = $user UNION SELECT Groups.groupId, Groups.title FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId $limit");
 }
 
-function getPartOfGroupsForUser($user) {
-	$sql = "SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user'";
+function countGetAllGroupsForUser($user) {
+	$groupsArray = dbFetchArray(dbQuery("SELECT COUNT(*) FROM (SELECT groupId, title FROM Groups WHERE userId = $user UNION SELECT Groups.groupId, Groups.title FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId) AS joinedGroups"));
+	return $groupsArray[0];
+}
+
+function getPartOfGroupsForUser($user, $limit) {
+	$sql = "SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user' $limit";
 	return dbQuery($sql);
+}
+
+function countGetPartOfGroupsForUser($user) {
+	$sql = "SELECT COUNT(*) FROM (SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user') AS joinedUsers";
+	$array = dbFetchArray(dbQuery($sql));
+	return $array[0];
 }
 
 function getOtherGroupsForUser($user, $limit) {
@@ -37,21 +48,26 @@ function getIdeasForUserinGroup($user, $group) {
 	GroupIdeas.ideaId = Ideas.ideaId");
 }
 
-function getGroupsForCreatorUser($user) {
-	return dbQuery("SELECT * FROM Groups WHERE userId = '$user'");
+function getGroupsForCreatorUser($user, $limit) {
+	return dbQuery("SELECT * FROM Groups WHERE userId = '$user' $limit");
+}
+
+function countGetGroupsForCreatorUser($user) {
+	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Groups WHERE userId = '$user'"));
+	return $array[0];
 }
 
 function getUsersForGroup($id) {
 	return dbQuery("SELECT Users.userId, Users.username, GroupUsers.* FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId");
 }
 
-function getIdeasForGroup($id) {
-	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId");
+function getIdeasForGroup($id, $user, $limit) {
+	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId $limit");
 }
 
-function countGetIdeasForGroup($id) {
-	$count = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas, Groups, GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId"));
-	return $count[0];
+function countGetIdeasForGroup($id, $user) {
+	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId"));
+	return $array[0];
 }
 
 function getIdeaShareDetails($id) {

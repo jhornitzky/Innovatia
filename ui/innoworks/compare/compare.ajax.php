@@ -3,6 +3,9 @@ require_once(dirname(__FILE__) . "/compare.ui.php");
 import("compare.service");
 
 if (isset($_GET['action'])) {
+	$limit = 20;
+	if (isset($_GET['limit']))
+		$limit = $_GET['limit'];
 	switch ($_GET['action']) {
 		case "getComparison":
 			renderCompareDefault($_SESSION['innoworks.ID']);
@@ -14,10 +17,16 @@ if (isset($_GET['action'])) {
 			renderComparisonForGroup($_GET['groupId']);
 			break;
 		case "getAddRisk":
-			renderAddRiskIdea($_SESSION['innoworks.ID']);
+			renderAddRiskIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			break;
+		case "getAddRiskIdeaItems":
+			renderAddRiskIdeaItems($_SESSION['innoworks.ID'], $limit);
 			break;
 		case "getAddRiskForGroup":
 			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getAddRiskForGroupItems":
+			renderAddRiskIdeaForGroupItems($_GET['groupId'], $_SESSION['innoworks.ID'], $limit);
 			break;
 		case "getIdeaSummary":
 			import("idea.service");

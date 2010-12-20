@@ -281,8 +281,13 @@ function getUserGroups($user) {
 	return dbQuery("SELECT Groups.* FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId");
 }
 
-function getAllUsers() {
-	return dbQuery("SELECT * FROM Users ORDER BY username");
+function getAllUsers($limit) {
+	return dbQuery("SELECT * FROM Users ORDER BY username $limit");
+}
+
+function countGetAllUsers() {
+	$array = dbFetchArray(dbQuery("SELECT * FROM Users ORDER BY username"));
+	return $array[0];
 }
 
 function updateUser($opts) {

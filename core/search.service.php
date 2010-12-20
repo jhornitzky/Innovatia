@@ -48,7 +48,6 @@ function addSingleFilterString($key, $value, $target) {
 }
 
 function getSearchIdeas($criteria, $user, $filters, $limit) {
-	logDebug("Limit for finding ideas is: " . $limit);
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("Ideas.title"));
 	$filters = cleanseArray($filters);
@@ -68,18 +67,41 @@ function countGetSearchIdeas($criteria, $user, $filters) {
 	return $count[0];
 }
 
+function getSearchIdeasByUser($criteria, $user, $filters, $limit) {
+	$criteria = cleansePureString($criteria);
+	$criteriaString = createCriteriaString($criteria, array("Ideas.title"));
+	$filters = cleanseArray($filters);
+	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Ideas"); 
+	$sql = "SELECT Ideas.* FROM Ideas WHERE $criteriaString $filterString AND Ideas.userId='$user' ORDER BY lastUpdateTime DESC $limit";
+	return dbQuery($sql);
+}
+
+function countGetSearchIdeasByUser($criteria, $user, $filters) {
+	$criteria = cleansePureString($criteria);
+	$criteriaString = createCriteriaString($criteria, array("Ideas.title"));
+	$filters = cleanseArray($filters);
+	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Ideas"); 
+	$sql = "SELECT COUNT(*) FROM Ideas WHERE $criteriaString $filterString AND Ideas.userId='$user'";
+	$count =  dbFetchArray(dbQuery($sql));
+	return $count[0];
+}
+
 function getSearchPeople($criteria, $user, $filters, $limit) {
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("Users.username", "Users.firstName", "Users.lastName"));
 	$filters = cleanseArray($filters);
 	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Users"); 
 	
+	$sql = "SELECT Users.* FROM Users WHERE $criteriaString $filterString";
+	
+	/*
 	$sql = "SELECT Users.* FROM Users WHERE $criteriaString $filterString AND isPublic='1' UNION 
 	SELECT Users.* FROM Users, GroupUsers WHERE $criteriaString $filterString
 	AND (GroupUsers.userId = Users.userId AND GroupUsers.groupId IN 
 	(SELECT GroupUsers.groupId FROM Users, GroupUsers, Groups WHERE 
 	(Users.userId='$user' AND GroupUsers.userId = Users.userId) OR 
 	(Users.userId='$user' AND Groups.userId = Users.userId AND GroupUsers.groupId = Groups.groupId))) ORDER BY lastUpdateTime DESC $limit";
+	*/
 	
 	return dbQuery($sql);
 }
@@ -90,12 +112,16 @@ function countGetSearchPeople($criteria, $user, $filters) {
 	$filters = cleanseArray($filters);
 	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Users"); 
 	
+	$sql = "SELECT COUNT(*) FROM Users WHERE $criteriaString $filterString";
+	
+	/*
 	$sql = "SELECT COUNT(*) FROM (SELECT Users.* FROM Users WHERE $criteriaString $filterString AND isPublic='1' UNION 
 	SELECT Users.* FROM Users, GroupUsers WHERE $criteriaString $filterString
 	AND (GroupUsers.userId = Users.userId AND GroupUsers.groupId IN 
 	(SELECT GroupUsers.groupId FROM Users, GroupUsers, Groups WHERE 
 	(Users.userId='$user' AND GroupUsers.userId = Users.userId) OR 
 	(Users.userId='$user' AND Groups.userId = Users.userId AND GroupUsers.groupId = Groups.groupId)))) AS joinedusers";
+	*/
 	
 	$count =  dbFetchArray(dbQuery($sql));
 	return $count[0];

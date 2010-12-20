@@ -1,6 +1,14 @@
 <?
 require_once("innoworks.config.php");
 
+function getLimitString($limit) {
+	if (!isset($limit) || empty($limit)) {
+		return "LIMIT 20";
+	} else {
+		return "LIMIT " . ($limit - 20) . "," . $limit;
+	}
+}
+
 function getRefDataForTable($table) {
 	return dbQuery("SELECT * FROM ReferenceData WHERE key1 = '$table' ORDER BY value");
 }
@@ -9,7 +17,7 @@ function cleansePureString($str, $char = '\\')
 {
 	///[^a-zA-Z0-9\s]/ NON ALPHA
 	$cleansed = preg_replace("/[%_'\"]/", '', $str); //_, % and '
-	//logDebug("CLEANSED VAL: ".$cleansed);
+	logAudit("Cleansed String Value is: " . $cleansed);
     return $cleansed;
 }
 
@@ -135,7 +143,7 @@ function dbQuery($sqlQuery)
 				{
 				die("Argument 0: Not A Valid MySQL Connection");
 				}
-				if (!is_string($argv[1]))
+				if (!is_string($argv[1])) -->
 				{
 				die("Argument 1: Not A MySQL String");
 				}
@@ -158,13 +166,15 @@ function dbQuery_Auto($sqlQuery)
 function dbQuery_Manual($dbUplink, $sqlQuery)
 {
 	if (is_string($sqlQuery)) 
-		logDebug($sqlQuery);
+		logAudit($sqlQuery);
 		
 	$result = mysqli_query($dbUplink, $sqlQuery);
 	
-	if (mysqli_errno($dbUplink)) {
-		logError(mysqli_errno($dbUplink) . " " . mysqli_error($dbUplink));
-		die(getCommonErrorString(mysqli_errno($dbUplink) . " " . mysqli_error($dbUplink)));
+	$error = mysqli_errno($dbUplink);
+	if ($error) {
+		logError($error . " " . mysqli_error($dbUplink));
+		//die(getCommonErrorString(mysqli_errno($dbUplink) . " " . mysqli_error($dbUplink)));
+		die(getCommonErrorString(mysqli_errno($dbUplink) . " Error has occured. If problems persist please report to developer and quote error code."));
 	}
 	return $result;
 }

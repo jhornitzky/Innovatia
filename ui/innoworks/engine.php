@@ -255,7 +255,6 @@ function openAdmin() {
 </div>
 </div>
 
-<!-- MORE TABS -->
 <div id="profileTab" class="tabBody"></div>
 
 <div id="groupTab" class="tabBody">
@@ -305,8 +304,6 @@ function openAdmin() {
 	</div>
 </div>
 
-<div id="adminTab" class="tabBody"></div>
-
 <!-- POPUP DIALOGS -->
 <div id="ideasPopup" dojoType="dijit.Dialog">
 <div id="ideaPopupResponses" class="responses"></div>
@@ -344,8 +341,8 @@ function openAdmin() {
 </div>
 </div>
 
-<div id="commonPopup" dojoType="dijit.Dialog" style="width: 15em; height: 300px;">
-	<div id="actionDetails" dojoType="dijit.layout.ContentPane"></div>
+<div id="commonPopup" dojoType="dijit.Dialog" style="width: 18em; height: 400px;">
+	<div id="actionDetails"></div>
 </div>
 
 </div>

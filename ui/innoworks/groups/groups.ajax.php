@@ -11,6 +11,12 @@ if (isset($_GET['action'])) {
 		case "getGroups":
 			renderGroupDefault($_SESSION['innoworks.ID']);
 			break;
+		case "getGroupsForCreatorUser":
+			renderGroupsForCreatorUser($_SESSION['innoworks.ID'], $limit);
+			break;
+		case "getPartOfGroupsForUser":
+			renderPartOfGroupsForUser($_SESSION['innoworks.ID'], $limit);
+			break;
 		case "getOtherGroupsForUser":
 			renderOtherGroupsForUser($_SESSION['innoworks.ID'], $limit);
 			break;
@@ -21,13 +27,22 @@ if (isset($_GET['action'])) {
 			renderGroupSummary($_GET['actionId']);
 			break;
 		case "getAddUser":
-			renderAddUser($_GET['actionId'], $_SESSION['innoworks.ID']);
+			renderAddUser($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			break;
+		case "getAddUserItems":
+			renderAddUserItems($_GET['criteria'], $limit);
 			break;
 		case "getAddIdea":
-			renderAddIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
+			renderAddIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			break;
+		case "getAddIdeaItems":
+			renderAddIdeaItems($_GET['criteria'], $limit);
 			break;
 		case "getPublicAddIdea":
-			renderPublicAddIdea($_GET['actionId'], $_SESSION['innoworks.ID']);
+			renderPublicAddIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			break;
+		case "getPublicAddIdeaItems":
+			renderPublicAddIdeaItems($_GET['criteria'], $limit);
 			break;
 		case "getShareForIdea":
 			renderIdeaShare($_GET['actionId'], $_SESSION['innoworks.ID']);

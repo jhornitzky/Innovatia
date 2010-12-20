@@ -6,7 +6,7 @@ require_once("thinConnector.php");
 
 //Log actions
 if (isset($_REQUEST['action']))
-	logDebug($_SESSION['innoworks.ID'] . $_REQUEST['action']);
+	logDebug('[User ' . $_SESSION['innoworks.ID'] . '] '. $_REQUEST['action']);
 	
 //ORDER FOR SPEED BASED ON MOST likely action
 require_once("dash/dash.ajax.php");

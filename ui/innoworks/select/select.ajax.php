@@ -4,6 +4,9 @@ require_once(dirname(__FILE__) . "/select.ui.php");
 import("idea.service");
 
 if (isset($_GET['action'])) {
+	$limit = 20;
+	if (isset($_GET['limit']))
+		$limit = $_GET['limit'];
 	switch ($_GET['action']) {
 		case "getSelection":
 			renderSelectDefault($_SESSION['innoworks.ID']);
@@ -15,10 +18,16 @@ if (isset($_GET['action'])) {
 			renderSelectForGroup($_GET['actionId'],$_SESSION['innoworks.ID']);
 			break;
 		case "getAddSelect":
-			renderAddSelectIdea($_SESSION['innoworks.ID']);
+			renderAddSelectIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			break;
+		case "getAddIdeaSelectItems":
+			renderAddIdeaSelectItems($_GET['criteria'], $limit);
 			break;
 		case "getAddSelectForGroup":
 			renderAddSelectIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getAddSelectItemsForGroup":
+			renderAddIdeaSelectItemsForGroup($_GET['groupId'], $_SESSION['innoworks.ID'], $limit);
 			break;
 		case "getSelectForIdea":
 			renderIdeaSelect($_GET['actionId'], $_SESSION['innoworks.ID']);
