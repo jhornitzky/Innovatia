@@ -16,7 +16,7 @@ a {
 }
 
 #head, #loginContent {
-	width:1000px;
+	width:1024px;
 	margin:0 auto;
 }
 
@@ -31,10 +31,6 @@ a {
 
 #headSurround {
 	background-color: #444444;
-}
-
-#loginContent {
-	padding-top:0.1em;
 }
 
 ul#submenu {
@@ -63,7 +59,7 @@ ul#submenu li {
 ul#submenu li.selected {
 	color: #FFFFFF;
 	background-color:#444; 
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+	/*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
 }
 
 ul#submenu li.selected a {
@@ -74,7 +70,7 @@ ul#submenu li.selected a {
 #ajaxContent {
 	padding:3px;
 	width:100%;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+	/*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
 	font-size:0.75em;
 }
 
@@ -126,8 +122,4 @@ span.subtext {
 .vAlign_Middle {
 	display:table-cell;
 	vertical-align:middle;
-}
-
-div.clickable {
-	cursor:auto;
 }
