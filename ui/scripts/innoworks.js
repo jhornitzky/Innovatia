@@ -183,22 +183,24 @@ function showIdeaReviews(ideaId) {
 	loadPopupShow();
 }
 
+var summaryStyleString = "width:20em; height:30em;";
+
 function showIdeaSummary(id) {
-	var idea = new inno.Dialog({href:"engine.ajax.php?action=getIdeaSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var idea = new inno.Dialog({title:"Idea", href:"engine.ajax.php?action=getIdeaSummary&actionId="+id, style: summaryStyleString});
 	dojo.body().appendChild(idea.domNode);
 	idea.startup();
 	idea.show();
 }
 
 function showProfileSummary(id) {
-	var profile = new inno.Dialog({href:"engine.ajax.php?action=getProfileSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var profile = new inno.Dialog({title:"Profile", href:"engine.ajax.php?action=getProfileSummary&actionId="+id, style: summaryStyleString});
 	dojo.body().appendChild(profile.domNode);
 	profile.startup();
 	profile.show();
 }
 
 function showGroupSummary(id) {
-	var group = new inno.Dialog({href:"engine.ajax.php?action=getGroupSummary&actionId="+id, style: "width: 250px;height:" + (document.documentElement.clientHeight * 0.75) + "px;"});
+	var group = new inno.Dialog({title:"Group", href:"engine.ajax.php?action=getGroupSummary&actionId="+id, style: summaryStyleString});
 	dojo.body().appendChild(group.domNode);
 	group.startup();
 	group.show();
@@ -213,49 +215,55 @@ function showIdeaDetails(ideaId) {
 function showIdeaGroupsForUser() {
 	$.get("engine.ajax.php?action=getIdeaGroupsForUser", function (data) {
 		$(".ideaGroupsList").html(data);
-		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel *"));
-		//dojo.parser.instantiate(dojo.query("div.ideaGroupsSel"));
-		//$("button span.dijitButtonText").html(currentGroupName);
-		$(".ideaGroupsList div").removeClass("selected");
-		if (currentGroupName == "Public") {
-			$(".ideaGroupsList div.public").addClass("selected");
-		} else if (currentGroupName == "Private") {
-			$(".ideaGroupsList div.private").addClass("selected");
-		} else {
-			$(".ideaGroupsList div.groupSel_"+currentGroupId).addClass("selected");
-		}
+		highlightSelectedSpace();
+		getGroupPreview();
 	});
 }
 
-function showStuffForTab() {
-	if (!($("#ideaTab").is(":hidden"))) {
-		getIdeas();
-	} else if (!($("#compareTab").is(":hidden"))){
-		getCompare();
-	} else if (!($("#selectTab").is(":hidden"))) {
-		getSelect();
+function getGroupPreview() {
+	if (currentGroupName == "Public") {
+		$("div.groupPreview").load("engine.ajax.php?action=getPublicGroupPreview");
+	} else if (currentGroupName == "Private") {
+		$("div.groupPreview").load("engine.ajax.php?action=getPrivateGroupPreview");
+	} else {
+		$("div.groupPreview").load("engine.ajax.php?action=getGroupPreview&actionId=" + currentGroupId);
+	}
+}
+
+function highlightSelectedSpace() {
+	$(".ideaGroupsList div").removeClass("selected");
+	if (currentGroupName == "Public") {
+		$(".ideaGroupsList div.public").addClass("selected");
+	} else if (currentGroupName == "Private") {
+		$(".ideaGroupsList div.private").addClass("selected");
+	} else {
+		$(".ideaGroupsList div.groupsHolder").addClass("selected");
 	}
 }
 
 function showDefaultIdeas() {
 	currentGroupId = null;
 	currentGroupName = "Private";
-	showStuffForTab();
+	refreshVisibleTab();
 	showIdeaGroupsForUser();
+	scroll(0,0);
 }
 
 function showPublicIdeas() {
 	currentGroupId = null;
 	currentGroupName = "Public";
-	showStuffForTab();
+	refreshVisibleTab();
 	showIdeaGroupsForUser();
+	scroll(0,0);
 }
 
 function showIdeasForGroup(gId, elem) {
 	currentGroupId = gId;
 	currentGroupName = elem;
-	showStuffForTab();
-	showIdeaGroupsForUser();
+	refreshVisibleTab();
+	getGroupPreview();
+	highlightSelectedSpace();
+	scroll(0,0);
 }
 
 ///////////// MORE GET FUNCTIONS ///////////////
@@ -451,6 +459,7 @@ function showGroups(elem) {
 	$(".menulnk").removeClass("selLnk");
 	$("#groupslnk").addClass("selLnk");
 	getGroups(); 
+	showGroupDetails();
 	$(".tabBody").hide();
 	$("#groupTab").show();
 }
@@ -502,7 +511,7 @@ function showTimelines(elem) {
 	$("#timelinelnk").parent().addClass("selMenu");
 	$(".menulnk").removeClass("selLnk");
 	$("#timelinelnk").addClass("selLnk");
-	$("#timelineTab").load("timeline.php");
+	$("#timelineTab").load("timeline/timeline.php");
 	$(".tabBody").hide();
 	$("#timelineTab").show();	
 }
@@ -581,13 +590,12 @@ jQuery.expr[':'].Contains = function(a,i,m){
 
 function filterIdeas(element) {
 	var filter = $(element).val();
-  if (filter != '' && filter != null) { 
-    $("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
-    $("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
-  } else {
-    $("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
-  }
-	
+	if (filter != '' && filter != null) { 
+		$("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
+    	$("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
+	} else {
+		$("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
+	}
 }
 
 function initFormSelectTotals(selector, parentSelector) {
@@ -746,6 +754,7 @@ function updateForGroup(id,name) {
 	currentGroupName = name;
 	showGroupDetails();
 	showIdeaGroupsForUser();
+	scroll(0,0);
 }
 
 function showAddGroupIdea(elem) {
@@ -855,7 +864,7 @@ function addRiskItem(id) {
 
 function addRiskItemForGroup(id, groupId) {
 	dijit.byId('commonPopup').hide();
-	doAction({action: "createRiskItemForGroup", ideaId:id, groupId:groupId}, "showCompare()");
+	doAction({action: "createRiskItemForGroup", ideaId:id, groupId:currentGroupId}, "showCompare()");
 }
  
 function updateRisk(riskform){
@@ -1029,6 +1038,10 @@ function printUser(urlE) {
 
 function printGroup(urlE) {
 	genericPrintViewer("viewer.php?print=true&group=" + currentGroupId);
+}
+
+function printGroupSummary(urlE) {
+	genericPrintViewer("viewer.php?print=true" + urlE);
 }
 
 function genericPrintViewer(url) {

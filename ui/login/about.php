@@ -1,6 +1,8 @@
 <? require_once("thinConnector.php");?>
-<span>Innoworks has a number of features that help you...</span>
-<table style="font-size:1.0em; margin-top:1em;" cellpadding="1.0em" cellspacing="1.0em">
+<span>Innoworks is an open innovation tool that helps you manage your ideas. <br/>
+You can record your ideas, review them with friends, and then pick the <br/> ones that have the most potential.</span>
+<p>With Innoworks you can:</p>
+<table style="font-size:1.0em;" cellpadding="1.0em" cellspacing="1.0em">
 	<tr>
 		<td><img style="height: 3em; width: 3em;" src="ui/style/innovate.png" /></td>
 		<td>Innovate<br />

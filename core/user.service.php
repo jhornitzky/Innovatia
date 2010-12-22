@@ -244,6 +244,19 @@ function isLoggedIn()
 	return false;
 }
 
+function getDisplayUsername($userId)
+{
+	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
+	if($rs && dbNumRows($rs) > 0) {
+		$row = dbFetchObject($rs);
+		if (!empty($row->firstName) || !empty($row->lastName))
+			return $row->firstName . ' ' . $row->lastName;
+		else 
+			return $row->username;
+	}
+	return false;
+}
+
 function getUserInfo($userId)
 {
 	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
@@ -269,7 +282,6 @@ function countGetSimilarUserProfiles($userId) {
 	if ($rs && dbNumRows($rs) == 0) {
 		$rs = dbQuery("SELECT COUNT(*) FROM Users WHERE userId != '$userId' AND isPublic='1'");
 	}
-	
 	return $rs;
 }
 
@@ -278,7 +290,12 @@ function getPublicUsers() {
 }
 
 function getUserGroups($user) {
-	return dbQuery("SELECT Groups.* FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId");
+	return dbQuery("SELECT Groups.* FROM GroupUsers, Groups WHERE (GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId) UNION SELECT * FROM Groups WHERE  Groups.userId = '$user' ORDER BY createdTime DESC LIMIT 50");
+}
+
+function countGetUserGroups($user) {
+	$count = dbFetchArray(dbQuery("SELECT COUNT(*) FROM (SELECT Groups.* FROM GroupUsers, Groups WHERE (GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId) UNION SELECT * FROM Groups WHERE  Groups.userId = '$user') AS joinedTable"));
+	return $count[0];
 }
 
 function getAllUsers($limit) {

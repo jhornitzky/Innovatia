@@ -32,6 +32,21 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 	echo "</table>";
 }
 
+function renderGenericInfoFormOnlyPopulated($rs,$row,$omitArray) {
+	echo "<table>";
+	foreach($row as $key => $value) {
+		echo "<tr>";
+		if (!in_array($key, $omitArray) && !empty($value)) {?>
+		<td><label><?=fromCamelCase($key)?></label></td>
+		<td>
+			<p><?=$value?></p>
+		</td>
+		<?}
+		echo "</tr>";
+	}
+	echo "</table>";
+}
+
 function renderGenericUpdateForm($rs,$row,$omitArray) {
 	echo "<table>";
 	foreach($row as $key => $value) {

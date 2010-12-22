@@ -22,9 +22,15 @@ function countIdeas($userid) {
 	return $array[0];
 }
 
-function getProfileIdeas($userid) {
-	$sql = "SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userid' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId";
+function getProfileIdeas($userid, $limit) {
+	$sql = "SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userid' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId $limit";
 	return dbQuery($sql);
+}
+
+function countGetProfileIdeas($userid) {
+	$sql = "SELECT COUNT(*) FROM (SELECT Ideas.* FROM Ideas WHERE Ideas.userId='$userid' AND Ideas.isPublic='1' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userid' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = Ideas.ideaId) AS joinedResult";
+	$array = dbFetchArray(dbQuery($sql));
+	return $array[0];
 }
 
 function getAddIdeas($userid) {
@@ -56,12 +62,18 @@ function createIdea($opts) {
 }
 
 function updateIdeaDetails($opts) {
-	$where = array("ideaId", "userId");
-	return genericUpdate("Ideas", $opts, $where);
+	if (hasEditAccessToIdea($opts['ideaId'], $_SESSION['innoworks.ID'])){
+		$where = array("ideaId", "userId");
+		return genericUpdate("Ideas", $opts, $where);
+	}
+	return false;
 }
 
 function deleteIdea($opts) {
-	return genericDelete("Ideas", $opts);
+	if (hasEditAccessToIdea($opts['ideaId'], $_SESSION['innoworks.ID'])){
+		return genericDelete("Ideas", $opts);
+	}
+	return false;
 }
 
 function createIdeaSelect($opts) {
@@ -122,7 +134,10 @@ function createComment($opts) {
 }
 
 function deleteComment($id) {
-	return genericDelete("Comments", array("commentId"=>$id));
+	if (hasEditAccessToComment($id, $_SESSION['innoworks.ID'])) {
+		return genericDelete("Comments", array("commentId"=>$id));
+	}
+	return false;
 }
 
 function createFeatureEvaluation($opts) {
@@ -169,12 +184,12 @@ function updateRole($opts) {
 function createAttachmentFS($destFileName) {
 	global $usersRoot;
 	$destFilePath = $usersRoot.$destFileName; 
-	logDebug("MOVING FILE TO: ".$_SERVER['DOCUMENT_ROOT'].$destFilePath);
+	logAudit("MOVING FILE TO: ".$_SERVER['DOCUMENT_ROOT'].$destFilePath);
 	if(move_uploaded_file($_FILES['userfile']['tmp_name'], $_SERVER['DOCUMENT_ROOT'].$destFilePath)) {
 		chmod($_SERVER['DOCUMENT_ROOT'].$destFilePath, 0444);
 		return true;
 	} else {
-		echo "Error [" . $_FILES['userfile']['error'] . "] uploading file...";
+		logError("Error uploading file for user to path " . $_SERVER['DOCUMENT_ROOT'].$destFilePath);
 		return false;
 	}
 }
@@ -247,25 +262,9 @@ function retrieveAttachment($id) {
 	}
 }
 
-function hasAccessToIdea($ideaId, $userId) { 
-	$numRows =dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId"));
-	if ($numRows > 0 || $_SESSION['innoworks.isAdmin'])
-		return true;
-	else
-		return false;
-}
-
-function hasEditAccessToIdea($ideaId, $userId) { 
-	$numRows = dbNumRows(dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = '$ideaId' AND GroupIdeas.canEdit = 1"));
-	if ($numRows > 0 || $_SESSION['innoworks.isAdmin'])
-		return true;
-	else
-		return false;
-}
-
 function getFeatureEvaluationTotalForIdea($ideaId, $userId) {
 	$score = dbFetchObject(dbQuery("SELECT AVG(FeatureEvaluation.score) AS score FROM IdeaFeatureEvaluations, FeatureEvaluation WHERE IdeaFeatureEvaluations.ideaId = '$ideaId' AND FeatureEvaluation.ideaFeatureEvaluationId = IdeaFeatureEvaluations.ideaFeatureEvaluationId"));
-	logDebug("FeatureEvaluation score is: " . $score->score);
+	logAudit("FeatureEvaluation score is: " . $score->score);
 	if ($score->score == null)
 		return 0;
 	else

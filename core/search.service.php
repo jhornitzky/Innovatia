@@ -88,7 +88,7 @@ function countGetSearchIdeasByUser($criteria, $user, $filters) {
 
 function getSearchPeople($criteria, $user, $filters, $limit) {
 	$criteria = cleansePureString($criteria);
-	$criteriaString = createCriteriaString($criteria, array("Users.username", "Users.firstName", "Users.lastName"));
+	$criteriaString = createCriteriaString($criteria, array("Users.username", "Users.firstName", "Users.lastName", "Users.interests"));
 	$filters = cleanseArray($filters);
 	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Users"); 
 	

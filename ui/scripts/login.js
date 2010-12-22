@@ -70,6 +70,19 @@ function showAbout() {
 	});
 }
 
+function showDownload() {
+	updateForSelect("down");
+	hideResponse();
+	$("#AjaxForm").fadeOut(250, function() {
+		$("#Wait").fadeIn(250);
+		$.get("ui/login/download.php", function(data) {
+			$("#AjaxForm").html(data);
+			hideWait();
+		});
+	});
+}
+
+
 function showSearch() {
 	updateForSelect("ideaInno");
 	var searchTerms = $("#searchForm").serialize();
@@ -113,11 +126,17 @@ function registerNewUser() {
 			});
 }
 
-function showIdeaSummary(id) {}
+function showIdeaSummary(id) {
+	window.open("ui/innoworks/viewer.php?idea="+id);
+}
 
-function showProfileSummary(id) {}
+function showProfileSummary(id) {
+	window.open("ui/innoworks/viewer.php?profile="+id);
+}
 
-function showGroupSummary(id) {}
+function showGroupSummary(id) {
+	window.open("ui/innoworks/viewer.php?group="+id);
+}
 
 function verifyusername() {}
 

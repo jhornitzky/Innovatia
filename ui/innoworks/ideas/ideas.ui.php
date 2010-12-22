@@ -11,7 +11,7 @@ function renderIdeasDefault($user, $limit) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
 		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
+			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
 		<?}
 	} else {
 		echo "<p>No ideas yet</p>";
@@ -27,7 +27,7 @@ function renderPublicIdeas($limit) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
 		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getPublicIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
+			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getPublicIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
 		<?}
 	} else {
 		echo "<p>No ideas yet</p>";
@@ -43,7 +43,7 @@ function renderIdeasForGroup($groupId) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
 		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeasForGroup', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
+			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeasForGroup', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
 		<?}
 	} else {
 		echo "<p>No ideas yet</p>";
@@ -52,25 +52,27 @@ function renderIdeasForGroup($groupId) {
 
 function renderJustIdea($ideas, $idea, $user) {
 	global $serverRoot;
-	?>
-<div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
-<table>
-<tr>
-<td class="image">
-<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
-</td>
-<td>
-<span class="ideaoptions">
-<?= $idea->username?>
-<?if ($idea->userId == $user) { ?> 
-<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
-<?}?>
-</span><br/>
-<span class="ideatitle"><a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"><?=trim($idea->title)?></a></span><br/>
-</td>
-</tr>
-</table>
-</div>
+	import("user.service");?>
+	<div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
+		<table>
+			<tr>
+				<td class="image">
+				<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
+				</td>
+				<td>
+				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width:1em; height:1em"/>
+				<span class="ideaoptions">
+				<?= getDisplayUsername($idea->userId); ?>
+				<?if ($idea->userId == $user) { ?> 
+					<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
+				<?}?>
+				</span><br/>
+				<span class="ideatitle">
+					<a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"><?=trim($idea->title)?></a></span><br/>
+				</td>
+			</tr>
+		</table>
+	</div>
 <?}
 
 function renderIdeaMission($ideaId) {	
@@ -79,12 +81,10 @@ function renderIdeaMission($ideaId) {
 	<div class="formBody">
 		<div class="ideaDetails subform">
 			<form id="ideadetails_form_<?= $idea->ideaId?>">
-			<? 
-			if ($canEdit)
+			<?if ($canEdit)
 				renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime")); 
 			else 
-				renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime"));
-			?>
+				renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime"));?>
 			<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> 
 			<input type="hidden" name="action" value="updateIdeaDetails" /> 
 			</form>
@@ -95,44 +95,45 @@ function renderIdeaMission($ideaId) {
 function renderIdeaFeaturesForm($ideaId) {
 		$rs = getIdeaDetails($ideaId);
 		$idea = dbFetchObject($rs);
-		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
-	?>
-<div class="ideaFeatures subform">
-<? if ($canEdit) { ?>
-<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm"><span>
-New Feature </span> <input type="text" name="feature" /> <input
-	type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
-	type="hidden" name="action" value="addFeature" /> <input type="button"
-	onclick="addFeature('addfeature_form_<?= $idea->ideaId?>', 'ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
-	value=" + " /></form>
-<?} ?>
-<div id="ideafeatures_<?= $idea->ideaId?>">
-<? renderIdeaFeatures($idea->ideaId); ?>
-</div>
-</div>
+		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);?>
+		<div class="ideaFeatures subform">
+			<? if ($canEdit) { ?>
+				<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm">
+					<span> New Feature </span> <input type="text" name="feature" /> <input
+					type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
+					type="hidden" name="action" value="addFeature" /> <input type="button"
+					onclick="addFeature('addfeature_form_<?= $idea->ideaId?>', 'ideafeatures_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
+					value=" + " />
+				</form>
+			<?}?>
+			<div id="ideafeatures_<?= $idea->ideaId?>">
+				<? renderIdeaFeatures($idea->ideaId); ?>
+			</div>
+		</div>
 <?}
 
 function renderIdeaRolesForm($ideaId) {
 		$rs = getIdeaDetails($ideaId);
 		$idea = dbFetchObject($rs);
 		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);?>
-<div class="ideaRoles subform">
-<? if ($canEdit) { ?>
-<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New
-Role </span> <input type="text" name="role" /> <input type="hidden"
-	name="ideaId" value="<?= $idea->ideaId?>" /> <input type="hidden"
-	name="action" value="addRole" /> <input type="button"
-	onclick="addRole('addrole_form_<?= $idea->ideaId?>', 'idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
-	value=" + " /></form>
-<? } ?>
-<div id="idearoles_<?= $idea->ideaId?>">
-<? renderIdeaRoles($idea->ideaId); ?>
-</div>
-</div>
+		<div class="ideaRoles subform">
+		<? if ($canEdit) { ?>
+		<form id="addrole_form_<?= $idea->ideaId?>" class="addForm"><span> New
+		Role </span> <input type="text" name="role" /> <input type="hidden"
+		name="ideaId" value="<?= $idea->ideaId?>" /> <input type="hidden"
+		name="action" value="addRole" /> <input type="button"
+		onclick="addRole('addrole_form_<?= $idea->ideaId?>', 'idearoles_<?= $idea->ideaId?>','<?= $idea->ideaId ?>');"
+		value=" + " /></form>
+		<? } ?>
+		<div id="idearoles_<?= $idea->ideaId?>">
+		<? renderIdeaRoles($idea->ideaId); ?>
+		</div>
+		</div>
 <?}
 
-function renderIdeaFeatures($ideaId) {
-	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
+function renderIdeaFeatures($ideaId, $canEdit) {
+	if (!isset($canEdit))
+		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 	$features = getFeaturesForIdea($ideaId);
 	if ($features && dbNumRows($features) > 0 ) {
 		echo "<table id='featureTable_$ideaId'>";
@@ -164,8 +165,9 @@ function renderFeature($features, $feature, $canEdit) {?>
 </tr>
 <?}
 
-function renderIdeaRoles($ideaId) {
-	$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
+function renderIdeaRoles($ideaId, $canEdit) {
+	if (!isset($canEdit))
+		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 	$roles = getRolesForIdea($ideaId);
 	if ($roles && dbNumRows($roles) > 0 ) {
 		echo "<table>";
@@ -184,60 +186,21 @@ function renderRole($roles, $role, $canEdit) {?>
 	<?
 	if ($canEdit) {
 	renderGenericUpdateRow($roles, $role, array("roleId", "ideaId"));?>
-	<td><input type="hidden" name="roleId" value="<?= $role->roleId ?>" />
-	<input type="button"
-		onclick="deleteRole('deleteRole','<?= $role->roleId ?>', 'idearoles_<?= $role->ideaId?>','<?= $role->ideaId ?>');"
-		value=" - " /></td>
+	<td>
+	<input type="hidden" name="roleId" value="<?= $role->roleId ?>" />
+	<input type="button" onclick="deleteRole('deleteRole','<?= $role->roleId ?>', 'idearoles_<?= $role->ideaId?>','<?= $role->ideaId ?>');" value=" - " /></td>
 	<?} else { 
-		renderGenericInfoRow($features, $feature, array("featureId", "ideaId"));
+		renderGenericInfoRow($roles, $role, array("roleId", "ideaId"));
 	}?>
 
 </tr>
 <?}
 
-function renderIdeaGroupsForUser($uid) {
-	import("group.service");
-	$groups = getAllGroupsForUser($uid);?>
-		<div class="ideaGroupsSel" dojoType="dijit.form.DropDownButton">
-		    <span> Private </span>
-			<div dojoType="dijit.Menu">
-			<div dojoType="dijit.MenuItem" onClick="showDefaultIdeas()">Private</div>
-			<div dojoType="dijit.MenuItem" onClick="showPublicIdeas()">Public</div>
-			<div dojoType="dijit.MenuSeparator"></div>
-			<?if ($groups && dbNumRows($groups) > 0 ) {
-				while ($group = dbFetchObject($groups)) {?>
-					<div dojoType="dijit.MenuItem" onClick="showIdeasForGroup(<?=$group->groupId?>, '<?=$group->title?>')"><?=$group->title?></div>
-				<?}
-			}?>	
-			<div dojoType="dijit.MenuSeparator"></div>
-			<div iconClass="dijitEditorIcon dijitEditorIconCopy" dojoType="dijit.MenuItem" onClick="showGroups()">Manage Groups</div>
-			</div>
-		</div>
-<?}
-
-function renderIdeaGroupsListForUser($uid, $limit) {
-	global $serverRoot;
-	import("group.service");
-	$groups = getAllGroupsForUser($uid, "LIMIT $limit");
-	$countGroups = countGetAllGroupsForUser($uid);
-	?>
-	<div class='itemHolder clickable private' onclick="showDefaultIdeas()">Private</div>
-	<div class='itemHolder clickable public' onclick="showPublicIdeas()">Public</div>
-	<?if ($groups && dbNumRows($groups) > 0 ) {
-		while ($group = dbFetchObject($groups)) {
-			echo "<div class='itemHolder clickable groupSel_$group->groupId' onclick=\"showIdeasForGroup($group->groupId)\">";
-			echo '<img src="retrieveImage.php?action=groupImg&actionId='.$group->groupId.'" style="width:3em; height:3em"/><br/>';
-			echo $group->title . "</div>";
-		} if ($countGroups > dbNumRows($groups)) ?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupsForUser', limit:'<?= $limit + 20; ?>'})">
-			Load more</a>
-	<?} 
-}
-
-function renderIdeaFeatureEvaluationsForIdea($id) {
+function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 	import("user.service");
 	$rs = getIdeaDetails($id);
 	$idea = dbFetchObject($rs);
+	if (!(isset($shouldEdit) && !$shouldEdit)) {
 	?>
 <form id="addFeatureEvaluationContainer_<?= $idea->ideaId?>" class="addForm">
 	<span> New feature evaluation </span> 
@@ -247,12 +210,15 @@ function renderIdeaFeatureEvaluationsForIdea($id) {
 	<input type="button" onclick="addFeatureEvaluation('addFeatureEvaluationContainer_<?= $idea->ideaId?>');" value=" + " />
 	</form>
 	<?
+	}
 	$featureEvaluationStack = getIdeaFeatureEvaluationsForIdea($id);
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
 		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {
-		$canEdit = false;
-		if ($featureEvaluation->userId == $_SESSION['innoworks.ID'] || $_SESSION['innoworks.isAdmin'])
-			$canEdit = true;?>
+			$canEdit = false;
+			if (isset($shouldEdit) && !$shouldEdit)
+				$canEdit = false;
+			else if ($featureEvaluation->userId == $_SESSION['innoworks.ID'] || $_SESSION['innoworks.isAdmin'])
+				$canEdit = true;?>
 <div id="featureEvaluationContainer_<?= $featureEvaluation->ideaFeatureEvaluationId ?>" class="featureEvaluation itemHolder">
 <table class="titleTT">
 <tr>
@@ -355,15 +321,17 @@ function renderCommentsForIdea($id, $uId) {
 	$userService = new AutoObject("user.service");
 	$comments = getCommentsForIdea($id);
 	if ($comments && dbNumRows($comments) > 0 ) {
-		while ($comment = dbFetchObject($comments)) {
-			echo "<div class='itemHolder'>";
-			echo "<span class='title'>".$userService->getUserInfo($comment->userId)->username."</span><span class='timestamp'>$comment->timestamp</span>";
-			if ($comment->userId == $uId || $_SESSION['innoworks.isAdmin'])
-				echo "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '>";
-			echo "<br/>";
-			echo $comment->text;
-			echo "</div>";
-		}
+		while ($comment = dbFetchObject($comments)) {?>
+			<div class='itemHolder'>
+			<img src="retrieveImage.php?action=userImg&actionId=<?= $comment->userId ?>" style="width:1em; height:1em;"/>
+			<span class='title'><?=$userService->getDisplayUsername($comment->userId)?></span>
+			<span class='timestamp'><?= $comment->timestamp?></span>
+			<?if ($comment->userId == $uId || $_SESSION['innoworks.isAdmin'])
+				echo "<input type='button' onclick='deleteComment(". $comment->commentId .")' value=' - '>";?>
+			<br/>
+			<?=$comment->text;?>
+			</div>
+		<?}
 	} else {
 		echo "<p>None</p>";
 	}

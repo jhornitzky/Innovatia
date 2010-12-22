@@ -113,7 +113,7 @@ function showResponses(data, timeout) {
 		
 	if ($attachs && dbNumRows($attachs)) {
 		while ($attach = dbFetchObject($attachs)) {?>
-			<table style="border-top:1px solid #DDD">
+			<table style="border-top:1px solid #DDD; font-size:0.8em">
 			<tr>
 			<td>
 			<?if (preg_match("/^[image]/",$attach->type)) {?>
@@ -122,7 +122,7 @@ function showResponses(data, timeout) {
 			</td>
 			<td>
 			<form method="post" action="./attachment.php" style="padding:0; margin:0">
-			<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0">
+			<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0; font-size:1.2em">
 			<?= $attach->title;?></a>
 			<?if (isset($ideaId)) 
 				echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
@@ -135,13 +135,11 @@ function showResponses(data, timeout) {
 			<input type="submit" value=" - " title="Delete attachment" />
 			<?}?>
 			</form>
-			<ul style="padding-top:0; margin-top:0;padding-bottom:0;margin-bottom:0;">
-			<? if (isset($attach->ideaId) && !empty($attach->ideaId)) { echo '<li style="font-size:0.8em">'. getIdeaDetails($attach->ideaId)->title . '</li>';}?>
-			<? if (isset($attach->groupId) && !empty($attach->groupId)) { echo '<li style="font-size:0.8em">'.getGroupDetails($attach->groupId)->title . '</li>';}?>
-			<? if (isset($attach->userId) && !empty($attach->userId)) { echo '<li style="font-size:0.8em">' . getUserInfo($attach->userId)->username . '</li>';}?>
-			</ul>
+			<? if (isset($attach->ideaId) && !empty($attach->ideaId)) { echo '<span>'. getIdeaDetails($attach->ideaId)->title . '</span><br/>';}?>
+			<? if (isset($attach->groupId) && !empty($attach->groupId)) { echo '<span>'.getGroupDetails($attach->groupId)->title . '</span><br/>';}?>
+			<? if (isset($attach->userId) && !empty($attach->userId)) { echo '<span>' . getUserInfo($attach->userId)->username . '</span><br/>';}?>
 			<?if (preg_match("/^[image]/",$attach->type)) {?>
-				<span style="font-size:0.8em">Use as DP</span> <input type='checkbox' onclick="toggleDp(this, '<?= $attach->attachmentId?>')"
+				<span>Use as DP</span> <input type='checkbox' onclick="toggleDp(this, '<?= $attach->attachmentId?>')"
 				<? if ($attach->isDp == 1) { echo 'checked';}?> />
 			<?}?>
 			</td>

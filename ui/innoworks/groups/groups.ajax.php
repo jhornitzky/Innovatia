@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . "/groups.ui.php");
 import("group.service");
 
 if (isset($_GET['action'])) {
-	$limit = 20;
+	$limit = 10;
 	if (isset($_GET['limit']))
 		$limit = $_GET['limit'];
 	switch ($_GET['action']) {
@@ -46,6 +46,21 @@ if (isset($_GET['action'])) {
 			break;
 		case "getShareForIdea":
 			renderIdeaShare($_GET['actionId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getIdeaGroupsForUser":
+			renderIdeaGroupsListForUser($_SESSION['innoworks.ID']);
+			break;
+		case "getIdeaGroupItemsForUser":
+			renderIdeaGroupItemsForUser($_SESSION['innoworks.ID'], $limit);
+			break;
+		case "getGroupPreview":
+			renderGroupPreview($_GET['actionId'], $_SESSION['innoworks.ID']);
+			break;
+		case "getPublicGroupPreview":
+			renderPublicPreview($_SESSION['innoworks.ID']);
+			break;
+		case "getPrivateGroupPreview":
+			renderPrivatePreview($_SESSION['innoworks.ID']);
 			break;
 	}
 }

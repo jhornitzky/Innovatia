@@ -69,14 +69,16 @@ function createNoteForGroup($senderid,$groupid, $msg) {
 	//Send to leader first
 	$group = getGroupDetails($groupid);
 	$array['toUserId'] = $group->userId;
-	createNote($array);
+	if ($senderid != $array['toUserId'])
+		createNote($array);
 	
 	//Now send to group members
 	$groupUsers = getUsersForGroup($groupid);
 	if ($groupUsers && dbNumRows($groupUsers) > 0) {
 		while ($groupUser = dbFetchObject($groupUsers)) {
 			$array['toUserId'] = $groupUser->userId;
-			createNote($array);
+			if ($senderid != $array['toUserId'])
+				createNote($array);
 		}
 	}
 	
@@ -96,16 +98,16 @@ function countGetAllNotes($user) {
 	return $count[0];
 }
 
-function getAllIncomingNotes($user) {
-	return dbQuery("SELECT * FROM Notes WHERE toUserId='$user' ORDER BY createdTime");
+function getAllIncomingNotes($user, $limit) {
+	return dbQuery("SELECT * FROM Notes WHERE toUserId='$user' ORDER BY createdTime DESC $limit");
 }
 
-function getAllSentNotes($user) {
-	return dbQuery("SELECT * FROM Notes WHERE fromUserId='$user' ORDER BY createdTime");
+function getAllSentNotes($user, $limit) {
+	return dbQuery("SELECT * FROM Notes WHERE fromUserId='$user' ORDER BY createdTime DESC  $limit");
 }
 
 function getNewNotes($user) {
-	return dbQuery("SELECT * FROM Notes WHERE toUserId='$user' AND isRead='0' ORDER BY createdTime");
+	return dbQuery("SELECT * FROM Notes WHERE toUserId='$user' AND isRead='0' ORDER BY createdTime DESC");
 }
 
 function markNotesAsRead($user) {

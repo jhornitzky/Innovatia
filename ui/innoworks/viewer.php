@@ -23,18 +23,24 @@ if (isset($_GET['print']) )
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 <style>
 body {
-	padding:0.5em;
+	width:800px;
+	margin:0 auto;
 }
 
 ul {
 	padding:0;
 	list-style:none;
-}
+} 
 
 .summaryActions {
 	display:none;
 }
+
+.viewSummary input {
+	display:none;
+}
 </style>
+
 <script>
 $(document).ready(function() {
 	if(<?= $print ?>)
@@ -73,24 +79,33 @@ else if ( isset($_GET['profile']) )
 </tr>
 </table>
 <hr/>
+<div class="viewSummary">
 <?
 if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 	require_once("compare/compare.ui.php");
 	$iv = base64_url_decode($_GET['iv']);
 	$actionId = decrypt(base64_url_decode($_GET['idea']), $iv);
-	renderIdeaSummary($actionId);
+	renderIdeaSummary($actionId, true);
 }else if ( isset($_GET['idea']) ) {
 	require_once("compare/compare.ui.php");
-	renderIdeaSummary($_GET['idea']);
+	renderIdeaSummary($_GET['idea'], false);
 } else if ( isset($_GET['group']) ) {
 	require_once("groups/groups.ui.php");
-	renderSummary($_GET['group']);
+	renderGroupSummary($_GET['group']);
 } else if ( isset($_GET['profile']) ) {
 	require_once("profile/profile.ui.php");
 	renderSummaryProfile($_GET['profile']);
 }
 ?>
+</div>
 <hr/>
-Go to the <a href="<?= $serverUrl . $serverRoot ?>">open innovation tool</a>
+<p style="font-size:0.8em;margin:0; padding:0;">Share this with a friend</p>
+<div class="shareBtns" style="margin:0; padding:0;">	
+	<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
+	<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
+	<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
+	<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
+	<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
+</div>
 </body>
 </html>

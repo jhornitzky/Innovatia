@@ -24,7 +24,7 @@ if (isset($_POST['action'])) {
 			echo "Creating Note.. ";
 			$array = array();
 			$array['fromUserId'] = $_SESSION['innoworks.ID'];
-			$array['toUserId'] = getUserIdForUsername($_POST['toUserId']);
+			$array['toUserId'] = $_POST['toUserId'];
 			$array['noteText'] = $_POST['noteText'];
 			renderServiceResponse(createNote($array));
 			break;

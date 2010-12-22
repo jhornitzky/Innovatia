@@ -6,7 +6,7 @@ function getGroupDetails($gid) {
 }
 
 function getAllGroupsForUser($user, $limit) {
-	return dbQuery("SELECT groupId, title FROM Groups WHERE userId = $user UNION SELECT Groups.groupId, Groups.title FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId $limit");
+	return dbQuery("SELECT Groups.* FROM Groups WHERE userId = $user UNION SELECT Groups.* FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId ORDER BY createdTime DESC $limit");
 }
 
 function countGetAllGroupsForUser($user) {
@@ -15,8 +15,8 @@ function countGetAllGroupsForUser($user) {
 }
 
 function getPartOfGroupsForUser($user, $limit) {
-	$sql = "SELECT Groups.groupId, Groups.title FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user' $limit";
-	return dbQuery($sql);
+	$sql = "SELECT Groups.* FROM Groups, GroupUsers WHERE GroupUsers.groupId = Groups.groupId AND GroupUsers.userId = '$user' AND Groups.userId != '$user' ORDER BY createdTime DESC $limit";
+	return dbQuery($sql); 
 }
 
 function countGetPartOfGroupsForUser($user) {
@@ -49,7 +49,7 @@ function getIdeasForUserinGroup($user, $group) {
 }
 
 function getGroupsForCreatorUser($user, $limit) {
-	return dbQuery("SELECT * FROM Groups WHERE userId = '$user' $limit");
+	return dbQuery("SELECT * FROM Groups WHERE userId = '$user' ORDER BY createdTime DESC $limit");
 }
 
 function countGetGroupsForCreatorUser($user) {
@@ -58,11 +58,11 @@ function countGetGroupsForCreatorUser($user) {
 }
 
 function getUsersForGroup($id) {
-	return dbQuery("SELECT Users.userId, Users.username, GroupUsers.* FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId");
+	return dbQuery("SELECT Users.* FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId UNION SELECT Users.* FROM Users, Groups WHERE Groups.groupId = '$id' AND Groups.userId = Users.userId");
 }
 
 function getIdeasForGroup($id, $user, $limit) {
-	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId $limit");
+	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas, Groups, GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId $limit");
 }
 
 function countGetIdeasForGroup($id, $user) {

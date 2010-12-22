@@ -17,6 +17,5 @@ require_once("select/select.ajax.php");
 require_once("profile/profile.ajax.php");
 require_once("search/search.ajax.php");
 require_once("notes/notes.ajax.php");
-require_once("reports/reports.ajax.php");
 require_once("attachment/attach.ajax.php");
 ?>

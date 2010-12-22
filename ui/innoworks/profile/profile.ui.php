@@ -1,35 +1,20 @@
 <? 
 require_once(dirname(__FILE__) . "/../pureConnector.php"); 
 import("user.service");
-
-function renderOtherProfiles($user, $limit) {
-	$profiles = getSimilarUserProfiles($user, "LIMIT $limit");
-	$profileCount = countGetSimilarUserProfiles($user);
-	if ($profiles && dbNumRows($profiles) > 0) { 
-		while ($profile = dbFetchObject($profiles)) {
-			renderOtherProfile($profile);
-		}
-		if ($profileCount > dbNumRows($profiles)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>
-		<?}
-	} else {
-		echo "<p>No similar profiles</p>";
-	}
-}
  
 function renderProfileDefault($user) {
 	global $serverRoot, $serverUrl;
-	$limit = 20;
+	$limit = 10;
 	
 	$userDetails = getUserInfo($user);
-	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?user=" . $_SESSION['innoworks.ID'];
-	?>
+	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?user=" . $_SESSION['innoworks.ID'];?>
 	<div style="width:100%;">
 		<div class="fixed-left">
-			<h2 id="pgName">Profiles</h2>
-			<p>Other similar profiles</p>
-			<div class="bordRight" style="padding-right:5px">
-				<? renderOtherProfiles($user, $limit) ?>
+			<div class="treeMenu">
+				<div class='itemHolder headBorder' style='background-color:#DDD'>Similar profiles</div>
+				<div>
+					<? renderOtherProfiles($user, $limit) ?>
+				</div>
 			</div>
 		</div>
 		<div class="fixed-right">
@@ -90,46 +75,85 @@ function renderProfileDefault($user) {
 	</div>
 <?} 
 
-function renderOtherProfile($profile) {?>
- 	<div class="itemHolder clickable" onclick="showProfileSummary('<?=$profile->userId?>')">
- 		<img src="retrieveImage.php?action=userImg&actionId=<?= $profile->userId ?>" style="width:2em;height:2em"/><br/>
- 		<span><?=$profile->username?> <?=$profile->organization?></span><br/>
- 		<span><?=$profile->firstname . " " . $profile->lastname?></span>
+function renderOtherProfiles($user, $limit) {
+	$profiles = getSimilarUserProfiles($user, "LIMIT $limit");
+	$profileCount = countGetSimilarUserProfiles($user);
+	if ($profiles && dbNumRows($profiles) > 0) { 
+		while ($profile = dbFetchObject($profiles)) {
+			renderOtherProfile($profile);
+		}
+		if ($profileCount > dbNumRows($profiles)) {?>
+			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>
+		<?}
+	} else {?>
+		<p>No similar profiles</p>
+	<?}
+}
+
+function renderOtherProfile($profile) {
+	import('user.service');?>
+ 	<div class="itemHolder clickable" onclick="showProfileSummary('<?=$profile->userId?>')" style="height:2.5em">
+ 		<div class="righter righterImage">
+ 			<img src="retrieveImage.php?action=userImg&actionId=<?= $profile->userId ?>" style="width:2em;height:2em"/>
+ 		</div>
+ 		<div class="righter">
+ 			<span><?= getDisplayUsername($profile->userId); ?> </span><br/>
+ 			<span><?= $profile->organization ?></span>
+ 		</div>
  	</div>	
 <?}
 
 function renderSummaryProfile($userId) {
-	global $serverUrl, $uiRoot;
+	global $serverUrl, $uiRoot; 
 	import("idea.service");
 	import("user.service");
-	
 	$userDetails = getUserInfo($userId);
-	$ideas = getProfileIdeas($userId);
-	$groups = getUserGroups($userId);
-	?>
+	$ideas = getProfileIdeas($userId, "LIMIT 500");
+	$countIdeas = countGetProfileIdeas($userId);
+	$groups = getUserGroups($userId, "LIMIT 100");
+	$countGroups = countGetUserGroups($userId);?>
 	<table>
 	<tr>
-	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width:2em; height:2em;"/></td>
-	<td><h3><?= $userDetails->username?></h3></td>
+	<td><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width:3em; height:3em;"/></td>
+	<td>
+		<h3><?= $userDetails->firstName?> <?= $userDetails->lastName?> / <?= $userDetails->username?></h3>
+		<?= $userDetails->organization?> | <? if ($userDetails->isAdmin) { ?><i>admin</i> | <?}?>
+		<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a></span>
+	</td>
 	</tr>
 	</table>
-	<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a></span>
-	<?renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password"));
-	echo "<h3>Ideas</h3>";
+	<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) { 
+		renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'organization', 'isPublic'));
+	}?>
+	<?echo "<p><b>Idea(s)</b>";
 	if ($ideas && dbNumRows($ideas) > 0 ) {
-		while ($idea = dbFetchObject($ideas)) {?>
-			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/><a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><span class="ideatitle"><?=$idea->title?></span></a></p>
-		<?}
+		while ($idea = dbFetchObject($ideas)) {
+			if (hasAccessToIdea($idea, $_SESSION['innoworks.ID'])) {?>
+			<div class="itemHolder">
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
+				<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><?=$idea->title?></a>
+			</div>
+			<?} 
+			if (dbNumRows($ideas) > 500) {?>
+				<p>Only displaying 500 latest ideas</p>
+			<?}
+		}
 	} else {
-		echo "<p>No ideas yet</p>";
+		echo "<p>None</p>";
 	}
 	
-	echo "<h3>Groups</h3>";
+	echo "<p><b>Groups(s)</b></p>";
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
-			<p><img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/><a href="javascript:logAction()" onclick="showGroupSummary(<?= $group->groupId?>);"><span class="ideatitle"><?=$group->title?></span></a></p>
+			<div class="itemHolder">
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/>
+				<a href="javascript:logAction()" onclick="showGroupSummary(<?= $group->groupId?>);"><?=$group->title?></a>
+			</div>
+		<?}
+		if (dbNumRows($groups) > 100) {?>
+			<p>Only displaying 100 latest ideas</p>
 		<?}
 	} else {
-		echo "<p>No groups yet</p>";
+		echo "<p>None</p>";
 	}
 }?>

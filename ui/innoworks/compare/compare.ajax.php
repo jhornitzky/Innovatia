@@ -20,7 +20,7 @@ if (isset($_GET['action'])) {
 			renderAddRiskIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
 			break;
 		case "getAddRiskIdeaItems":
-			renderAddRiskIdeaItems($_SESSION['innoworks.ID'], $limit);
+			renderAddRiskIdeaItems('', $limit);
 			break;
 		case "getAddRiskForGroup":
 			renderAddRiskIdeaForGroup($_GET['groupId'], $_SESSION['innoworks.ID']);
@@ -31,7 +31,7 @@ if (isset($_GET['action'])) {
 		case "getIdeaSummary":
 			import("idea.service");
 			registerIdeaView($_GET['actionId'], $_SESSION['innoworks.ID']);
-			renderIdeaSummary($_GET['actionId']);
+			renderIdeaSummary($_GET['actionId'], false);
 			break;
 		case "getRiskEvalForIdea":
 			renderIdeaRiskEval($_GET['actionId'], $_SESSION['innoworks.ID']);
@@ -54,13 +54,14 @@ if (isset($_POST['action'])) {
 			echo "Creating Risk Item.. ";
 			$opts = $_POST;
 			unset($opts['action']);
-			$opts['userId'] = $_SESSION['userId'];
+			$opts['userId'] = $_SESSION['innoworks.ID'];
 			renderServiceResponse(createRiskItem($opts));
 			break;
 		case "createRiskItemForGroup":
 			echo "Creating Risk Item.. ";
 			$opts = $_POST;
 			unset($opts['action']);
+			$opts['userId'] = $_SESSION['innoworks.ID'];
 			renderServiceResponse(createRiskItemForGroup($opts));
 			break;
 		case "deleteRiskItem":
