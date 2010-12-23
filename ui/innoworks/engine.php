@@ -143,15 +143,15 @@ function openAdmin() {
 	<a id="selectlnk" class="menulnk" href="javascript:showSelect(this)" title="Select and manage ideas for implementation">Select</a>
 	</li>
 	<li class="greenbox">
-		<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share ideas with groups">Groups</a>
+		<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share and manage ideas with groups">Groups</a>
 	</li>
 	<li class="greenbox">
-		<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your information">Profiles</a>
+		<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">Profile</a>
 	</li>
 	<li class="greenbox">
-		<a id="noteslnk" class="menulnk" href="javascript:showNotes(this)" title="Review and send private messages">Notes</a>
+		<a id="publiclnk" class="menulnk" href="javascript:showPublic(this)" title="View public ideas and announcements">Public</a>
 	</li>
-	<li class="greenbox">
+	<li class="greybox">
 		<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)" title="Find ideas, innovators and groups">Search</a>
 	</li>
 </ul>
@@ -227,7 +227,7 @@ function openAdmin() {
 			<input style="display:none" type="submit" /> 
 			<input type="hidden" name="action" value="addIdea" />
 		</form>
-		<div id="ideasList"></div>
+		<div class="ideasList"></div>
 	</div>
 </div>
 </div>
@@ -241,16 +241,16 @@ function openAdmin() {
 	<div class="fixed-right">
 		<form class="addForm">
 			Click here to add idea to comparison
-			<input id="riskItemBtn" type='button' onclick='showAddRiskItem(this)' value=' + ' title="Add an idea to comparison" />
+			<input type='button' onclick='showAddRiskItem(this)' value=' + ' title="Add an idea to comparison" />
 		</form>
-		<div id="compareList"></div>
+		<div class="compareList"></div>
 		<div id="compareComments" style="margin-top:1em;">
-			<form id="addCompareCommentForm" class="smallAddForm" onsubmit="addCompareComment();return false;">
+			<form id="addCompareCommentForm" class="addForm" onsubmit="addCompareComment(this);return false;">
 				<input type="hidden" name="action" value="addComment" />
 				Comments <input type="submit" value=" + " /> 
 				<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> 
 			</form>
-			<div id="compareCommentList">No comments yet</div>
+			<div class="compareCommentList">No comments yet</div>
 		</div>
 	</div>
 </div>
@@ -263,10 +263,10 @@ function openAdmin() {
 		<div class="ideaGroupsList"></div>
 	</div>
 	<div class="fixed-right">
-		<form class="addForm">
+		<form class='addForm'>
 		Click here to select an idea 
-		<input type='button' onclick='showAddSelectIdea(this)' value=' + ' title="Select an idea to work on" /></form>
-		<div id="selectList"></div>
+		<input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>
+		<div class="selectList"></div>
 	</div>
 </div>
 </div>
@@ -276,23 +276,23 @@ function openAdmin() {
 <div id="groupTab" class="tabBody">
 <div style="width:100%;">
 	<div class="fixed-left">
-		<div class='itemHolder headBorder groupPreview'></div>
 		<div id="groupsList">&nbsp;</div>
 	</div>
 	<div class="fixed-right">
-	<form id="addGroupForm" class="addForm" onsubmit="addGroup(); return false;">
-		<span>Create new group</span> 
-		<input name="title" type="text" dojoType="dijit.form.TextBox"/> 
-		<input type="submit" value=" + " title="Create a group" /> 
-	<input type="hidden" name="action" value="addGroup" /></form>
+		<form id="addGroupForm" class="addForm" onsubmit="addGroup(); return false;">
+			<span>Create new group</span> 
+			<input name="title" type="text" dojoType="dijit.form.TextBox"/> 
+			<input type="submit" value=" + " title="Create a group" /> 
+			<input type="hidden" name="action" value="addGroup" />
+		</form>
 		<div id="groupDetailsCont">
-			<div id="groupDetails"><b>Select one of the groups on the left to see its details</b></div>
+			<div id="groupDetails"></div>
 		</div>
 	</div>
 </div>
 </div>
 
-<div id="noteTab" class="tabBody"></div>
+<div id="publicTab" class="tabBody"></div>
 
 <div id="searchTab" class="tabBody">
 	<div class="fixed-left">
@@ -311,6 +311,8 @@ function openAdmin() {
 	<div class="fixed-right">
 		<div id="reportDetails">Loading reports...</div>
 	</div>
+</div>
+
 </div>
 
 <!-- POPUP DIALOGS -->
@@ -354,8 +356,6 @@ function openAdmin() {
 
 <div id="commonPopup" dojoType="dijit.Dialog" style="width: 18em; height: 20em;">
 	<div id="actionDetails"></div>
-</div>
-
 </div>
 
 </body>

@@ -33,7 +33,7 @@ function renderDefaultDash($userid) {
 </div>
 <div class="fixed-right">
 <div style="width:100%; border:1px solid #AAA; border-left:none; margin-bottom:1em">
-<div class="itemHolder" style="background-color:#EEE">Latest notes</div>
+<div class="itemHolder" style="background-color:#EEE">Latest notes to you</div>
 <?
 	if ($notes && dbNumRows($notes) > 0) {?>
 	<? while ($note = dbFetchObject($notes)) { ?>

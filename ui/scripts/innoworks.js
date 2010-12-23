@@ -93,10 +93,36 @@ function refreshVisibleTab() {
 		getCompare();
 	else if (!($("#selectTab").is(":hidden")))
 		getSelect();
-	else if (!($("#profileTab").is(":hidden")))
-		getProfiles();
-	else if (!($("#groupTab").is(":hidden")))
-		showGroupDetails();
+	else if (!($("#publicTab").is(":hidden"))) {
+		if (!($(".publicInfo .ideasList").is(":hidden")))
+			getIdeas();
+		else if (!($(".publicInfo .compareList").is(":hidden")))
+			getCompare();
+		else if (!($(".publicInfo .selectList").is(":hidden")))
+			getSelect();
+	}
+	else if (!($("#profileTab").is(":hidden"))) {
+		if (!($(".profileInfo .ideasList").is(":hidden")))
+			getIdeas();
+		else if (!($(".profileInfo .compareList").is(":hidden")))
+			getCompare();
+		else if (!($(".profileInfo .selectList").is(":hidden")))
+			getSelect();
+		else if (!($(".profileInfo #noteTab").is(":hidden")))
+			getNotes();
+		else
+			getProfileSubDetails();
+	}
+	else if (!($("#groupTab").is(":hidden"))) {
+		if (!($(".groupInfo .ideasList").is(":hidden")))
+			getIdeas();
+		else if (!($(".groupInfo .compareList").is(":hidden")))
+			getCompare();
+		else if (!($(".groupInfo .selectList").is(":hidden")))
+			getSelect();
+		else
+			getGroupSubDetails();
+	}
 	else if (!($("#noteTab").is(":hidden")))
 		getNotes();
 	else if (!($("#searchTab").is(":hidden")))
@@ -267,6 +293,14 @@ function showIdeasForGroup(gId, elem) {
 }
 
 ///////////// MORE GET FUNCTIONS ///////////////
+function getPublic() {
+	showLoading("#publicTab");
+	$("#publicTab").load("engine.ajax.php?action=getPublicDefault", function() {
+		showPublicIdeate();
+		$("#publicTab").find("ul.submenu li:first").addClass("selected");
+	});
+}
+
 function getNotes() {
 	showLoading("#noteTab");
 	$("#noteTab").load("engine.ajax.php?action=getNotesDefault");
@@ -278,18 +312,18 @@ function getDash() {
 }
 
 function getIdeas() {
-	showLoading("#ideasList");
+	showLoading(".ideasList");
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$("#ideasList").load("engine.ajax.php?action=getIdeas");
+		$(".ideasList").load("engine.ajax.php?action=getIdeas");
 		$("#addIdeaForm span").html("Add new idea");
 		$("#addIdeaTitle").show();
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		$("#ideasList").load("engine.ajax.php?action=getPublicIdeas");
-		$("#addIdeaForm span").html("Make a private idea public");
+		$(".ideasList").load("engine.ajax.php?action=getPublicIdeas");
+		$("#addIdeaForm span").html("Make a <b>private</b> idea public");
 		$("#addIdeaTitle").hide();
 	} else {
-		$("#ideasList").load("engine.ajax.php?action=getIdeasForGroup&groupId="+currentGroupId); 
-		$("#addIdeaForm span").html("Add a private idea to the group");
+		$(".ideasList").load("engine.ajax.php?action=getIdeasForGroup&groupId="+currentGroupId); 
+		$("#addIdeaForm span").html("Add a <b>private</b> idea to the group");
 		$("#addIdeaTitle").hide();
 	}
 } 
@@ -305,20 +339,20 @@ function prepCompareTable() {
 }
 
 function getCompare() {
-	showLoading("#compareList");
+	showLoading(".compareList");
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("engine.ajax.php?action=getComparison", function (data) {
-			$("#compareList").html(data);
+			$(".compareList").html(data);
 			prepCompareTable();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		$.get("engine.ajax.php?action=getPublicComparison", function (data) {
-			$("#compareList").html(data);
+			$(".compareList").html(data);
 			prepCompareTable();
 		});
 	} else { 
 		$.get("engine.ajax.php?action=getComparisonForGroup&groupId="+currentGroupId, function (data) {
-			$("#compareList").html(data);
+			$(".compareList").html(data);
 			prepCompareTable();
 		});
 	}
@@ -326,13 +360,13 @@ function getCompare() {
 }
 
 function getSelect() {
-	showLoading("#selectList");
+	showLoading(".selectList");
 	if (currentGroupId == null && currentGroupName == "Private") {
-		$("#selectList").load("engine.ajax.php?action=getSelection");
+		$(".selectList").load("engine.ajax.php?action=getSelection");
 	} else if (currentGroupId == null && currentGroupName == "Public") {
-		$("#selectList").load("engine.ajax.php?action=getPublicSelection");
+		$(".selectList").load("engine.ajax.php?action=getPublicSelection");
 	} else {
-		$("#selectList").load("engine.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
+		$(".selectList").load("engine.ajax.php?action=getSelectionForGroup&actionId="+currentGroupId);
 	}
 }
 
@@ -340,12 +374,8 @@ function getProfile() {
 	showLoading("#profileTab");
 	$.get("engine.ajax.php?action=getProfile", function (data) {
 		$("#profileTab").html(data);
-		dojo.parser.instantiate(dojo.query('#profileTab *'));
-		$("#profileDetailsForm").find(":input").each(function() {
-			$(this).blur(function() {
-				updateProfile("profileDetailsForm");
-			});
-		});
+		showProfileNotes();
+		$("#profileTab").find("ul.submenu li:first").addClass("selected");
 	});
 }
 
@@ -419,7 +449,7 @@ function showSearch() {
 	$("#searchlnk").addClass("selLnk");
 	getSearch();
 	$(".tabBody").hide();
-	$("#searchTab").show();	
+	$("#searchTab").fadeIn();	
 }
 
 function showIdeas(elem) {
@@ -430,7 +460,7 @@ function showIdeas(elem) {
 	getIdeas();
 	showIdeaGroupsForUser();
 	$(".tabBody").hide();
-	$("#ideaTab").show();
+	$("#ideaTab").fadeIn();
 }
 
 function showReports(elem) {
@@ -440,17 +470,19 @@ function showReports(elem) {
 	$("#reportslnk").addClass("selLnk");
 	getReports();
 	$(".tabBody").hide();
-	$("#reportTab").show();
+	$("#reportTab").fadeIn();
 }	
 
 function showProfile(elem) {
+	currentGroupId = null;
+	currentGroupName = "Private";
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#profilelnk").parent().addClass("selMenu");
 	$(".menulnk").removeClass("selLnk");
 	$("#profilelnk").addClass("selLnk");
 	getProfile();
 	$(".tabBody").hide();
-	$("#profileTab").show();
+	$("#profileTab").fadeIn();
 }
 
 function showGroups(elem) {
@@ -461,7 +493,7 @@ function showGroups(elem) {
 	getGroups(); 
 	showGroupDetails();
 	$(".tabBody").hide();
-	$("#groupTab").show();
+	$("#groupTab").fadeIn();
 }
 
 function showCompare(elem) {
@@ -472,7 +504,7 @@ function showCompare(elem) {
 	getCompare();
 	showIdeaGroupsForUser();
 	$(".tabBody").hide();
-	$("#compareTab").show();
+	$("#compareTab").fadeIn();
 }
 
 function showSelect(elem) {
@@ -483,7 +515,7 @@ function showSelect(elem) {
 	getSelect();
 	showIdeaGroupsForUser();
 	$(".tabBody").hide();
-	$("#selectTab").show();	
+	$("#selectTab").fadeIn();	
 }
 
 function showDash(elem) {
@@ -493,7 +525,7 @@ function showDash(elem) {
 	$("#dashlnk").addClass("selLnk");
 	getDash();
 	$(".tabBody").hide();
-	$("#dashTab").show();
+	$("#dashTab").fadeIn();
 }
 
 function showAdmin(elem) {	
@@ -503,7 +535,7 @@ function showAdmin(elem) {
 	$("#adminlnk").addClass("selLnk");
 	getAdmin();
 	$(".tabBody").hide();
-	$("#adminTab").show();	
+	$("#adminTab").fadeIn();	
 }
 
 function showTimelines(elem) {
@@ -513,7 +545,7 @@ function showTimelines(elem) {
 	$("#timelinelnk").addClass("selLnk");
 	$("#timelineTab").load("timeline/timeline.php");
 	$(".tabBody").hide();
-	$("#timelineTab").show();	
+	$("#timelineTab").fadeIn();	
 }
 
 function showNotes() {
@@ -523,7 +555,19 @@ function showNotes() {
 	$("#noteslnk").addClass("selLnk");
 	getNotes();
 	$(".tabBody").hide();
-	$("#noteTab").show();
+	$("#noteTab").fadeIn();
+}
+
+function showPublic() {
+	currentGroupId = null;
+	currentGroupName = "Public";
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#publiclnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#publiclnk").addClass("selLnk");
+	getPublic();
+	$(".tabBody").hide();
+	$("#publicTab").fadeIn();
 }
 
 function showFeedback(elem) {
@@ -591,10 +635,10 @@ jQuery.expr[':'].Contains = function(a,i,m){
 function filterIdeas(element) {
 	var filter = $(element).val();
 	if (filter != '' && filter != null) { 
-		$("#ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
-    	$("#ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
+		$(".ideasList .idea .formHead").find(".ideatitle:not(:Contains('" + filter + "'))").parent().parent().slideUp();
+    	$(".ideasList .idea .formHead").find(".ideatitle:Contains('" + filter + "')").parent().parent().slideDown();
 	} else {
-		$("#ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
+		$(".ideasList .idea .formHead").find(".ideatitle").parent().parent().slideDown();
 	}
 }
 
@@ -640,10 +684,20 @@ function updateFormTotal(formId) {
 }
 
 function addNote(element) {
-	doAction($(element).serialize(),"showNotes()");
+	doAction($(element).serialize(),"getNotes()");
 }
 
 /////// IDEA FUNCTIONS /////////
+function addPrivateIdea(elem) {
+	if(currentGroupId == null && currentGroupName == "Private") {
+		doAction($("#addPrivateIdeaForm").serialize(),"getIdeas()");
+	} else if(currentGroupId == null && currentGroupName == "Public") {
+		showAddPublicIdea(elem);
+	} else {
+		showAddGroupIdea(elem);
+	}
+}
+
 function addIdea(elem) {
 	if(currentGroupId == null && currentGroupName == "Private") {
 		doAction($("#addIdeaForm").serialize(),"getIdeas()");
@@ -738,10 +792,8 @@ function updateGroupDetails(formId) {
 function showGroupDetails() {
 	$.get("engine.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
 		$("#groupDetails").html(data);
-		dojo.parser.instantiate(dojo.query('#groupDetailsForm *'));
-		$('#groupDetailsForm').find("textarea").blur(function() {
-			updateGroupDetails("#groupDetailsForm");
-		});
+		showGroupSubDetails();
+		$("#groupDetails ul.submenu li:first").addClass("selected");
 	});
 }
 
@@ -859,12 +911,12 @@ function showAddRiskItem(elem) {
 
 function addRiskItem(id) {
 	dijit.byId('commonPopup').hide();
-	doAction({action: "createRiskItem", ideaId:id}, "showCompare()");
+	doAction({action: "createRiskItem", ideaId:id}, "getCompare()");
 }
 
 function addRiskItemForGroup(id, groupId) {
 	dijit.byId('commonPopup').hide();
-	doAction({action: "createRiskItemForGroup", ideaId:id, groupId:currentGroupId}, "showCompare()");
+	doAction({action: "createRiskItemForGroup", ideaId:id, groupId:currentGroupId}, "getCompare()");
 }
  
 function updateRisk(riskform){
@@ -876,7 +928,7 @@ function updateRisk(riskform){
 
 function deleteRisk(riskid){
 	if (confirm("Are you sure you wish to remove this risk item?")) {
-		doAction({action: "deleteRiskItem", riskEvaluationId:riskid}, "showCompare()");
+		doAction({action: "deleteRiskItem", riskEvaluationId:riskid}, "getCompare()");
 	} 
 	return false;
 }
@@ -889,7 +941,7 @@ function getCommentsForIdea() {
 function getCompareComments() {
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("engine.ajax.php?action=getCompareComments", function(data) {
-			$("#compareCommentList").html(data);
+			$(".compareCommentList").html(data);
 			$("#addCompareCommentForm").show();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
@@ -897,11 +949,11 @@ function getCompareComments() {
 			$("#compareCommentList").html(data);
 			$("#addCompareCommentForm").hide();
 		});*/
-		$("#compareCommentList").empty();
+		$(".compareCommentList").empty();
 		$("#addCompareCommentForm").hide();
 	} else { 
 		$.get("engine.ajax.php?action=getCompareCommentsForGroup&actionId="+currentGroupId, function(data) {
-			$("#compareCommentList").html(data);
+			$(".compareCommentList").html(data);
 			$("#addCompareCommentForm").show();
 		});
 	}
@@ -932,11 +984,11 @@ function addComment() {
 	doAction($("#addCommentForm").serialize()+"&ideaId="+currentIdeaId, 'getCommentsForIdea()');
 }
 
-function addCompareComment() {
+function addCompareComment(elem) {
 	var urlAddition = "";
 	if (currentGroupId)
 		urlAddition = "&groupId="+currentGroupId;
-	doAction($("#addCompareCommentForm").serialize()+urlAddition, 'getCompareComments()');
+	doAction($(elem).serialize()+urlAddition, 'getCompareComments()');
 }
 
 function deleteComment(cid) {
@@ -1007,12 +1059,12 @@ function showAddSelectIdea(elem) {
 
 function addSelectItem(id) {
 	dijit.byId('commonPopup').hide();
-	doAction({action: "createSelection", ideaId:id}, 'showSelect()');
+	doAction({action: "createSelection", ideaId:id}, 'getSelect()');
 }
 
 function deleteSelectIdea(id){
 	if (confirm(removeString)) {
-		doAction({action: "deleteSelection", selectionId:id}, 'showSelect()');
+		doAction({action: "deleteSelection", selectionId:id}, 'getSelect()');
 	} else {
 		return false;
 	}
@@ -1021,7 +1073,7 @@ function deleteSelectIdea(id){
 function updateSelection(selectform){
 	formData = getInputDataFromId(selectform);
 	formData['action'] = 'updateSelection';
-	doAction(getSerializedArray(formData), 'showSelect()');
+	doAction(getSerializedArray(formData), 'getSelect()');
 }
 
 function printPopupIdea() {
@@ -1152,4 +1204,114 @@ function commonAddFind(action) {
 	if (data != undefined) 
 		url += "&" + data;
 	$("#commonPopup #actionDetails").load(url);
+}
+
+var ideateFormString = "<form class='addForm'>Click here to select an idea <input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>";
+var compareFormString = "<form class='addForm'>Click here to add idea to comparison <input type='button' onclick='showAddRiskItem(this)' value=' + ' title='Add an idea to comparison' /></form>";
+var selectFormString = "<form class='addForm'>Click here to select an idea <input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>";
+
+function showGroupComments() {
+	
+}
+
+function showGroupSubDetails(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".groupInfo").load("engine.ajax.php?action=getGroupDetailsTab&actionId=" + currentGroupId, function() {
+		dojo.parser.instantiate(dojo.query('#groupDetailsForm *'));
+		$('#groupDetailsForm').find("textarea").blur(function() {
+			updateGroupDetails("#groupDetailsForm");
+		});
+	});
+}
+function showGroupIdeate(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".groupInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+			'<span>Add a <b>private</b> idea to group</span>' +
+			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+			'</form>'+
+			'<div class="ideasList"></div>');
+	getIdeas();
+}
+function showGroupCompare(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".groupInfo").html(compareFormString + '<div class="compareList"></div>');
+	getCompare();
+}
+function showGroupSelect(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".groupInfo").html(selectFormString + '<div class="selectList"></div>');
+	getSelect();
+}
+
+function showProfileSubDetails(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".profileInfo").load("engine.ajax.php?action=getProfileDetailsTab", function() {
+		dojo.parser.instantiate(dojo.query('#profileTab *'));
+		$("#profileDetailsForm").find(":input").each(function() {
+			$(this).blur(function() {
+				updateProfile("profileDetailsForm");
+			});
+		});
+	});
+}
+function showProfileIdeate(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".profileInfo").html(
+			'<form id="addPrivateIdeaForm" class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+				'<span>Add new idea</span>' + 
+				'<input name="title" type="text"/>' +
+				'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+				'<input style="display:none" type="submit" />' +
+				'<input type="hidden" name="action" value="addIdea" />' +
+			'</form>' +
+			'<div class="ideasList"></div>');
+	getIdeas();
+}
+
+function showProfileCompare(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".profileInfo").html(compareFormString + '<div class="compareList"></div>');
+	getCompare();
+}
+function showProfileSelect(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".profileInfo").html(selectFormString + '<div class="selectList"></div>');
+	getSelect();
+}
+function showProfileNotes(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".profileInfo").html('<div id="noteTab"></div>');
+	getNotes();
+}
+
+function showPublicIdeate(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".publicInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+			'<span>Make a <b>private</b> idea public</span>' +
+			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+			'</form>'+
+			'<div class="ideasList"></div>');
+	getIdeas();
+}
+function showPublicCompare(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".publicInfo").html(compareFormString + '<div class="compareList"></div>');
+	getCompare();
+}
+function showPublicSelect(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".publicInfo").html(selectFormString + '<div class="selectList"></div>');
+	getSelect();
 }

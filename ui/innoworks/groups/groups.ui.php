@@ -92,67 +92,101 @@ function renderGroupDetails($currentGroupId) {
 		$groupUser = dbFetchObject($groupUserEntry);
 
 	if ($group == null && $groupUser == null)
-		die("Click a group to see its details");
+		die("Click on a group to see its details");
 	
-	$userService = new AutoObject("user.service");?>
-	<table>
-	<tr>
-	<td style="vertical-align:top">
-	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:8em; height:8em;"/>
-	</td>
-	<td style="width:90%">
-	<h3 style="margin-bottom:0.5em;">
-		<?= $group->title?>
-		<? if ($groupUser->approved == 1 && $groupUser->accepted == 1) {?>
-			<input type='button' onclick='currentGroupId=<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")' value=' Leave ' alt='Leave group' />
-		<? } else if ($group->userId == $_SESSION['innoworks.ID']) { ?>
-			<input type='button' onclick='deleteGroup("<?= $group->groupId ?>")' value=' - ' alt='Delete group' />
-		<? } ?>
-	</h3>
-	<div style="margin-bottom:0.5em">
-		<span class="title">
-			<?= $userService->getUserInfo($group->userId)->username?>
-		</span> 
-		<span class="timestamp"><?= $group->createdTime ?></span> | 
-		<a href="javascript:logAction()" onclick="printGroup()">Print</a>
-		<p style="font-size:0.8em;">Share this group with a friend at:<br/> <?= $shareUrl ?></p>
-		<div class="shareBtns">	
-			<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
-			<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
-			<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
-			<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
-			<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
+	$userService = new AutoObject("user.service");
+	$groupUsers = getUsersForGroup($currentGroupId);
+	?>
+	<div class='itemHolder headBorder treeMenu' style="height:7em;">
+		<div class="lefter lefterImage">
+			<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="width:5em; height:5em"/>
 		</div>
-	</div></td>
-	</tr>
-	</table>
-	
+		<div class="lefter">
+			<h3><?= $group->title ?></h3>
+			<?= getDisplayUsername($group->userId); ?><br/>
+			<? if (isset($groupUser)) {?>
+				<input type='button' onclick='currentGroupId=<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")' value=' Leave ' alt='Leave group' />
+			<? } else if ($group->userId == $_SESSION['innoworks.ID']) { ?>
+				<input type='button' onclick='deleteGroup("<?= $group->groupId ?>")' value=' - ' alt='Delete group' />
+			<? } ?>
+		</div>
+		<div class="righter" style="padding-left:0.5em;">
+			<span class="timestamp">Created <?= $group->createdTime ?></span> | 
+			<a href="javascript:logAction()" onclick="printGroup()">Print</a>
+			<div style="padding-left:0.25em;">
+				<p style="font-size:0.8em;">Share this group with a friend at:<br/> <?= $shareUrl ?></p>
+				<div class="shareBtns">	
+					<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
+					<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
+					<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
+					<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
+					<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
+				</div>
+			</div>
+		</div>
+	</div>
 	<?if ($groupUser->approved == 0 && $groupUser->accepted == 1) {
-		echo "You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".";
+		echo "<p>You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".</p>";
 	} else if ($groupUser->approved == 1 && $groupUser->accepted == 0) {
-		echo "Do you wish to accept your invitation to this group?<br/>";
-		echo "<a href='javascript:logAction()' onclick='acceptGroup();'>Yes</a> <a href='javascript:logAction()' onclick='refuseGroup();'>No</a> ";
+		echo "<p>Do you wish to accept your invitation to this group?</p>";
+		echo "<a href='javascript:logAction()' onclick='acceptGroup();'>Yes, I want to join</a> <a href='javascript:logAction()' onclick='refuseGroup();'>No, I don't wannt to join</a>";
 	} else if (($groupUser->approved == 1 && $groupUser->accepted == 1) || $group->userId == $_SESSION['innoworks.ID']) {
 		if ($groups && (dbNumRows($groups) == 1)) {
-			$userService = new AutoObject("user.service");
+			$userService = new AutoObject("user.service");?>
+			<ul class="submenu">
+				<li class="greybox"><a href="javascript:logAction()" onclick="showGroupSubDetails(this)">Details</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupIdeate(this)">Ideate</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupCompare(this)">Compare</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupSelect(this)">Select</a></li>
+			</ul>
 			
-			echo "<div class='two-column' style='border-top:1px solid #EEE'>";
-			echo "<h3>Details</h3>";
-			echo "<form id='groupDetailsForm'>";
-			if ($group->userId == $_SESSION['innoworks.ID'])
+			<div class="groupInfo" style="margin-top:2em;">
+			<? //renderGroupDetailsTab($currentGroupId); ?>
+			</div>
+		<?} 
+	} else {
+		echo "<p>You have no access to this group. Do you want to request access to this group?</p>";
+		echo "<a href='javascript:logAction()' onclick='requestGroup()'>Yes, I want to join the group</a>";
+	}
+}
+
+function renderGroupIdeateTab($currentGroupId) {}
+
+function renderGroupCompareTab($currentGroupId) {}
+
+function renderGroupSelectTab($currentGroupId) {}
+
+function renderGroupDetailsTab($currentGroupId) {
+	global $serverUrl, $serverRoot, $uiRoot;
+	$groups = getGroupWithId($currentGroupId, $_SESSION['innoworks.ID']);
+	$groupUserEntry = getGroupUserEntryWithId($currentGroupId, $_SESSION['innoworks.ID']);
+	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?group=" . $currentGroupId;
+
+	$group;
+	$groupUser;
+	if ($groups && dbNumRows($groups) > 0)
+		$group = dbFetchObject($groups);
+	if ($groupUserEntry && dbNumRows($groupUserEntry) > 0)
+		$groupUser = dbFetchObject($groupUserEntry);
+
+	if ($group == null && $groupUser == null)
+		die("Click on a group to see its details");?>
+			<div class='two-column' style='border-top:1px solid #EEE'>
+			<p><b>Details</b></p>
+			<form id='groupDetailsForm'>
+			<? if ($group->userId == $_SESSION['innoworks.ID'])
 				renderGenericUpdateForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
 			else 
 				renderGenericInfoForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
-			echo "<input type='hidden' name='action' value='updateGroup'/>";
-			echo "<input type='hidden' name='groupId' value='$group->groupId'/>";
-			echo "</form>";
+			?>
+			<input type='hidden' name='action' value='updateGroup'/>
+			<input type='hidden' name='groupId' value='<?=$group->groupId?>'/>
+			</form>
 			
-			echo "<h3>Users";
-			if ($group->userId == $_SESSION['innoworks.ID'])
-				echo "<input type='button' value=' + ' onclick='showAddGroupUser(this)' alt='Add user to group'/>";
-			echo "</h3>";
-			$groupUsers = getUsersForGroup($currentGroupId);
-			if ($groupUsers && dbNumRows($groupUsers) > 0) {
+			<p><b>User(s)
+			<?if ($group->userId == $_SESSION['innoworks.ID']) { ?><input type='button' value=' + ' onclick='showAddGroupUser(this)' alt='Add user to group'/><?}?>
+			</b></p>
+			<?if ($groupUsers && dbNumRows($groupUsers) > 0) {
 				echo "<ul>";
 				while ($user = dbFetchObject($groupUsers)) {
 					echo "<li>
@@ -166,12 +200,12 @@ function renderGroupDetails($currentGroupId) {
 				echo "<p>None</p>";
 			}
 			
-			echo "<h3>Attachments</h3>";
+			echo "<p><b>Attachments</b></p>";
 			echo "<iframe style='width:100%;height:15em; padding:1px; border:1px solid #EEEEEE; background-color:#EEEEEE;' src='attachment.php?groupId=$group->groupId'></iframe>";
 			echo "</div>";
 			
 			echo '<div class="two-column" style="border-top:1px solid #EEE; margin-left:2%; ">';
-			echo "<h3>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></h3>";
+			echo "<p><b>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></b></p>";
 			$groupIdeas = getIdeasForGroup($currentGroupId);
 			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 				echo "<table style='border: 1px solid #DDD'>";
@@ -201,14 +235,9 @@ function renderGroupDetails($currentGroupId) {
 				echo "</table>";
 			} else {
 				echo "<p>None</p>";
-			}
-			echo "</div>";
-		} 
-	} else {
-		echo "<p>You have no access to this group. Do you want to request access to this group?</p>";
-		echo "<a href='javascript:logAction()' onclick='requestGroup()'>Yes, I want to join the group</a>";
-	}
-}
+			}?>
+			</div>
+<?}
 
 function renderGroupSummary($currentGroupId) {
 	global $serverUrl, $uiRoot;
@@ -496,15 +525,14 @@ function renderIdeaGroupItem($idea, $group, $items) {
 
 function renderIdeaGroupsListForUser($uid) {
 	$limit = 5;?>
-	<div class='itemHolder headBorder' style='background-color:#EEE'>Change space</div>
+	<!-- <div class='itemHolder headBorder' style='background-color:#EEE'>Change space</div>-->
 	<div class='itemHolder clickable headBorder private' onclick="showDefaultIdeas()">Private<br/>
 	<span>Ideas that are yours</span></div>
 	<div class='itemHolder clickable headBorder public' onclick="showPublicIdeas()">Public<br/>
 	<span>Ideas shared by everyone</span></div>
 	<div class='groupsHolder'>
-		<div class='itemHolder headBorder'>Groups
-		</div>
-		<div style='font-size:0.9em;'>
+		<div class='itemHolder headBorder'>Groups</div>
+		<div class='groupsActualHolder' style='font-size:0.9em;'>
 			<? renderIdeaGroupItemsForUser($uid, $limit); ?>
 		</div>
 	</div>
@@ -530,7 +558,9 @@ function renderIdeaGroupItemsForUser($uid, $limit) {
 		<?} if ($countGroups > dbNumRows($groups)) ?>
 			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupItemsForUser', limit:'<?= $limit + 20; ?>'})">
 			Load more</a>
-	<?} 
+	<?} else {?>
+		<div style="margin-bottom:0.5em;">None</div>
+	<?}
 }
 
 function renderGroupPreview($gid, $uid) {
@@ -573,4 +603,42 @@ function renderPrivatePreview($uid) {
 			Ideas created by you
 		</div>
 	</div>
-<?}?>
+<?}
+
+function renderPublic() {
+	global $serverRoot, $serverUrl;
+	$limit = 10;
+	$announces = getAnnouncements("LIMIT 10");?>
+	<div style="width:100%;">
+		<div class="fixed-left">
+			<div class="treeMenu">
+				<div class='itemHolder headBorder' style='background-color:#DDD'>Latest announcements</div>
+				<div>
+				<?if ($announces && dbNumRows($announces)) {
+					while($announce = dbFetchObject($announces)) {?>
+						<div class="itemHolder" style="font-size:0.85em">
+							<?= $announce->text ?><br/>
+							<span><?= getUserInfo($announce->userId)->username . " " . $announce->date ?></span>
+						</div>
+					<?}
+				}?>
+				</div>
+			</div>
+		</div>
+		<div class="fixed-right">
+			<div class='itemHolder headBorder treeMenu' style="height:2.5em;">
+				<div class="lefter">
+					<h3 style="padding-left:0.25em;">Public</h3>
+				</div>
+			</div>
+			<ul class="submenu">
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicIdeate(this)">Ideate</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicCompare(this)">Compare</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicSelect(this)">Select</a></li>
+			</ul>
+			<div class="publicInfo" style="margin-top:2em"></div>
+		</div>
+	</div>
+<?}
+
+?>

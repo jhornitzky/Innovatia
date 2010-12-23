@@ -20,7 +20,7 @@ Send announcement<br/>
 </form>
 
 <? 
-$announces = getAnnouncements();
+$announces = getAnnouncements("LIMIT 200");
 if ($announces && dbNumRows($announces)) {
 	while($announce = dbFetchObject($announces)) {?>
 		<p>

@@ -15,6 +15,8 @@ function renderPublicRiskItems() {
 } 
 
 function renderComparisonForGroup($groupId) {
+	if (!hasAccessToGroup($groupId, $_SESSION['innoworks.ID'])) 
+		die("You have no access to this group and therefore cannot view these ideas.");
 	renderCommon(getRiskItemsForGroup($groupId));
 }
 
@@ -161,7 +163,7 @@ function renderIdeaSummary($ideaId, $showAll) {
 	import("group.service");
 	import("user.service");
 	require_once(dirname(__FILE__) . "/../ideas/ideas.ui.php");
-	if (!$showAll && !hasAccessToIdea($_SESSION['innoworks.ID']))
+	if (!$showAll && !hasAccessToIdea($ideaId, $_SESSION['innoworks.ID']))
 		die("You have no access to view this idea");
 	
 	$idea = dbFetchObject(getIdeaDetails($ideaId));

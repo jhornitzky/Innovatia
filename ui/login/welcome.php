@@ -77,7 +77,14 @@ $(document).ready( function () {
 		<noscript><span><b>You must have javascript enabled to use Innoworks</b></span></noscript>
 	</div>
 </div>
+</div>
 
+<div id="footerSpace"></div>
+<div id="footerSurround">
+	<div id="footer">
+		<div class="fixed-left">Copyright &copy; UTS 2010</div>
+		<div class="fixed-right"></div>
+	</div>
 </div>
 </body>
 </html>

@@ -142,6 +142,7 @@ function authenticate_ldap($user, $pw) {
  * Register a user
  */
 function registerUser($postArgs) {
+	import("note.service");
 	global $serverRoot, $salt;
 
 	if (!isset($postArgs['isExternal']))
@@ -188,6 +189,10 @@ function registerUser($postArgs) {
 	$headers .= 'From: Innoworks' . "\r\n";
 	mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
 
+	$opts = array();
+	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. Happy ideating!";
+	$opts['toUserId'] = $successId;
+	createNote($opts);
 	//Tidy up
 	dbClose($link);
 

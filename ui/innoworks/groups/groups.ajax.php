@@ -62,6 +62,21 @@ if (isset($_GET['action'])) {
 		case "getPrivateGroupPreview":
 			renderPrivatePreview($_SESSION['innoworks.ID']);
 			break;
+		case "getGroupDetailsTab":
+			renderGroupDetailsTab($_GET['actionId']);
+			break;
+		case "getGroupIdeateTab":
+			renderGroupIdeateTab($_GET['actionId']);
+			break;
+		case "getGroupCompareTab":
+			renderGroupCompareTab($_GET['actionId']);
+			break;
+		case "getGroupSelectTab":
+			renderGroupSelectTab($_GET['actionId']);
+			break;
+		case "getPublicDefault":
+			renderPublic();
+			break;
 	}
 }
 

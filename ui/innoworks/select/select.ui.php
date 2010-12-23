@@ -25,6 +25,8 @@ function renderSelectPublic() {
 }
 
 function renderSelectForGroup($groupId, $userId) {
+	if (!hasAccessToGroup($groupId, $_SESSION['innoworks.ID'])) 
+		die("You have no access to this group and therefore cannot view these ideas.");
 	$ideas = getSelectedIdeasForGroup($groupId, $userId);
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {

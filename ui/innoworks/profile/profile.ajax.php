@@ -17,6 +17,9 @@ if (isset($_GET['action'])) {
 		case "getProfileSummary":
 			renderSummaryProfile($_GET['actionId']);
 			break;
+		case "getProfileDetailsTab":
+			renderProfileDetails($_SESSION['innoworks.ID']);
+			break;
 	}
 }
 

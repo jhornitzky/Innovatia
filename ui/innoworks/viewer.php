@@ -51,6 +51,18 @@ function printThis() {
 	window.print();
 }
 
+function showIdeaSummary(id) {
+	window.open("viewer.php?idea="+id);
+}
+
+function showProfileSummary(id) {
+	window.open("viewer.php?profile="+id);
+}
+
+function showGroupSummary(id) {
+	window.open("viewer.php?group="+id);
+}
+
 function goToInnoworks() {
 	window.open("<?= $serverUrl . $serverRoot; ?>");
 }

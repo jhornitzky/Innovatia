@@ -35,6 +35,9 @@ function renderPublicIdeas($limit) {
 }
 
 function renderIdeasForGroup($groupId) {
+	if (!hasAccessToGroup($groupId, $_SESSION['innoworks.ID'])) 
+		die("You have no access to this group and therefore cannot view these ideas.");
+		
 	import("group.service");
 	$ideas = getIdeasForGroup($groupId);
 	$countIdeas = countGetIdeasForGroup($groupId);

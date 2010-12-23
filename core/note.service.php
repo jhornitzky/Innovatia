@@ -1,8 +1,8 @@
 <?
 require_once("innoworks.connector.php");
 
-function getAnnouncements() {
-	return dbQuery("SELECT * FROM Announcements");
+function getAnnouncements($limit) {
+	return dbQuery("SELECT * FROM Announcements $limit");
 }
 
 function createAnnouncement($senderid, $msg) {

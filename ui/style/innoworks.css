@@ -166,6 +166,16 @@ div#content {
 	padding:0%;
 	position:relative;
 	font-size:0.95em;
+	min-height:20em;
+}
+
+div.tabBody div div.fixed-left {
+	opacity:0.9;
+	font-size:0.9em;
+}
+
+div.tabBody div div.fixed-left:hover {
+	opacity:1.0;
 }
 
 .addForm {
@@ -247,24 +257,13 @@ div#content {
 	position:relative; float:left; width:48%; min-height:200px;
 }
 
-.fixed-left {
-	width: 226px; float:left; 
-	margin-right:25px;
-	text-align:right;
-	color:#444;
-}
-
-.fixed-right {
-	margin-left:251px; 
-}
-
 #dashTab p span {
 	font-size:0.85em;
 	padding-right:5px;
 }
 
 /* IDEAS */
-#selectList .selection {
+.selectList .selection, .selection {
 	width:100%;
 	margin-right:0;
 	margin-left:0;
@@ -458,7 +457,7 @@ div#head, div#content {
 	margin:0 auto;
 }
 
-#compareList table, #ideaFeatureEvaluationList table, table.evaluation
+.compareList table, #ideaFeatureEvaluationList table, table.evaluation
 {
 	text-align: center;
 	font-weight: normal;
@@ -468,7 +467,7 @@ div#head, div#content {
 	border:none;
 }
 
-#compareList table tr td, #ideaFeatureEvaluationList table tr td, table.evaluation tr td
+.compareList table tr td, #ideaFeatureEvaluationList table tr td, table.evaluation tr td
 {
 	background-color: #FFF;
 	padding: 4px;
@@ -476,7 +475,7 @@ div#head, div#content {
 	border: 1px solid #EEE;
 }
 
-#compareList table tr th, #ideaFeatureEvaluationList table tr th,  table.evaluation tr th
+.compareList table tr th, #ideaFeatureEvaluationList table tr th,  table.evaluation tr th
 {
 	padding: 4px;
 	text-align: left;
@@ -609,14 +608,14 @@ div.groupPreview {
 	min-height:4em;
 	/*margin-bottom:1em;*/
 	border-left:1px solid #AAA;
-	border-bottom:1px solid #AAA;
+	/*border-bottom:1px solid #AAA;*/
 	border-top:1px solid #AAA;
 	padding-left:0.2em;
 	text-align:left;
 }
 
 div.fixed-left div.groupPreview {
-	margin-bottom:1em;
+	/*margin-bottom:1em;*/
 }
 
 div.fixed-right div.groupPreview {
@@ -624,5 +623,40 @@ div.fixed-right div.groupPreview {
 }
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
-	background-color: #FFCA6A;
+	background-color: #BDE4FF;
+}
+
+div.groupsHolder.selected div.groupsActualHolder {
+	background-color: #BFE6FF;
+}
+
+ul.submenu {
+	text-decoration:none;
+	list-style:none;
+	text-indent:0;
+	padding:0;
+	margin:0;
+}
+
+ul.submenu li {
+	font-size: 1.1em;
+	float:left;
+	position:relative;
+	margin-right:0.5em;
+	text-indent:0px;
+	margin-left:0px; 
+	list-style: none;
+	padding:2px;
+	border-top:none;
+}
+
+ul.submenu li.selected {
+	color: #FFFFFF;
+	background-color:#444; 
+	/*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
+}
+
+ul.submenu li.selected a {
+	color: #FFFFFF;
+	border:none;
 }

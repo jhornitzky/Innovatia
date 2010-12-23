@@ -18,15 +18,17 @@ function renderProfileDefault($user) {
 			</div>
 		</div>
 		<div class="fixed-right">
-			<div style="border-top:1px solid #DDD; width:100%">
-			<table>
-			<tr>
-				<td>
-					<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="width:8em;height:8em;"/>
-				</td>
-				<td style="padding-left:0.5em;">
-					<h3><?= $userDetails->username ?></h3>
-					<p style="font-size:0.9em;padding:0;">Joined <?= $userDetails->createdTime ?> | <a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId ?>')"> Print </a></p>
+		
+			<div class='itemHolder headBorder treeMenu' style="height:7em;">
+				<div class="lefter lefterImage">
+					<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="width:5em;height:5em;"/>
+				</div>
+				<div class="lefter">
+					<h3><?= $userDetails->firstName . ' ' . $userDetails->lastName . ' / ' . $userDetails->username ?></h3>
+					<?= $userDetails->organization ?>
+				</div>
+				<div class="righter" style="padding-left:0.5em;">
+					<span class="timestamp">Joined <?= $userDetails->createdTime ?></span> | <a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId ?>')"> Print </a></p>
 					<p style="font-size:0.8em;margin:0; padding:0;">Share your profile with a friend at:<br/> <?= $shareUrl ?></p>
 					<div class="shareBtns" style="margin:0; padding:0;">	
 						<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
@@ -35,45 +37,56 @@ function renderProfileDefault($user) {
 						<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
 						<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
 					</div>
-				</td>
-			</tr>
-			</table>
+				</div>
 			</div>
 			
-			<div style="width:54%; position:relative; float:left; margin-right:2%; border-top:1px solid #DDD;">
-			<h3>Details</h3>
-			<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;" style="border:1px solid #DDD;" >
-				<table style="width:100%">
-					<tr>
-						<td>Public<br/>
-							<span style="font-size:0.85em">Share your profile with everyone</span>
-						</td>
-						<td><input type="checkbox" onclick="togglePublicProfile(this)" <? if ($userDetails->isPublic == 1) echo "checked"; ?>/></td>
-					</tr>
-					<tr>
-						<td>Send Emails<br/>
-							<span style="font-size:0.85em">Allow innoworks to send you updates and notes via email</span>
-						</td>
-						<td><input type="checkbox" onclick="toggleSendEmail(this)" <? if ($userDetails->sendEmail == 1) echo "checked"; ?>/></td>
-					</tr>
-					<tr>
-						<td colspan="2" style="background-color:#EEE;"> 
-						Flags <br/>
-							<span style="font-size:0.85em"><? if($userDetails->isAdmin == 1) echo "admin"; ?> <? if($userDetails->isExternal == 1) echo "external"; ?></span>
-						</td>
-					</tr>
-				</table>
-				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", "isAdmin", "lastUpdateTime", "isExternal", "isPublic", "sendEmail")); ?>
-				<input type="hidden" name="action" value="updateProfile" /> 
-			</form>
-			</div>
-			<div style="width:40%; position:relative; float:left; border-top:1px solid #DDD;">
-				<h3>Attachments</h3>
-				<iframe style="width:100%; height:20em; border:none; background:#EEE;" src="attachment.php"></iframe>
-			</div>
+			<ul class="submenu">
+				<li class="greybox"><a href="javascript:logAction()" onclick="showProfileNotes(this)">Notes</a></li>
+				<li class="greybox"><a href="javascript:logAction()" onclick="showProfileSubDetails(this)">Details</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showProfileIdeate(this)">Ideate</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showProfileCompare(this)">Compare</a></li>
+				<li class="bluebox"><a href="javascript:logAction()" onclick="showProfileSelect(this)">Select</a></li>
+			</ul>
+			
+			<div class="profileInfo" style="margin-top:2em"></div>
 		</div>
 	</div>
 <?} 
+
+function renderProfileDetails($user) {
+		$userDetails = getUserInfo($user);?>
+				<div style="width:54%; position:relative; float:left; margin-right:2%; border-top:1px solid #DDD;">
+				<p><b>Details</b></p>
+				<form id="profileDetailsForm" onsubmit="updateProfile('profileDetailsForm'); return false;" style="border:1px solid #DDD;" >
+					<table style="width:100%">
+						<tr>
+							<td>Public<br/>
+								<span style="font-size:0.85em">Share your profile with everyone</span>
+							</td>
+							<td><input type="checkbox" onclick="togglePublicProfile(this)" <? if ($userDetails->isPublic == 1) echo "checked"; ?>/></td>
+						</tr>
+						<tr>
+							<td>Send Emails<br/>
+								<span style="font-size:0.85em">Allow innoworks to send you updates and notes via email</span>
+							</td>
+							<td><input type="checkbox" onclick="toggleSendEmail(this)" <? if ($userDetails->sendEmail == 1) echo "checked"; ?>/></td>
+						</tr>
+						<tr>
+							<td colspan="2" style="background-color:#EEE;"> 
+								Flags <br/>
+								<span style="font-size:0.85em"><? if($userDetails->isAdmin == 1) echo "admin"; ?> <? if($userDetails->isExternal == 1) echo "external"; ?></span>
+							</td>
+						</tr>
+					</table>
+				<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", "isAdmin", "lastUpdateTime", "isExternal", "isPublic", "sendEmail")); ?>
+				<input type="hidden" name="action" value="updateProfile" /> 
+				</form>
+				</div>
+				<div style="width:40%; position:relative; float:left; border-top:1px solid #DDD;">
+					<p><b>Attachments</b></p>
+					<iframe style="width:100%; height:20em; border:none; background:#EEE;" src="attachment.php"></iframe>
+				</div>
+<?}
 
 function renderOtherProfiles($user, $limit) {
 	$profiles = getSimilarUserProfiles($user, "LIMIT $limit");
@@ -125,35 +138,36 @@ function renderSummaryProfile($userId) {
 	<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) { 
 		renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'organization', 'isPublic'));
 	}?>
-	<?echo "<p><b>Idea(s)</b>";
-	if ($ideas && dbNumRows($ideas) > 0 ) {
+	
+	<p><b>Idea(s)</b>
+	<?if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
-			if (hasAccessToIdea($idea, $_SESSION['innoworks.ID'])) {?>
+			if (hasAccessToIdea($idea->ideaId, $_SESSION['innoworks.ID'])) {?>
 			<div class="itemHolder">
 				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
 				<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><?=$idea->title?></a>
 			</div>
 			<?} 
-			if (dbNumRows($ideas) > 500) {?>
+			if (dbNumRows($ideas) == 500) {?>
 				<p>Only displaying 500 latest ideas</p>
 			<?}
 		}
-	} else {
-		echo "<p>None</p>";
-	}
+	} else {?>
+		<p>None</p>
+	<?}?>
 	
-	echo "<p><b>Groups(s)</b></p>";
-	if ($groups && dbNumRows($groups) > 0 ) {
+	<p><b>Group(s)</b></p>
+	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
 			<div class="itemHolder">
 				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>" style="width:1em; height:1em;"/>
 				<a href="javascript:logAction()" onclick="showGroupSummary(<?= $group->groupId?>);"><?=$group->title?></a>
 			</div>
 		<?}
-		if (dbNumRows($groups) > 100) {?>
-			<p>Only displaying 100 latest ideas</p>
+		if (dbNumRows($groups) == 100) {?>
+			<p>Only displaying 100 latest groups</p>
 		<?}
-	} else {
-		echo "<p>None</p>";
-	}
+	} else {?>
+		<p>None</p>
+	<?}
 }?>

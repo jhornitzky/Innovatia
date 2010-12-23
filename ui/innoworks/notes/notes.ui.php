@@ -8,11 +8,6 @@ function renderNotesDefault($user) {
 	$limit = 20;
 	$users = getSearchPeople("",$_SESSION['innoworks.ID'], array());
 	$notes = getAllNotes($user, "LIMIT $limit");?>
-	<div style="width:100%;">
-		<div class="fixed-left">
-			<h2 class="pgName"></h2>
-		</div>	
-		<div class="fixed-right">
 		<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
 			<input type="hidden" name="action" value="addNote"/>
 			Send note to
@@ -48,8 +43,6 @@ function renderNotesDefault($user) {
 		<div id='notePadder'>
 			<?renderNotes($_SESSION['innoworks.ID'], $limit);?>
 		</div>
-		</div>
-	</div>
 	<script type="text/javascript">
 	dojo.parser.instantiate(dojo.query(".toUserNote"));
 	dojo.parser.instantiate(dojo.query(".noteText"));
