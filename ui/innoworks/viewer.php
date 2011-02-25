@@ -112,12 +112,6 @@ if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 </div>
 <hr/>
 <p style="font-size:0.8em;margin:0; padding:0;">Share this with a friend</p>
-<div class="shareBtns" style="margin:0; padding:0;">	
-	<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
-	<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
-	<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
-	<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
-	<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
-</div>
+<? renderTemplate('shareBtns', get_defined_vars()); ?>
 </body>
 </html>

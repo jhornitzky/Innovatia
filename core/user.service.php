@@ -155,19 +155,27 @@ function registerUser($postArgs) {
 
 	//Now prepare and run this query
 	$sql = sprintf("INSERT INTO Users (username, password, firstName, lastName, email,isExternal,createdTime) VALUES ('%s','%s','%s','%s', '%s', '%s', '%s')",
-	cleanseString($link,$postArgs['username']),
-	$pass,
-	cleanseString($link,$postArgs['firstName']),
-	cleanseString($link,$postArgs['lastName']),
-	cleanseString($link,$postArgs['email']),
-	cleanseString($link,$postArgs['isExternal']),
-	date_create()->format('Y-m-d H:i:sP')
+		cleanseString($link,$postArgs['username']),
+		$pass,
+		cleanseString($link,$postArgs['firstName']),
+		cleanseString($link,$postArgs['lastName']),
+		cleanseString($link,$postArgs['email']),
+		cleanseString($link,$postArgs['isExternal']),
+		date_create()->format('Y-m-d H:i:sP')
 	);
 
 	$success = dbQuery($link,$sql);
 	$successId = dbInsertedId($link);
+	
+	$opts = array();
+	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. If you get stuck you can click on the i icon to the top right. Happy ideating!";
+	$opts['toUserId'] = $successId;
+	createNote($opts);
+	
+	//Tidy up
+	dbClose($link);
 
-	//FIXME TEMPLATIZE
+	//Send welcome email FIXME TEMPLATIZE
 	$message = '<html>
 				<head>
 				  <title>Innoworks Credentials</title>
@@ -188,13 +196,6 @@ function registerUser($postArgs) {
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	$headers .= 'From: Innoworks' . "\r\n";
 	mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
-
-	$opts = array();
-	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. Happy ideating!";
-	$opts['toUserId'] = $successId;
-	createNote($opts);
-	//Tidy up
-	dbClose($link);
 
 	return $success;
 }
@@ -225,18 +226,20 @@ function checkUsernameExists($username) {
 	return $found;
 }
 
-function deleteUser($username) {
+function deleteUser($userId) {
 	//First open a connection
 	$link = dbConnect();
 
 	//Now prepare and run this query
 	$sql = sprintf("DELETE FROM Users WHERE userId = '%s'",
-	cleanseString($link,$username));
+	cleanseString($link,$userId));
 
 	$result = dbQuery($link,$sql);
 
-	//FIXME Error checks here
+	//FIXME Error checks here as well as file delete
 	dbClose($link);
+	
+	return $result;
 }
 
 /*
@@ -303,12 +306,12 @@ function countGetUserGroups($user) {
 	return $count[0];
 }
 
-function getAllUsers($limit) {
+function getAllUsers($limit = 'LIMIT 200') {
 	return dbQuery("SELECT * FROM Users ORDER BY username $limit");
 }
 
 function countGetAllUsers() {
-	$array = dbFetchArray(dbQuery("SELECT * FROM Users ORDER BY username"));
+	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Users"));
 	return $array[0];
 }
 

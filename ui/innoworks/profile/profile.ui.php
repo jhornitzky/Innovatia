@@ -18,7 +18,6 @@ function renderProfileDefault($user) {
 			</div>
 		</div>
 		<div class="fixed-right">
-		
 			<div class='itemHolder headBorder treeMenu' style="height:7em;">
 				<div class="lefter lefterImage">
 					<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="width:5em;height:5em;"/>
@@ -30,13 +29,7 @@ function renderProfileDefault($user) {
 				<div class="righter" style="padding-left:0.5em;">
 					<span class="timestamp">Joined <?= $userDetails->createdTime ?></span> | <a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId ?>')"> Print </a></p>
 					<p style="font-size:0.8em;margin:0; padding:0;">Share your profile with a friend at:<br/> <?= $shareUrl ?></p>
-					<div class="shareBtns" style="margin:0; padding:0;">	
-						<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
-						<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
-						<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
-						<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
-						<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
-					</div>
+					<? renderTemplate('shareBtns', null); ?>
 				</div>
 			</div>
 			

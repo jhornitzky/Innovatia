@@ -115,13 +115,7 @@ function renderGroupDetails($currentGroupId) {
 			<a href="javascript:logAction()" onclick="printGroup()">Print</a>
 			<div style="padding-left:0.25em;">
 				<p style="font-size:0.8em;">Share this group with a friend at:<br/> <?= $shareUrl ?></p>
-				<div class="shareBtns">	
-					<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
-					<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
-					<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
-					<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
-					<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
-				</div>
+				<?renderTemplate('shareBtns', null) ?>
 			</div>
 		</div>
 	</div>
@@ -134,6 +128,7 @@ function renderGroupDetails($currentGroupId) {
 		if ($groups && (dbNumRows($groups) == 1)) {
 			$userService = new AutoObject("user.service");?>
 			<ul class="submenu">
+				<li class="greybox"><a href="javascript:logAction()" onclick="showGroupComments(this)">Comments</a></li>
 				<li class="greybox"><a href="javascript:logAction()" onclick="showGroupSubDetails(this)">Details</a></li>
 				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupIdeate(this)">Ideate</a></li>
 				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupCompare(this)">Compare</a></li>
@@ -141,7 +136,6 @@ function renderGroupDetails($currentGroupId) {
 			</ul>
 			
 			<div class="groupInfo" style="margin-top:2em;">
-			<? //renderGroupDetailsTab($currentGroupId); ?>
 			</div>
 		<?} 
 	} else {
@@ -583,7 +577,7 @@ function renderPublicPreview($uid) {
 	global $uiRoot;?>
 	<div style="height:3.5em">
 		<div class="righter righterImage">
-			<img src="<?= $uiRoot . "style/defGear.png"?>" style="width:3.5em; height:3.5em"/><br/>
+			<img src="<?= $uiRoot . "style/public.png"?>" style="width:3.5em; height:3.5em"/><br/>
 		</div>
 		<div class="righter">
 			<h3>Public</h3>
@@ -596,7 +590,7 @@ function renderPrivatePreview($uid) {
 	global $uiRoot;?>
 	<div style="height:3.5em">
 		<div class="righter righterImage">
-			<img src="<?= $uiRoot . "style/defGear.png"?>" style="width:3.5em; height:3.5em"/><br/>
+			<img src="retrieveImage.php?action=userImg&actionId=<?= $uid ?>" style="width:3.5em; height:3.5em"/><br/>
 		</div>
 		<div class="righter">
 			<h3>Private</h3>
@@ -606,7 +600,7 @@ function renderPrivatePreview($uid) {
 <?}
 
 function renderPublic() {
-	global $serverRoot, $serverUrl;
+	global $serverRoot, $serverUrl, $uiRoot;
 	$limit = 10;
 	$announces = getAnnouncements("LIMIT 10");?>
 	<div style="width:100%;">
@@ -618,7 +612,7 @@ function renderPublic() {
 					while($announce = dbFetchObject($announces)) {?>
 						<div class="itemHolder" style="font-size:0.85em">
 							<?= $announce->text ?><br/>
-							<span><?= getUserInfo($announce->userId)->username . " " . $announce->date ?></span>
+							<span><?= getDisplayUsername($announce->userId) . " " . $announce->date ?></span>
 						</div>
 					<?}
 				}?>
@@ -626,9 +620,9 @@ function renderPublic() {
 			</div>
 		</div>
 		<div class="fixed-right">
-			<div class='itemHolder headBorder treeMenu' style="height:2.5em;">
+			<div class='itemHolder headBorder treeMenu' style="height:70px;">
 				<div class="lefter">
-					<h3 style="padding-left:0.25em;">Public</h3>
+					<h3 style="padding-left:0.25em;"><img src="<?=$uiRoot?>/style/public.png"/> Public</h3>
 				</div>
 			</div>
 			<ul class="submenu">

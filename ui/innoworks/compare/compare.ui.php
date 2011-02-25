@@ -162,15 +162,17 @@ function renderIdeaSummary($ideaId, $showAll) {
 	import("idea.service");
 	import("group.service");
 	import("user.service");
-	require_once(dirname(__FILE__) . "/../ideas/ideas.ui.php");
-	if (!$showAll && !hasAccessToIdea($ideaId, $_SESSION['innoworks.ID']))
-		die("You have no access to view this idea");
+	
 	
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
+	if (!$showAll && !hasAccessToIdea($ideaId, $_SESSION['innoworks.ID']) && $idea->isPublic != 1)
+		die("You have no access to view this idea");
+	
+	require_once(dirname(__FILE__) . "/../ideas/ideas.ui.php");
+	
 	$iv = createIv();
 	$ideaEnc = encrypt($ideaId, $iv); 
 	$ideaUrl = '&idea=' . base64_url_encode($ideaEnc) . '&iv=' . base64_url_encode($iv);
-	
 	?>
 	<table>
 	<tr>

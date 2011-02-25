@@ -30,10 +30,17 @@ if (isset($_POST['query'])) {
 	@ldap_close($connection);
 }
 ?>
-
+<html>
+<head>
+<? require_once("head.php"); ?>
+</head>
+<body>
 <hr/>
 <h2>LDAP search</h2>
+<p style="font-style:italic;">LDAP query example: (&(utsaccountstatus=ACTIVE)(utsidnumber=00000000))<p>
 <form method="post" action="./ldap.php">
 <input name="query" value="<?= htmlspecialchars($_POST['query'])?>" style="width:100%"/>
 </form>
 <hr/>
+</body>
+</html>

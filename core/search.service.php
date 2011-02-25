@@ -47,7 +47,7 @@ function addSingleFilterString($key, $value, $target) {
 	
 }
 
-function getSearchIdeas($criteria, $user, $filters, $limit) {
+function getSearchIdeas($criteria, $user, $filters, $limit = 'LIMIT 20') {
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("Ideas.title"));
 	$filters = cleanseArray($filters);
@@ -67,7 +67,7 @@ function countGetSearchIdeas($criteria, $user, $filters) {
 	return $count[0];
 }
 
-function getSearchIdeasByUser($criteria, $user, $filters, $limit) {
+function getSearchIdeasByUser($criteria, $user, $filters, $limit = 'LIMIT 20') {
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("Ideas.title"));
 	$filters = cleanseArray($filters);
@@ -86,13 +86,13 @@ function countGetSearchIdeasByUser($criteria, $user, $filters) {
 	return $count[0];
 }
 
-function getSearchPeople($criteria, $user, $filters, $limit) {
+function getSearchPeople($criteria, $user, $filters, $limit = 'LIMIT 20') {
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("Users.username", "Users.firstName", "Users.lastName", "Users.interests"));
 	$filters = cleanseArray($filters);
 	$filterString = createFilterString($filters, array("dateFrom","dateTo"), "Users"); 
 	
-	$sql = "SELECT Users.* FROM Users WHERE $criteriaString $filterString";
+	$sql = "SELECT Users.* FROM Users WHERE $criteriaString $filterString ORDER BY createdTime DESC $limit";
 	
 	/*
 	$sql = "SELECT Users.* FROM Users WHERE $criteriaString $filterString AND isPublic='1' UNION 
@@ -127,7 +127,7 @@ function countGetSearchPeople($criteria, $user, $filters) {
 	return $count[0];
 }
 
-function getSearchGroups($criteria, $user, $filters, $limit) {
+function getSearchGroups($criteria, $user, $filters, $limit = 'LIMIT 20') {
 	$criteria = cleansePureString($criteria);
 	$criteriaString = createCriteriaString($criteria, array("title", "tags", "description"));
 	$filters = cleanseArray($filters);

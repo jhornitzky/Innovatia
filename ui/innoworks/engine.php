@@ -43,12 +43,7 @@ $(document).ready(function() {
 	//AJAX methods and setup
 	$.ajaxSetup ({  
 		cache: false  
-	});  
-	/*
-	$(document).ajaxStop(function() {
-		processQueuedActions();
 	});
-	*/
 	
 	//Show default
 	showDash();
@@ -123,6 +118,7 @@ function openAdmin() {
 	</style>
 <![endif]-->
 </head>
+
 <body class="tundra">
 
 <!-- HEADER BAR -->
@@ -133,72 +129,51 @@ function openAdmin() {
 	<li style="margin-right:23px; padding-top:0; padding-bottom:0; padding-right:0">
 		<img id="dashlnk" class="menulnk" style="width: 226px; height:48px;" src="<?= $serverRoot?>ui/style/kubu.png" onclick="showDash(this)"  title="Dashboard"/>
 	</li>
-	<li class="bluebox">
+	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
 		<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)" title="Add and explore ideas">Ideate</a>
 	</li>
-	<li class="bluebox">
-		<a id="comparelnk" class="menulnk" href="javascript:showCompare(this)" title="Contrast ideas using structured criteria">Compare</a>
+	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/compare.png');" >
+		<a id="comparelnk"class="menulnk" href="javascript:showCompare(this)" title="Contrast ideas using structured criteria">Compare</a>
 	</li>
-	<li class="bluebox">
+	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/select.png');">
 	<a id="selectlnk" class="menulnk" href="javascript:showSelect(this)" title="Select and manage ideas for implementation">Select</a>
 	</li>
-	<li class="greenbox">
+	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/group.png');">
 		<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share and manage ideas with groups">Groups</a>
 	</li>
-	<li class="greenbox">
+	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
 		<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">Profile</a>
 	</li>
-	<li class="greenbox">
+	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/public.png');">
 		<a id="publiclnk" class="menulnk" href="javascript:showPublic(this)" title="View public ideas and announcements">Public</a>
 	</li>
-	<li class="greybox">
+	<li class="greybox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/search.png');">
 		<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)" title="Find ideas, innovators and groups">Search</a>
 	</li>
 </ul>
 </div>
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li class="greybox" style="padding-top:0.25em; padding-bottom:0.25em;">
+	<li class="greybox" style="padding-top:0.25em; padding-bottom:0.025em;">
 	<table style="color:#FFF; text-align:right"><tr><td>
 	<span style="color:#DDD; font-size:0.85em;"><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></span>
 	<br/>
-	<div dojoType="dijit.form.DropDownButton" title="More options">
-    	<span>
-        	Actions
-   		</span>
-    	<div dojoType="dijit.Menu">
- 			<div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconViewSource"
-   			 onClick="showIdeas(); showDefaultIdeas();">
-       			Add idea
-    		</div>
-    		<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?><div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconViewSource"
-    		onClick="openAdmin()">
-        		Go to admin
-    		</div><?}?>
-    		<div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconViewSource"
-    		onClick="showFeedback()">
-        		Leave feedback
-    		</div>
-    		<div dojoType="dijit.MenuSeparator">
-    		</div>
-  			<div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconViewSource"
-    		onClick="logout()">
-        		Logout
-    		</div>
-		</div>
+	<div class="actions">
+		<img src="<?= $serverRoot ?>ui/style/menu/add.png" style="width:22px; height:22px;" onClick="showIdeas(); showDefaultIdeas();" alt="Add" title="Add idea"/>
+		<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
+		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin()" alt="Admin" title="Go to admin"/>
+		<?}?>
+		<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback()" alt="Feedback" title="Leave feedback and report bugs"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp()" alt="Feedback" title="Get help and info"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout()" alt="Logout" title="Logout and end your session"/>
 	</div>
-	</td><td>
-	<!-- 
-	<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?><a href="javascript:logAction()" onclick="openAdmin()" style="font-size:1.0em; color:#EEE">admin&gt;&gt;</a> <? } ?>
-	 -->
-	<img id="profileAvatar" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" title="<?= $_SESSION['innoworks.username']; ?>" style="width:2em;height:2em;"/>
-	<!-- <span style="font-size:0.9em; padding-right:0.3em;">
-		<?= $_SESSION['innoworks.username']; ?>
-	</span> -->
-	<!-- <br/>
-	<a href="javascript:logout()">Logout</a>
-	<a href="javascript:showFeedback()">Feedback</a>-->
-	</td></tr></table></li>
+	</td>
+	<td>
+		<img id="profileAvatar" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" title="<?= $_SESSION['innoworks.username']; ?>" style="width:2em;height:2em;"/>
+	</td>
+	</tr>
+	</table>
+	</li>
 </ul>
 </div>
 </div>
@@ -250,7 +225,7 @@ function openAdmin() {
 				Comments <input type="submit" value=" + " /> 
 				<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> 
 			</form>
-			<div class="compareCommentList">No comments yet</div>
+			<div class="compareCommentList"></div>
 		</div>
 	</div>
 </div>
@@ -306,10 +281,9 @@ function openAdmin() {
 
 <div id="reportTab" class="tabBody">
 	<div class="fixed-left">
-		<h2 class="pgName">Reports</h2>
 	</div>
 	<div class="fixed-right">
-		<div id="reportDetails">Loading reports...</div>
+		<div id="reportDetails"></div>
 	</div>
 </div>
 

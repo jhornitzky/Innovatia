@@ -1,8 +1,8 @@
 <?
-require_once(dirname(__FILE__) . "/../thinConnector.php");
+require_once(dirname(__FILE__) . "/../pureConnector.php");
 import("idea.service");
 
-function renderIdeasDefault($user, $limit) {
+function renderIdeasDefault($user, $limit = 30) {
 	$limitString = "LIMIT $limit";
 	$countIdeas = countIdeas($user);
 	$ideas = getIdeas($user, $limitString);
@@ -18,9 +18,9 @@ function renderIdeasDefault($user, $limit) {
 	}
 }
 
-function renderPublicIdeas($limit) {
+function renderPublicIdeas($limit = 30) {
 	$limitString = "LIMIT $limit";
-	$countIdeas = countPublicIdeas($user);
+	$countIdeas = countPublicIdeas();
 	$ideas = getPublicIdeas($limit);
 	if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
@@ -63,9 +63,9 @@ function renderJustIdea($ideas, $idea, $user) {
 				<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:64px; height:64px"/><br/>
 				</td>
 				<td>
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width:1em; height:1em"/>
+				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width:1em; height:1em" title="<?= getDisplayUsername($idea->userId); ?>"/>
+				<span class="ideator"><?= getDisplayUsername($idea->userId); ?></span>
 				<span class="ideaoptions">
-				<?= getDisplayUsername($idea->userId); ?>
 				<?if ($idea->userId == $user) { ?> 
 					<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
 				<?}?>

@@ -4,6 +4,16 @@
  * These common patterns are abstracted to try and reduce the amount of rendering code written.
  */
 
+function renderTemplate($templateName, $vars) {
+	global $serverRoot,$uiRoot;
+	
+	if (is_array($vars)) {
+		extract($vars);
+	}
+	
+	require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
+}
+
 function renderGenericAddForm($tablename, $omitArray) {
 	$rs = dbQuery("SELECT * FROM $tablename LIMIT 0"); //FIXME
 	while ($meta = dbFetchField($rs)) {

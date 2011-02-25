@@ -83,10 +83,10 @@ div.smallLoadingAnim {
 #head {
 	height:3.5em;
 	margin-bottom:0.3em;
-	padding-top:0.5em;
 	padding-bottom:0.5em;
 	color:#FFFFFF;
 	background-color: #444444;
+	padding-top:0.5em;
 }
 
 .threeColumnContainer > * {
@@ -221,11 +221,6 @@ h2.leftHeader {
 	padding-bottom:0.6em;
 }
 
-#head {
-	padding-top:0.5em;
-	color:#FFFFFF;
-}
-
 .fixed-left {
 	width: 226px; float:left; 
 	margin-right:25px;
@@ -263,4 +258,22 @@ h2.leftHeader {
 
 #footer .fixed-right {
 	text-align:right;
+}
+
+.shareBtns a {
+	border:none;
+	background-color:transparent;
+}
+
+.shareBtns a img {
+	border:none;
+}
+
+.topleftbg {
+	background-position:top left;
+	background-repeat:no-repeat;
+}
+
+ul#submenu li {
+	border-top:none;
 }

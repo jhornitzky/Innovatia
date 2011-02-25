@@ -54,8 +54,8 @@ $views = getViewsForIdea($idea->ideaId);
 </td>
 <td style="width:10em">
 <img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width:1em; height:1em"/>
+<span class="ideator"><?= getDisplayUsername($idea->userId); ?></span>
 <span class="ideaoptions">
-<?= getDisplayUsername($idea->userId); ?>
 <?if ($idea->userId == $user) { ?> 
 <input type="button" value=" - " onclick="deleteSelectIdea(<?= $idea->selectionId?>)" title="Deselect this idea" /> 
 <?}?>

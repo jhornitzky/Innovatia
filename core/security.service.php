@@ -2,7 +2,7 @@
 function hasAccessToIdea($ideaId, $userId) { 
 	if ($_SESSION['innoworks.isAdmin']) 
 		return true;
-	$rs = dbQuery("SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId");
+	$rs = dbQuery("SELECT * FROM Ideas WHERE isPublic='1' AND ideaId='$ideaId' UNION SELECT Ideas.* FROM Ideas WHERE Ideas.userId = '$userId' AND Ideas.ideaId = '$ideaId' UNION SELECT Ideas.* FROM Ideas, GroupIdeas, Groups, GroupUsers WHERE GroupUsers.userId = '$userId' AND GroupUsers.approved = 1 AND GroupUsers.groupId = Groups.groupId AND Groups.groupId = GroupIdeas.groupId AND GroupIdeas.ideaId = $ideaId");
 	if ($rs && dbNumRows($rs) > 0)
 		return true;
 	else

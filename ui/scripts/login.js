@@ -138,9 +138,9 @@ function showGroupSummary(id) {
 	window.open("ui/innoworks/viewer.php?group="+id);
 }
 
-function verifyusername() {}
-
 function toggleSearchOptions() {
 	$("#searchHider").toggle();
 	$("#searchOptions").toggle();
 }
+
+function verifyUsername() {}

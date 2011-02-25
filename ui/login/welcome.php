@@ -1,5 +1,4 @@
 <?require_once("core/innoworks.config.php");?>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -9,16 +8,14 @@
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/login.js"></script>
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css">
 <link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet" type="text/css">
-	
 <script type="text/javascript">
 $(document).ready( function () { 
 	showSearch();
 });
 </script>
-
 </head>
-<body>
 
+<body>
 <div id="headSurround">
 <div id="head">
 <div id="leftAlignMenu" style="float:left; position:relative; ">
@@ -62,10 +59,10 @@ $(document).ready( function () {
 <div id="loginContent">
 <div style="width:100%; font-size:1em; padding:0.2em; padding-top:0; text-align:left; clear:both ">
 	<ul id="submenu" style="clear:both ">
-		<li id="ideaInnolnk" class="bluebox" style="border-top:none"><a href="javascript:logAction();" onclick="showSearch();">Innovations</a></li> 
-		<li id="aboutlnk" class="greenbox" style="border-top:none"><a href="javascript:logAction();" onclick="showAbout();">Features</a></li>
-		<li id="reglnk" class="orangebox" style="border-top:none"><a href="javascript:logAction();" onclick="registerUser();">Register</a></li>
-		<li id="downlnk" class="redbox" style="border-top:none"><a href="javascript:logAction();" onclick="showDownload();">Download</a></li>
+		<li id="ideaInnolnk" class="bluebox" style="background-image:url('<?= $uiRoot?>style/login/innovation.png');"><a href="javascript:logAction();" onclick="showSearch();">Innovations</a></li> 
+		<li id="aboutlnk" class="greenbox" style="background-image:url('<?= $uiRoot?>style/login/feature.png');"><a href="javascript:logAction();" onclick="showAbout();">Features</a></li>
+		<li id="reglnk" class="orangebox" style="background-image:url('<?= $uiRoot?>style/login/register.png');"><a href="javascript:logAction();" onclick="registerUser();">Register</a></li>
+		<li id="downlnk" class="redbox" style="background-image:url('<?= $uiRoot?>style/login/download.png');"><a href="javascript:logAction();" onclick="showDownload();">Download</a></li>
 	</ul>
 	<div id="ajaxContent" style="clear:both">
 		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>

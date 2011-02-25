@@ -54,7 +54,7 @@ require_once("thinConnector.php");
 	<img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" style="height:48px;width:226px;"/>
 	<a href="javascript:logAction()" onclick="showAdminDash()">ADash</a>	
 	<a href="javascript:logAction()" onclick="showAnnouncement()">Announcements</a>	
-	<!-- <a href="javascript:logAction()" onclick="showUsers()">Users</a>-->
+	<a href="javascript:logAction()" onclick="showUsers()">Users</a>
 	<a href="javascript:logAction()" onclick="showTables()">Tables</a>
 	<a href="javascript:logAction()" onclick="showLDAP()">LDAP</a>
 	<div style="position:absolute; top:18px; color:#AAA; left:235px; font-weight:bold; font-size:1.5em;">admin</div>

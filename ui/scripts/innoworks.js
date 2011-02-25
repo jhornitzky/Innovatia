@@ -316,7 +316,7 @@ function getIdeas() {
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$(".ideasList").load("engine.ajax.php?action=getIdeas");
 		$("#addIdeaForm span").html("Add new idea");
-		$("#addIdeaTitle").show();
+		$("#addIdeaTitle").fadeIn();
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		$(".ideasList").load("engine.ajax.php?action=getPublicIdeas");
 		$("#addIdeaForm span").html("Make a <b>private</b> idea public");
@@ -625,8 +625,6 @@ function hideResponses() {
 	});
 }
 
-function showHelp(text) {}
-
 //Add another contains method
 jQuery.expr[':'].Contains = function(a,i,m){
   return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
@@ -792,7 +790,8 @@ function updateGroupDetails(formId) {
 function showGroupDetails() {
 	$.get("engine.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
 		$("#groupDetails").html(data);
-		showGroupSubDetails();
+		//showGroupSubDetails();
+		showGroupComments();
 		$("#groupDetails ul.submenu li:first").addClass("selected");
 	});
 }
@@ -942,7 +941,7 @@ function getCompareComments() {
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("engine.ajax.php?action=getCompareComments", function(data) {
 			$(".compareCommentList").html(data);
-			$("#addCompareCommentForm").show();
+			$("#addCompareCommentForm").fadeIn();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		/*$.get("engine.ajax.php?action=getPublicCompareComments", function(data) {
@@ -954,7 +953,7 @@ function getCompareComments() {
 	} else { 
 		$.get("engine.ajax.php?action=getCompareCommentsForGroup&actionId="+currentGroupId, function(data) {
 			$(".compareCommentList").html(data);
-			$("#addCompareCommentForm").show();
+			$("#addCompareCommentForm").fadeIn();
 		});
 	}
 }
@@ -1210,10 +1209,17 @@ var ideateFormString = "<form class='addForm'>Click here to select an idea <inpu
 var compareFormString = "<form class='addForm'>Click here to add idea to comparison <input type='button' onclick='showAddRiskItem(this)' value=' + ' title='Add an idea to comparison' /></form>";
 var selectFormString = "<form class='addForm'>Click here to select an idea <input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>";
 
-function showGroupComments() {
-	
+function showGroupComments(elem) {
+	$("ul.submenu li").removeClass("selected");
+	$(elem).parent().addClass("selected");
+	$(".groupInfo").html('<form class="addForm" onsubmit="addCompareComment(this);return false;">' +
+			'<input type="hidden" name="action" value="addComment" />' +
+			'Comments <input type="submit" value=" + " />' + 
+			'<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> '+
+			'</form>' +
+			'<div class="compareCommentList"></div>');
+	getCompareComments();
 }
-
 function showGroupSubDetails(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
@@ -1303,15 +1309,29 @@ function showPublicIdeate(elem) {
 			'<div class="ideasList"></div>');
 	getIdeas();
 }
+
 function showPublicCompare(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
 	$(".publicInfo").html(compareFormString + '<div class="compareList"></div>');
 	getCompare();
 }
+
 function showPublicSelect(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
 	$(".publicInfo").html(selectFormString + '<div class="selectList"></div>');
 	getSelect();
+}
+
+function showHelp() {
+	var help = new inno.Dialog({title:"Help", href:"help/help.html", style: "width:1000px; height:530px;"});
+	dojo.body().appendChild(help.domNode);
+	help.startup();
+	help.show();
+}
+
+function showHelpSize(elem, sizeProps, selfVisibility) {
+	$(elem).css('visibility', selfVisibility);
+	$(elem).parent().stop().animate(sizeProps);
 }

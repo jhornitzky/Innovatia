@@ -16,32 +16,32 @@ function getBacktrace() {
 }
 
 function logAudit($msg) {
-	global $logLevel;
-	if ($logLevel < 1)
+	global $loglevel;
+	if ($loglevel < 1)
   		error_log(" [AUDIT](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 
 function logDebug($msg) { 
-	global $logLevel;
-	if ($logLevel < 2)
+	global $loglevel;
+	if ($loglevel < 2)
  		error_log(" [DEBUG](".$_SERVER['SCRIPT_NAME'] . ") " . $msg);
 }
 
 function logInfo($msg) {
-	global $logLevel;
-	if ($logLevel < 3)
+	global $loglevel;
+	if ($loglevel < 3)
   		error_log(" [INFO](".$_SERVER['SCRIPT_NAME'].  ") " .$msg);
 }
 
 function logWarning($msg) {
-	global $logLevel;
-	if ($logLevel < 4)
+	global $loglevel;
+	if ($loglevel < 4)
   		error_log(" [WARN](".$_SERVER['SCRIPT_NAME'] .  ") " .$msg);
 }
 
 function logError($msg) {
-	global $logLevel;
-	if ($logLevel < 5)
+	global $loglevel;
+	if ($loglevel < 5)
   		error_log(" [ERROR](".$_SERVER['SCRIPT_NAME'] . ") " .$msg);
 }
 ?>
