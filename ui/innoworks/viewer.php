@@ -18,7 +18,7 @@ if (isset($_GET['print']) )
 <!-- <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>-->
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/common.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/dijit/themes/tundra/tundra.css" />
+<link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/base/dijit/themes/tundra/tundra.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 <style>

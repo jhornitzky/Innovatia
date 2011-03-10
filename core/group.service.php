@@ -61,11 +61,11 @@ function getUsersForGroup($id) {
 	return dbQuery("SELECT Users.* FROM Users,Groups,GroupUsers WHERE Groups.groupId=$id AND GroupUsers.groupId=Groups.groupId AND Users.userId = GroupUsers.userId UNION SELECT Users.* FROM Users, Groups WHERE Groups.groupId = '$id' AND Groups.userId = Users.userId");
 }
 
-function getIdeasForGroup($id, $user, $limit) {
+function getIdeasForGroup($id, $user = null, $limit = 'LIMIT 300') {
 	return dbQuery("SELECT Ideas.*, Users.username, GroupIdeas.* FROM Ideas, Groups, GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId $limit");
 }
 
-function countGetIdeasForGroup($id, $user) {
+function countGetIdeasForGroup($id, $user = null) {
 	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas,Groups,GroupIdeas, Users WHERE Groups.groupId=$id AND GroupIdeas.groupId=Groups.groupId AND Ideas.ideaId = GroupIdeas.ideaId AND Users.userId = Ideas.userId"));
 	return $array[0];
 }

@@ -2,7 +2,7 @@
 require_once("innoworks.connector.php");
 
 function getAnnouncements($limit) {
-	return dbQuery("SELECT * FROM Announcements $limit");
+	return dbQuery("SELECT * FROM Announcements ORDER BY date DESC $limit");
 }
 
 function createAnnouncement($senderid, $msg) {

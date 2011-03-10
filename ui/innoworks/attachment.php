@@ -86,7 +86,7 @@ function showResponses(data, timeout) {
 </head>
 
 <body>
-	<div class="responses"><?= $msg . $success ?></div>
+	<div class="responses"><? if (isset($msg)) echo $msg; if(isset($success)) echo $success; ?></div>
 	<? if ((isset($ideaId) && hasEditAccessToIdea($ideaId,$_SESSION['innoworks.ID'])) 
 	|| isset($groupId) || (!isset($groupId) && !isset($userId))) { ?>
 	<form method="post" enctype="multipart/form-data"

@@ -41,7 +41,7 @@ function getAddIdeas($userid) {
 }
 
 function getIdeaDetails($ideaId) {
-	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE ideaId = '".$ideaId."'  AND Users.userId = Ideas.userId");
+	return dbQuery("SELECT Ideas.*, Users.username, Users.firstName, Users.lastName FROM Ideas, Users WHERE ideaId = '".$ideaId."'  AND Users.userId = Ideas.userId");
 }
 
 function getSelectedIdeas($userid) {

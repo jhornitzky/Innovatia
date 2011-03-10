@@ -285,7 +285,7 @@ function renderCommonComments($comments, $uId) {
 			<span class='title'><?=$userService->getDisplayUsername($comment->userId)?></span>
 			<span class='timestamp'><?=$comment->timestamp?></span>
 			<?if ($comment->userId == $uId || $_SESSION['innoworks.isAdmin']) { ?>
-				<input type='button' onclick='deleteComment("<?$comment->commentId?>")' value=' - '>
+				<input type='button' onclick='deleteComment("<?=$comment->commentId?>")' value=' - '>
 			<?}?>
 			<br/>
 			<?=$comment->text;?>

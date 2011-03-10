@@ -8,7 +8,7 @@ if ($notes && dbNumRows($notes) > 0) {?>
 	<? while ($note = dbFetchObject($notes)) {
 		if ($note->fromUserId != $_SESSION['innoworks.ID']) { ?>
 			<tr>
-				<td><b><?= getDisplayName($note->fromUserId)  ?></b> : </td>
+				<td><b><?= getDisplayUsername($note->fromUserId) ?></b> : </td>
 				<td><?= $note->noteText ?></td>
 			</tr>
 		<?}

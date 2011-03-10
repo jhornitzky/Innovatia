@@ -41,8 +41,7 @@ if (isset($_POST['action'])) {
 			echo "Add selection... ";
 			$opts = $_POST;
 			unset($opts['action']);
-			renderServiceResponse(createIdeaSelect($opts));
-			echo $resp;
+			echo renderServiceResponse(createIdeaSelect($opts));
 			break;
 		case "deleteSelection":
 			echo "Deleting selection... ";

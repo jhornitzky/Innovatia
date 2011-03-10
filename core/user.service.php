@@ -46,12 +46,12 @@ function authenticateUser($username,$password) {
 				if ($entries != 0) { //This is paranoia
 					$entry = $entries[0];
 					registerUser(
-					array(
-					"username" => $username, 
-					"isExternal" => 1, 
-					"firstName" => $entry['cn'][0], 
-					"email" => $entry['utsmail'][0],
-					"organization" => "UTS"
+						array(
+						"username" => $username, 
+						"isExternal" => 1, 
+						"firstName" => $entry['cn'][0], 
+						"email" => $entry['utsmail'][0],
+						"organization" => "UTS"
 					));
 				}
 			}
@@ -168,7 +168,7 @@ function registerUser($postArgs) {
 	$successId = dbInsertedId($link);
 	
 	$opts = array();
-	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. If you get stuck you can click on the i icon to the top right. Happy ideating!";
+	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. If you get stuck you can click on the icon to the top right. Happy ideating!";
 	$opts['toUserId'] = $successId;
 	createNote($opts);
 	
@@ -254,14 +254,22 @@ function isLoggedIn()
 
 function getDisplayUsername($userId)
 {
-	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
-	if($rs && dbNumRows($rs) > 0) {
-		$row = dbFetchObject($rs);
+	if (is_object($userId)) {
+		$row = $userId;
 		if (!empty($row->firstName) || !empty($row->lastName))
 			return $row->firstName . ' ' . $row->lastName;
 		else 
 			return $row->username;
-	}
+	} else {
+		$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");
+		if($rs && dbNumRows($rs) > 0) {
+			$row = dbFetchObject($rs);
+			if (!empty($row->firstName) || !empty($row->lastName))
+				return $row->firstName . ' ' . $row->lastName;
+			else 
+				return $row->username;
+		}
+	} 
 	return false;
 }
 

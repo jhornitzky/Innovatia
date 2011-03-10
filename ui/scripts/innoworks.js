@@ -1,5 +1,5 @@
 //QUEUE 
-var queue = new Array();
+var queue = [];
 var loadingString = "<div class='loadingAnim'></div>";
 var smallLoadingString = "<div class='smallLoadingAnim'></div>";
 
@@ -12,18 +12,28 @@ function processQueuedActions() {
 		for (x in queue) {
 			eval(queue[x]);
 		}
-		queue = new Array();
+		queue = [];
 	}
 }
 
 //GENERIC ACTIONS
-function logAction() {} 
+function logAction(elem) {
+	var msg = elem || "log";
+	
+	try {
+		console.log(msg);
+	} catch(e) {
+		// newer opera browsers support posting errors to their consoles
+		try {
+			opera.postError(msg);
+		} catch(e1) {}
+	}
+} 
 
 function doAction(jsonRequest, callback) {
 	$.post("engine.ajax.php", jsonRequest, function(data) {
-		showResponses( data, true);
-		if (callback != undefined);
-		eval(callback);
+		showResponses(data, true);
+		if (callback !== undefined) eval(callback);
 	});
 }
 
@@ -39,10 +49,7 @@ function loadResults(element, jsonRequest) {
 function pollServer() {
 	$.get("poll.php", function(data){
 		if (data != null && data != '') {
-			showResponses( data, true);
-			if (!($("#noteTab").is(":hidden"))) {
-				showNotes();
-			}
+			showResponses(data, true);
 		}
 	});
 }
@@ -100,8 +107,7 @@ function refreshVisibleTab() {
 			getCompare();
 		else if (!($(".publicInfo .selectList").is(":hidden")))
 			getSelect();
-	}
-	else if (!($("#profileTab").is(":hidden"))) {
+	} else if (!($("#profileTab").is(":hidden"))) {
 		if (!($(".profileInfo .ideasList").is(":hidden")))
 			getIdeas();
 		else if (!($(".profileInfo .compareList").is(":hidden")))
@@ -111,17 +117,25 @@ function refreshVisibleTab() {
 		else if (!($(".profileInfo #noteTab").is(":hidden")))
 			getNotes();
 		else
-			getProfileSubDetails();
-	}
-	else if (!($("#groupTab").is(":hidden"))) {
-		if (!($(".groupInfo .ideasList").is(":hidden")))
+			showProfileSubDetails();
+	} else if (!($("#groupTab").is(":hidden"))) {
+		logAction('doRefreshGroupTab');
+		if ($(".groupInfo .ideasList").length > 0) {
+			logAction('doRefreshGroupIdeas');
 			getIdeas();
-		else if (!($(".groupInfo .compareList").is(":hidden")))
+		} else if ($(".groupInfo .compareList").length > 0) {
+			logAction('doRefreshGroupComp');
 			getCompare();
-		else if (!($(".groupInfo .selectList").is(":hidden")))
+		} else if ($(".groupInfo .selectList").length > 0) {
+			logAction('doRefreshGroupSel');
 			getSelect();
-		else
-			getGroupSubDetails();
+		} else if ($(".groupInfo .compareCommentList").length > 0) {
+			logAction('doRefreshGroupComments');
+			getCompareComments();
+		} else {
+			logAction('doRefreshShowGroupSubs');
+			showGroupSubDetails();
+		}
 	}
 	else if (!($("#noteTab").is(":hidden")))
 		getNotes();
@@ -319,11 +333,11 @@ function getIdeas() {
 		$("#addIdeaTitle").fadeIn();
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		$(".ideasList").load("engine.ajax.php?action=getPublicIdeas");
-		$("#addIdeaForm span").html("Make a <b>private</b> idea public");
+		$("#addIdeaForm span").html("Make a <a href='javascript:logAction(this)' onClick='showIdeas(); showDefaultIdeas();'>private</a> idea public");
 		$("#addIdeaTitle").hide();
 	} else {
 		$(".ideasList").load("engine.ajax.php?action=getIdeasForGroup&groupId="+currentGroupId); 
-		$("#addIdeaForm span").html("Add a <b>private</b> idea to the group");
+		$("#addIdeaForm span").html("Add a <a href='javascript:logAction(this)' onClick='showIdeas(); showDefaultIdeas();'>private</a> idea to the group");
 		$("#addIdeaTitle").hide();
 	}
 } 
@@ -580,7 +594,7 @@ function setFormArrayValue(key,val) {
 }
 
 function getInputDataFromId(selector) {
-	formArray=new Array();
+	formArray=[];
 	$("#" + selector + " :input").each(function(index, formArray) {
 		if ($(this).attr('name') != null && $(this).attr('name') != '') 
 			setFormArrayValue($(this).attr('name'),$(this).val());
@@ -698,7 +712,10 @@ function addPrivateIdea(elem) {
 
 function addIdea(elem) {
 	if(currentGroupId == null && currentGroupName == "Private") {
-		doAction($("#addIdeaForm").serialize(),"getIdeas()");
+		if ($("#addIdeaForm").find('input').val().length > 0) 
+			doAction($("#addIdeaForm").serialize(),"getIdeas()");
+		else 
+			showResponses('You must enter an idea name first', 5000);
 	} else if(currentGroupId == null && currentGroupName == "Public") {
 		showAddPublicIdea(elem);
 	} else {
@@ -766,11 +783,14 @@ function deleteRole(target, id, callbackForm, callbackIdea) {
 ///////////////// GROUP ///////////////
 
 function addGroup() {
-	doAction($("#addGroupForm").serialize(), "getGroups()");
+	if ($("#addGroupForm").find('input').val().length > 0) 
+		doAction($("#addGroupForm").serialize(), "getGroups()");
+	else 
+		showResponses('You must enter a group name first', 5000);
 }
 
 function deleteGroup(gId) {
-	if (confirm(removeString)) {
+	if (confirm('Are you sure you wish to delete this group and all its data?')) {
 		$.post("engine.ajax.php", {action: "deleteGroup", groupId:gId}, function(data) {
 			showResponses( data, true);
 			if (gId == currentGroupId) {
@@ -862,7 +882,7 @@ function delUserFromCurGroup(id) {
 	if (confirm("Are you sure you wish to remove the user from this group?")) {
 		$.post("engine.ajax.php", {action: "unlinkUserToGroup", userId:id, groupId:currentGroupId}, function(data) {
 			showResponses( data, true);
-			showGroupDetails();
+			refreshVisibleTab();
 			getGroups();
 		});
 	} else {
@@ -879,7 +899,7 @@ function delIdeaFromGroup(id, gId) {
 }
 
 function sendDelIdeaFromGroup(id, gId) {
-	doAction({action: "unlinkIdeaToGroup", ideaId:id, groupId:gId}, "showGroupDetails()");
+	doAction({action: "unlinkIdeaToGroup", ideaId:id, groupId:gId}, "showGroupSubDetails()");
 }
 
 function delIdeaFromCurGroup(id) {
@@ -1220,9 +1240,13 @@ function showGroupComments(elem) {
 			'<div class="compareCommentList"></div>');
 	getCompareComments();
 }
+
 function showGroupSubDetails(elem) {
-	$("ul.submenu li").removeClass("selected");
-	$(elem).parent().addClass("selected");
+	if (elem != undefined) {
+		$("ul.submenu li").removeClass("selected");
+		$(elem).parent().addClass("selected");
+	}
+
 	$(".groupInfo").load("engine.ajax.php?action=getGroupDetailsTab&actionId=" + currentGroupId, function() {
 		dojo.parser.instantiate(dojo.query('#groupDetailsForm *'));
 		$('#groupDetailsForm').find("textarea").blur(function() {
@@ -1230,11 +1254,15 @@ function showGroupSubDetails(elem) {
 		});
 	});
 }
+
 function showGroupIdeate(elem) {
-	$("ul.submenu li").removeClass("selected");
-	$(elem).parent().addClass("selected");
+	if (elem != undefined) {
+		$("ul.submenu li").removeClass("selected");
+		$(elem).parent().addClass("selected");
+	}
+
 	$(".groupInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
-			'<span>Add a <b>private</b> idea to group</span>' +
+			'<span>Add a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea to group</span>' +
 			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
 			'</form>'+
 			'<div class="ideasList"></div>');
@@ -1303,7 +1331,7 @@ function showPublicIdeate(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
 	$(".publicInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
-			'<span>Make a <b>private</b> idea public</span>' +
+			'<span>Make a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea public</span>' +
 			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
 			'</form>'+
 			'<div class="ideasList"></div>');

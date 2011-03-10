@@ -73,25 +73,24 @@ function renderGroupItem($group) {?>
 		</div>
 		<div class='righter'>
 			<?= $group->title ?><br/>
-			<span><?= getDisplayUsername($group->userId); ?></span>
+			<span><? if (isset($group->userId)) echo getDisplayUsername($group->userId); ?></span>
 		</div>
 	</div>
 <?}
 
 function renderGroupDetails($currentGroupId) {
+	import('security.service');
 	global $serverUrl, $serverRoot, $uiRoot;
 	$groups = getGroupWithId($currentGroupId, $_SESSION['innoworks.ID']);
 	$groupUserEntry = getGroupUserEntryWithId($currentGroupId, $_SESSION['innoworks.ID']);
 	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?group=" . $currentGroupId;
 
-	$group;
-	$groupUser;
 	if ($groups && dbNumRows($groups) > 0)
 		$group = dbFetchObject($groups);
 	if ($groupUserEntry && dbNumRows($groupUserEntry) > 0)
 		$groupUser = dbFetchObject($groupUserEntry);
 
-	if ($group == null && $groupUser == null)
+	if (!isset($group) && !isset($groupUser))
 		die("Click on a group to see its details");
 	
 	$userService = new AutoObject("user.service");
@@ -105,7 +104,7 @@ function renderGroupDetails($currentGroupId) {
 			<h3><?= $group->title ?></h3>
 			<?= getDisplayUsername($group->userId); ?><br/>
 			<? if (isset($groupUser)) {?>
-				<input type='button' onclick='currentGroupId=<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")' value=' Leave ' alt='Leave group' />
+				<input type='button' onclick='currentGroupId="<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")' value=' Leave ' alt='Leave group' />
 			<? } else if ($group->userId == $_SESSION['innoworks.ID']) { ?>
 				<input type='button' onclick='deleteGroup("<?= $group->groupId ?>")' value=' - ' alt='Delete group' />
 			<? } ?>
@@ -115,16 +114,16 @@ function renderGroupDetails($currentGroupId) {
 			<a href="javascript:logAction()" onclick="printGroup()">Print</a>
 			<div style="padding-left:0.25em;">
 				<p style="font-size:0.8em;">Share this group with a friend at:<br/> <?= $shareUrl ?></p>
-				<?renderTemplate('shareBtns', null) ?>
+				<?renderTemplate('shareBtns', null); ?>
 			</div>
 		</div>
 	</div>
-	<?if ($groupUser->approved == 0 && $groupUser->accepted == 1) {
+	<?if (isset($groupUser) && $groupUser->approved == 0 && $groupUser->accepted == 1) {
 		echo "<p>You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".</p>";
-	} else if ($groupUser->approved == 1 && $groupUser->accepted == 0) {
+	} else if (isset($groupUser) && $groupUser->approved == 1 && $groupUser->accepted == 0) {
 		echo "<p>Do you wish to accept your invitation to this group?</p>";
 		echo "<a href='javascript:logAction()' onclick='acceptGroup();'>Yes, I want to join</a> <a href='javascript:logAction()' onclick='refuseGroup();'>No, I don't wannt to join</a>";
-	} else if (($groupUser->approved == 1 && $groupUser->accepted == 1) || $group->userId == $_SESSION['innoworks.ID']) {
+	} else if ((isset($groupUser) && $groupUser->approved == 1 && $groupUser->accepted == 1) || isset($group) && $group->userId == $_SESSION['innoworks.ID']) {
 		if ($groups && (dbNumRows($groups) == 1)) {
 			$userService = new AutoObject("user.service");?>
 			<ul class="submenu">
@@ -164,7 +163,10 @@ function renderGroupDetailsTab($currentGroupId) {
 		$groupUser = dbFetchObject($groupUserEntry);
 
 	if ($group == null && $groupUser == null)
-		die("Click on a group to see its details");?>
+		die("<p>Click on a group to see its details</p>");
+	
+	$groupUsers = getUsersForGroup($currentGroupId);
+	?>
 			<div class='two-column' style='border-top:1px solid #EEE'>
 			<p><b>Details</b></p>
 			<form id='groupDetailsForm'>
@@ -184,9 +186,9 @@ function renderGroupDetailsTab($currentGroupId) {
 				echo "<ul>";
 				while ($user = dbFetchObject($groupUsers)) {
 					echo "<li>
-					<img src='". $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary(\"$user->userId\")'>$user->username</a>";
-					if ($group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delUserFromCurGroup($user->userId)' alt='Remove user from group'/>";
-					if ($user->approved == 0 && $group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value ='Approve' onclick='approveGroupUser($user->userId)' alt='Approve user for group'/>";
+					<img src='". $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary(\"$user->userId\")'>".getDisplayUsername($user)."</a>";
+					if ($group->userId != $user->userId && $group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delUserFromCurGroup($user->userId)' alt='Remove user from group'/>";
+					if ($group->userId != $user->userId && !hasAccessToGroup($group->groupId, $user->userId) && $group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value ='Approve' onclick='approveGroupUser($user->userId)' alt='Approve user for group'/>";
 					echo "</li>";
 				}
 				echo "</ul>";
@@ -313,7 +315,7 @@ function renderAddUser($actionId, $user, $criteria) {
 		<div style="border: 1px solid #444444; position: relative; float: left; clear:right">
 			<table cellpadding="0" cellspacing="0">
 			<tr>
-			<td><input type="text"  name="criteria" value="<?= $searchTerms ?>" placeholder=" . . . " style="border: none" /></td>
+			<td><input type="text"  name="criteria" value="<?= htmlspecialchars($criteria); ?>" placeholder=" . . . " style="border: none" /></td>
 			<td><img src="<?= $uiRoot."style/glass.png"?>" onclick="findAddUser()" style="width:30px; height:24px; margin:2px;cursor:pointer"/></td>
 			</tr>
 			</table>
@@ -358,7 +360,7 @@ function renderAddIdea($actionId, $user, $criteria) {
 		<div style="border: 1px solid #444444; position: relative; float: left; clear:right">
 			<table cellpadding="0" cellspacing="0">
 			<tr>
-			<td><input type="text"  name="criteria" value="<?= $searchTerms ?>" placeholder=" . . . " style="border: none" /></td>
+			<td><input type="text"  name="criteria" value="<?= htmlspecialchars($criteria); ?>" placeholder=" . . . " style="border: none" /></td>
 			<td><img src="<?= $uiRoot."style/glass.png"?>" onclick="findIdeas();" style="width:30px; height:24px; margin:2px;cursor:pointer"/></td>
 			</tr>
 			</table>
@@ -477,17 +479,11 @@ function renderIdeaShare($ideaId, $userId) {
 	</div>
 	<div style="width:49%; float:left; clear:right;">
 	<? if ($countGroups > dbNumRows($groups)) {?>
-		<p>Displaying only 200 of <?= $countGroups?> your groups. Go to groups or search to manage.</p>
+		<p>Displaying only 200 of your <?= $countGroups?> groups. Go to groups or search to manage.</p>
 	<? } ?>
 	<p>Show <a href='javascript:showGroups(); dijit.byId("ideasPopup").hide()'>Groups</a></p>
 	<p>Share this idea with a friend at:<br/> <?= $shareUrl ?></p>
-	<div class="shareBtns">	
-		<img src="<?= $serverRoot?>ui/style/emailbuttonmini.jpg" onclick="openMail('yourFriend@theirAddress.com', 'Check out my idea on innoworks', 'I thought you might like my idea. You can see it at <?= $shareUrl ?>')" />
-		<img src="<?= $serverRoot?>ui/style/fb btn.png" onclick="openFace()" />
-		<img class="shareLeft" src="<?= $serverRoot?>ui/style/delicious btn.png" onclick="openDeli()" />
-		<img class="shareLeft" src="<?= $serverRoot?>ui/style/twit btn.png" onclick="openTweet()"/>
-		<img class="shareLeft" src="<?= $serverRoot?>ui/style/blogger btn.png" onclick="openBlog()"/>
-	</div>
+	<?renderTemplate('shareBtns', null); ?>
 	</div>
 	</div>
 <?	} else {
@@ -532,7 +528,7 @@ function renderIdeaGroupsListForUser($uid) {
 	</div>
 <?}
 
-function renderIdeaGroupItemsForUser($uid, $limit) {
+function renderIdeaGroupItemsForUser($uid, $limit = 20) {
 	global $serverRoot;
 	import("group.service");
 	import("user.service");
@@ -549,10 +545,11 @@ function renderIdeaGroupItemsForUser($uid, $limit) {
 					<span><?= getDisplayUsername($group->userId); ?></span>
 				</div>
 			</div>
-		<?} if ($countGroups > dbNumRows($groups)) ?>
+		<?} if ($countGroups > dbNumRows($groups)) {?>
 			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupItemsForUser', limit:'<?= $limit + 20; ?>'})">
 			Load more</a>
-	<?} else {?>
+		<?}
+	} else {?>
 		<div style="margin-bottom:0.5em;">None</div>
 	<?}
 }
@@ -633,6 +630,4 @@ function renderPublic() {
 			<div class="publicInfo" style="margin-top:2em"></div>
 		</div>
 	</div>
-<?}
-
-?>
+<?}?>

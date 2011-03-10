@@ -135,7 +135,7 @@ function renderGenericHeader($rs, $omitArray, $camelcase = true) {
 	echo "</tr>";
 }
 
-function renderGenericHeaderWithRefData($rs, $omitArray, $tableName, $renderCallback) {
+function renderGenericHeaderWithRefData($rs, $omitArray, $tableName, $renderCallback = null) {
 	$refdata = getRefDataForTable($tableName);
 
 	if ($refdata && dbNumRows($refdata) > 0)
@@ -174,9 +174,9 @@ function renderGenericHeaderWithRefData($rs, $omitArray, $tableName, $renderCall
 function renderGenericUpdateRow($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray)) {?>
-<td><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-</td>
+			<td><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+			<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+			</td>
 		<?}
 	}
 }

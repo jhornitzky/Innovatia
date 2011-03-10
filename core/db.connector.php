@@ -23,13 +23,15 @@ function cleansePureString($str, $char = '\\')
 
 function cleanseArray($opts) {
 	$cleansedArray = array();
-	$keys = array_keys($opts);
-	$vals = array_values($opts);
-
-	for ($i = 0; $i < count($keys); $i++) {
-		$newKey = cleansePureString($keys[$i],"'");
-		$newVal = cleansePureString($vals[$i],"'");
-		$cleansedArray[$newKey] = $newVal;
+	if (!empty($opts)) {
+		$keys = array_keys($opts);
+		$vals = array_values($opts);
+		
+		for ($i = 0; $i < count($keys); $i++) {
+			$newKey = cleansePureString($keys[$i],"'");
+			$newVal = cleansePureString($vals[$i],"'");
+			$cleansedArray[$newKey] = $newVal;
+		}
 	}
 	return $cleansedArray;
 }

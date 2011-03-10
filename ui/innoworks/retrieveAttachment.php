@@ -1,6 +1,6 @@
 <?
 require_once("thinConnector.php");
-import("idea.service");
+import("attach.service");
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {

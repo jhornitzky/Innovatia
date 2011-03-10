@@ -78,10 +78,10 @@ Date to <input type="text" name="dateTo" dojoType="dijit.form.DateTextBox" value
 <div class="threecol"><? echo "<p>".dbNumRows($users)." <b>profile(s)</b></p>";
 if ($users && dbNumRows($users) > 0){
 	while ($user = dbFetchObject($users)) { ?>
-<div class='itemHolder clickable' onclick="showProfileSummary('<?=$user->userId?>')">
-<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $user->userId?>" style="width:1em; height:1em;"/>
-<?=$user->username?>
-</div>
+	<div class='itemHolder clickable' onclick="showProfileSummary('<?=$user->userId?>')">
+	<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $user->userId?>" style="width:1em; height:1em;"/>
+	<?=$user->username?>
+	</div>
 	<?}
 } else {
 	echo "<p>No people</p>";

@@ -13,9 +13,15 @@ import("user.service");
 <title>innoWorks</title>
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?= $uiRoot?>scripts/jQuery-Min.js"></script>
+
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
-<!-- <script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dojo/innoworks/innodojo.js"></script>-->
-<script type="text/javascript" src="<?= $uiRoot?>scripts/dojoLayer.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoDialog.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojoLayer.js"></script>
+
+<!-- <script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dijit/dijit.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/opt/innoworks/innoworksRelease.js"></script>-->
+
 <script type="text/javascript" src="<?= $uiRoot?>scripts/innoworks.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/common.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
@@ -40,17 +46,17 @@ var isMobile = <?= (isMobile()) ? "true" : "false"; ?>;
 
 /////// START UP ///////
 $(document).ready(function() {
+	//Show default
+	showDash();
+
 	//AJAX methods and setup
 	$.ajaxSetup ({  
 		cache: false  
 	});
 	
-	//Show default
-	showDash();
-
 	//Start server polling
-	pollServer();
-	setInterval(pollServer, 15000);
+	window.setTimeout(pollServer, 5000);
+	window.setInterval(pollServer, 2*60*1000); //poll every 2 minutes
 });
 
 dojo.addOnLoad(function(){	
@@ -71,7 +77,6 @@ dojo.addOnLoad(function(){
 	dojo.subscribe("ideasPopupReview-selectChild", function(child){
 		subscribeForChild(child);
 	});
-	
 });
 
 function openAdmin() {

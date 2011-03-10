@@ -18,7 +18,7 @@ function renderDefaultDash($userid) {
 	<div class="itemHolder headBorder" style="background-color:#EEE">Your statistics</div>
 	<div class="itemHolder"><?= $noOfIdeas ?><br/><span>ideas</span></div>
 	<div class="itemHolder"><?= $noOfSelectedIdeas ?><br/><span>selected ideas</span></div>
-	<div class="itemHolder"><?= $noOfSelectedIdeas/$noOfIdeas ?><br/><span>selected idea ratio</span></div>
+	<div class="itemHolder"><? if($noOfIdeas > 0) echo $noOfSelectedIdeas/$noOfIdeas; else echo 0; ?><br/><span>selected idea ratio</span></div>
 	<div class="itemHolder"><?= $noOfGroupsCreated?><br/><span>groups created</span></div>
 	<div class="itemHolder"><?= $noOfGroupsIn?><br/><span>groups in</span></div>
 	</div>

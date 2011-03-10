@@ -27,13 +27,17 @@ if (isset($_GET['action'])) {
 			renderGroupSummary($_GET['actionId']);
 			break;
 		case "getAddUser":
-			renderAddUser($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			isset($_GET['actionId']) ? $actionId = $_GET['actionId'] : $actionId = '';
+			isset($_GET['criteria']) ? $criteria = $_GET['criteria'] : $criteria = '';
+			renderAddUser($actionId, $_SESSION['innoworks.ID'], $criteria);
 			break;
 		case "getAddUserItems":
 			renderAddUserItems($_GET['criteria'], $limit);
 			break;
 		case "getAddIdea":
-			renderAddIdea($_GET['actionId'], $_SESSION['innoworks.ID'], $_GET['criteria']);
+			isset($_GET['actionId']) ? $actionId = $_GET['actionId'] : $actionId = '';
+			isset($_GET['criteria']) ? $criteria = $_GET['criteria'] : $criteria = '';
+			renderAddIdea($actionId, $_SESSION['innoworks.ID'], $criteria);
 			break;
 		case "getAddIdeaItems":
 			renderAddIdeaItems($_GET['criteria'], $limit);

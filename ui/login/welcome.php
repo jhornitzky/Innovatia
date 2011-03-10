@@ -10,7 +10,8 @@
 <link href="<?= $serverRoot?>ui/style/login.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 $(document).ready( function () { 
-	showSearch();
+	showSearch(); //grab search results
+	$('#iUsername')[0].focus(); //set focus to login
 });
 </script>
 </head>
@@ -41,7 +42,7 @@ $(document).ready( function () {
 		<th></th>
 	</tr>
 	<tr>
-		<td><input type="text" name="username" size="20" /></td>
+		<td><input id="iUsername" type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
 		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /></td>
 	</tr>

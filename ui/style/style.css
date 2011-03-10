@@ -41,7 +41,7 @@ a {
 	margin-left:5px;
 	margin-right:5px;
 	color:#666;
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 a:hover {
@@ -276,4 +276,13 @@ h2.leftHeader {
 
 ul#submenu li {
 	border-top:none;
+}
+
+div.itemHolder div.lefter:last-child {
+	max-width:80%;
+	overflow:hidden;
+}
+
+div.itemHolder div.lefter span {
+	font-size:0.9em;
 }
