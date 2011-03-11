@@ -74,7 +74,7 @@ function updateIdeaDetails($opts) {
 
 function deleteIdea($opts) {
 	if (hasEditAccessToIdea($opts['ideaId'], $_SESSION['innoworks.ID'])){
-		return genericDelete("Ideas", $opts);
+		return genericDelete("Ideas", array('ideaId' => $opts['ideaId']));
 	}
 	return false;
 }

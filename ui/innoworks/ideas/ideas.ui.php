@@ -66,7 +66,7 @@ function renderJustIdea($ideas, $idea, $user) {
 				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width:1em; height:1em" title="<?= getDisplayUsername($idea->userId); ?>"/>
 				<span class="ideator"><?= getDisplayUsername($idea->userId); ?></span>
 				<span class="ideaoptions">
-				<?if ($idea->userId == $user) { ?> 
+				<?if ($idea->userId == $user || $_SESSION['innoworks.isAdmin']) { ?> 
 					<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" /> 
 				<?}?>
 				</span><br/>
@@ -85,7 +85,7 @@ function renderIdeaMission($ideaId) {
 		<div class="ideaDetails subform">
 			<form id="ideadetails_form_<?= $idea->ideaId?>">
 			<?if ($canEdit)
-				renderGenericUpdateForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime", 'firstName', 'lastName')); 
+				renderGenericUpdateFormWithRefData(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime", 'firstName', 'lastName'), "Ideas"); 
 			else 
 				renderGenericInfoForm(null ,$idea, array("ideaId", "title","userId", "createdTime", "username", "isPublic", "score", "lastUpdateTime", 'firstName', 'lastName'));?>
 			<input type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> 
@@ -155,13 +155,13 @@ function renderFeature($features, $feature, $canEdit = false) {?>
 		<?
 		if ($canEdit) {
 			renderGenericUpdateRow($features, $feature, array("featureId", "ideaId"));?>
-		<td>
-		<input type="hidden"
-			name="featureId"
-			value="<?= $feature->featureId ?>" />
-		<input type="button"
-			onclick="deleteFeature('deleteFeature','<?= $feature->featureId ?>', 'ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
-			value=" - " /></td>
+			<td>
+			<input type="hidden"
+				name="featureId"
+				value="<?= $feature->featureId ?>" />
+			<input type="button"
+				onclick="deleteFeature('deleteFeature','<?= $feature->featureId ?>', 'ideafeatures_<?= $feature->ideaId?>','<?= $feature->ideaId ?>');"
+				value=" - " /></td>
 		<?} else { 
 			renderGenericInfoRow($features, $feature, array("featureId", "ideaId"));
 		}?>

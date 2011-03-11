@@ -142,7 +142,7 @@ function renderSearchProfiles($userId, $limit) {
 				</div>
 				<div class="lefter">
 					<?= getDisplayUsername($user->userId) ?><br/>
-					<span><?= $user->username ?></span>
+					<span><?= $user->organization ?></span>
 				</div>
 			</div>
 		<?}

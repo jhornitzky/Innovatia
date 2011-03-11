@@ -19,10 +19,9 @@ function renderGenericAddForm($tablename, $omitArray) {
 	while ($meta = dbFetchField($rs)) {
 		if (!$meta || in_array($meta->name, $omitArray)) {
 			//logDebug("Omit field from generic add");
-		} else {?>
-<label><?= fromCamelCase($meta->name);?></label>
-<input type="text"
-	name="<?= $meta->name;?>" />
+		} else { ?>
+			<label><?= fromCamelCase($meta->name);?></label>
+			<input type="text" name="<?= $meta->name;?>" />
 		<?}
 	}
 }
@@ -32,10 +31,10 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-<td><label><?=fromCamelCase($key)?></label></td>
-<td>
-<p><?=$value?></p>
-</td>
+			<td><label><?=fromCamelCase($key)?></label></td>
+			<td>
+			<p><?=$value?></p>
+			</td>
 		<?}
 		echo "</tr>";
 	}

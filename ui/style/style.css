@@ -281,6 +281,7 @@ ul#submenu li {
 div.itemHolder div.lefter:last-child {
 	max-width:80%;
 	overflow:hidden;
+	max-height:2.5em;
 }
 
 div.itemHolder div.lefter span {
