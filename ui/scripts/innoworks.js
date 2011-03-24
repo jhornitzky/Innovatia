@@ -593,7 +593,7 @@ function showPublic() {
 
 function showFeedback(elem) {
 	var left = $(elem).offset().left;
-	var top = $(elem).offset().top;
+	var top = $(elem).offset().top + $(elem).height();
 	
 	if (($("#commonPopup").width() + left) > $(document).width())
 		left = $(document).width() - $("#commonPopup").width();

@@ -4,14 +4,14 @@
  * These common patterns are abstracted to try and reduce the amount of rendering code written.
  */
 
-function renderTemplate($templateName, $vars) {
-	global $serverRoot,$uiRoot;
+function renderTemplate($templateName, $vars = null) {
+	global $serverRoot, $serverUrl, $uiRoot;
 	
 	if (is_array($vars)) {
 		extract($vars);
 	}
 	
-	require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
+	return require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
 }
 
 function renderGenericAddForm($tablename, $omitArray) {
