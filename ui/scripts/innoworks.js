@@ -19,7 +19,6 @@ function processQueuedActions() {
 //GENERIC ACTIONS
 function logAction(elem) {
 	var msg = elem || "log";
-	
 	try {
 		console.log(msg);
 	} catch(e) {
@@ -30,8 +29,8 @@ function logAction(elem) {
 	}
 } 
 
-function doAction(jsonRequest, callback) {
-	$.post("engine.ajax.php", jsonRequest, function(data) {
+function doAction(request, callback) {
+	$.post("engine.ajax.php", request, function(data) {
 		showResponses(data, true);
 		if (callback !== undefined) eval(callback);
 	});
@@ -80,7 +79,15 @@ function loadIdeaPopupData() {
 	else if (!($("#ideaSelect").is(":hidden")))
 		getSelectForIdea();
 	else if (!($("#ideaRiskEval").is(":hidden")))
-		getRiskEvalForIdea("ideaRisks",currentIdeaId);
+		getRiskEvalForIdea("ideaRisks",currentIdeaId);function is_object (mixed_var) {
+		    if (mixed_var instanceof Array) {
+		        return false;
+		    } else {
+		        return (mixed_var !== null) && (typeof(mixed_var) == 'object');
+		    }
+		}
+
+
 }
 
 function loadPopupShow() {
@@ -585,7 +592,19 @@ function showPublic() {
 }
 
 function showFeedback(elem) {
-	window.open("mailto:james.hornitzky@uts.edu.au");
+	var left = $(elem).offset().left;
+	var top = $(elem).offset().top;
+	
+	if (($("#commonPopup").width() + left) > $(document).width())
+		left = $(document).width() - $("#commonPopup").width();
+
+	showCommonPopup({type:'props',left:left, top:top});
+	$("#actionDetails").load("help/feedback.php");
+}
+
+function sendFeedback(elem) {
+	doAction($(elem).serialize());
+	return false;
 }
 
 /////// COMMON FUNCTIONS ///////
@@ -907,15 +926,23 @@ function delIdeaFromCurGroup(id) {
 }
 
 ///////////// RISK EVALUATION /////////////
-
 function showCommonPopup(elem) {
 	var popup = dijit.byId('commonPopup');
 	$('#commonPopup #actionDetails').empty();
 	popup.show();	
 	if (elem != undefined) {
-		var elemInfo = dojo.position(elem, true);
-		$("#commonPopup").animate({left: Math.floor(elemInfo.x) + "px",
-        top: Math.floor(elemInfo.y + elemInfo.h) + "px"});
+		if (elem.type != undefined && elem.type == 'props') {
+			$("#commonPopup").animate({
+				left: elem.left + "px",
+				top: elem.top + "px"
+			});
+		} else {
+			var elemInfo = dojo.position(elem, true);
+			$("#commonPopup").animate({
+				left: Math.floor(elemInfo.x) + "px",
+				top: Math.floor(elemInfo.y + elemInfo.h) + "px"
+			});
+		}
 	}
 }
 
@@ -1100,22 +1127,22 @@ function printPopupIdea() {
 }
 
 function printIdea(urlE) {
-	genericPrintViewer("viewer.php?print=true" + urlE);
+	goTo("viewer.php?print=true" + urlE);
 }
 
 function printUser(urlE) {
-	genericPrintViewer("viewer.php?print=true" + urlE);
+	goTo("viewer.php?print=true" + urlE);
 }
 
 function printGroup(urlE) {
-	genericPrintViewer("viewer.php?print=true&group=" + currentGroupId);
+	goTo("viewer.php?print=true&group=" + currentGroupId);
 }
 
 function printGroupSummary(urlE) {
-	genericPrintViewer("viewer.php?print=true" + urlE);
+	goTo("viewer.php?print=true" + urlE);
 }
 
-function genericPrintViewer(url) {
+function goTo(url) {
 	window.open(url);
 }
 

@@ -5,6 +5,20 @@ function getAnnouncements($limit) {
 	return dbQuery("SELECT * FROM Announcements ORDER BY date DESC $limit");
 }
 
+function createFeedbackNotes($opts) {
+	import("user.service");
+	$admins = getAdmins();
+	
+	if ($admins != null && dbNumRows($admins) > 0) {
+		while ($admin = dbFetchObject($admins)) {
+			$opts['toUserId'] = $admin['userId']; 
+			createNote($opts);
+		}
+	}
+	
+	return true;
+}
+
 function createAnnouncement($senderid, $msg) {
 	$array = array();
 	//$array['fromUserId'] = $senderid; //FIXME

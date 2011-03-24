@@ -13,15 +13,9 @@ import("user.service");
 <title>innoWorks</title>
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?= $uiRoot?>scripts/jQuery-Min.js"></script>
-
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoDialog.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojoLayer.js"></script>
-
-<!-- <script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dojo/dojo.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/opt/dijit/dijit.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/opt/innoworks/innoworksRelease.js"></script>-->
-
 <script type="text/javascript" src="<?= $uiRoot?>scripts/innoworks.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/common.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
@@ -159,18 +153,18 @@ function openAdmin() {
 </div>
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li class="greybox" style="padding-top:0.25em; padding-bottom:0.025em;">
+	<li style="padding-top:0.2em; padding-bottom:0.025em;margin-right:0;">
 	<table style="color:#FFF; text-align:right"><tr><td>
-	<span style="color:#DDD; font-size:0.85em;"><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></span>
+	<span style="color:#DDD; font-size:0.9em;"><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></span>
 	<br/>
 	<div class="actions">
 		<img src="<?= $serverRoot ?>ui/style/menu/add.png" style="width:22px; height:22px;" onClick="showIdeas(); showDefaultIdeas();" alt="Add" title="Add idea"/>
 		<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
-		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin()" alt="Admin" title="Go to admin"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
 		<?}?>
-		<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback()" alt="Feedback" title="Leave feedback and report bugs"/>
-		<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp()" alt="Feedback" title="Get help and info"/>
-		<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout()" alt="Logout" title="Logout and end your session"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback(this)" alt="Feedback" title="Leave feedback and report bugs"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp(this)" alt="Feedback" title="Get help and info"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout(this)" alt="Logout" title="Logout and end your session"/>
 	</div>
 	</td>
 	<td>

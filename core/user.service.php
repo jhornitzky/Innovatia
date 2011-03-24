@@ -332,4 +332,8 @@ function getUserIdForUsername($username) {
 	$row = dbFetchObject($rs);
 	return $row->userId;
 }
+
+function getAdmins() {
+	return dbQuery("SELECT * FROM Users WHERE isAdmin = 1");
+}
 ?>

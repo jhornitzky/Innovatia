@@ -33,8 +33,8 @@ function hasCreatorAccessToGroup($groupId, $userId) {
 function hasAccessToGroup($groupId, $userId) {
 	if ($_SESSION['innoworks.isAdmin']) 
 		return true;
-	import("group.service");
-	$rs = dbQuery("SELECT Groups.* FROM Groups, GroupUsers WHERE Groups.groupId = GroupUsers.groupId AND GroupUsers.userId = '$userId' AND GroupUsers.approved = 1 UNION SELECT * FROM Groups WHERE userId = '$userId' AND groupId = '$groupId'");
+	//$rs = dbQuery("SELECT Groups.* FROM Groups, GroupUsers WHERE Groups.groupId = GroupUsers.groupId AND GroupUsers.userId = '$userId' AND GroupUsers.approved = 1 UNION SELECT * FROM Groups WHERE userId = '$userId' AND groupId = '$groupId'");
+	$rs = dbQuery("SELECT Groups.* FROM Groups, GroupUsers WHERE Groups.groupId = GroupUsers.groupId AND GroupUsers.userId = '$userId' AND GroupUsers.groupId = '$groupId' AND GroupUsers.approved = 1 UNION SELECT * FROM Groups WHERE userId = '$userId' AND groupId = '$groupId'");
 	if ($rs && dbNumRows($rs) > 0)
 		return true;
 	else

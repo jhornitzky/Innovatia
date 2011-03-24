@@ -22,11 +22,19 @@ if (isset($_POST['action'])) {
 		case "addNote":
 			import("user.service");
 			echo "Creating Note.. ";
-			$array = array();
-			$array['fromUserId'] = $_SESSION['innoworks.ID'];
-			$array['toUserId'] = $_POST['toUserId'];
-			$array['noteText'] = $_POST['noteText'];
-			renderServiceResponse(createNote($array));
+			$data = array();
+			$data['fromUserId'] = $_SESSION['innoworks.ID'];
+			$data['toUserId'] = $_POST['toUserId'];
+			$data['noteText'] = $_POST['noteText'];
+			renderServiceResponse(createNote($data));
+			break;
+		case "sendFeedback":
+			import("user.service");
+			echo "Sending feedback.. ";
+			$data = array();
+			$data['fromUserId'] = $_SESSION['innoworks.ID'];
+			$data['noteText'] = $_POST['noteText'];
+			renderServiceResponse(createFeedbackNotes($data));
 			break;
 	}
 }

@@ -6,27 +6,11 @@ require_once("thinConnector.php");
 	<title>innoWorks admin</title>
 	<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
 	<script type="text/javascript">
-		function logAction() {}
-			
-		function showAnnouncement() {
-			$(".adminContent iframe").attr("src", "announcement.php");
-		}
-		
-		function showUsers() {
-			$(".adminContent iframe").attr("src", "users.php");
-		}
-		
-		function showTables() {
-			$(".adminContent iframe").attr("src", "tables.php");
-		}
+		function logAction(elem) {}
 
-		function showAdminDash() {
-			$(".adminContent iframe").attr("src", "adminDash.php");
-		}	
-		
-		function showLDAP() {
-			$(".adminContent iframe").attr("src", "ldap.php");
-		}	
+		function showFrame(url) {
+			$(".adminContent iframe").attr("src", url);
+		}
 	</script>
 	<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 	<style>
@@ -52,11 +36,13 @@ require_once("thinConnector.php");
 <div id="headSurround">
 <div id="head">
 	<img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" style="height:48px;width:226px;"/>
-	<a href="javascript:logAction()" onclick="showAdminDash()">ADash</a>	
-	<a href="javascript:logAction()" onclick="showAnnouncement()">Announcements</a>	
-	<a href="javascript:logAction()" onclick="showUsers()">Users</a>
-	<a href="javascript:logAction()" onclick="showTables()">Tables</a>
-	<a href="javascript:logAction()" onclick="showLDAP()">LDAP</a>
+	<a href="javascript:logAction()" onclick="showFrame('adminDash.php')">ADash</a>	
+	<a href="javascript:logAction()" onclick="showFrame('reports.php')">Reports</a>	
+	<a href="javascript:logAction()" onclick="showFrame('announcement.php')">Announcements</a>	
+	<a href="javascript:logAction()" onclick="showFrame('users.php')">Users</a>
+	<a href="javascript:logAction()" onclick="showFrame('tables.php')">Tables</a>
+	<a href="javascript:logAction()" onclick="showFrame('ldap.php')">LDAP</a>
+	<a href="javascript:logAction()" onclick="showFrame('adminManual.pdf')">Help</a>
 	<div style="position:absolute; top:18px; color:#AAA; left:235px; font-weight:bold; font-size:1.5em;">admin</div>
 </div>
 </div>
