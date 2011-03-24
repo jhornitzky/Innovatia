@@ -4,7 +4,7 @@ import("user.service");
  
 function renderProfileDefault($user) {
 	global $serverRoot, $serverUrl;
-	$limit = 10;
+	$limit = 5;
 	
 	$userDetails = getUserInfo($user);
 	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?user=" . $_SESSION['innoworks.ID'];?>
