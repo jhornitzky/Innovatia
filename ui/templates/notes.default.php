@@ -1,8 +1,6 @@
-<form id="newNoteForm" class="ui-corner-all addForm"
-	onsubmit="addNote(this); return false;">
-	<input type="hidden" name="action" value="addNote" /> Send note to <select
-		class="toUserNote" dojoType="dijit.form.FilteringSelect"
-		name="toUserId">
+<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
+	<input type="hidden" name="action" value="addNote" /> Send note to 
+	<select class="toUserNote" dojoType="dijit.form.FilteringSelect" name="toUserId">
 		<?
 		$firstUser;
 		if ($notes && dbNumRows($notes) > 0 ) {
@@ -20,7 +18,7 @@
 		}
 		?>
 	</select>
-	<table style="">
+	<table>
 		<tr>
 			<td style="width: 90%;"><input type="text" name="noteText"
 				class="noteText" dojoType="dijit.form.Textarea" />
@@ -36,4 +34,4 @@
 <script type="text/javascript">
 	dojo.parser.instantiate(dojo.query(".toUserNote"));
 	dojo.parser.instantiate(dojo.query(".noteText"));
-	</script>
+</script>

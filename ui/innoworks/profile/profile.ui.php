@@ -16,13 +16,14 @@ function renderProfileDetails($user) {
 
 function renderOtherProfiles($user, $limit) {
 	$profiles = getSimilarUserProfiles($user, "LIMIT $limit");
-	$profileCount = countGetSimilarUserProfiles($user);
+	$profileCountTemp = dbFetchArray(countGetSimilarUserProfiles($user));
+	$profileCount = $profileCountTemp[0];
 	if ($profiles && dbNumRows($profiles) > 0) { 
 		while ($profile = dbFetchObject($profiles)) {
 			renderOtherProfile($profile);
 		}
 		if ($profileCount > dbNumRows($profiles)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>
+			<!-- <a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>-->
 		<?}
 	} else {?>
 		<p>No similar profiles</p>

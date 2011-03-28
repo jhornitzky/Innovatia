@@ -18,7 +18,7 @@ function recursiveCopy($src,$dst) {
 			}
 		}
 		closedir($dir);
-	} else if (is_file($src)) {
+	} else if (is_file($src)) { 
 		copy($src,$dst);
 	}
 }
@@ -131,7 +131,7 @@ if (isset($options['basepath'])) {
 					$line = fgets($filePointer);
 					if (preg_match('/innoworks\.connector\.php/', $line)) { //if has the connector string...
 						echo 'Rewrite basepath in file: ' . $file . ' : ' . $options['basepath'] . "\n";
-						$fText .= 'require_once($_SERVER["DOCUMENT_ROOT"]."'.$options['basepath'].'core/innoworks.connector.php");';
+						$fText .= 'require_once('.$options['basepath'].'"core/innoworks.connector.php");';
 					} else {
 						$fText .= $line;
 					}

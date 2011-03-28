@@ -10,11 +10,7 @@
 			$id = $note->fromUserId;
 		}
 		$fromUser = '';
-		$from = getUserInfo($note->fromUserId);
-		
-		if ($from) {
-			$fromUser = $from->username;
-		}?>
+		$from = getUserInfo($note->fromUserId);?>
 			<div class="<?= $class ?>" style="min-height: 2em">
 				<table>
 					<tr>
@@ -22,7 +18,7 @@
 							style="width: 2em; height: 2em" />
 						</td>
 						<td><span><?= $note->noteText ?> </span><br /> <span class="noteData">
-						<?= $note->createdTime ?>&nbsp; <?= $fromUser ?>&nbsp; &gt;&nbsp; <?= getUserInfo($note->toUserId)->username ?>&nbsp;
+						<?= $note->createdTime ?>&nbsp; <?= getDisplayUsername($from) ?>&nbsp; &gt;&nbsp; <?= getDisplayUsername(getUserInfo($note->toUserId)) ?>&nbsp;
 						</span>
 						</td>
 					</tr>

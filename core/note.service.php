@@ -11,7 +11,8 @@ function createFeedbackNotes($opts) {
 	
 	if ($admins != null && dbNumRows($admins) > 0) {
 		while ($admin = dbFetchObject($admins)) {
-			$opts['toUserId'] = $admin['userId']; 
+			$opts['noteText'] = "Feedback: " . $opts['noteText'];
+			$opts['toUserId'] = $admin->userId; 
 			createNote($opts);
 		}
 	}

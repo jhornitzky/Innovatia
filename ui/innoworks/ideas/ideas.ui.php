@@ -150,7 +150,7 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 				<br/>
 				<? if ($canEdit) { ?>
 				<input type="button" 
-					onclick="genericDelete('deleteFeatureEvaluation','<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
+					onclick="doAction('action=deleteFeatureEvaluation&actionId=<?= $featureEvaluation->ideaFeatureEvaluationId ?>');getFeatureEvaluationsForIdea();"
 					title="Delete feature evaluation" value=" - " />
 				<?}
 				$featureList = getFeaturesForIdea($id);

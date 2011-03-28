@@ -154,6 +154,6 @@ function renderCompareCommentsForGroup($uId, $gId) {
 
 function renderCommonComments($comments, $uId) {
 	$userService = new AutoObject("user.service");
-	renderTemplate('compare.commonContents', array('userService' => $userService));
+	renderTemplate('compare.commonContents', get_defined_vars());
 }
 ?>
