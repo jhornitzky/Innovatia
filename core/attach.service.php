@@ -1,4 +1,5 @@
 <?
+require_once("innoworks.connector.php");
 function retrieveImageForIdea($ideaId) { 
 	$imgs = dbQuery("SELECT * FROM Attachments WHERE ideaId = $ideaId AND type LIKE 'image/%' ORDER BY isDp DESC LIMIT 1");
 	return genericRetrieveImage($imgs,"cube.png");
