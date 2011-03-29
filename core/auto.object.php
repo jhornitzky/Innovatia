@@ -28,13 +28,15 @@ class AutoObject {
 	public $filename;
 	public $namespace;
 	public $functions;
+	public $clashAvoid;
 
-	function __construct($filename){
-		global $tempRoot;
-		
+	function __construct($filename, $clashAvoid = true){
 		$this->filename = $filename;
-
-		if (is_file($filename)) {
+		$this->clashAvoid = $clashAvoid;
+		
+		if ($clashAvoid && is_file($filename)) {
+			global $tempRoot;
+			
 			//Take file and convert it
 			$findDir = $filename;
 			
@@ -73,7 +75,10 @@ class AutoObject {
 
 	function __call($name, $arguments) {
 		logDebug("autoObjectExec: " . $name);
-		return call_user_func_array($namespace . '\\' . $name, $arguments);
+		if ($this->clashAvoid)
+			return call_user_func_array($namespace . '\\' . $name, $arguments);
+		else 
+			return call_user_func_array($name, $arguments);
 	}
 }
 ?>
