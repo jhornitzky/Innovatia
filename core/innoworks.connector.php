@@ -6,6 +6,14 @@
 
 //default required libraries
 require_once("innoworks.config.php");
+//override paths
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
+	$serverUrl = 'https://' . $serverUrl;
+} else {
+	$serverUrl = 'http://' . $serverUrl;
+}
+
+//continue with rest of loaders
 require_once("innoworks.util.php");
 require_once("page.session.php");
 require_once("db.connector.php");

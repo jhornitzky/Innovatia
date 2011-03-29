@@ -14,7 +14,7 @@ $ldapFullUrl = 'ldap://localhost';
 $usesLdap = false;
 
 //PATHS
-$serverUrl = 'http://localhost';
+$serverUrl = 'localhost';
 $serverRoot = '/innovation/'; 
 $usersRoot = $serverRoot.'users/'; 
 $uiRoot = $serverRoot.'ui/'; 
