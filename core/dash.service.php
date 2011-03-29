@@ -1,5 +1,5 @@
 <?
-require_once("innoworks.connector.php");
+import("innoworks.connector");
 
 function getDashIdeas($user, $limitString) {
 	return dbQuery("SELECT * FROM Ideas WHERE userId='$user' ORDER BY lastUpdateTime DESC $limitString ");

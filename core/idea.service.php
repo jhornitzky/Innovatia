@@ -2,7 +2,7 @@
 /**
  * Functions for retrieving and adding users to the database
  */
-require_once("innoworks.connector.php");
+import("innoworks.connector");
 
 function getPublicIdeas() {
 	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.isPublic = '1' AND Ideas.userId = Users.userId ORDER BY createdTime");

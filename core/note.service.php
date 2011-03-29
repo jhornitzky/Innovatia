@@ -1,5 +1,5 @@
 <?
-require_once("innoworks.connector.php");
+import("innoworks.connector");
 
 function getAnnouncements($limit) {
 	return dbQuery("SELECT * FROM Announcements ORDER BY date DESC $limit");

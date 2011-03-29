@@ -2,7 +2,7 @@
 /**
  * Functions for retrieving and adding users to the database or LDAP
  */
-require_once("innoworks.connector.php");
+import("innoworks.connector");
 
 /*
  * Top most method for logging in users

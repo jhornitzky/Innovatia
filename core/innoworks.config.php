@@ -18,6 +18,7 @@ $serverUrl = 'localhost';
 $serverRoot = '/innovation/'; 
 $usersRoot = $serverRoot.'users/'; 
 $uiRoot = $serverRoot.'ui/'; 
+$tempRoot = $serverRoot.'temp/'; 
 $serverAdminEmail = 'james.hornitzky@uts.edu.au';
 
 //OTHER PROPERTIES

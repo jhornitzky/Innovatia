@@ -13,6 +13,12 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER
 	$serverUrl = 'http://' . $serverUrl;
 }
 
+//setup zend
+set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . "/zend/library/");
+require_once 'Zend/Loader/Autoloader.php';
+$loader = Zend_Loader_Autoloader::getInstance();
+$loader->registerNamespace(dirname(__FILE__)."/zend/library/");
+
 //continue with rest of loaders
 require_once("innoworks.util.php");
 require_once("page.session.php");

@@ -1,5 +1,6 @@
 <?
-require_once("innoworks.connector.php");
+import("innoworks.connector");
+
 function createRiskItem($opts) {
 	return genericCreate("RiskEvaluation",$opts);
 }

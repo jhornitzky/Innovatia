@@ -1,5 +1,5 @@
 <?
-require_once("innoworks.connector.php");
+import("innoworks.connector");
 
 function getGroupDetails($gid) {
 	return dbFetchObject(dbQuery("SELECT Groups.* FROM Groups WHERE groupId = '$gid'"));

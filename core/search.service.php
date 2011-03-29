@@ -1,5 +1,5 @@
 <?
-require_once("innoworks.connector.php"); 
+import("innoworks.connector"); 
 
 function createCriteriaString($terms, $itemArray) {
 	$returnStr = "(";
