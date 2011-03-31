@@ -60,7 +60,8 @@ class AutoObject {
 			$outContents = $addString . $inContents;
 
 			//Now write and require new temp file
-			$tempItem = $_SERVER['DOCUMENT_ROOT'] . $tempRoot . basename($filename);
+			//$tempItem = $_SERVER['DOCUMENT_ROOT'] . $tempRoot . basename($filename);
+			$tempItem = tempnam(sys_get_temp_dir(), 'ino'); //FIXME watch for write permissions
 			file_put_contents($tempItem, $outContents);
 			require($tempItem);
 			
