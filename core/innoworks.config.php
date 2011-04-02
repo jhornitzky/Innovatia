@@ -21,6 +21,14 @@ $uiRoot = $serverRoot.'ui/';
 $tempRoot = $serverRoot.'temp/'; 
 $serverAdminEmail = 'james.hornitzky@uts.edu.au';
 
+//MAIL
+$mailMethod = 'smtp';
+$mailServer = 'smtp.gmail.com';
+$mailPort = 465;
+$mailUser = 'james.hornitzky@gmail.com';
+$mailPass = 'password885011';
+$mailFrom = 'notifications@innoworks.feit.uts.edu.au';
+
 //OTHER PROPERTIES
 $loglevel = 1; //0-5, with 0 being lowest
 $salt = '123456789987654321';

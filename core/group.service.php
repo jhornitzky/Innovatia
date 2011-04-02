@@ -105,7 +105,8 @@ function updateGroup($opts) {
 
 function deleteGroup($id, $user) {
 	import("note.service");
-	createNoteForGroup($_SESSION['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . " has been deleted");
+	global $session;
+	createNoteForGroup($session['innoworks.ID'], $id, "The group " . getGroupDetails($id)->title . " has been deleted");
 	$success = dbQuery("DELETE FROM Groups WHERE groupId = '$id' AND userId = '$user'" );
 	if ($success) {
 		$success = dbQuery("DELETE FROM GroupUsers WHERE groupId = '$id'");
@@ -115,13 +116,15 @@ function deleteGroup($id, $user) {
 
 function linkIdeaToGroup($groupId, $ideaId) {
 	import("note.service");
-	createNoteForGroup($_SESSION['innoworks.ID'], $groupId, "An idea has been added to the group " . getGroupDetails($groupId)->title);
+	global $session;
+	createNoteForGroup($session['innoworks.ID'], $groupId, "An idea has been added to the group " . getGroupDetails($groupId)->title);
 	return dbQuery("INSERT INTO GroupIdeas (groupId,ideaId) VALUES ('$groupId','$ideaId')");
 }
 
 function unlinkIdeaToGroup($groupId, $ideaId) {
 	import("note.service");
-	createNoteForGroup($_SESSION['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupId)->title);
+	global $session;
+	createNoteForGroup($session['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupId)->title);
 	return dbQuery("DELETE FROM GroupIdeas WHERE groupId = '$groupId' AND ideaId = '$ideaId'");
 }
 
@@ -137,8 +140,9 @@ function groupEntryExists($groupid, $userid) {
 function linkGroupToUser($groupid, $userid) {
 	if (!groupEntryExists($groupid, $userid))  {
 		import("note.service");
+		global $session;
 		$note = array();
-		$note['fromUserId'] = $_SESSION['innoworks.ID'];
+		$note['fromUserId'] = $session['innoworks.ID'];
 		$note['toUserId'] = $userid;
 		$note['noteText'] = "You have been asked to join the group " . getGroupDetails($groupid)->title;
 		createNote($note);
@@ -150,8 +154,9 @@ function linkGroupToUser($groupid, $userid) {
 
 function unlinkGroupToUser($groupid, $userid) {
 	import("note.service");
+	global $session;
 	$note = array();
-	$note['fromUserId'] = $_SESSION['innoworks.ID'];
+	$note['fromUserId'] = $session['innoworks.ID'];
 	$note['toUserId'] = $userid;
 	$note['noteText'] = "You have been removed from the group " . getGroupDetails($groupid)->title;
 	createNote($note);
@@ -160,8 +165,9 @@ function unlinkGroupToUser($groupid, $userid) {
 
 function approveGroupUser($groupid, $userid) {
 	import("note.service");
+	global $session;
 	$note = array();
-	$note['fromUserId'] = $_SESSION['innoworks.ID'];
+	$note['fromUserId'] = $session['innoworks.ID'];
 	$note['toUserId'] = $userid;
 	$note['noteText'] = "You have been approved for the group " . getGroupDetails($groupid)->title;
 	createNote($note);
@@ -170,8 +176,9 @@ function approveGroupUser($groupid, $userid) {
 
 function acceptGroupInvitation($groupid, $userid) {
 	import("note.service");
+	global $session;
 	$note = array();
-	$note['fromUserId'] = $_SESSION['innoworks.ID'];
+	$note['fromUserId'] = $session['innoworks.ID'];
 	$note['toUserId'] = getGroupDetails($groupid)->userId;
 	$note['noteText'] = "I have joined the group " . getGroupDetails($groupid)->title;
 	createNote($note);
@@ -181,9 +188,10 @@ function acceptGroupInvitation($groupid, $userid) {
 function requestGroupAccess($groupid, $userid) {
 	logInfo('HelloRequestingGroup');
 	if (!groupEntryExists($groupid, $userid))  {
+		global $session;
 		import("note.service");
 		$note = array();
-		$note['fromUserId'] = $_SESSION['innoworks.ID'];
+		$note['fromUserId'] = $session['innoworks.ID'];
 		$note['toUserId'] = getGroupDetails($groupid)->userId;
 		$note['noteText'] = "I want to join the group " . getGroupDetails($groupid)->title;
 		createNote($note);

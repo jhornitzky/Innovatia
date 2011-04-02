@@ -29,10 +29,11 @@ if (isset($_POST['action'])) {
 			renderServiceResponse(createNote($data));
 			break;
 		case "sendFeedback":
+			global $session;
 			import("user.service");
 			echo "Sending feedback.. ";
 			$data = array();
-			$data['fromUserId'] = $_SESSION['innoworks.ID'];
+			$data['fromUserId'] = $session['innoworks.ID'];
 			$data['noteText'] = $_POST['noteText'];
 			renderServiceResponse(createFeedbackNotes($data));
 			break;

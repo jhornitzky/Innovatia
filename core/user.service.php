@@ -2,7 +2,7 @@
 /**
  * Functions for retrieving and adding users to the database or LDAP
  */
-import("innoworks.connector");
+
 
 /*
  * Top most method for logging in users
@@ -143,7 +143,7 @@ function authenticate_ldap($user, $pw) {
  */
 function registerUser($postArgs) {
 	import("note.service");
-	global $serverRoot, $salt;
+	global $serverRoot, $salt, $session;
 
 	if (!isset($postArgs['isExternal']))
 	$postArgs['isExternal'] = 0;
@@ -195,8 +195,14 @@ function registerUser($postArgs) {
 	$headers = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	$headers .= 'From: Innoworks' . "\r\n";
-	mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
-
+	
+	//mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
+	sendMail(array(
+			'to' => $postArgs['email'],
+			"subject" => "Innoworks - Credentials", 
+			"msg" => $message, 
+			"headers" => $headers));
+	
 	return $success;
 }
 
