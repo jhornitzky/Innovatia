@@ -39,6 +39,14 @@ ul {
 .viewSummary input {
 	display:none;
 }
+
+.featureEvaluationBit {
+	width:100%;
+}
+
+.featureEvaluationBit td, .featureEvaluationBit th {
+	border:1px solid #AAA;
+}
 </style>
 
 <script>

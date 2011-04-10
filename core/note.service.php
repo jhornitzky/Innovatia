@@ -146,7 +146,7 @@ function sendMail($inputs) {
                 	'username' => $mailUser,
                 	'password' => $mailPass, 
 					'ssl' => 'ssl',
-                	'port' => 465);
+                	'port' => $mailPort);
 		
 		$transport = new Zend_Mail_Transport_Smtp($mailServer, $config);
 

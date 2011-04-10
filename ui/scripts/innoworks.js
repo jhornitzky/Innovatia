@@ -1073,6 +1073,7 @@ function addFeatureEvaluation(selector) {
 }
  
 function updateFeatureEvaluation(featureForm){
+	//calculate one form id score
 	formData = getInputDataFromId(featureForm);
 	formData['action'] = 'updateFeatureEvaluation';
 	formData['score'] = $("#" + featureForm + " span.itemTotal").html();

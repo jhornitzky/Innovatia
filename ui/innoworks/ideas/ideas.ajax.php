@@ -147,6 +147,13 @@ if (isset($_POST['action'])) {
 			unset($opts['feature']);
 			renderServiceResponse(updateFeatureEvaluation($opts));
 			break;
+		case "updateFeatureEvaluationTotal":
+			echo "Updating Item... ";
+			$opts = $_POST;
+			unset($opts['action']);
+			unset($opts['feature']);
+			renderServiceResponse(updateFeatureEvaluation($opts));
+			break;
 		case "updateIdeaFeatureEvaluation";
 			echo "Updating Evaluation... ";
 			$opts = $_POST;

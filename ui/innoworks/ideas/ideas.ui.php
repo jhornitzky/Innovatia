@@ -137,6 +137,24 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 	
 	if ($featureEvaluationStack && dbNumRows($featureEvaluationStack) > 0 ) {
 		while ($featureEvaluation = dbFetchObject($featureEvaluationStack)) {
+			//calculate totals //FIXME should be done elsewhere
+			$featureItemsTemp = getFeatureEvaluationForIdea($featureEvaluation->ideaFeatureEvaluationId);
+			$total = 0;
+			if ($featureItemsTemp && dbNumRows($featureItemsTemp) > 0 ) {
+				$count = 0;
+				$runningTotal = 0;
+				while ($featureItemTemp = dbFetchArray($featureItemsTemp)) {
+					foreach($featureItemTemp as $key => $attr) {
+						if (!in_array($attr, array('score','userId','ideaFeatureEvaluationId','featureId','featureEvaluationId')) && is_numeric($attr)) { 
+							$count++;
+							$runningTotal = $runningTotal + $attr;
+						}
+					}
+				}	
+				$total = round($runningTotal/$count);
+			}
+			
+			//continue with display
 			$canEdit = false;
 			if (isset($shouldEdit) && !$shouldEdit)
 				$canEdit = false;
@@ -145,7 +163,7 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 				<div id="featureEvaluationContainer_<?= $featureEvaluation->ideaFeatureEvaluationId ?>" class="featureEvaluation itemHolder">
 				<table class="titleTT">
 				<tr>
-				<td style="width:2.5em;"><span class="evalTotal" style="font-size:3em; font-weight:bold">0</span></td>
+				<td style="width:2.5em;"><span class="evalTotal" style="font-size:3em; font-weight:bold"><?=$total?></span></td>
 				<td style="width:13em;"><span class="title"><?=$featureEvaluation->title?></span><span class="timestamp">by <?= getUserInfo($featureEvaluation->userId)->username ?></span> 
 				<br/>
 				<? if ($canEdit) { ?>

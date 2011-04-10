@@ -157,6 +157,11 @@ function updateFeatureEvaluation($opts) {
 	return genericUpdate("FeatureEvaluation", $opts, $where);
 }
 
+function updateFeatureEvaluationTotal($opts) {
+	$where = array("featureEvaluationId");
+	return genericUpdate("FeatureEvaluation", $opts, $where);
+}
+
 function deleteFeatureEvaluation($id) {
 	return genericDelete("IdeaFeatureEvaluations", array("ideaFeatureEvaluationId"=>$id));
 }
