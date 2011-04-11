@@ -47,6 +47,9 @@ $(document).ready(function() {
 	$.ajaxSetup ({  
 		cache: false  
 	});
+
+	//attach to bottom
+	$(window).resize(positionResponse).scroll(positionResponse);
 	
 	//Start server polling
 	window.setTimeout(pollServer, 5000);
@@ -179,9 +182,6 @@ function openAdmin() {
 </div>
 
 <!-- PAGE CONTENT -->
-<div class="respSurround">
-<div id="ideaResponses" class="responses"></div>
-</div>
 
 <div id="content">
 <div id="dashTab" class="tabBody"></div>
@@ -201,8 +201,17 @@ function openAdmin() {
 <div id="timelineTab" class="tabBody"></div>
 </div>
 
+<div class="footer" style="clear:both; padding-top:3em;">
+
+</div>
+
 <!-- POPUP DIALOGS -->
 <? renderTemplate('common.popups'); ?>
+
+<!-- RESPONSES -->
+<div class="respSurround" style="position:absolute; bottom:0px;">
+<div id="ideaResponses" class="responses"></div>
+</div>
 
 </body>
 </html>
