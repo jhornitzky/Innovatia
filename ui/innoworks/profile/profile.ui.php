@@ -3,6 +3,7 @@ require_once(dirname(__FILE__) . "/../pureConnector.php");
 import("user.service");
  
 function renderProfileDefault($user) {
+	global $serverUrl, $serverRoot;
 	$limit = 5;
 	$userDetails = getUserInfo($user);
 	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?user=" . $_SESSION['innoworks.ID'];
