@@ -22,7 +22,8 @@ $tempRoot = $serverRoot.'temp/';
 $serverAdminEmail = 'james.hornitzky@uts.edu.au';
 
 //MAIL
-$mailMethod = 'smtp';
+$mailMethod = 'smtp'; 
+$mailMethod = '';
 $mailServer = 'smtp.gmail.com';
 $mailPort = 465;
 $mailUser = 'james.hornitzky@gmail.com';
