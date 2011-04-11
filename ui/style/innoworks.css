@@ -218,12 +218,14 @@ div.tabBody div div.fixed-left:hover {
 	color:#000000;
 	background-color:#EEEEEE;
 	overflow:hidden;
-	display:none;
+	/* display:none; */
 }
 
 .respSurround {
 	background-color:#444444;
 	width:100%;
+	height:50px;
+	display:none;
 }
 
 .respSurround .responses {
@@ -235,6 +237,7 @@ div.tabBody div div.fixed-left:hover {
 	width:1000px; 
 	margin:auto;
 	padding-left:10px;
+	dispaly:block;
 }
 
 .respSurround .responses * {
@@ -693,4 +696,9 @@ ul.submenu li.selected a {
 	background-color:transparent;
 	text-indent:-9999px;
 	visibility:none;
+}
+
+#ideasPopupDetails table td, #ideasPopupDetails table th {
+	vertical-align:top;
+	text-align:left;
 }

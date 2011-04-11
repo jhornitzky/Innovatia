@@ -287,3 +287,7 @@ div.itemHolder div.lefter:last-child {
 div.itemHolder div.lefter span {
 	font-size:0.9em;
 }
+
+div.itemHolder.headBorder.treeMenu div.lefter {
+	max-height: 4em;
+}

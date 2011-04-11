@@ -47,6 +47,29 @@ ul {
 .featureEvaluationBit td, .featureEvaluationBit th {
 	border:1px solid #AAA;
 }
+
+.ideaRoles, .ideaFeatures {
+	width: 100%;
+}
+
+.ideaRoles td, .ideaFeatures td{
+	max-width: 200px;
+}
+
+.ideaRoles td, .ideaFeatures td {
+	border:1px solid #AAA;
+	text-align:left;
+	vertical-align:top;
+}
+
+ td.totalCol span.itemTotal {
+	font-size:2.0em;
+}
+
+.ideaDetailBit table td {
+	vertical-align: top;
+	border:1px solid #AAA;
+} 
 </style>
 
 <script>

@@ -2,16 +2,14 @@
 	<tr>
 		<td><img
 			src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>"
-			style="width: 3em; height: 3em;" />
-		</td>
+			style="width: 3em; height: 3em;" /></td>
 		<td>
 			<h3>
 			<?= $idea->title ?>
 			</h3> <?= getDisplayUsername($idea->userId);?> | <span
 			class="summaryActions"><a
 				href="javascript:printIdea('<?= $ideaUrl ?>')">Print</a> <a
-				href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit</a>
-		</span>
+				href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit</a> </span>
 		</td>
 	</tr>
 </table>
@@ -24,24 +22,26 @@
 <p style="color: #444">
 <?= $idea->proposedService?>
 </p>
-<?renderGenericInfoFormOnlyPopulated(null, $idea, array("proposedService","ideaId","userId", "title", "createdTime", "lastUpdateTime","isPublic",'username'));?>
+<div class="ideaDetailBit">
+<?renderGenericInfoFormOnlyPopulated(null, $idea, array("proposedService","ideaId","userId", "title", "createdTime", "lastUpdateTime","isPublic",'username', 'firstName', 'lastName'));?>
+</div>
 <p>
-	<b>Role(s)</b>
+	<h2>Role(s)</h2>
 </p>
 <?renderIdeaRoles($ideaId, false);?>
 <p>
-	<b>Feature(s)</b>
+	<h2>Feature(s)</h2>
 </p>
 <?renderIdeaFeatures($ideaId, false);?>
 <p>
-	<b>Comment(s)</b>
+	<h2>Comment(s)</h2>
 </p>
 <?renderCommentsForIdea($ideaId, $_SESSION['innoworks.ID']);?>
 <p>
-	<b>Feature Evaluation(s)</b>
+	<h2>Feature Evaluation(s)</h2>
 </p>
 <?renderIdeaFeatureEvaluationsForIdea($ideaId, false);?>
 <p>
-	<b>Risk Evaluation(s)</b>
+	<h2>Risk Evaluation(s)</h2>
 </p>
 <?renderIdeaRiskEval($ideaId, $_SESSION['innoworks.ID']);?>

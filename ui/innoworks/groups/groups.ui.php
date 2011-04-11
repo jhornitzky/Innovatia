@@ -252,7 +252,7 @@ function renderGroupSummary($currentGroupId) {
 	<td>
 	<img src="<?= $serverUrl .  $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:4em; height:4em;"/> 
 	</td>
-	<td><h3><?= $group->title?></h3>
+	<td><h2><?= $group->title?></h2>
 	<div style="margin-bottom:1.0em">
 		<span><?= $userService->getDisplayUsername($group->userId)?></span>  |
 		<span class="summaryActions"><a href="javascript:logAction()" onclick="printGroupSummary('<?= "&group=" . $group->groupId ?>')">Print</a>
@@ -269,7 +269,7 @@ function renderGroupSummary($currentGroupId) {
 		
 	if ($groups && (dbNumRows($groups) == 1)) {
 		$userService = new AutoObject("user.service");
-		echo "<p><b>Idea(s)</b></p>";
+		echo "<h2>Idea(s)</h2>";
 		$groupIdeas = getIdeasForGroup($currentGroupId, $_SESSION['innoworks.ID'], "LIMIT 500");
 		if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 			while ($idea = dbFetchObject($groupIdeas)) {?>
@@ -286,7 +286,7 @@ function renderGroupSummary($currentGroupId) {
 			echo "<p>None</p>";
 		}
 			
-		echo "<p><b>User(s)</b></p>";
+		echo "<h2>User(s)</h2>";
 		$groupUsers = getUsersForGroup($currentGroupId, "LIMIT 100");
 		if ($groupUsers && dbNumRows($groupUsers) > 0) {
 			while ($user = dbFetchObject($groupUsers)) {?>

@@ -5,12 +5,12 @@
 			style="width: 3em; height: 3em;" />
 		</td>
 		<td>
-			<h3>
+			<h2>
 			<?= $userDetails->firstName?>
 			<?= $userDetails->lastName?>
 				/
 				<?= $userDetails->username?>
-			</h3> <?= $userDetails->organization?> | <? if ($userDetails->isAdmin) { ?><i>admin</i>
+			</h2> <?= $userDetails->organization?> | <? if ($userDetails->isAdmin) { ?><i>admin</i>
 			| <?}?> <span class="summaryActions"><a href="javascript:logAction()"
 				onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a>
 		</span></td>
@@ -21,7 +21,7 @@
 				}?>
 
 <p>
-	<b>Idea(s)</b>
+	<h2>Idea(s)</h2>
 	<?if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
 			if (hasAccessToIdea($idea->ideaId, $_SESSION['innoworks.ID'])) {?>
@@ -42,7 +42,7 @@
 	<?}?>
 
 <p>
-	<b>Group(s)</b>
+	<h2>Group(s)</h2>
 </p>
 	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>

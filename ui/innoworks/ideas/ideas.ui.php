@@ -79,11 +79,11 @@ function renderIdeaRolesForm($ideaId) {
 }
 
 function renderIdeaFeatures($ideaId, $canEdit = null) {
-	if (!isset($canEdit) || empty($canEdit))
+	if (!isset($canEdit))
 		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 	$features = getFeaturesForIdea($ideaId);
 	if ($features && dbNumRows($features) > 0 ) {
-		echo "<table id='featureTable_$ideaId'>";
+		echo "<table id='featureTable_$ideaId' class='ideaFeatures'>";
 		renderGenericHeaderWithRefData($features, array("featureId", "ideaId"), 'Features');
 		while ($feature = dbFetchObject($features)) {
 			renderFeature($features, $feature,$canEdit);
@@ -99,12 +99,12 @@ function renderFeature($features, $feature, $canEdit = false) {
 }
 
 function renderIdeaRoles($ideaId, $canEdit = null) {
-	if (!isset($canEdit) || empty($canEdit))
+	if (!isset($canEdit))
 		$canEdit = hasEditAccessToIdea($ideaId, $_SESSION['innoworks.ID']);
 		
 	$roles = getRolesForIdea($ideaId);
 	if ($roles && dbNumRows($roles) > 0 ) {
-		echo "<table>";
+		echo "<table class='ideaRoles'>";
 		renderGenericHeaderWithRefData($roles, array("roleId", "ideaId"), 'Roles');	
 		while ($role = dbFetchObject($roles)) {
 			renderRole($roles, $role, $canEdit);
@@ -145,7 +145,8 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 				$runningTotal = 0;
 				while ($featureItemTemp = dbFetchArray($featureItemsTemp)) {
 					foreach($featureItemTemp as $key => $attr) {
-						if (!in_array($attr, array('score','userId','ideaFeatureEvaluationId','featureId','featureEvaluationId')) && is_numeric($attr)) { 
+						if (!in_array($key, array('score','userId','ideaFeatureEvaluationId','featureId','featureEvaluationId')) && is_numeric($attr) && is_string($key)) {
+							logInfo($key); 
 							$count++;
 							$runningTotal = $runningTotal + $attr;
 						}
@@ -164,7 +165,7 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 				<table class="titleTT">
 				<tr>
 				<td style="width:2.5em;"><span class="evalTotal" style="font-size:3em; font-weight:bold"><?=$total?></span></td>
-				<td style="width:13em;"><span class="title"><?=$featureEvaluation->title?></span><span class="timestamp">by <?= getUserInfo($featureEvaluation->userId)->username ?></span> 
+				<td style="width:13em;"><span class="title"><?=$featureEvaluation->title?></span><span class="timestamp">by <?= getDisplayUsername($featureEvaluation->userId) ?></span> 
 				<br/>
 				<? if ($canEdit) { ?>
 				<input type="button" 
