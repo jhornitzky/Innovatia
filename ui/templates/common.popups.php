@@ -1,5 +1,4 @@
 <div id="ideasPopup" dojoType="dijit.Dialog" title="Edit idea">
-	<div id="ideaPopupResponses" class="responses"></div>
 	<span class="ideaDetailsOptions"
 		style="position: relative; float: right;"> <a
 		href="javascript:printPopupIdea()">Print</a> </span>

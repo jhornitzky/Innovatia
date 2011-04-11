@@ -598,12 +598,14 @@ function showFeedback(elem) {
 	if (($("#commonPopup").width() + left) > $(document).width())
 		left = $(document).width() - $("#commonPopup").width();
 
-	showCommonPopup({type:'props',left:left, top:top});
+	showCommonPopup({cssClass:'feedback', type:'props',left:left, top:top});
 	$("#actionDetails").load("help/feedback.php");
 }
 
 function sendFeedback(elem) {
-	doAction($(elem).serialize());
+	doAction($(elem).serialize(), function() {
+		$('.feedback').remove();
+	});
 	return false;
 }
 
@@ -637,14 +639,18 @@ function logout() {
 	window.location.href = serverRoot + "?logOut=1";
 }
 
+function positionResponse() {
+	$(".respSurround").css({position: "absolute",top:($(window).scrollTop()+$(window).height()-50)+ "px"})	
+	//$('.respSurround').stop().animate({top:($(window).scrollTop()+$(window).height()-50)}, 'fast'); //FIXME doesnt work 100%
+}
+
 function showResponses(data, timeout) {
 	var selector;
-	if (dijit.byId("ideasPopup").open)  
-		selector = "#ideaPopupResponses"; 
-	else 
-		selector = "#ideaResponses"; 
+	selector = "#ideaResponses"; 
 	$(selector).html(data);
-	$(selector).slideDown();
+	$('.respSurround').show('slow',function() {
+		positionResponse(); 
+	});
 	if (timeout) {
 		if (ctime != null)
 			window.clearTimeout(ctime);
@@ -653,7 +659,7 @@ function showResponses(data, timeout) {
 }
 
 function hideResponses() {
-	$(".responses").slideUp(function () {
+	$(".respSurround").hide('slow', function () {
 		$(".responses").empty();
 	});
 }
