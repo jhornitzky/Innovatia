@@ -350,8 +350,8 @@ function getIdeas() {
 } 
 
 function prepCompareTable() {
-	initFormSelectTotals('table#riskEvaluation');
-	$("table#riskEvaluation tr").each(function() { 
+	initFormSelectTotals('table.riskEvaluation');
+	$("table.riskEvaluation tr").each(function() { 
 		var fId = $(this).attr("id");
 		$(this).find(":input").blur(function() {
 			updateRisk(fId);
@@ -363,17 +363,17 @@ function getCompare() {
 	showLoading(".compareList");
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$.get("engine.ajax.php?action=getComparison", function (data) {
-			$(".compareList").html(data);
+			$(".compareList:visible").html(data);
 			prepCompareTable();
 		});
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		$.get("engine.ajax.php?action=getPublicComparison", function (data) {
-			$(".compareList").html(data);
+			$(".compareList:visible").html(data);
 			prepCompareTable();
 		});
 	} else { 
 		$.get("engine.ajax.php?action=getComparisonForGroup&groupId="+currentGroupId, function (data) {
-			$(".compareList").html(data);
+			$(".compareList:visible").html(data);
 			prepCompareTable();
 		});
 	}
@@ -595,11 +595,12 @@ function showFeedback(elem) {
 	var left = $(elem).offset().left;
 	var top = $(elem).offset().top + $(elem).height();
 	
+	/*
 	if (($("#commonPopup").width() + left) > $(document).width())
 		left = $(document).width() - $("#commonPopup").width();
-
-	showCommonPopup({cssClass:'feedback', type:'props',left:left, top:top});
+	showCommonPopup({type:'props',left:left, top:top});
 	$("#actionDetails").load("help/feedback.php");
+	*/
 }
 
 function sendFeedback(elem) {
@@ -616,10 +617,19 @@ function setFormArrayValue(key,val) {
 
 function getInputDataFromId(selector) {
 	formArray=[];
-	$("#" + selector + " :input").each(function(index, formArray) {
-		if ($(this).attr('name') != null && $(this).attr('name') != '') 
-			setFormArrayValue($(this).attr('name'),$(this).val());
-	}); 
+	
+	if (typeof selector == 'object') {
+		$(selector).find(':input').each(function(index, formArray) {
+			if ($(this).attr('name') != null && $(this).attr('name') != '') 
+				setFormArrayValue($(this).attr('name'),$(this).val());
+		}); 
+	} else { 
+		$("#" + selector + " :input").each(function(index, formArray) {
+			if ($(this).attr('name') != null && $(this).attr('name') != '') 
+				setFormArrayValue($(this).attr('name'),$(this).val());
+		}); 
+	}
+	
 	return formArray;
 }
 
