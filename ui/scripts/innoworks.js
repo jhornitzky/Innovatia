@@ -1234,16 +1234,6 @@ function findUsers() {
 	$("#commonPopup #actionDetails").load(url);
 }
 
-
-function findUsers() {
-	var data = $("#popupAddSearch").serialize();
-	showLoading("#commonPopup #actionDetails");
-	var url = "engine.ajax.php?action=getAddUser"; 
-	if (data != undefined) 
-		url += "&" + data;
-	$("#commonPopup #actionDetails").load(url);
-}
-
 function findIdeas() {
 	commonAddFind("getAddIdea");
 }
