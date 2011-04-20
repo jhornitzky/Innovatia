@@ -595,12 +595,10 @@ function showFeedback(elem) {
 	var left = $(elem).offset().left;
 	var top = $(elem).offset().top + $(elem).height();
 	
-	/*
 	if (($("#commonPopup").width() + left) > $(document).width())
 		left = $(document).width() - $("#commonPopup").width();
 	showCommonPopup({type:'props',left:left, top:top});
 	$("#actionDetails").load("help/feedback.php");
-	*/
 }
 
 function sendFeedback(elem) {

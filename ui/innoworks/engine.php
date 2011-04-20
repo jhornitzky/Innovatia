@@ -14,11 +14,14 @@ import("user.service");
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?= $uiRoot?>scripts/jQuery-Min.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoBigDialog.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoDialog.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojoLayer.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/innoworks.js"></script>
 <script type="text/javascript" src="<?= $uiRoot?>scripts/common.js"></script>
 <link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
+<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dojox/layout/resources/ResizeHandle.css" />
+<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dojox/layout/resources/FloatingPane.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 
@@ -57,9 +60,9 @@ $(document).ready(function() {
 });
 
 dojo.addOnLoad(function(){	
-	if (isMobile) {
+	/* if (isMobile) {
 		dojo.declare("dijit.form.Textarea",null,null);
-	}
+	} */
 	
 	//Parse controls
 	dojo.parser.parse();

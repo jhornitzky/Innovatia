@@ -1,4 +1,4 @@
-<div id="ideasPopup" dojoType="dijit.Dialog" title="Edit idea">
+<div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea">
 	<span class="ideaDetailsOptions"
 		style="position: relative; float: right;"> <a
 		href="javascript:printPopupIdea()">Print</a> </span>
@@ -59,7 +59,7 @@
 	</div>
 </div>
 
-<div id="commonPopup" dojoType="dijit.Dialog"
+<div id="commonPopup" dojoType="inno.BigDialog"
 	style="width: 18em; height: 20em;">
 	<div id="actionDetails"></div>
 </div>
