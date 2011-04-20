@@ -6,7 +6,19 @@
 
 //default required libraries
 require_once("innoworks.config.php");
+
+if ($serverTestMode) {
+	ini_set('error_reporting', 'E_ALL'); 
+	ini_set('display_errors', 'On'); 
+} else {
+	ini_set('error_reporting', 'E_ALL & ~E_DEPRECATED'); //FIXME test this on server
+}
+
 //override paths
+if ($serverTestMode && $_SERVER['REMOTE_ADDR'] != '127.0.0.1' && $_SERVER['REMOTE_ADDR'] != '::1')  {
+	$serverUrl = $_SERVER['SERVER_ADDR'];
+}
+
 if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) {
 	$serverUrl = 'https://' . $serverUrl;
 } else {
