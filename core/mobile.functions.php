@@ -1,5 +1,4 @@
 <?
-
 require_once("mobile.detection.php");
 
 //	mobile_device_detect('http://iphone','http://ipad','http://android','http://opera','http://blackberry','http://palm','http://winMobile','http://MobileBrowser','http://DesktopBrowser');

@@ -1,21 +1,21 @@
-<div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea">
+<div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none">
 	<span class="ideaDetailsOptions"
 		style="position: relative; float: right;"> <a
 		href="javascript:printPopupIdea()">Print</a> </span>
 	<table>
 		<tr>
-			<td style="vertical-align: top;"><img id="popupIdeaImgMain"
-				style="height: 2em; width: 2em;" />
+			<td style="vertical-align: top;">
+				<img id="popupIdeaImgMain" style="height: 2em; width: 2em;" />
 			</td>
-			<td style="vertical-align: top;"><span id="ideaName"></span>
+			<td style="vertical-align: top;">
+				<span id="ideaName"></span>
 			</td>
 		</tr>
 	</table>
 
 	<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
 		style="width: 55em; height: 28em;">
-		<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer"
-			title="Details" nested="true"
+		<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true"
 			iconClass="dijitEditorIcon dijitEditorIconSelectAll">
 			<div id="ideaMission" dojoType="dijit.layout.ContentPane"
 				title="Mission"
@@ -59,7 +59,6 @@
 	</div>
 </div>
 
-<div id="commonPopup" dojoType="inno.BigDialog"
-	style="width: 18em; height: 20em;">
+<div id="commonPopup" dojoType="inno.BigDialog" style="width:18em; height:20em; display:none;">
 	<div id="actionDetails"></div>
 </div>

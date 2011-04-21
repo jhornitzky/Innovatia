@@ -291,3 +291,22 @@ div.itemHolder div.lefter span {
 div.itemHolder.headBorder.treeMenu div.lefter {
 	max-height: 4em;
 }
+
+.featureEvaluationBit td, .featureEvaluationBit th {
+	border:1px solid #AAA;
+}
+
+.ideaDetailBit table td {
+	vertical-align: top;
+	border:1px solid #AAA;
+}
+
+.ideaRoles td, .ideaFeatures td {
+	border:1px solid #AAA;
+	text-align:left;
+	vertical-align:top;
+}
+
+.featureEvaluationBit {
+	width:100%;
+}

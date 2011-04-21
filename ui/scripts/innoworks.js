@@ -230,27 +230,33 @@ function showIdeaReviews(ideaId) {
 	loadPopupShow();
 }
 
-var summaryStyleString = "width:20em; height:30em;";
+function showSummaryPane(props) {
+	props.style = 'position:absolute; top:0; left:0; width:500; height:400';
+	props.resizable = true;
+	props.dockable = true;
+	props.draggable = true;
+	var pane = new dojox.layout.FloatingPane(props);
+	dojo.body().appendChild(pane.domNode);
+	pane.startup();
+	pane.bringToTop();
+	
+	//use good ol' jquery to get the tough stuff done
+	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:$(window).height()*0.8});
+	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '96%').css('padding', '2%');
+}
 
 function showIdeaSummary(id) {
-	var idea = new inno.Dialog({title:"Idea", href:"engine.ajax.php?action=getIdeaSummary&actionId="+id, style: summaryStyleString});
-	dojo.body().appendChild(idea.domNode);
-	idea.startup();
-	idea.show();
+	showSummaryPane({
+		title:"Idea", 
+		href:"engine.ajax.php?action=getIdeaSummary&actionId="+id});
 }
 
 function showProfileSummary(id) {
-	var profile = new inno.Dialog({title:"Profile", href:"engine.ajax.php?action=getProfileSummary&actionId="+id, style: summaryStyleString});
-	dojo.body().appendChild(profile.domNode);
-	profile.startup();
-	profile.show();
+	showSummaryPane({title:"Profile", href:"engine.ajax.php?action=getProfileSummary&actionId="+id});
 }
 
 function showGroupSummary(id) {
-	var group = new inno.Dialog({title:"Group", href:"engine.ajax.php?action=getGroupSummary&actionId="+id, style: summaryStyleString});
-	dojo.body().appendChild(group.domNode);
-	group.startup();
-	group.show();
+	showSummaryPane({title:"Group", href:"engine.ajax.php?action=getGroupSummary&actionId="+id});
 }
 
 function showIdeaDetails(ideaId) { 
@@ -763,8 +769,8 @@ function deleteIdea(iId) {
 	return false;
 }
 
-function updateIdeaDetails(formId) {
-	doAction($(formId).serialize());
+function updateIdeaDetails(formId, cBack) {
+	doAction($(formId).serialize(), cBack);
 }
 
 function updateFeature(form) {
@@ -1385,7 +1391,7 @@ function showPublicSelect(elem) {
 }
 
 function showHelp() {
-	var help = new inno.Dialog({title:"Help", href:"help/help.html", style: "width:1000px; height:530px;"});
+	var help = new inno.Dialog({title:"Help", href:"help/help.html", style: "width:800px; height:530px;"});
 	dojo.body().appendChild(help.domNode);
 	help.startup();
 	help.show();
