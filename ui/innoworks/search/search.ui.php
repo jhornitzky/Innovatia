@@ -6,13 +6,13 @@ function renderSearchDefault($userid, $opts) {
 	$limit = 15;
 
 	$searchTerms = '';
-	if (isset($_GET['searchTerms']))
-	$searchTerms = htmlspecialchars($_GET['searchTerms']);
+	if (isset($_REQUEST['searchTerms']))
+	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
 
-	if (!isset($_GET['searchTerms']) || empty($searchTerms))
+	if (!isset($_REQUEST['searchTerms']) || empty($searchTerms))
 	echo "<span>Find innovative ideas, people and groups</span>";
 	else
-	echo "<span>Found result(s) for search terms</span>";
+	echo "<span>Found result(s) for sear7db4ffch terms</span>";
 	renderTemplate('search.default', get_defined_vars());
 }
 
@@ -20,8 +20,8 @@ function renderSearchIdeas($userId, $limit) {
 	import("user.service");
 
 	$searchTerms = '';
-	if (isset($_GET['searchTerms']))
-	$searchTerms = htmlspecialchars($_GET['searchTerms']);
+	if (isset($_REQUEST['searchTerms']))
+	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
 
 	$userId = '';
 	if (isset($_SESSION['innoworks.ID']))
@@ -30,13 +30,13 @@ function renderSearchIdeas($userId, $limit) {
 	$filters = array();
 	$dateFrom = '';
 	$dateTo = '';
-	if (isset($_GET['dateFrom']) && !empty($_GET['dateFrom'])){
-		$filters['dateFrom'] = $_GET['dateFrom'];
-		$dateFrom = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateFrom']) && !empty($_REQUEST['dateFrom'])){
+		$filters['dateFrom'] = $_REQUEST['dateFrom'];
+		$dateFrom = htmlspecialchars($_REQUEST['dateFrom']);
 	}
-	if (isset($_GET['dateTo']) && !empty($_GET['dateTo'])) {
-		$filters['dateTo'] = $_GET['dateTo'];
-		$dateTo = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateTo']) && !empty($_REQUEST['dateTo'])) {
+		$filters['dateTo'] = $_REQUEST['dateTo'];
+		$dateTo = htmlspecialchars($_REQUEST['dateFrom']);
 	}
 
 	$ideas = getSearchIdeas($searchTerms, $userId, $filters, "LIMIT $limit");
@@ -49,8 +49,8 @@ function renderSearchProfiles($userId, $limit) {
 	global $serverUrl, $serverRoot, $uiRoot;
 
 	$searchTerms = '';
-	if (isset($_GET['searchTerms']))
-	$searchTerms = htmlspecialchars($_GET['searchTerms']);
+	if (isset($_REQUEST['searchTerms']))
+	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
 
 	$userId = '';
 	if (isset($_SESSION['innoworks.ID']))
@@ -59,13 +59,13 @@ function renderSearchProfiles($userId, $limit) {
 	$filters = array();
 	$dateFrom = '';
 	$dateTo = '';
-	if (isset($_GET['dateFrom']) && !empty($_GET['dateFrom'])){
-		$filters['dateFrom'] = $_GET['dateFrom'];
-		$dateFrom = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateFrom']) && !empty($_REQUEST['dateFrom'])){
+		$filters['dateFrom'] = $_REQUEST['dateFrom'];
+		$dateFrom = htmlspecialchars($_REQUEST['dateFrom']);
 	}
-	if (isset($_GET['dateTo']) && !empty($_GET['dateTo'])) {
-		$filters['dateTo'] = $_GET['dateTo'];
-		$dateTo = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateTo']) && !empty($_REQUEST['dateTo'])) {
+		$filters['dateTo'] = $_REQUEST['dateTo'];
+		$dateTo = htmlspecialchars($_REQUEST['dateFrom']);
 	}
 
 	$users = getSearchPeople($searchTerms, $userId, $filters, "LIMIT $limit");
@@ -78,8 +78,8 @@ function renderSearchGroups($userId, $limit) {
 	import("user.service");
 
 	$searchTerms = '';
-	if (isset($_GET['searchTerms']))
-	$searchTerms = htmlspecialchars($_GET['searchTerms']);
+	if (isset($_REQUEST['searchTerms']))
+	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
 
 	$userId = '';
 	if (isset($_SESSION['innoworks.ID']))
@@ -88,13 +88,13 @@ function renderSearchGroups($userId, $limit) {
 	$filters = array();
 	$dateFrom = '';
 	$dateTo = '';
-	if (isset($_GET['dateFrom']) && !empty($_GET['dateFrom'])){
-		$filters['dateFrom'] = $_GET['dateFrom'];
-		$dateFrom = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateFrom']) && !empty($_REQUEST['dateFrom'])){
+		$filters['dateFrom'] = $_REQUEST['dateFrom'];
+		$dateFrom = htmlspecialchars($_REQUEST['dateFrom']);
 	}
-	if (isset($_GET['dateTo']) && !empty($_GET['dateTo'])) {
-		$filters['dateTo'] = $_GET['dateTo'];
-		$dateTo = htmlspecialchars($_GET['dateFrom']);
+	if (isset($_REQUEST['dateTo']) && !empty($_REQUEST['dateTo'])) {
+		$filters['dateTo'] = $_REQUEST['dateTo'];
+		$dateTo = htmlspecialchars($_REQUEST['dateFrom']);
 	}
 
 	$groups = getSearchGroups($searchTerms, $userId, $filters, "LIMIT $limit");

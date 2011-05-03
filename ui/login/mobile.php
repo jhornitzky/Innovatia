@@ -15,8 +15,7 @@
 		<div id="head">
 			<table style="vertical-align: middle; margin-top: 0.7em">
 				<tr>
-					<td><img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" />
-					</td>
+					<td><img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" /></td>
 				</tr>
 				<tr>
 					<td style="color: #FFFFFF; padding-left: 10px;">The open innovation tool for everyone</td>
@@ -34,7 +33,7 @@
 			name="password" size="20" /><br /> <input type="submit"
 			value="&raquo; Login" />
 	</form>
-	<p>Want more? Come back on a desktop for the full experience.</p>
+	<!-- <p>Want more? Come back on a desktop for the full experience.</p> -->
 	<p><i>Beta version</i></p>
 </body>
 </html>

@@ -248,15 +248,16 @@ function showSummaryPane(props) {
 function showIdeaSummary(id) {
 	showSummaryPane({
 		title:"Idea", 
-		href:"engine.ajax.php?action=getIdeaSummary&actionId="+id});
+		href:"engine.ajax.php?action=getIdeaSummary&actionId="+id, 
+		actionId:id, actionType:'idea'});
 }
 
 function showProfileSummary(id) {
-	showSummaryPane({title:"Profile", href:"engine.ajax.php?action=getProfileSummary&actionId="+id});
+	showSummaryPane({title:"Profile", href:"engine.ajax.php?action=getProfileSummary&actionId="+id, actionId:id, actionType:'profile'});
 }
 
 function showGroupSummary(id) {
-	showSummaryPane({title:"Group", href:"engine.ajax.php?action=getGroupSummary&actionId="+id});
+	showSummaryPane({title:"Group", href:"engine.ajax.php?action=getGroupSummary&actionId="+id, actionId:id, actionType:'group'});
 }
 
 function showIdeaDetails(ideaId) { 

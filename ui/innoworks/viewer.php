@@ -15,9 +15,11 @@ if (isset($_GET['print']) )
 <title>innoWorks viewer</title>
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>/favicon.ico" type="image/x-icon" />
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/jQuery-Min.js"></script>
-<!-- <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojo/dojo.js"></script>
-<script type="text/javascript" src="<?= $serverRoot?>ui/scripts/dojoLayer.js"></script>-->
 <script type="text/javascript" src="<?= $serverRoot?>ui/scripts/common.js"></script>
+<?if (isMobile()) {?>
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<meta name="apple-touch-fullscreen" content="YES" />
+<?}?>
 <link rel="stylesheet" type="text/css" href="<?= $serverRoot?>ui/scripts/base/dijit/themes/tundra/tundra.css" />
 <link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />

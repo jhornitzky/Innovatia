@@ -10,7 +10,7 @@ import("user.service");
 //All Devices
 if(isLoggedIn())
 {
-	if (isMobile()) {
+	if (isMobile()) { //FIXME to prevent mobile redirection
 		require_once("ui/innoworks/mobile.php");
 	} else {
 		require_once("core/ui.core.php");
