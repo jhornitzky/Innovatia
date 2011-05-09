@@ -74,6 +74,7 @@ function showSummaryPane(props) {
 
 /////// START UP ///////
 function loadContent(request, elem, type) {
+	showLoading("#content");
 	$.post("mobile.ajax.php", request, function(data) {
 		$("#content").html(data);
 	});
@@ -103,6 +104,7 @@ $(document).ready(function() {
 		</div>
 	</div>
 	<div id="content"> 
+		<div class='loadingAnim'></div>
 	</div>
 	<!-- RESPONSES -->
 	<div class="respSurround" style="position: absolute; bottom: 0px;">
