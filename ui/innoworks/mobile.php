@@ -49,7 +49,8 @@ html, body{
 }
 
 .selected {
-	background-color:#999;
+	border: 1px solid #999;
+	background-color:#444;
 }
 </style>
 

@@ -6,9 +6,10 @@
 		</div>
 		<div class="fixed-right">
 			<form class='addForm'>
-				Click here to select an idea <input type='button'
+				<div class="tiny">select idea...</div>
+				<input type='button'
 					onclick='showAddSelectIdea(this)' value=' + '
-					title='Select an idea to work on' />
+					title='Select an idea to work on' /> select idea to work on
 			</form>
 			<div class="selectList"></div>
 		</div>

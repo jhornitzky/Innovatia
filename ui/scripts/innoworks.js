@@ -1,3 +1,5 @@
+var handler = "engine.ajax.php";
+
 //QUEUE 
 var queue = [];
 var loadingString = "<div class='loadingAnim'></div>";
@@ -15,6 +17,34 @@ function processQueuedActions() {
 		queue = [];
 	}
 }
+
+//FIXME PHP THESE TEMPLATES
+var compareFormString = "<form class='addForm'><input type='button' onclick='showAddRiskItem(this)' value=' + ' title='Add an idea to comparison' /> add idea to comparison</form>";
+var selectFormString = "<form class='addForm'><input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /> select an idea</form>";
+var groupComments = '<form class="addForm commentForm" onsubmit="addCompareComment(this);return false;">' +
+'<div class="tiny">post a comment...</div>' +
+'<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea>'+
+'<input type="submit" value="post" />' +
+'</form>' +
+'<div class="compareCommentList"></div>';
+var groupInfo = '<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+' <span>add a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea to group</span>' +
+'</form>'+
+'<div class="ideasList"></div>';
+var profileIdeate = '<form id="addPrivateIdeaForm" class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+'<div class="tiny">add new idea...</div>' + 
+'<input class="dijitTextBox" name="title" type="text"/>' +
+'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+'<input style="display:none" type="submit" />' +
+'<input type="hidden" name="action" value="addIdea" />' +
+'</form>' +
+'<div class="ideasList"></div>';
+var publicIdeate = '<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
+'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
+' <span>add a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea to the public</span>' +
+'</form>'+
+'<div class="ideasList"></div>';
 
 //GENERIC ACTIONS
 function logAction(elem) {
@@ -241,8 +271,8 @@ function showSummaryPane(props) {
 	pane.bringToTop();
 	
 	//use good ol' jquery to get the tough stuff done
-	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:$(window).height()*0.8});
-	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '96%').css('padding', '2%');
+	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:$(window).height()*0.7});
+	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '97%').css('padding', '2%');
 }
 
 function showIdeaSummary(id) {
@@ -343,7 +373,7 @@ function getIdeas() {
 	showLoading(".ideasList");
 	if (currentGroupId == null && currentGroupName == "Private") {
 		$(".ideasList").load("engine.ajax.php?action=getIdeas");
-		$("#addIdeaForm span").html("Add new idea");
+		$("#addIdeaForm span").html("");
 		$("#addIdeaTitle").fadeIn();
 	} else if (currentGroupId == null && currentGroupName == "Public") {
 		$(".ideasList").load("engine.ajax.php?action=getPublicIdeas");
@@ -655,15 +685,14 @@ function logout() {
 }
 
 function positionResponse() {
-	$(".respSurround").css({position: "absolute",top:($(window).scrollTop()+$(window).height()-50)+ "px"})	
-	//$('.respSurround').stop().animate({top:($(window).scrollTop()+$(window).height()-50)}, 'fast'); //FIXME doesnt work 100%
+	$(".respSurround").css({position: "absolute",top:($(window).scrollTop()+$(window).height()-50)+ "px"});
 }
 
 function showResponses(data, timeout) {
 	var selector;
 	selector = "#ideaResponses"; 
 	$(selector).html(data);
-	$('.respSurround').show('slow',function() {
+	$('.respSurround').show('slide',function() {
 		positionResponse(); 
 	});
 	if (timeout) {
@@ -674,7 +703,7 @@ function showResponses(data, timeout) {
 }
 
 function hideResponses() {
-	$(".respSurround").hide('slow', function () {
+	$(".respSurround").hide('slide', function () {
 		$(".responses").empty();
 	});
 }
@@ -850,7 +879,6 @@ function updateGroupDetails(formId) {
 function showGroupDetails() {
 	$.get("engine.ajax.php?action=getGroupDetails&actionId="+currentGroupId, function(data) {
 		$("#groupDetails").html(data);
-		//showGroupSubDetails();
 		showGroupComments();
 		$("#groupDetails ul.submenu li:first").addClass("selected");
 	});
@@ -1264,19 +1292,10 @@ function commonAddFind(action) {
 	$("#commonPopup #actionDetails").load(url);
 }
 
-var ideateFormString = "<form class='addForm'>Click here to select an idea <input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>";
-var compareFormString = "<form class='addForm'>Click here to add idea to comparison <input type='button' onclick='showAddRiskItem(this)' value=' + ' title='Add an idea to comparison' /></form>";
-var selectFormString = "<form class='addForm'>Click here to select an idea <input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /></form>";
-
 function showGroupComments(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
-	$(".groupInfo").html('<form class="addForm" onsubmit="addCompareComment(this);return false;">' +
-			'<input type="hidden" name="action" value="addComment" />' +
-			'Comments <input type="submit" value=" + " />' + 
-			'<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea> '+
-			'</form>' +
-			'<div class="compareCommentList"></div>');
+	$(".groupInfo").html(groupComments);
 	getCompareComments();
 }
 
@@ -1300,11 +1319,7 @@ function showGroupIdeate(elem) {
 		$(elem).parent().addClass("selected");
 	}
 
-	$(".groupInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
-			'<span>Add a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea to group</span>' +
-			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
-			'</form>'+
-			'<div class="ideasList"></div>');
+	$(".groupInfo").html(groupInfo);
 	getIdeas();
 }
 function showGroupCompare(elem) {
@@ -1332,18 +1347,11 @@ function showProfileSubDetails(elem) {
 		});
 	});
 }
+
 function showProfileIdeate(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
-	$(".profileInfo").html(
-			'<form id="addPrivateIdeaForm" class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
-				'<span>Add new idea</span>' + 
-				'<input name="title" type="text"/>' +
-				'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
-				'<input style="display:none" type="submit" />' +
-				'<input type="hidden" name="action" value="addIdea" />' +
-			'</form>' +
-			'<div class="ideasList"></div>');
+	$(".profileInfo").html(profileIdeate);
 	getIdeas();
 }
 
@@ -1369,11 +1377,7 @@ function showProfileNotes(elem) {
 function showPublicIdeate(elem) {
 	$("ul.submenu li").removeClass("selected");
 	$(elem).parent().addClass("selected");
-	$(".publicInfo").html('<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
-			'<span>Make a <a href="javascript:logAction(this)" onclick="showIdeas(); showDefaultIdeas();">private</a> idea public</span>' +
-			'<input type="button" value=" + " title="Add idea" onclick="addPrivateIdea(this)"/>' +
-			'</form>'+
-			'<div class="ideasList"></div>');
+	$(".publicInfo").html(publicIdeate);
 	getIdeas();
 }
 
@@ -1401,4 +1405,9 @@ function showHelp() {
 function showHelpSize(elem, sizeProps, selfVisibility) {
 	$(elem).css('visibility', selfVisibility);
 	$(elem).parent().stop().animate(sizeProps);
+}
+
+function showCreateNewGroup(elem) {
+	showCommonPopup(elem);
+	$("#actionDetails").load("engine.ajax.php?action=getAddIdea");
 }

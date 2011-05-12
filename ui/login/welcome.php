@@ -60,10 +60,10 @@ $(document).ready( function () {
 <div id="loginContent">
 <div style="width:100%; font-size:1em; padding:0.2em; padding-top:0; text-align:left; clear:both ">
 	<ul id="submenu" style="clear:both ">
-		<li id="ideaInnolnk" class="bluebox" style="background-image:url('<?= $uiRoot?>style/login/innovation.png');"><a href="javascript:logAction();" onclick="showSearch();">Innovations</a></li> 
-		<li id="aboutlnk" class="greenbox" style="background-image:url('<?= $uiRoot?>style/login/feature.png');"><a href="javascript:logAction();" onclick="showAbout();">Features</a></li>
-		<li id="reglnk" class="orangebox" style="background-image:url('<?= $uiRoot?>style/login/register.png');"><a href="javascript:logAction();" onclick="registerUser();">Register</a></li>
-		<li id="downlnk" class="redbox" style="background-image:url('<?= $uiRoot?>style/login/download.png');"><a href="javascript:logAction();" onclick="showDownload();">Download</a></li>
+		<li id="ideaInnolnk"><span class="blueItem">[</span><a href="javascript:logAction();" onclick="showSearch();">innovations</a><span class="blueItem">]</span></li> 
+		<li id="aboutlnk"><span class="greenItem">[</span><a href="javascript:logAction();" onclick="showAbout();">features</a><span class="greenItem">]</span></li>
+		<li id="reglnk"><span class="orangeItem">[</span><a href="javascript:logAction();" onclick="registerUser();">register</a><span class="orangeItem">]</span></li>
+		<li id="downlnk"><span class="redItem">[</span><a href="javascript:logAction();" onclick="showDownload();">download</a><span class="redItem">]</span></li>
 	</ul>
 	<div id="ajaxContent" style="clear:both">
 		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
@@ -80,8 +80,8 @@ $(document).ready( function () {
 <div id="footerSpace"></div>
 <div id="footerSurround">
 	<div id="footer">
-		<div class="fixed-left">Copyright &copy; UTS 2010</div>
-		<div class="fixed-right"></div>
+		<div class="fixed-left">UTS server version</div>
+		<div class="fixed-right">Copyright &copy; UTS 2010</div>
 	</div>
 </div>
 </body>

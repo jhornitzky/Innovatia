@@ -33,7 +33,6 @@
 			name="password" size="20" /><br /> <input type="submit"
 			value="&raquo; Login" />
 	</form>
-	<!-- <p>Want more? Come back on a desktop for the full experience.</p> -->
-	<p><i>Beta version</i></p>
+	<p>Want more? Come back on a desktop for the full experience.</p>
 </body>
 </html>

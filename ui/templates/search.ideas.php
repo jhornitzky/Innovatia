@@ -20,7 +20,7 @@
 </div>
 	<?}
 	if ($countIdeas > dbNumRows($ideas)) {?>
-<a href="javascript:logAction()"
+<a class="loadMore" href="javascript:logAction()"
 	onclick="loadResults(this, {action:'getSearchIdeas', limit:'<?= ($limit + 20) ?>'})">Load
 	more</a>
 	<?}

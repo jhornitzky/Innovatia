@@ -8,6 +8,32 @@ html, body {
 	height:100%;
 }
 
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+	padding-bottom:1px;
+}
+ 
+.clearfix, .xbuddyResponse {
+	display: inline-block;
+}
+ 
+html .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
+
+h1, h2, h3 {
+	margin:0;
+}
+
 th, th, label {
 	text-align:left;
 	font-size:0.9em;
@@ -18,34 +44,18 @@ input {
 	font-size:0.8em;
 }
 
-input[type=button] {
-	cursor:pointer;
-	color:#000; 
-	/* background-color:#ddd; 
-	border:1px solid; 
-	border-color: #000; 
-	 */
-}
-
-input[type=button]:hover {
-	/*color:#000; 
-	background-color:#fff; 
-	border:1px solid; 
-	border-color: #000; */
-}
-
 a {
-	border-bottom:1px dotted;
-	border-color:#555;
+	color:#444;
+	border-bottom:1px dotted #2200C1; 
 	text-decoration:none;
-	margin-left:5px;
-	margin-right:5px;
-	color:#666;
-	font-size:0.9em;
 }
 
 a:hover {
-	font-weight:bold; 
+	border-bottom:1px solid #2200C1; 
+}
+
+a img {
+	border:none;
 }
 
 div.loadingAnim {
@@ -85,12 +95,12 @@ div.smallLoadingAnim {
 	margin-bottom:0.3em;
 	padding-bottom:0.5em;
 	color:#FFFFFF;
-	background-color: #444444;
 	padding-top:0.5em;
 }
 
-.threeColumnContainer > * {
-	#opacity:0.8;
+#headSurround {
+	background-color: #444444;
+	background-image:url('gridDarkBg.jpg');
 }
 
 .threecol {
@@ -98,6 +108,7 @@ div.smallLoadingAnim {
 	width:32%; 
 	position:relative; 
 	float:left; 
+	background-color:#FFF;
 }
 
 .marker {
@@ -116,6 +127,14 @@ div.smallLoadingAnim {
 	border:1px solid #ffca6a;
 }
 
+.orangeItem {
+	color:#ffca6a;
+}
+
+.orangebox a {
+	border-color:#ffca6a;
+}
+
 .orangebox.selMenu {
 	background-color:#ffad26;
 }
@@ -124,20 +143,40 @@ div.smallLoadingAnim {
 	border:1px solid #7db4ff;
 }
 
+.bluebox a {
+	border-color:#7db4ff;
+}
+
 .bluebox.selMenu {
 	background-color:#539dff;
+}
+
+.blueItem {
+	color:#7db4ff;
 }
 
 .greenbox {
 	border:1px solid #02BF0F;
 }
 
+.greenbox a {
+	border-color:#02BF0F;
+}
+
 .greenbox.selMenu {
 	background-color:#02BF0F;
 }
 
+.greenItem {
+	color:#02BF0F;
+}
+
 .greybox {
 	border:1px solid #DDD;
+}
+
+.greybox a {
+	border-color:#DDD;
 }
 
 .red {
@@ -149,10 +188,19 @@ div.smallLoadingAnim {
 	border:1px solid #FF1F56;
 }
 
+.redbox a {
+	border-color:#FF1F56;
+}
+
+.redItem {
+	color:#FF1F56;
+}
+
 div.itemHolder {
 	border-top:1px solid #EEE;
 	padding-top:0.25em;
 	padding-bottom:0.25em;
+	position: relative;
 }
 
 div.itemHolder.selected {
@@ -205,8 +253,10 @@ div.lefterImage {
 }
 
 a.loadMore {
-	border-top:1px solid #AAA;
+	border-top:1px dotted #AAA;
 	margin-bottom:0.5em;
+	font-size:0.75em;
+	text-transform:lowercase;
 }
 
 a.loadMore:before {
@@ -214,7 +264,7 @@ a.loadMore:before {
 }
 
 div.headBorder {
-	border-top:1px solid #AAA;
+	border-top:none;
 }
 
 h2.leftHeader {
@@ -224,7 +274,7 @@ h2.leftHeader {
 .fixed-left {
 	width: 226px; float:left; 
 	margin-right:25px;
-	text-align:right;
+	text-align:left;
 	color:#444;
 }
 
@@ -278,12 +328,6 @@ ul#submenu li {
 	border-top:none;
 }
 
-div.itemHolder div.lefter:last-child {
-	max-width:80%;
-	overflow:hidden;
-	max-height:2.5em;
-}
-
 div.itemHolder div.lefter span {
 	font-size:0.9em;
 }
@@ -309,4 +353,8 @@ div.itemHolder.headBorder.treeMenu div.lefter {
 
 .featureEvaluationBit {
 	width:100%;
+}
+
+.tiny {
+	font-size:10px; color:#AAA;
 }

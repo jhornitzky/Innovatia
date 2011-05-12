@@ -279,6 +279,16 @@ function getDisplayUsername($userId)
 	return false;
 }
 
+function getDisplayFirstName($userId)
+{
+	$fullName = getDisplayUsername($userId);
+	if (!empty($fullName)) {
+		$matches = explode(' ', $fullName);
+		return $matches[0];
+	} 
+	return null;
+}
+
 function getUserInfo($userId)
 {
 	$rs = dbQuery("SELECT * FROM Users WHERE (userId = '".$userId."')");

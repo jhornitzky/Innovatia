@@ -1,6 +1,7 @@
 /* COMMON */
 body {
 	text-align:left;
+	overflow-y:scroll;
 }
 
 hr {
@@ -9,23 +10,12 @@ hr {
 	border:none;
 }
 
-h3 {
-	margin-top:0.5em;
-	margin-bottom:0.5em;
-}
-
 select {
 	width:5em;
 }
 
-a {
-	font-size:0.9em;
-}
-
-a:hover {
-	font-weight:normal;
+#head a:hover {
 	text-decoration:underline;
-	color:#000000;
 }
 
 div.tabBody div.loadingAnim {
@@ -59,9 +49,6 @@ div#head {
 	padding-top:0;
 	padding-bottom:0;
 	color:#FFFFFF;
-	background-color: #444444;
-	background-position:bottom center;
-	background-repeat:repeat-x;
 }
 
 img#dashlnk {
@@ -90,7 +77,7 @@ ul.tabMenu li {
 	text-indent:0;
 	margin-left:0;
 	margin-right:0.25em;
-	background-color:#444444; 
+	/* background-color:#444444;*/ 
 	border-top:none;
 	backgound-position:top left; 
 	background-repeat:no-repeat
@@ -146,20 +133,92 @@ div#content {
 }
 
 div.tabBody div div.fixed-left {
-	opacity:0.95;
 	font-size:0.95em;
 }
 
-div.tabBody div div.fixed-left:hover {
-	opacity:1.0;
+.addForm {
+	font-size:2em;
+	color:#AAA;
+	text-transform:lowercase;
 }
 
-.addForm {
-	background-color:#EEEEEE;
-	padding: 4px;
-	border-top: 1px solid #bbef8e;
-	border-left: 1px solid #bbef8e;
-	border-right: 1px solid #bbef8e;
+/* Based of css3 buttons on github */
+.addForm input[type=button], .addForm input[type=submit] {
+	background: #7fbf4d;
+  background: -moz-linear-gradient(top, #7fbf4d 0%, #63a62f 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7fbf4d), to(#63a62f));
+  border: 1px solid #63a62f;
+  border-bottom: 1px solid #5b992b;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: inset 0 1px 0 0 #96ca6d;
+  -webkit-box-shadow: inset 0 1px 0 0 #96ca6d;
+  box-shadow: inset 0 1px 0 0 #96ca6d;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 -1px 0 #4c9021;
+}
+
+.addForm input[type=button]:hover, .addForm input[type=submit]:hover {
+  background: #76b347;
+  background: -moz-linear-gradient(top, #76b347 0%, #5e9e2e 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#76b347), to(#5e9e2e));
+  -moz-box-shadow: inset 0 1px 0 0 #8dbf67;
+  -webkit-box-shadow: inset 0 1px 0 0 #8dbf67;
+  box-shadow: inset 0 1px 0 0 #8dbf67;
+  cursor: pointer;
+}
+
+.addForm input[type=button]:active, .addForm input[type=submit]:active {
+  border: 1px solid #5b992b;
+  border-bottom: 1px solid #538c27;
+  -moz-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+  -webkit-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+  box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+}
+
+/* CUPID */
+.cupid-blue {
+  background: #d7e5f5;
+  background: -moz-linear-gradient(top, #d7e5f5 0%, #cbe0f5 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d7e5f5), to(#cbe0f5));
+  border-top: 1px solid #abbbcc;
+  border-left: 1px solid #a7b6c7;
+  border-bottom: 1px solid #a1afbf;
+  border-right: 1px solid #a7b6c7;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-box-shadow: inset 0 1px 0 0 #fff;
+  -webkit-box-shadow: inset 0 1px 0 0 #fff;
+  box-shadow: inset 0 1px 0 0 #fff;
+  color: #1a3e66;
+  text-align: center;
+  text-shadow: 0 1px 1px #fff;
+  font-size:20px;
+}
+
+.cupid-blue:hover {
+  background: #ccd9e8;
+  background: -moz-linear-gradient(top, #ccd9e8 0%, #c1d4e8 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccd9e8), to(#c1d4e8));
+  border-top: 1px solid #a1afbf;
+  border-left: 1px solid #9caaba;
+  border-bottom: 1px solid #96a3b3;
+  border-right: 1px solid #9caaba;
+  -moz-box-shadow: inset 0 1px 0 0 #f2f2f2;
+  -webkit-box-shadow: inset 0 1px 0 0 #f2f2f2;
+  box-shadow: inset 0 1px 0 0 #f2f2f2;
+  color: #163659;
+  cursor: pointer;
+}
+
+.cupid-blue:active {
+  border: 1px solid #8c98a7;
+  -moz-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
+  -webkit-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
+  box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
 }
 
 .treeAddForm {
@@ -197,15 +256,14 @@ div.tabBody div div.fixed-left:hover {
 }
 
 .respSurround {
-	background-color:#444444;
 	width:100%;
-	height:50px;
+	height:45px;
 	display:none;
 	z-index:1001;
 }
 
 .respSurround .responses {
-	max-height:3em;
+	height:40px;
 	color:#FFFFFF;
 	overflow:hidden;
 	background:none;
@@ -213,7 +271,12 @@ div.tabBody div div.fixed-left:hover {
 	width:1000px; 
 	margin:auto;
 	padding-left:10px;
-	dispaly:block;
+	display:block;
+	background-color:#444444;
+	background-color:rgba(30,30,30,0.9);
+	border-radius:4px 4px 0 0;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
 }
 
 .respSurround .responses * {
@@ -263,19 +326,6 @@ div.tabBody div div.fixed-left:hover {
 	text-align:left;
 	vertical-align:top;
 }
-
-/* .idea {
-	margin-bottom: 1.0em;
-	margin-right: 1.0em;
-	border: 1px solid #CCC;
-	position:relative;
-	float:left;
-	background-color:#FFF;
-	text-align:center;
-	width:8.35em;
-	height:8em;
-	overflow:hidden;
-} */
 
 .idea {
 	margin-bottom: 1.0em;
@@ -358,25 +408,23 @@ table td input[type=text] {
 #noteTab #notePadder div {
 	padding:0.2em;
 	margin-bottom:0.25em;
-	max-width:100%;
+	width:80%;
 	overflow:hidden;
-	clear:left;
-	float:left;
+}
+
+#notepadder div {
+	border-top:1px solid #DDD;
+	background-repeat:no-repeat;
+	background-position:center right;
 }
 
 #noteTab div.incoming {
-	border-top:1px solid #ffca6a;
-	border-right:1px solid #ffca6a;
-	border-bottom:1px solid #ffca6a;
-	background-color:#FFF8BF;
 	margin-left:6em;
+	background-image:url('arrowLeft.png');
 }
 
 #noteTab div.outgoing {
-	border-top:1px solid green;
-	border-left:1px solid green;
-	border-bottom:1px solid green;
-	background-color:#BFFFC0;
+	background-image:url('arrowRight.png');
 }
 
 .ideaGroups {
@@ -385,20 +433,9 @@ table td input[type=text] {
 	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 
-div.ideaGroupsList {
-	color:#666;	
-	border-left:1px solid #AAA;
-	border-bottom:1px solid #AAA;
-}
-
 div.treeMenu {
-	border-left:1px solid #AAA;
-	border-bottom:1px solid #AAA;
-}
-
-div.lightTreeMenu {
-	border-left:1px solid #EEE;
-	border-bottom:1px solid #EEE;
+	border-right:1px solid #AAA;
+	background-color:#FFF;
 }
 
 #dashui .moreInfo p span {
@@ -429,10 +466,6 @@ h2.pgName span.subhead {
 
 ul.simProfiles {
 	list-style:none;
-}
-
-div#headSurround {
-	background-color: #444444;
 }
 
 div#head, div#content {
@@ -550,28 +583,21 @@ span.ideaoptions {
 }
 
 #groupDetails * ul{
-	padding-left:0em;
-	list-style:none;
+	padding-left: 0em;
+	list-style: none;
 }
 
 #groupDetails * ul li {
-	margin-left:0;
-}
-
-ul.tabMenu li a {
-	margin-left:0;
+	margin-left: 0;
 }
 
 div#groupDetails {
-	border-top:1px solid #EEE;
-}
-
-div.itemHolder a {
-	margin:0;
+	border-top: 1px solid #EEE;
 }
 
 div.itemHolder span {
 	font-size:0.9em;
+	color:#777;
 }
 
 span.itemTotal{
@@ -587,22 +613,11 @@ div.shareBtns img {
 }
 
 div.groupPreview {
-	background-color:#DDD;
-	min-height:4em;
-	/*margin-bottom:1em;*/
-	border-left:1px solid #AAA;
-	/*border-bottom:1px solid #AAA;*/
-	border-top:1px solid #AAA;
-	padding-left:0.2em;
+	min-height:4.5em;
+	border:none;
 	text-align:left;
-}
-
-div.fixed-left div.groupPreview {
-	/*margin-bottom:1em;*/
-}
-
-div.fixed-right div.groupPreview {
-	text-align:left;
+	margin-bottom:10px;
+	padding-top:0;
 }
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
@@ -677,4 +692,14 @@ ul.submenu li.selected a {
 #ideasPopupDetails table td, #ideasPopupDetails table th {
 	vertical-align:top;
 	text-align:left;
+}
+
+.dojoxDock {
+	border:none;
+	background-color: #444;
+	background-color: rbga(30,30,30,0.8);
+}
+
+.commentForm input {
+	font-size:20px;
 }

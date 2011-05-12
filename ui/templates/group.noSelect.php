@@ -1,0 +1,1 @@
+<h2 style="color: #AAA"><< create a new group</h2>or<h2 style="color: #AAA"><< view an existing group</h2>

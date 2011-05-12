@@ -18,7 +18,7 @@
 </div>
 	<?}
 	if ($countGroups > dbNumRows($groups)) {?>
-<a href="javascript:logAction()"
+<a class="loadMore" href="javascript:logAction()"
 	onclick="loadResults(this, {action:'getSearchGroups', limit:'<?= ($limit + 20) ?>'})">Load
 	more</a>
 	<?}

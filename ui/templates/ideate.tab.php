@@ -5,13 +5,13 @@
 			<div class="ideaGroupsList"></div>
 		</div>
 		<div class="fixed-right">
-			<form id="addIdeaForm" class="addForm"
-				onsubmit="addIdea(this);return false;">
-				<span>Add new idea</span> <input id="addIdeaTitle" name="title"
-					type="text" dojoType="dijit.form.TextBox" /> <input type="button"
-					value=" + " title="Add idea" onclick="addIdea(this)" /> <input
-					style="display: none" type="submit" /> <input type="hidden"
+			<form id="addIdeaForm" class="addForm" onsubmit="addIdea(this); return false;">
+				<div class="tiny">add new idea...</div>
+				<input id="addIdeaTitle" class="addIdeaForm" name="title" type="text" dojoType="dijit.form.TextBox" /> 
+					<input type="button" value=" + " title="Add idea" onclick="addIdea(this)" placeHolder="new idea title here"/> 
+					<input style="display: none" type="submit"/> <input type="hidden"
 					name="action" value="addIdea" />
+				<span></span>
 			</form>
 			<div class="ideasList"></div>
 		</div>

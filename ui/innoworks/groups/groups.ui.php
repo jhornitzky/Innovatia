@@ -3,22 +3,9 @@ require_once(dirname(__FILE__) . "/../pureConnector.php");
 import("group.service");
 
 function renderGroupDefault($user) {
-	$limit = 5;?>
-	<div class="treeMenu">
-	<div class='itemHolder headBorder' style='background-color:#EEE'>Leader<br/><span>Groups that you created</span></div>
-	<div style="padding-bottom:1.0em; font-size:0.9em">
-		<? renderGroupsForCreatorUser($user, $limit); ?>
-	</div>
-	<div class='itemHolder headBorder' style='background-color:#EEE'>Part of<br/><span>Groups that you are in</span></div>
-	<div style="padding-bottom:1.0em; font-size:0.9em">
-		<? renderPartOfGroupsForUser($user, $limit); ?>
-	</div>
-	<div class='itemHolder headBorder' style='background-color:#EEE'>Other<br/><span>More groups to join</span></div>
-	<div style="padding-bottom:1.0em; font-size:0.9em">
-		<? renderOtherGroupsForUser($user, $limit); ?>
-	</div>
-	</div>
-<?}
+	$limit = 5;
+	renderTemplate('group.list', get_defined_vars());
+}
 
 function renderGroupsForCreatorUser($user, $limit) {
 	$groups = getGroupsForCreatorUser($user, "LIMIT $limit");
@@ -66,17 +53,9 @@ function renderOtherGroupsForUser($user, $limit) {
 	<?}
 }
 
-function renderGroupItem($group) {?>
-	<div class='itemHolder clickable' style="height:2.5em;" onclick="updateForGroup('<?=$group->groupId?>','<?=$group->title?>')">
-		<div class="righter righterImage">
-			<img src="retrieveImage.php?action=groupImg&actionId='<?=$group->groupId?>'" style="width:2.25em; height:2.25em"/>
-		</div>
-		<div class='righter'>
-			<?= $group->title ?><br/>
-			<span><? if (isset($group->userId)) echo getDisplayUsername($group->userId); ?></span>
-		</div>
-	</div>
-<?}
+function renderGroupItem($group) {
+	renderTemplate('group.item', get_defined_vars());
+}
 
 function renderGroupDetails($currentGroupId) {
 	import('security.service');
@@ -91,53 +70,26 @@ function renderGroupDetails($currentGroupId) {
 		$groupUser = dbFetchObject($groupUserEntry);
 
 	if (!isset($group) && !isset($groupUser))
-		die("Click on a group to see its details");
+		return renderTemplate("group.noSelect");
 	
 	$userService = new AutoObject("user.service");
-	$groupUsers = getUsersForGroup($currentGroupId);
-	?>
-	<div class='itemHolder headBorder treeMenu' style="height:7em;">
-		<div class="lefter lefterImage">
-			<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="width:5em; height:5em"/>
-		</div>
-		<div class="lefter">
-			<h3><?= $group->title ?></h3>
-			<?= getDisplayUsername($group->userId); ?><br/>
-			<? if (isset($groupUser)) {?>
-				<input type='button' onclick='currentGroupId="<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")' value=' Leave ' alt='Leave group' />
-			<? } else if ($group->userId == $_SESSION['innoworks.ID']) { ?>
-				<input type='button' onclick='deleteGroup("<?= $group->groupId ?>")' value=' - ' alt='Delete group' />
-			<? } ?>
-		</div>
-		<div class="righter" style="padding-left:0.5em;">
-			<span class="timestamp">Created <?= $group->createdTime ?></span> | 
-			<a href="javascript:logAction()" onclick="printGroup()">Print</a>
-			<div style="padding-left:0.25em;">
-				<p style="font-size:0.8em;">Share this group with a friend at:<br/> <?= $shareUrl ?></p>
-				<?renderTemplate('shareBtns', null); ?>
-			</div>
-		</div>
-	</div>
-	<?if (isset($groupUser) && $groupUser->approved == 0 && $groupUser->accepted == 1) {
+	$groupUsers = getUsersForGroup($currentGroupId);	
+	renderTemplate('group.details', get_defined_vars());
+
+	if (isset($groupUser) && $groupUser->approved == 0 && $groupUser->accepted == 1) {
+		renderTemplate('group.desc', get_defined_vars());
 		echo "<p>You have asked for access to this group, but have not been approved. You can contact the lead " . $userService->getUserInfo($group->userId)->username . ".</p>";
 	} else if (isset($groupUser) && $groupUser->approved == 1 && $groupUser->accepted == 0) {
+		renderTemplate('group.desc', get_defined_vars());
 		echo "<p>Do you wish to accept your invitation to this group?</p>";
 		echo "<a href='javascript:logAction()' onclick='acceptGroup();'>Yes, I want to join</a> <a href='javascript:logAction()' onclick='refuseGroup();'>No, I don't wannt to join</a>";
 	} else if ((isset($groupUser) && $groupUser->approved == 1 && $groupUser->accepted == 1) || isset($group) && $group->userId == $_SESSION['innoworks.ID']) {
 		if ($groups && (dbNumRows($groups) == 1)) {
-			$userService = new AutoObject("user.service");?>
-			<ul class="submenu">
-				<li class="greybox"><a href="javascript:logAction()" onclick="showGroupComments(this)">Comments</a></li>
-				<li class="greybox"><a href="javascript:logAction()" onclick="showGroupSubDetails(this)">Details</a></li>
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupIdeate(this)">Ideate</a></li>
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupCompare(this)">Compare</a></li>
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showGroupSelect(this)">Select</a></li>
-			</ul>
-			
-			<div class="groupInfo" style="margin-top:2em;">
-			</div>
-		<?} 
+			$userService = new AutoObject("user.service");
+			renderTemplate('group.tabControls');
+		} 
 	} else {
+		renderTemplate('group.desc', get_defined_vars());
 		echo "<p>You have no access to this group. Do you want to request access to this group?</p>";
 		echo "<a href='javascript:logAction()' onclick='requestGroup()'>Yes, I want to join the group</a>";
 	}
@@ -163,77 +115,11 @@ function renderGroupDetailsTab($currentGroupId) {
 		$groupUser = dbFetchObject($groupUserEntry);
 
 	if ($group == null && $groupUser == null)
-		die("<p>Click on a group to see its details</p>");
+		return renderTemplate('group.noSelect', get_defined_vars());
 	
 	$groupUsers = getUsersForGroup($currentGroupId);
-	?>
-			<div class='two-column' style='border-top:1px solid #EEE'>
-			<p><b>Details</b></p>
-			<form id='groupDetailsForm'>
-			<? if ($group->userId == $_SESSION['innoworks.ID'])
-				renderGenericUpdateForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
-			else 
-				renderGenericInfoForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
-			?>
-			<input type='hidden' name='action' value='updateGroup'/>
-			<input type='hidden' name='groupId' value='<?=$group->groupId?>'/>
-			</form>
-			
-			<p><b>User(s)
-			<?if ($group->userId == $_SESSION['innoworks.ID']) { ?><input type='button' value=' + ' onclick='showAddGroupUser(this)' alt='Add user to group'/><?}?>
-			</b></p>
-			<?if ($groupUsers && dbNumRows($groupUsers) > 0) {
-				echo "<ul>";
-				while ($user = dbFetchObject($groupUsers)) {
-					echo "<li>
-					<img src='". $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary(\"$user->userId\")'>".getDisplayUsername($user)."</a>";
-					if ($group->userId != $user->userId && $group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value =' - ' onclick='delUserFromCurGroup($user->userId)' alt='Remove user from group'/>";
-					if ($group->userId != $user->userId && !hasAccessToGroup($group->groupId, $user->userId) && $group->userId == $_SESSION['innoworks.ID']) echo "<input type='button' value ='Approve' onclick='approveGroupUser($user->userId)' alt='Approve user for group'/>";
-					echo "</li>";
-				}
-				echo "</ul>";
-			} else {
-				echo "<p>None</p>";
-			}
-			
-			echo "<p><b>Attachments</b></p>";
-			echo "<iframe style='width:100%;height:15em; padding:1px; border:1px solid #EEEEEE; background-color:#EEEEEE;' src='attachment.php?groupId=$group->groupId'></iframe>";
-			echo "</div>";
-			
-			echo '<div class="two-column" style="border-top:1px solid #EEE; margin-left:2%; ">';
-			echo "<p><b>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></b></p>";
-			$groupIdeas = getIdeasForGroup($currentGroupId);
-			if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
-				echo "<table style='border: 1px solid #DDD'>";
-				echo "<tr><th></th><th title='Allow others to edit this idea'>Edit</th><th></th></tr>";
-				while ($idea = dbFetchObject($groupIdeas)) {
-					echo "<tr><td>
-					<img src='". $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=ideaImg&actionId=$idea->ideaId' style='width:1em; height:1em;'/>
-					<a href=\"javascript:showIdeaDetails('$idea->ideaId')\" >" . $idea->title . "</a></td>";
-					if ($idea->userId == $_SESSION['innoworks.ID']){
-						if ($idea->canEdit == 1)
-							$checked = "checked";
-						else 
-							$checked="";
-						echo "<td><input type='checkbox' onclick='toggleGroupEditIdea(this, $idea->ideaId, $idea->groupId)' title='Assign edit access to group' $checked/></td>";
-						echo "<td><input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' title='Remove this idea from the group'/></td>";
-					} else {
-						echo "<td>";
-						if ($idea->canEdit == 1)
-							echo "Y";
-						else 
-							echo "N";
-						echo "</td>";
-						echo "<td></td>";
-					}
-					echo "</tr>";
-				}
-				echo "</table>";
-			} else {
-				echo "<p>None</p>";
-			}?>
-			</div>
-<?}
+	renderTemplate('group.detailsTab', get_defined_vars());	
+}
 
 function renderGroupSummary($currentGroupId) {
 	global $serverUrl, $uiRoot;
@@ -308,22 +194,9 @@ function renderGroupSummary($currentGroupId) {
 /* POPUP BOX OPTIONS FOR GROUPS */
 function renderAddUser($actionId, $user, $criteria) {
 	global $uiRoot;
-	$limit=20;?>
-	<p>Select a user to add to group</p>
-	<div style="width:100%; clear:both; height:2.5em;">
-	<form id="popupAddSearch" onsubmit="findUsers(); return false;">
-		<div style="border: 1px solid #444444; position: relative; float: left; clear:right">
-			<table cellpadding="0" cellspacing="0">
-			<tr>
-			<td><input type="text"  name="criteria" value="<?= htmlspecialchars($criteria); ?>" placeholder=" . . . " style="border: none" /></td>
-			<td><img src="<?= $uiRoot."style/glass.png"?>" onclick="findAddUser()" style="width:30px; height:24px; margin:2px;cursor:pointer"/></td>
-			</tr>
-			</table>
-			<input id="searchBtn" type="submit" value="Search" style="display:none;"/>
-		</div>
-	</form>
-	</div>
-	<?renderAddUserItems($criteria, $limit);
+	$limit=20;
+	renderTemplate('group.addUser', get_defined_vars());
+	renderAddUserItems($criteria, $limit);
 }
 
 function renderAddUserItems($criteria, $limit) {
@@ -504,29 +377,14 @@ function renderIdeaGroupItem($idea, $group, $items) {
 		}
 	}
 	if (is_array($items) && in_array($group->groupId, $items))
-		$shared = true;?>
-	<tr>
-		<td><img src="retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:1em;height:1em;"/><?= $group->title ?></td>
-		<td><input type="checkbox" onclick="toggleGroupShareIdea(this, <?= $group->groupId ?>)" <? if ($shared) echo "checked"; ?>/></td>
-		<td><input type='checkbox' onclick='toggleGroupEditIdea(this, <?= $idea->ideaId ?>, <?= $group->groupId ?>)' alt='Assign edit access to group' <? if ($canEdit) echo "checked"; ?>/></td>
-	</tr>
-<?}
-
+		$shared = true;
+	renderTemplate('group.idea', get_defined_vars());
+}
 
 function renderIdeaGroupsListForUser($uid) {
-	$limit = 5;?>
-	<!-- <div class='itemHolder headBorder' style='background-color:#EEE'>Change space</div>-->
-	<div class='itemHolder clickable headBorder private' onclick="showDefaultIdeas()">Private<br/>
-	<span>Ideas that are yours</span></div>
-	<div class='itemHolder clickable headBorder public' onclick="showPublicIdeas()">Public<br/>
-	<span>Ideas shared by everyone</span></div>
-	<div class='groupsHolder'>
-		<div class='itemHolder headBorder'>Groups</div>
-		<div class='groupsActualHolder' style='font-size:0.9em;'>
-			<? renderIdeaGroupItemsForUser($uid, $limit); ?>
-		</div>
-	</div>
-<?}
+	$limit = 5;
+	renderTemplate('group.ideaGroupList', get_defined_vars());
+}
 
 function renderIdeaGroupItemsForUser($uid, $limit = 20) {
 	global $serverRoot;
@@ -535,17 +393,9 @@ function renderIdeaGroupItemsForUser($uid, $limit = 20) {
 	$groups = getAllGroupsForUser($uid, "LIMIT $limit");
 	$countGroups = countGetAllGroupsForUser($uid);
 	if ($groups && dbNumRows($groups) > 0 ) {
-		while ($group = dbFetchObject($groups)) {?>
-			<div class='itemHolder clickable' onclick='showIdeasForGroup(<?=$group->groupId?>)' style="height:2.5em">
-				<div class="righter righterImage">
-					<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="width:2.25em; height:2.25em"/><br/>
-				</div>
-				<div class="righter">
-					<?= $group->title ?><br/>
-					<span><?= getDisplayUsername($group->userId); ?></span>
-				</div>
-			</div>
-		<?} if ($countGroups > dbNumRows($groups)) {?>
+		while ($group = dbFetchObject($groups)) {
+			renderTemplate('idea.groupItem', get_defined_vars());
+		} if ($countGroups > dbNumRows($groups)) {?>
 			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupItemsForUser', limit:'<?= $limit + 20; ?>'})">
 			Load more</a>
 		<?}
@@ -558,76 +408,23 @@ function renderGroupPreview($gid, $uid) {
 	import("group.service");
 	if (!isset($gid)) 
 		die();
-	$group = getGroupDetails($gid);?>
-	<div style="height:3.5em">
-		<div class="righter righterImage">
-			<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="width:3.5em; height:3.5em"/><br/>
-		</div>
-		<div class="righter">
-			<h3><?= $group->title ?></h3>
-			<?= getDisplayUsername($group->userId); ?>
-		</div>
-	</div>
-<?}
+	$group = getGroupDetails($gid);
+	renderTemplate('group.preview', get_defined_vars());
+}
 
 function renderPublicPreview($uid) {
-	global $uiRoot;?>
-	<div style="height:3.5em">
-		<div class="righter righterImage">
-			<img src="<?= $uiRoot . "style/public.png"?>" style="width:3.5em; height:3.5em"/><br/>
-		</div>
-		<div class="righter">
-			<h3>Public</h3>
-			Everyone's shared ideas 
-		</div>
-	</div>
-<?}
+	global $uiRoot;
+	renderTemplate('group.publicPreview', get_defined_vars());
+}
 
 function renderPrivatePreview($uid) {
-	global $uiRoot;?>
-	<div style="height:3.5em">
-		<div class="righter righterImage">
-			<img src="retrieveImage.php?action=userImg&actionId=<?= $uid ?>" style="width:3.5em; height:3.5em"/><br/>
-		</div>
-		<div class="righter">
-			<h3>Private</h3>
-			Ideas created by you
-		</div>
-	</div>
-<?}
+	global $uiRoot;
+	renderTemplate('group.privatePreview', get_defined_vars());
+}
 
 function renderPublic() {
 	global $serverRoot, $serverUrl, $uiRoot;
-	$limit = 10;
-	$announces = getAnnouncements("LIMIT 10");?>
-	<div style="width:100%;">
-		<div class="fixed-left">
-			<div class="treeMenu">
-				<div class='itemHolder headBorder' style='background-color:#DDD'>Latest announcements</div>
-				<div>
-				<?if ($announces && dbNumRows($announces)) {
-					while($announce = dbFetchObject($announces)) {?>
-						<div class="itemHolder" style="font-size:0.85em">
-							<?= $announce->text ?><br/>
-							<span><?= getDisplayUsername($announce->userId) . " " . $announce->date ?></span>
-						</div>
-					<?}
-				}?>
-				</div>
-			</div>
-		</div>
-		<div class="fixed-right">
-			<div class='itemHolder headBorder treeMenu' style="height:70px;">
-				<div class="lefter">
-					<h3 style="padding-left:0.25em;"><img src="<?=$uiRoot?>/style/public.png"/> Public</h3>
-				</div>
-			</div>
-			<ul class="submenu">
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicIdeate(this)">Ideate</a></li>
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicCompare(this)">Compare</a></li>
-				<li class="bluebox"><a href="javascript:logAction()" onclick="showPublicSelect(this)">Select</a></li>
-			</ul>
-			<div class="publicInfo" style="margin-top:2em"></div>
-		</div>
-	</div>
-<?}?>
+	$limit = 4;
+	$announces = getAnnouncements("LIMIT ".$limit);
+	renderTemplate('public.default', get_defined_vars());
+}?>

@@ -15,7 +15,7 @@ dbFetchObject($users)) { ?>
 </div>
 	<?}
 	if ($countUsers > dbNumRows($users)) {?>
-<a href="javascript:logAction()"
+<a class="loadMore" href="javascript:logAction()"
 	onclick="loadResults(this, {action:'getSearchProfiles', limit:'<?= ($limit + 20) ?>'})">Load
 	more</a>
 	<?}

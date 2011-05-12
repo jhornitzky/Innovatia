@@ -8,4 +8,5 @@ html, body{
 #headSurround {
 	background-color:#444;
 	margin-bottom:12px;
+	background-image:url('gridDarkBg.jpg');
 }

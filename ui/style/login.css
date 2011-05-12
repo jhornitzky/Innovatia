@@ -29,10 +29,6 @@ a {
 	color:#FFFFFF;
 }
 
-#headSurround {
-	background-color: #444444;
-}
-
 #loginContent {
 	min-height:16em;
 }
@@ -60,15 +56,16 @@ ul#submenu li {
 	padding:2px;
 	background-position:top left;
 	background-repeat:no-repeat;
+	font-size:1.25em;
 }
 
-ul#submenu li.selected {
-	color: #FFFFFF;
-	background-color:#444; 
+ul#submenu li a {
+	color:#AAA;
+	border:0;
 }
 
 ul#submenu li.selected a {
-	color: #FFFFFF;
+	color:#000;
 	border:none;
 }
 

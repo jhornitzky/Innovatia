@@ -6,18 +6,18 @@
 		</div>
 		<div class="fixed-right">
 			<form class="addForm">
-				Click here to add idea to comparison <input type='button'
+				<div class="tiny">compare idea...</div>
+				<input type='button'
 					onclick='showAddRiskItem(this)' value=' + '
-					title="Add an idea to comparison" />
+					title="Add an idea to comparison" /> compare an idea 
 			</form>
 			<div class="compareList"></div>
 			<div id="compareComments" style="margin-top: 1em;">
-				<form id="addCompareCommentForm" class="addForm"
-					onsubmit="addCompareComment(this);return false;">
-					<input type="hidden" name="action" value="addComment" /> Comments <input
-						type="submit" value=" + " />
-					<textarea name="text" dojoType="dijit.form.Textarea"
-						style="width: 100%"></textarea>
+				<form id="addCompareCommentForm" class="addForm" onsubmit="addCompareComment(this);return false;">
+					<div class="tiny">post comments...</div>
+					<input type="hidden" name="action" value="addComment" />
+					<textarea name="text" dojoType="dijit.form.Textarea" placeholder="insert comment here" style="width: 100%"></textarea>
+					<input class="cupid-blue" type="submit" value="post" />
 				</form>
 				<div class="compareCommentList"></div>
 			</div>

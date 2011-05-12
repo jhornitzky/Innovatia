@@ -1,6 +1,9 @@
-<form id="newNoteForm" class="ui-corner-all addForm" onsubmit="addNote(this); return false;">
-	<input type="hidden" name="action" value="addNote" /> Send note to 
-	<select class="toUserNote" dojoType="dijit.form.FilteringSelect" name="toUserId">
+<form id="newNoteForm" class="addForm" onsubmit="addNote(this); return false;">
+	<input type="hidden" name="action" value="addNote" />
+	<div class="tiny">Send note to...</div> 
+	<div class="userChooser" onclick="showAddNoteUser();" style="color:#444; border: 1px dashed #AAA;">someone</div>
+	<input class="toUserNote" name="toUserId" type="hidden"/>
+	<!-- <select class="toUserNote" dojoType="dijit.form.FilteringSelect" name="toUserId">
 		<?
 		$firstUser;
 		if ($notes && dbNumRows($notes) > 0 ) {
@@ -17,17 +20,11 @@
 			echo "<option value='$user->userId'>" . $user->firstName . " " . $user->lastName . " / " . $user->username ."</option>";
 		}
 		?>
-	</select>
-	<table>
-		<tr>
-			<td style="width: 90%;"><input type="text" name="noteText"
-				class="noteText" dojoType="dijit.form.Textarea" />
-			</td>
-			<td style="width: 9%;"><input type="submit" value=" + " title="Send" />
-			</td>
-		</tr>
-	</table>
+	</select> -->
+	<input type="text" name="noteText" class="noteText" dojoType="dijit.form.Textarea" />
+	<input type="submit" value="send" title="Send" />
 </form>
+<div class="tiny">your latest notes...</div>
 <div id='notePadder'>
 <?renderNotes($_SESSION['innoworks.ID'], $limit);?>
 </div>
