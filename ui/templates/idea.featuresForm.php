@@ -1,7 +1,7 @@
 <div class="ideaFeatures subform">
 <? if ($canEdit) { ?>
 	<form id="addfeature_form_<?= $idea->ideaId?>" class="addForm">
-		<span> New Feature </span> <input type="text" name="feature" /> <input
+		<span>new feature</span> <input class="dijitTextBox" type="text" name="feature" /> <input
 			type="hidden" name="ideaId" value="<?= $idea->ideaId?>" /> <input
 			type="hidden" name="action" value="addFeature" /> <input
 			type="button"

@@ -1,5 +1,4 @@
-<form id="searchForm" onsubmit="showSearch(); return false;"
-	style="font-size: 1.5em; clear: both;">
+<form id="searchForm" onsubmit="showSearch(); return false;" style="font-size: 1.5em; clear: both;">
 	<div class="dijitTextBox" style="border:1px solid 1px solid #B3B3B3; position: relative; float: left; clear: right; margin:0; padding:0;">
 		<input id="searchTerms" type="text" name="searchTerms"
 			value="<?= $searchTerms ?>" placeholder=" . . . "

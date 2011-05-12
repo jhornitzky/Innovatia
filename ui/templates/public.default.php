@@ -1,19 +1,21 @@
 <div style="width: 100%;">
 	<div class="fixed-left">
 		<div class="tiny">latest announcements...</div>
-		<div class="treeMenu">
+		<div class="treeMenu" style="margin-bottom:1em;">
 			<div>
 			<?if ($announces && dbNumRows($announces)) {
 				while($announce = dbFetchObject($announces)) {?>
 					<div class="itemHolder" style="font-size: 0.85em">
 					<?= $announce->text ?>
 						<br/> 
-						<span><?= getDisplayUsername($announce->userId) . " " . $announce->date ?></span>
+						<span><?= getDisplayUsername($announce->userId) . ' ' . $announce->date ?></span>
 					</div>
 				<?}
 			}?>
 			</div>
 		</div>
+		<div class="tiny">want to share more?</div>
+		<? renderTemplate('shareBtns'); ?>
 	</div>
 	<div class="fixed-right">
 		<div style="height:4.25em; border-bottom:1px solid #DDD">

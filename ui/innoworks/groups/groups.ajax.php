@@ -81,6 +81,9 @@ if (isset($_GET['action'])) {
 		case "getPublicDefault":
 			renderPublic();
 			break;
+		case "getCreateNewGroup":
+			renderTemplate('group.createNew');
+			break;
 	}
 }
 

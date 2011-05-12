@@ -53,7 +53,7 @@ function is_WinMobile()
 }
 
 function isMobile() {
-	$deviceTypes = array( array(is_iPhone(), "iPhone"), array(is_iPad(), "iPad"), array(is_Android(), "Android"), array(is_OperaMini(), "Opera Mini"), array(is_BlackBerry(), "BlackBerry"), array(is_PalmOS(), "PalmOS"), array(is_WinMobile(), "Windows Mobile") );
+	$deviceTypes = array( array(is_iPhone(), "iPhone"), array(is_Android(), "Android"), array(is_OperaMini(), "Opera Mini"), array(is_BlackBerry(), "BlackBerry"), array(is_PalmOS(), "PalmOS"), array(is_WinMobile(), "Windows Mobile") );
 	$mobileType = "Mobile";
 	$isMobile=false;
 

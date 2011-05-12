@@ -591,10 +591,6 @@ span.ideaoptions {
 	margin-left: 0;
 }
 
-div#groupDetails {
-	border-top: 1px solid #EEE;
-}
-
 div.itemHolder span {
 	font-size:0.9em;
 	color:#777;
@@ -702,4 +698,9 @@ ul.submenu li.selected a {
 
 .commentForm input {
 	font-size:20px;
+}
+
+
+.tundra .dijitTextBox {
+	padding:0; margin:0;
 }

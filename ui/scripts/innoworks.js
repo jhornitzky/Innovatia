@@ -271,7 +271,7 @@ function showSummaryPane(props) {
 	pane.bringToTop();
 	
 	//use good ol' jquery to get the tough stuff done
-	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:$(window).height()*0.7});
+	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:420}); //FIXME with the animate
 	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '97%').css('padding', '2%');
 }
 
@@ -851,9 +851,15 @@ function deleteRole(target, id, callbackForm, callbackIdea) {
 
 ///////////////// GROUP ///////////////
 
-function addGroup() {
-	if ($("#addGroupForm").find('input').val().length > 0) 
-		doAction($("#addGroupForm").serialize(), "getGroups()");
+function addGroup(elem) {
+	var data = '';
+	if (elem !== undefined)
+		data = $(elem).serialize();
+	else 
+		data = $("#addGroupForm").serialize();
+	
+	if (elem !== undefined || $("#addGroupForm").find('input').val().length > 0) 
+		doAction(data, "getGroups()");
 	else 
 		showResponses('You must enter a group name first', 5000);
 }
@@ -1407,7 +1413,11 @@ function showHelpSize(elem, sizeProps, selfVisibility) {
 	$(elem).parent().stop().animate(sizeProps);
 }
 
+function closePopup() {
+	dijit.byId("commonPopup").close();
+}
+
 function showCreateNewGroup(elem) {
 	showCommonPopup(elem);
-	$("#actionDetails").load("engine.ajax.php?action=getAddIdea");
+	$("#actionDetails").load("engine.ajax.php?action=getCreateNewGroup");
 }

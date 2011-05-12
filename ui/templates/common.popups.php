@@ -13,8 +13,7 @@
 		</tr>
 	</table>
 
-	<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer"
-		style="width: 55em; height: 28em;">
+	<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 55em; height: 28em;" tabPosition="left-h" tabStrip="true">
 		<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true"
 			iconClass="dijitEditorIcon dijitEditorIconSelectAll">
 			<div id="ideaMission" dojoType="dijit.layout.ContentPane"

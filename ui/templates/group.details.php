@@ -1,5 +1,5 @@
-<div class='clearfix' style="height:6em;border-bottom:1px solid #DDD; border-top:1px solid #DDD">
-	<div class="tiny">currently viewing group...</div> 
+<div class="tiny">currently viewing group...</div> 
+<div class='clearfix' style="height:4.5em; border-bottom:1px solid #DDD;">
 	<div class="lefter lefterImage">
 		<img
 			src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"
