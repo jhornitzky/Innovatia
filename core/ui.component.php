@@ -14,6 +14,12 @@ function renderTemplate($templateName, $vars = null) {
 	return require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
 }
 
+function renderTemplateAsString($templateName, $vars = null) {
+	ob_start();
+	renderTemplate($templateName, $vars);
+	return ob_get_clean();
+}
+
 function renderGenericAddForm($tablename, $omitArray) {
 	$rs = dbQuery("SELECT * FROM $tablename LIMIT 0"); //FIXME
 	while ($meta = dbFetchField($rs)) {

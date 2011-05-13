@@ -1,9 +1,9 @@
 <form id="newNoteForm" class="addForm" onsubmit="addNote(this); return false;">
 	<input type="hidden" name="action" value="addNote" />
 	<div class="tiny">Send note to...</div> 
-	<div class="userChooser" onclick="showAddNoteUser();" style="color:#444; border: 1px dashed #AAA;">someone</div>
-	<input class="toUserNote" name="toUserId" type="hidden"/>
-	<!-- <select class="toUserNote" dojoType="dijit.form.FilteringSelect" name="toUserId">
+	<!-- <div class="userChooser" onclick="showAddNoteUser();" style="color:#444; border: 1px dashed #AAA;">someone</div>
+	<input class="toUserNote" name="toUserId" type="hidden"/>-->
+	<select class="toUserNote" dojoType="dijit.form.FilteringSelect" name="toUserId">
 		<?
 		$firstUser;
 		if ($notes && dbNumRows($notes) > 0 ) {
@@ -20,7 +20,7 @@
 			echo "<option value='$user->userId'>" . $user->firstName . " " . $user->lastName . " / " . $user->username ."</option>";
 		}
 		?>
-	</select> -->
+	</select> 
 	<input type="text" name="noteText" class="noteText" dojoType="dijit.form.Textarea" />
 	<input type="submit" value="send" title="Send" />
 </form>

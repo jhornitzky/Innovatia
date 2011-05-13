@@ -49,20 +49,7 @@ function createNote($opts) {
 	if ($userInfo != false)
 	$username = $userInfo->username;
 	if ($success && $userDetails->sendEmail == 1) {
-		$message = '<html>
-				<head>
-				</head>
-				<body>
-				  <table>
-					<tr>
-					  <th>Message from:</th><td>' . $username . '</td>
-					</tr>
-					<tr>
-					  <td>' . $opts["noteText"] . '</td>
-					</tr>
-				  </table>
-				</body>
-				</html>';
+		$message = $opts["noteText"];
 
 		$headers = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
@@ -136,10 +123,16 @@ function markNotesAsRead($user) {
 }
 
 function sendMail($inputs) {
-	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass;
+	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass, $serverUrl;
 	
 	logDebug('doSendEmail');
 	session_write_close(); //speed up
+	
+	//pretty up the msg
+	$inputs['msg'] = renderTemplateAsString('email', $inputs);
+	if (!isset($inputs['subject'])) {
+		$inputs['subject'] = 'innoWorks update';
+	}
 	
 	if ($mailMethod == 'smtp') {
 		$config = array('auth' => 'login',
@@ -152,12 +145,17 @@ function sendMail($inputs) {
 
 		//Send mail
 		$mail = new Zend_Mail();
+		$mail->setFrom('notifications@'.$serverUrl);
+		//$mail->setReplyTo($email); //FIXME include user email
 		$mail->addTo($inputs['to']);
 		$mail->setSubject($inputs['subject']);
-		$mail->setBodyText($inputs['msg']);
+		$mail->setBodyHtml($inputs['msg']);
 		return $mail->send($transport);
 	} else {
-		return mail($inputs['to'], $inputs['subject'], $inputs['msg']);
+		$headers = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+		$headers .= 'From: notifications@'. $serverUrl . "\r\n";
+		return mail($inputs['to'], $inputs['subject'], $inputs['msg'], $headers);
 	}
 }
 ?>

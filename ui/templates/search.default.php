@@ -1,10 +1,16 @@
-<form id="searchForm" onsubmit="showSearch(); return false;" style="font-size: 1.5em; clear: both;">
-	<div class="dijitTextBox" style="border:1px solid 1px solid #B3B3B3; position: relative; float: left; clear: right; margin:0; padding:0;">
-		<input id="searchTerms" type="text" name="searchTerms"
-			value="<?= $searchTerms ?>" placeholder=" . . . "
-			style="font-size: 1.2em; width:80%; border: none" />
-		<img src="<?= $uiRoot."style/glass.png"?>" onclick="showSearch()"
-					style="width: 30px; height: 24px; margin: 2px; cursor: pointer; right:2px; position:absolute; top:2px;" />
+<? if (!isset($_REQUEST['searchTerms']) || empty($searchTerms)) { ?>
+<h2 style="color:#AAA">find, compare and share ideas</h2>
+<? } else { ?>
+<h2 style="color:#AAA">found result(s) for search terms</h2> 
+<? } ?>
+
+<form id="searchForm" onsubmit="showSearch(); return false;"
+	style="font-size: 1.5em; clear: both;">
+	<div class="dijitTextBox"
+		style="border: 1px solid #B3B3B3; position: relative; float: left; clear: right; margin: 0; padding: 0;">
+		<input id="searchTerms" type="text" name="searchTerms" value="<?= $searchTerms ?>" placeholder=" . . . " style="font-size: 1.2em; width: 80%; border: none" /> <img
+			src="<?= $uiRoot."style/glass.png"?>" onclick="showSearch()"
+			style="width: 30px; height: 24px; margin: 2px; cursor: pointer; right: 2px; position: absolute; top: 2px;" />
 		<input id="searchBtn" type="submit" value="Search"
 			style="display: none;" />
 	</div>
@@ -39,7 +45,7 @@
 
 	<div class="threecol">
 		<div class="searchResults">
-			<?renderSearchGroups($userId, $limit);?>
+		<?renderSearchGroups($userId, $limit);?>
 		</div>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none">
-	<span class="ideaDetailsOptions"
-		style="position: relative; float: right;"> <a
-		href="javascript:printPopupIdea()">Print</a> </span>
+	<span class="ideaDetailsOptions" style="position: relative; float: right;"> 
+		<a href="javascript:printPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></a> 
+	</span>
 	<table>
 		<tr>
 			<td style="vertical-align: top;">

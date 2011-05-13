@@ -43,12 +43,11 @@ div.tabBody div.loadingAnim {
 
 /* Page header */
 div#head {
-	width:100%;
 	height:3.5em;
 	margin-bottom:0.3em;
 	padding-top:0;
 	padding-bottom:0;
-	color:#FFFFFF;
+	color:#FFF;
 }
 
 img#dashlnk {

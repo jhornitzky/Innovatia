@@ -16,11 +16,12 @@ a {
 }
 
 #head, #loginContent {
-	width:1024px;
+	width:975px;
 	margin:0 auto;
 }
 
 #head {
+	height:2.75em;
 	padding-top:0.5em;
 	color:#FFFFFF;
 }

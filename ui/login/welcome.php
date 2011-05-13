@@ -26,11 +26,6 @@ $(document).ready( function () {
 			<img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" />
 		</td>
 	</tr>
-	<tr>
-		<td style="color:#FFFFFF; padding-left:10px;">
-			The open innovation tool for everyone
-		</td>
-	</tr>
 </table>
 </div>
 <div id="rightAlignMenu">
@@ -59,7 +54,7 @@ $(document).ready( function () {
 
 <div id="loginContent">
 <div style="width:100%; font-size:1em; padding:0.2em; padding-top:0; text-align:left; clear:both ">
-	<ul id="submenu" style="clear:both ">
+	<ul id="submenu" style="clear:both">
 		<li id="ideaInnolnk"><span class="blueItem">[</span><a href="javascript:logAction();" onclick="showSearch();">innovations</a><span class="blueItem">]</span></li> 
 		<li id="aboutlnk"><span class="greenItem">[</span><a href="javascript:logAction();" onclick="showAbout();">features</a><span class="greenItem">]</span></li>
 		<li id="reglnk"><span class="orangeItem">[</span><a href="javascript:logAction();" onclick="registerUser();">register</a><span class="orangeItem">]</span></li>

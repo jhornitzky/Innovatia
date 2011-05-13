@@ -9,10 +9,6 @@ function renderSearchDefault($userid, $opts) {
 	if (isset($_REQUEST['searchTerms']))
 	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
 
-	if (!isset($_REQUEST['searchTerms']) || empty($searchTerms))
-	echo "<span>Find innovative ideas, people and groups</span>";
-	else
-	echo "<span>Found result(s) for search terms</span>";
 	renderTemplate('search.default', get_defined_vars());
 }
 
