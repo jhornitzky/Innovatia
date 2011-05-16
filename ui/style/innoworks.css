@@ -703,3 +703,11 @@ ul.submenu li.selected a {
 .tundra .dijitTextBox {
 	padding:0; margin:0;
 }
+
+.userChooser {
+	color:#444; border: 1px dashed #AAA;
+	background-image:url('pointer.png');
+	background-position:center right;
+	background-repeat:no-repeat;
+	cursor:pointer;
+}

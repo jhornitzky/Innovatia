@@ -1,4 +1,4 @@
-<div class="clearfix">
+<div>
 	<div class="tiny">you are currently viewing...</div>
 	<div class="lefter lefterImage">
 		<img src="retrieveImage.php?action=userImg&actionId=<?= $uid ?>"

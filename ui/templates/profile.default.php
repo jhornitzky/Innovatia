@@ -31,7 +31,9 @@
 			</div>
 			<div class="lefter">
 				<h1><?= $userDetails->firstName . ' ' . $userDetails->lastName ?> <span style="color:#AAA"><?= $userDetails->username ?></span></h1>
-				<?= $userDetails->organization ?>
+				<span class="smallInfo">
+					<b>joined</b> <?=$userDetails->createdTime ?> <b>part of</b> <?= $userDetails->organization ?>
+				</span>
 			</div>
 			<div class="righter">
 				<p style="font-size: 0.8em; margin: 0; padding: 0;">

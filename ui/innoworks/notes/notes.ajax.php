@@ -14,6 +14,17 @@ if (isset($_GET['action'])) {
 		case "getNotes":
 			renderNotes($_SESSION['innoworks.ID'], $limit);
 			break;
+		case "getAddNoteUser":
+			isset($_GET['actionId']) ? $actionId = $_GET['actionId'] : $actionId = '';
+			isset($_GET['criteria']) ? $criteria = $_GET['criteria'] : $criteria = '';
+			renderAddNoteUser($actionId, $_SESSION['innoworks.ID'], $criteria);
+			break;
+		case "getAddNoteUserItems":
+			renderAddNoteUserItems($_GET['criteria'], $limit);
+			break;
+		case "getNoteUserDetails":
+			renderAddNoteUserHeader($_GET['actionId']);
+			break;
 	}
 }
 

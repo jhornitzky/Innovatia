@@ -123,7 +123,7 @@ function markNotesAsRead($user) {
 }
 
 function sendMail($inputs) {
-	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass, $serverUrl;
+	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass, $serverBase;
 	
 	logDebug('doSendEmail');
 	session_write_close(); //speed up
@@ -145,7 +145,7 @@ function sendMail($inputs) {
 
 		//Send mail
 		$mail = new Zend_Mail();
-		$mail->setFrom('notifications@'.$serverUrl);
+		$mail->setFrom('notifications@'.$serverBase);
 		//$mail->setReplyTo($email); //FIXME include user email
 		$mail->addTo($inputs['to']);
 		$mail->setSubject($inputs['subject']);
@@ -154,7 +154,7 @@ function sendMail($inputs) {
 	} else {
 		$headers = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$headers .= 'From: notifications@'. $serverUrl . "\r\n";
+		$headers .= 'From: notifications@'. $serverBase . "\r\n";
 		return mail($inputs['to'], $inputs['subject'], $inputs['msg'], $headers);
 	}
 }

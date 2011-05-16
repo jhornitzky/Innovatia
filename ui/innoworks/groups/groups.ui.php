@@ -204,24 +204,7 @@ function renderAddUserItems($criteria, $limit) {
 	import("search.service");
 	$users = getSearchPeople($criteria, $_SESSION['innoworks.ID'], "", "LIMIT $limit");
 	$countUsers = countGetSearchPeople($criteria, $_SESSION['innoworks.ID'], "");
-	if ($users && dbNumRows($users) > 0) {
-		while ($user = dbFetchObject($users)) {?>
-			<div class='itemHolder clickable' onclick="addUserToCurGroup('<?=$user->userId?>')" style="height:2.5em">
-				<div class="lefter" style="padding:0.1em;">
-					<img src="<?= $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $user->userId?>" style="width:2em; height:2em;"/>
-				</div>
-				<div class="lefter">
-					<?= getDisplayUsername($user->userId) ?><br/>
-					<span><?= $user->interests  ?></span>
-				</div>
-			</div>
-		<?}
-		if ($countUsers > dbNumRows($users)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getAddUserItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
-		<?}
-	} else {?>
-		<p>No users found</p>
-	<?}
+	renderTemplate('group.addUserItems', get_defined_vars());
 }
 
 function renderAddIdea($actionId, $user, $criteria) {
@@ -329,37 +312,9 @@ function renderIdeaShare($ideaId, $userId) {
 	$groups = getAllGroupsForUser($_SESSION['innoworks.ID'], "LIMIT 100");
 	$countGroups = countGetAllGroupsForUser($_SESSION['innoworks.ID']);
 	$items = dbFetchAll(getIdeaShareDetails($ideaId));
-	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?idea=" . $ideaId;?>
-	<div>
-	<div style="width:49%; float:left">
-	<table style="border:1px solid #DDD">
-	<tr><th>Group</th><th>Viewable</th><th>Editable</th></tr>
-	<tr>
-		<td style="background-color:#EEE;">Public<br/>
-			<span style="font-size:0.85em">Share your idea with everyone</span>
-		</td>
-		<td style="background-color:#EEE;"><input id="ideaIsPublic" type="checkbox" onclick="togglePublicIdea(this)" <? if ($idea->isPublic == 1) echo "checked"; ?>/></td>
-		<td style="background-color:#EEE;"></td>
-	</tr>
-	<?
-	if ($groups && dbNumRows($groups) > 0 ) {
-		while ($group = dbFetchObject($groups)) {
-			renderIdeaGroupItem($idea, $group, $items);
-		}
-	}
-	?>
-	</table>
-	</div>
-	<div style="width:49%; float:left; clear:right;">
-	<? if ($countGroups > dbNumRows($groups)) {?>
-		<p>Displaying only 200 of your <?= $countGroups?> groups. Go to groups or search to manage.</p>
-	<? } ?>
-	<p>Show <a href='javascript:showGroups(); dijit.byId("ideasPopup").hide()'>Groups</a></p>
-	<p>Share this idea with a friend at:<br/> <?= $shareUrl ?></p>
-	<?renderTemplate('shareBtns', null); ?>
-	</div>
-	</div>
-<?	} else {
+	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?idea=" . $ideaId;
+	renderTemplate('group.ideaShare', get_defined_vars());
+	} else {
 		echo "You did not create this idea, and therefore cannot control sharing. If you want edit access to this idea, contact the owner.";
 	}
 }

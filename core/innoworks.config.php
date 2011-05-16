@@ -15,7 +15,8 @@ $usesLdap = false;
 
 //PATHS
 $serverTestMode = true;
-$serverUrl = 'localhost';
+$serverBase = 'localhost';
+$serverUrl = $serverBase;
 $serverRoot = '/innovation/'; 
 $usersRoot = $serverRoot.'users/'; 
 $uiRoot = $serverRoot.'ui/'; 

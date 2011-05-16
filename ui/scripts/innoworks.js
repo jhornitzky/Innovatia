@@ -23,7 +23,7 @@ var compareFormString = "<form class='addForm'><input type='button' onclick='sho
 var selectFormString = "<form class='addForm'><input type='button' onclick='showAddSelectIdea(this)' value=' + ' title='Select an idea to work on' /> select an idea</form>";
 var groupComments = '<form class="addForm commentForm" onsubmit="addCompareComment(this);return false;">' +
 '<div class="tiny">post a comment...</div>' +
-'<textarea name="text" dojoType="dijit.form.Textarea" style="width: 100%"></textarea>'+
+'<textarea name="text" class="dijitTextArea" dojoType="dijit.form.Textarea" style="width: 100%"></textarea>'+
 '<input type="submit" value="post" />' +
 '</form>' +
 '<div class="compareCommentList"></div>';
@@ -640,7 +640,7 @@ function showFeedback(elem) {
 
 function sendFeedback(elem) {
 	doAction($(elem).serialize(), function() {
-		$('.feedback').remove();
+		dijit.byId('commonPopup').hide();
 	});
 	return false;
 }
@@ -858,9 +858,9 @@ function addGroup(elem) {
 	else 
 		data = $("#addGroupForm").serialize();
 	
-	if (elem !== undefined || $("#addGroupForm").find('input').val().length > 0) 
-		doAction(data, "getGroups()");
-	else 
+	if (elem !== undefined || $("#addGroupForm").find('input').val().length > 0) {
+		doAction(data, "getGroups(); dijit.byId('commonPopup').hide();");
+	} else 
 		showResponses('You must enter a group name first', 5000);
 }
 
@@ -1267,7 +1267,7 @@ function toggleSendEmail(elem) {
 function findUsers() {
 	var data = $("#popupAddSearch").serialize();
 	showLoading("#commonPopup #actionDetails");
-	var url = "engine.ajax.php?action=getAddIdea";
+	var url = "engine.ajax.php?action=getAddUser";
 	if (data != undefined) 
 		url += "&" + data;
 	$("#commonPopup #actionDetails").load(url);
@@ -1420,4 +1420,24 @@ function closePopup() {
 function showCreateNewGroup(elem) {
 	showCommonPopup(elem);
 	$("#actionDetails").load("engine.ajax.php?action=getCreateNewGroup");
+}
+
+function showAddNoteUser(elem) {
+	showCommonPopup(elem);
+	$("#actionDetails").load("engine.ajax.php?action=getAddNoteUser");
+}
+
+function findNoteUsers() {
+	var data = $("#popupAddSearch").serialize();
+	showLoading("#commonPopup #actionDetails");
+	var url = "engine.ajax.php?action=getAddNoteUser";
+	if (data != undefined) 
+		url += "&" + data;
+	$("#commonPopup #actionDetails").load(url);
+}
+
+function setNoteUser(id) {
+	$('.toUserNote').val(id);
+	$('.userChooser').load("engine.ajax.php?action=getNoteUserDetails&actionId=" + id);
+	dijit.byId('commonPopup').hide();
 }

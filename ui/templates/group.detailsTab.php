@@ -16,24 +16,25 @@
 		<? while ($idea = dbFetchObject($groupIdeas)) { ?>
 			<tr>
 				<td>
-					<img src='". $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=ideaImg&actionId=$idea->ideaId' style='width:1em; height:1em;'/>
-					<a href="javascript:showIdeaDetails('<?= $idea->ideaId ?>')"> <?= $idea->title ?></a></td>
-			<? if ($idea->userId == $_SESSION['innoworks.ID']) {
-				if ($idea->canEdit == 1)
-				$checked = "checked";
-				else
-				$checked="";
-				echo "<td><input type='checkbox' onclick='toggleGroupEditIdea(this, $idea->ideaId, $idea->groupId)' title='Assign edit access to group' $checked/></td>";
-				echo "<td><input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' title='Remove this idea from the group'/></td>";
-			} else {
-				echo "<td>";
-				if ($idea->canEdit == 1)
-				echo "Y";
-				else
-				echo "N";
-				echo "</td>";
-				echo "<td></td>";
-			}?>
+					<img src='<?= $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=ideaImg&actionId=" . $idea->ideaId ?>' style='width:1em; height:1em;'/>
+					<a href="javascript:showIdeaDetails('<?= $idea->ideaId ?>')"> <?= $idea->title ?></a>
+				</td>
+				<? if ($idea->userId == $_SESSION['innoworks.ID']) {
+					if ($idea->canEdit == 1)
+					$checked = "checked";
+					else
+					$checked="";
+					echo "<td><input type='checkbox' onclick='toggleGroupEditIdea(this, $idea->ideaId, $idea->groupId)' title='Assign edit access to group' $checked/></td>";
+					echo "<td><input type='button' value =' - ' onclick='delIdeaFromCurGroup($idea->ideaId)' title='Remove this idea from the group'/></td>";
+				} else {
+					echo "<td>";
+					if ($idea->canEdit == 1)
+					echo "Y";
+					else
+					echo "N";
+					echo "</td>";
+					echo "<td></td>";
+				}?>
 			</tr>
 		<?}?>
 		</table>
@@ -55,7 +56,7 @@
 		<?while ($user = dbFetchObject($groupUsers)) {?>
 			<li>
 				<img src='<?= $serverUrl . $uiRoot ."innoworks/retrieveImage.php?action=userImg&actionId=" . $user->userId?>' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary("<?= $user->userId ?>")'><?= getDisplayUsername($user) ?></a>
-				<?php if ($group->userId != $user->userId && $group->userId == $_SESSION['innoworks.ID']) {?> <input type='button' value =' - ' onclick='delUserFromCurGroup(<?= $user->userId ?>)' alt='Remove user from group'/>" <?}?>
+				<?php if ($group->userId != $user->userId && $group->userId == $_SESSION['innoworks.ID']) {?> <input type='button' value =' - ' onclick='delUserFromCurGroup(<?= $user->userId ?>)' alt='Remove user from group'/> <?}?>
 				<?php if ($group->userId != $user->userId && !hasAccessToGroup($group->groupId, $user->userId) && $group->userId == $_SESSION['innoworks.ID']) { ?> <input type='button' value ='Approve' onclick='approveGroupUser(<?= $user->userId?>)' alt='Approve user for group'/> <?}?>
 			</li>
 		<?}?>

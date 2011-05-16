@@ -24,6 +24,9 @@
 			</div>
 			<div class="lefter">
 				<h1>public space</h1>
+				<span class="smallInfo">
+					<b><?= $countPublicIdeas ?></b> ideas made public
+				</span>
 			</div>
 		</div>
 		<ul class="submenu">
