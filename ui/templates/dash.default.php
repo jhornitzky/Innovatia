@@ -1,53 +1,51 @@
-<div style="width: 100%; vertical-align: bottom;">
-	<div class="fixed-left">
-		<div class="treeMenu">
-			<div class="itemHolder headBorder"><h3>your statistics</h3></div>
-			<div class="itemHolder">
-			<?= $noOfIdeas ?> <span>ideas</span>
-			</div>
-			<div class="itemHolder">
-			<?= $noOfSelectedIdeas ?> <span>selected ideas</span>
-			</div>
-			<div class="itemHolder">
-			<? if($noOfIdeas > 0) echo round($noOfSelectedIdeas/$noOfIdeas, 2); else echo 0; ?> <span>selection/idea ratio</span>
-			</div>
-			<div class="itemHolder">
-			<?= $noOfGroupsCreated?> <span>groups created</span>
-			</div>
-			<div class="itemHolder">
-			<?= $noOfGroupsIn?> <span>groups in</span>
-			</div>
+<div style="width: 100%;">
+	<div class="fixed-left" onclick="showProfile()">
+		<h1 style="font-size:30px"><span style="color:#AAA;">hello</span> <?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
+		<div style="width:99%; height: 120px; border:1px solid #AAA; position:relative">
+			<div style="position:absolute;width:100%;height:120px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>');opacity:0.25; background-position:center center;"></div>
+			<div style="position:absolute;width:100%;height:120px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); background-repeat:no-repeat; background-position:center center;"></div>
 		</div>
 	</div>
 	<div class="fixed-right">
 		<div style="width: 100%; margin-bottom: 1em; position:relative;">
-			<div style="position:absolute; top:0; right:0; color:#777;text-align:right; font-size:0.75em">need help? click the i up here</div>
+			<div style="position:absolute; top:0; right:0; color:#777; text-align:right; font-size:0.75em">need help? click the i up here</div>
 			<div class="itemHolder" style="border-top:none;">
-				<h1><span style="color:#AAA;">hi</span> <?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
-				<span style="color:#777">while you were gone here's what happened...</span>
+				<h2 style="color:#AAA;padding-top:1px;">while you were gone here's what happened...</h2>
 			</div>
 				<? if ($notes && dbNumRows($notes) > 0) {
 					while ($note = dbFetchObject($notes)) { ?>
 					<div class="itemHolder">
 						<div><?= $note->noteText ?><br/>
-							<span>from
+							<span>
 								<img src="retrieveImage.php?action=userImg&actionId=<?= $note->fromUserId ?>" style="width:1em; height:1em;" /> 
 								<a href="javascript:showProfileSummary('<?= $note->fromUserId ?>')">
 									<?= getDisplayUsername($note->fromUserId)?>
 								</a>
+								sent <span><?= $note->createdTime ?></span>
 							</span>
 						</div>
-						<div style="position:absolute; right:0; top:0;">
-							<span><?= $note->createdTime ?></span>
-						</div>
 					</div>
-					<?}?>
-					<a class="loadMore" href="javascript:showProfile();">see all notes</a>
-					
-				<?}
-				$limit = 8;
-				?>
+					<?}
+				}
+				$limit = 6;?>
 		</div>
+	</div>
+</div>
+<div style="width: 100%; clear:both; padding-top:1.5em;">
+	<div class="fixed-left" style="border-width:0; border-top-width:1px; border-style:solid; border-color:#7FBF4D;">
+		<h1><span style="color:#7FBF4D;">add</span> idea</h1>
+		<form class="addForm" onsubmit="addIdea(this);return false;">
+			<span>Title</span>
+			<input name="title" type="text" class="dijitTextBox" /> 
+			<span>Description</span>
+			<textarea name="serviceDescription" class="dijitTextArea" style="width:100%;"></textarea>
+			<input type="button"
+				value="+ add" title="Add idea" onclick="addIdea(this); refreshVisibleTab();" /> <input
+				style="display: none" type="submit" /> 
+			<input type="hidden" name="action" value="addIdea" />
+		</form>
+	</div>
+	<div class="fixed-right">
 		<div id="dashui" class="threeColumnContainer">
 			<div class="threecol col1 bluebox"
 				style="border-width:0; border-top-width:1px; width: 32%; margin-right: 1.5%">

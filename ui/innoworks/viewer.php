@@ -27,12 +27,17 @@ if (isset($_GET['print']) )
 body {
 	width:800px;
 	margin:0 auto;
+	position:relative;
 }
 
 ul {
 	padding:0;
 	list-style:none;
 } 
+
+h1, h2, .bluetext {
+	color:#006699;
+}
 
 .summaryActions {
 	display:none;
@@ -107,7 +112,7 @@ function goToInnoworks() {
 <td>
 <img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
 </td>
-<td>
+<td class="bluetext">
 <?
 $echoBit;
 if ( isset($_GET['idea']) ) 
@@ -123,7 +128,6 @@ else if ( isset($_GET['profile']) )
 </td>
 </tr>
 </table>
-<hr/>
 <div class="viewSummary">
 <?
 if ( isset($_GET['iv']) && isset($_GET['idea'])) {
@@ -143,8 +147,14 @@ if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 }
 ?>
 </div>
-<hr/>
-<p style="font-size:0.8em;margin:0; padding:0;">Share this with a friend</p>
+<div class="disclaimer" style="font-size:10px; color:#AAA; margin-top:20px; border-top:2px solid #DDD;">
+<?if (!isLoggedIn()) {?><b>You may be able to see more of this if you <a href="<? $serverUrl . $serverRoot ?>">log in</a></b><br/><?}?>
+Note that the ideas or other information represented here are copyright of the ideator.<br/>
+You should contact them if you wish to use the idea in any way.
+</div>
+<div class="viewerShare" style="position:absolute; top:10px; right:0;">
+<p style="font-size:0.8em;margin:0; padding:0;color:#AAA;">Share this with a friend</p>
 <? renderTemplate('shareBtns', get_defined_vars()); ?>
+</div>
 </body>
 </html>

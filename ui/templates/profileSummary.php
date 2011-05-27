@@ -1,3 +1,5 @@
+<div class="summaryContainer">
+<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a></span>
 <table>
 	<tr>
 		<td><img
@@ -5,21 +7,19 @@
 			style="width: 3em; height: 3em;" />
 		</td>
 		<td>
-			<h2>
+			<h1>
 			<?= $userDetails->firstName?>
 			<?= $userDetails->lastName?>
-				/
-				<?= $userDetails->username?>
-			</h2> <?= $userDetails->organization?> | <? if ($userDetails->isAdmin) { ?><i>admin</i>
-			| <?}?> <span class="summaryActions"><a href="javascript:logAction()"
-				onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a>
-		</span></td>
+			<span style="color:#AAA"><?= $userDetails->username?></span>
+			</h1></td>
 	</tr>
 </table>
-				<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
-					renderGenericInfoForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'organization', 'isPublic'));
-				}?>
-
+<span class="smallInfo">
+<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
+	renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic'));
+}?>
+<? if ($userDetails->isAdmin) { ?><b>is</b> <i>admin</i> | <?}?>
+</span>
 <p>
 	<h2>Idea(s)</h2>
 	<?if ($ideas && dbNumRows($ideas) > 0 ) {
@@ -41,9 +41,7 @@
 <p>None</p>
 	<?}?>
 
-<p>
-	<h2>Group(s)</h2>
-</p>
+<h2>Group(s)</h2>
 	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
 <div class="itemHolder">
@@ -60,3 +58,4 @@
 	} else {?>
 <p>None</p>
 <?}?>
+</div>

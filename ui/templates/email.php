@@ -30,7 +30,7 @@ if (isset($msgTemplate)) {
 </div>
 <div style="border-top:1px solid #AAA; font-size:0.9em; color:#AAA">
 <p>To find out more, head over to <a href="<?= $serverUrl . $serverRoot ?>">innoworks</a>.</p>
-<p>To turn off email notifications, go to innoWorks > profile > details and uncheck the 'Send email' box.</p>
+<p>To turn off email notifications, go to innoWorks &gt; profile &gt; details and uncheck the 'Send email' box.</p>
 </div>
 </body>
 </html>

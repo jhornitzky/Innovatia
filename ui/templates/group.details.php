@@ -18,10 +18,12 @@
 	</div>
 	<div class="righter">
 		<div>
-			<p style="font-size: 0.8em; margin-top:0" >
+			<p style="font-size: 0.8em; margin: 0; padding: 0; color:#AAA">
 				Share this group with a friend <a href="<?= $shareUrl ?>">here</a>
 			</p>
-			<div style="float:left;cursor:pointer" onclick="printGroup()"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></div>
+			<div style="float:left;cursor:pointer" onclick="printGroup()">
+				<img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/>
+			</div>
 			<? renderTemplate('shareBtns', null); ?>
 		</div>
 	</div>

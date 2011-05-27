@@ -14,6 +14,6 @@
 	<div style="margin-bottom: 1.5em;">
 	<? renderOtherGroupsForUser($user, $limit); ?>
 	</div>
+	<div class='tiny'>want to join more groups?</div>
+	<? renderTemplate('openInnovation'); ?>
 </div>
-<div class='tiny'>want to join more groups?</div>
-<? renderTemplate('openInnovation'); ?>

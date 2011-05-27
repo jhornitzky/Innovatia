@@ -1,7 +1,7 @@
-<span>Registration to use innoworks is free and only takes a few seconds.<br/>
-Then you can let your ideas run wild!</span><br/>
+<span style="font-size:1.2em">innoWorks is completely free to use. Just fill out this form.</span><br/>
+<span style="color:#AAA;font-size:0.85em">And then you can let your ideas run wild!</span><br/>
 <br/>
-<form id="registerform" onSubmit="registerNewUser(); return false;">
+<form id="registerform" class="addForm" onSubmit="registerNewUser(); return false;">
   <div id="regResponse"></div>
   <table id="regForm" cellpadding="3" cellspacing="3">
     <tr>
@@ -26,7 +26,15 @@ Then you can let your ideas run wild!</span><br/>
     </tr>
     <tr>
       <td></td>
-      <td align="left"><input type="button" value="&raquo; Register" style="font-weight:bold;" onClick="registerNewUser();" /></td>
+      <td align="left" style="font-size:12px; color:#AAA;">
+     	Note this is a beta version. No warranty or fitness for purpose is provided.
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td align="left">
+      	<input type="button" value="sign up" style="font-weight:bold;" onClick="registerNewUser();" />
+      </td>
     </tr>
   </table>
 </form> 

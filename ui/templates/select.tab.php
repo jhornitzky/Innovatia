@@ -6,7 +6,6 @@
 		<div class="fixed-right">
 			<div class='itemHolder groupPreview'></div>
 			<form class='addForm'>
-				<div class="tiny">select idea...</div>
 				<input type='button'
 					onclick='showAddSelectIdea(this)' value=' + '
 					title='Select an idea to work on' /> select idea to work on

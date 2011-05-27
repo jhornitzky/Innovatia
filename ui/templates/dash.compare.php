@@ -18,9 +18,8 @@
 	<?}
 	if ($countItems > dbNumRows($items)) {?>
 <a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getDashCompare', limit:'<?= ($limit + 20) ?>'})">Load
-	more</a>
+	onclick="loadResults(this, {action:'getDashCompare', limit:'<?= ($limit + 20) ?>'})">Load more</a>
 	<?}
 } else {?>
-<p>No compares yet</p>
+<p class="help">No compares yet</p>
 <?}?>

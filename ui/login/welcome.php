@@ -39,7 +39,7 @@ $(document).ready( function () {
 	<tr>
 		<td><input id="iUsername" type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
-		<td><input type="submit" value="&raquo; Login" style="font-weight: bold;" /></td>
+		<td><input class="cupid-blue" type="submit" value="login" style="font-weight: bold; font-size:0.9em" /></td>
 	</tr>
 	<tr>
 		<td colspan="3">
@@ -52,11 +52,22 @@ $(document).ready( function () {
 </div>
 </div>
 
+<div id="loginHeader2" class="clearfix" style="width:100%; padding-top:25px;padding-bottom:20px;">
+<div id="loginHeader" style="width:1280px; margin:0 auto;">
+<div class="blueCloud" style="width:150px; float:left; height:120px; border-right:2px solid #7DB4FF"></div>
+<div style="width:948px; float:left; text-align:left; padding-left:10px; padding-right: 10px; background-color:white; background-color:rgba(255,255,255,0.7); height:100px; padding-top:10px;">
+	<h1>Connect your ideas</h1>
+	<p style="margin:0">innoWorks lets you save, compare and share ideas with others.</p>
+</div>
+<div class="orangeCloud" style="width:150px; float:left; height:120px; border-left:2px solid #FFCA6A;"></div>
+</div>
+</div>
+
 <div id="loginContent">
 <div style="width:100%; font-size:1em; padding:0.2em; padding-top:0; text-align:left; clear:both ">
 	<ul id="submenu" style="clear:both">
-		<li id="ideaInnolnk"><span class="blueItem">[</span><a href="javascript:logAction();" onclick="showSearch();">innovations</a><span class="blueItem">]</span></li> 
-		<li id="aboutlnk"><span class="greenItem">[</span><a href="javascript:logAction();" onclick="showAbout();">features</a><span class="greenItem">]</span></li>
+		<li id="ideaInnolnk"><span class="blueItem">[</span><a href="javascript:logAction();" onclick="showSearch();">innovation</a><span class="blueItem">]</span></li> 
+		<li id="aboutlnk"><span class="greenItem">[</span><a href="javascript:logAction();" onclick="showAbout();">about</a><span class="greenItem">]</span></li>
 		<li id="reglnk"><span class="orangeItem">[</span><a href="javascript:logAction();" onclick="registerUser();">register</a><span class="orangeItem">]</span></li>
 		<li id="downlnk"><span class="redItem">[</span><a href="javascript:logAction();" onclick="showDownload();">download</a><span class="redItem">]</span></li>
 	</ul>
@@ -75,8 +86,20 @@ $(document).ready( function () {
 <div id="footerSpace"></div>
 <div id="footerSurround">
 	<div id="footer">
-		<div class="fixed-left">UTS server version</div>
-		<div class="fixed-right">Copyright &copy; UTS 2010</div>
+		<div class="fixed-left">UTS server version<br/><!-- AddThis Button BEGIN -->
+			<div class="addthis_toolbox addthis_default_style ">
+			<a class="addthis_button_preferred_1"></a>
+			<a class="addthis_button_preferred_2"></a>
+			<a class="addthis_button_preferred_3"></a>
+			<a class="addthis_button_preferred_4"></a>
+			<a class="addthis_button_compact"></a>
+			<a class="addthis_counter addthis_bubble_style"></a>
+			</div>
+			<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script>
+			<!-- AddThis Button END --></div>
+		<div class="fixed-right">
+			&copy; UTS 2011
+		</div>
 	</div>
 </div>
 </body>

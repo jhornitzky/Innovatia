@@ -14,8 +14,6 @@
 			}?>
 			</div>
 		</div>
-		<div class="tiny">want to share more?</div>
-		<? renderTemplate('shareBtns'); ?>
 	</div>
 	<div class="fixed-right">
 		<div style="height:4.25em; border-bottom:1px solid #DDD">
@@ -27,6 +25,10 @@
 				<span class="smallInfo">
 					<b><?= $countPublicIdeas ?></b> ideas made public
 				</span>
+			</div>
+			<div class="righter">
+			<p style="font-size: 0.8em; margin: 0pt; padding: 0pt; color:#AAA">Share ideas with more people</p>
+			<? renderTemplate('shareBtns'); ?>
 			</div>
 		</div>
 		<ul class="submenu">

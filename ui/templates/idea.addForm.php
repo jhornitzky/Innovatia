@@ -1,5 +1,4 @@
-<form id="addIdeaForm" class="addForm"
-	onsubmit="addIdea(this);return false;">
+<form id="addIdeaForm" class="addForm" onsubmit="addIdea(this);return false;">
 	<span>Add new idea</span> 
 	<p>Title</p>
 	<input id="addIdeaTitle" name="title"

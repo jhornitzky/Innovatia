@@ -87,20 +87,19 @@ function showResponses(data, timeout) {
 
 <body>
 	<div class="responses"><? if (isset($msg)) echo $msg; if(isset($success)) echo $success; ?></div>
-	<? if ((isset($ideaId) && hasEditAccessToIdea($ideaId,$_SESSION['innoworks.ID'])) 
-	|| isset($groupId) || (!isset($groupId) && !isset($userId))) { ?>
-	<form method="post" enctype="multipart/form-data"
-	action="./attachment.php"><input type="hidden" name="MAX_FILE_SIZE"
-	value="2000000"> <input name="userfile" type="file" id="userfile"> <input
-	type="hidden" name="action" value="addAttachment" /> 
-	<?
-	if (isset($ideaId)) 
-		echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
-	else if (isset($groupId))
-		echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> 
-	<input type="submit" value=" + " title="Add attachment" /></form>
-	<?
-	}
+	<? if ((isset($ideaId) && hasEditAccessToIdea($ideaId,$_SESSION['innoworks.ID'])) || isset($groupId) || (!isset($groupId) && !isset($userId))) { ?>
+		<form class="addFOrm" method="post" enctype="multipart/form-data" action="./attachment.php">
+		<input type="hidden" name="MAX_FILE_SIZE" value="2000000"/> 
+		<input type="hidden" name="action" value="addAttachment"/> 
+		<input name="userfile" type="file" id="userfile" style="font-size:14px;"/> 
+		<?
+		if (isset($ideaId)) 
+			echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
+		else if (isset($groupId))
+			echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';?> 
+		<br/>
+		<input type="submit" value="Upload" title="Add attachment" /></form>
+	<?}
 	
 	global $usersRoot;
 	$attachs;
@@ -114,36 +113,36 @@ function showResponses(data, timeout) {
 	if ($attachs && dbNumRows($attachs)) {
 		while ($attach = dbFetchObject($attachs)) {?>
 			<table style="border-top:1px solid #DDD; font-size:0.8em">
-			<tr>
-			<td>
-			<?if (preg_match("/^[image]/",$attach->type)) {?>
-				<img src='<?=$usersRoot . $attach->path?>' style='width:100px;height:75px'/>
-			<?}?>
-			</td>
-			<td>
-			<form method="post" action="./attachment.php" style="padding:0; margin:0">
-			<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0; font-size:1.2em">
-			<?= $attach->title;?></a>
-			<?if (isset($ideaId)) 
-				echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
-			else if (isset($groupId))
-				echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';
-			
-			if (isset($groupId) || (isset($attach->ideaId) && hasEditAccessToIdea($attach->ideaId,$_SESSION['innoworks.ID'])) || ($attach->userId == $_SESSION['innoworks.ID']) || $_SESSION['innoworks.isAdmin']) { ?> 
-			<input type="hidden" name="actionId" value="<?= $attach->attachmentId;?>" /> 
-			<input type="hidden" name="action" value="deleteAttachment" /> 
-			<input type="submit" value=" - " title="Delete attachment" />
-			<?}?>
-			</form>
-			<? if (isset($attach->ideaId) && !empty($attach->ideaId)) { echo '<span>'. getIdeaDetails($attach->ideaId)->title . '</span><br/>';}?>
-			<? if (isset($attach->groupId) && !empty($attach->groupId)) { echo '<span>'.getGroupDetails($attach->groupId)->title . '</span><br/>';}?>
-			<? if (isset($attach->userId) && !empty($attach->userId)) { echo '<span>' . getUserInfo($attach->userId)->username . '</span><br/>';}?>
-			<?if (preg_match("/^[image]/",$attach->type)) {?>
-				<span>Use as DP</span> <input type='checkbox' onclick="toggleDp(this, '<?= $attach->attachmentId?>')"
-				<? if ($attach->isDp == 1) { echo 'checked';}?> />
-			<?}?>
-			</td>
-			</tr>
+				<tr>
+					<td>
+						<?if (preg_match("/^[image]/",$attach->type)) {?>
+							<img src='<?=$usersRoot . $attach->path?>' style='width:100px;height:75px'/>
+						<?}?>
+					</td>
+					<td>
+						<form method="post" action="./attachment.php" style="padding:0; margin:0">
+						<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0; font-size:1.2em">
+						<?= $attach->title;?></a>
+						<?if (isset($ideaId)) 
+							echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';
+						else if (isset($groupId))
+							echo '<input type="hidden" name="groupId" value="'.$groupId.'"/>';
+						
+						if (isset($groupId) || (isset($attach->ideaId) && hasEditAccessToIdea($attach->ideaId,$_SESSION['innoworks.ID'])) || ($attach->userId == $_SESSION['innoworks.ID']) || $_SESSION['innoworks.isAdmin']) { ?> 
+						<input type="hidden" name="actionId" value="<?= $attach->attachmentId;?>" /> 
+						<input type="hidden" name="action" value="deleteAttachment" /> 
+						<input type="submit" value=" - " title="Delete attachment" />
+						<?}?>
+						</form>
+						<? if (isset($attach->ideaId) && !empty($attach->ideaId)) { echo '<span>'. getIdeaDetails($attach->ideaId)->title . '</span><br/>';}?>
+						<? if (isset($attach->groupId) && !empty($attach->groupId)) { echo '<span>'.getGroupDetails($attach->groupId)->title . '</span><br/>';}?>
+						<? if (isset($attach->userId) && !empty($attach->userId)) { echo '<span>' . getUserInfo($attach->userId)->username . '</span><br/>';}?>
+						<?if (preg_match("/^[image]/",$attach->type)) {?>
+							<span>Use as DP</span> <input type='checkbox' onclick="toggleDp(this, '<?= $attach->attachmentId?>')"
+							<? if ($attach->isDp == 1) { echo 'checked';}?> />
+						<?}?>
+					</td>
+				</tr>
 			</table>
 		<?}
 	} else {?>

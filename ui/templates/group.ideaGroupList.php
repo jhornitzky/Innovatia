@@ -8,11 +8,11 @@
 		onclick="showPublicIdeas()">
 		public <span>everyones ideas</span>
 	</div>
-	<div class='groupsHolder'>
+	<div class='groupsHolder' style="margin-bottom:1em;">
 		<div class='groupsActualHolder'>
 		<? renderIdeaGroupItemsForUser($uid, $limit); ?>
 		</div>
 	</div>
+	<div class='tiny'>need more ideas?</div>
+	<? renderTemplate('openInnovation'); ?>
 </div>
-<div class='tiny'>need more ideas?</div>
-<? renderTemplate('openInnovation'); ?>

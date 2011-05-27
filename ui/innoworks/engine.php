@@ -191,13 +191,17 @@ function openAdmin() {
 <? renderTemplate('group.tab'); ?>
 <div id="publicTab" class="tabBody"></div>
 <div id="searchTab" class="tabBody">
-	<div id="searchResults" style="padding:15px;"></div>
+	<div id="searchResults" style="padding-top:15px;"></div>
 </div>
 <div id="timelineTab" class="tabBody"></div>
 </div>
 
-<div class="footer" style="clear:both; padding-top:3em;">
-
+<div id="footerSpace"></div>
+<div id="footerSurround">
+	<div id="footer" style="min-height:3em;">
+		<div class="fixed-left">UTS server version</div>
+		<div class="fixed-right">&copy; UTS 2011</div>
+	</div>
 </div>
 
 <!-- POPUP DIALOGS -->

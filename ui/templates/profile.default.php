@@ -36,7 +36,7 @@
 				</span>
 			</div>
 			<div class="righter">
-				<p style="font-size: 0.8em; margin: 0; padding: 0;">
+				<p style="font-size: 0.8em; margin: 0; padding: 0; color:#AAA">
 					Share your profile with a friend <a href="<?= $shareUrl ?>">here</a>
 				</p>
 				<div style="float:left;cursor:pointer" onclick="printUser('&profile=<?= $userDetails->userId ?>')"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></div>

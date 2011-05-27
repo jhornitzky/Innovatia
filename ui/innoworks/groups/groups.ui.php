@@ -130,65 +130,13 @@ function renderGroupSummary($currentGroupId) {
 	else
 		die("No group exists");
 	
-	$userService = new AutoObject("user.service");
+	//$userService = new AutoObject("user.service");
+	import('user.service');
 	$shareUrl = $serverUrl . $uiRoot . "innoworks/viewer.php?group=" . $currentGroupId;
-	?>
-	<table>
-	<tr>
-	<td>
-	<img src="<?= $serverUrl .  $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:4em; height:4em;"/> 
-	</td>
-	<td><h2><?= $group->title?></h2>
-	<div style="margin-bottom:1.0em">
-		<span><?= $userService->getDisplayUsername($group->userId)?></span>  |
-		<span class="summaryActions"><a href="javascript:logAction()" onclick="printGroupSummary('<?= "&group=" . $group->groupId ?>')">Print</a>
-		<a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId ?>;showGroups();">Edit</a></span>
-	</div>
-	</td>
-	</tr>
-	</table>
-	<?
-	renderGenericInfoForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime', 'title'));
-	
-	if (!hasAccessToGroup($group->groupId, $_SESSION['innoworks.ID'])) 
-		die("You have no access to this group");
-		
-	if ($groups && (dbNumRows($groups) == 1)) {
-		$userService = new AutoObject("user.service");
-		echo "<h2>Idea(s)</h2>";
-		$groupIdeas = getIdeasForGroup($currentGroupId, $_SESSION['innoworks.ID'], "LIMIT 500");
-		if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
-			while ($idea = dbFetchObject($groupIdeas)) {?>
-				<div class="itemHolder">
-					<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
-					<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><?=$idea->title?></a>
-					<span><?= $userService->getDisplayUsername($idea->userId); ?></span>
-				</div>
-			<?}
-			if (dbNumRows($groups) > 100) {?>
-				<p>Only displaying 500 latest ideas</p>
-			<?}
-		} else {
-			echo "<p>None</p>";
-		}
-			
-		echo "<h2>User(s)</h2>";
-		$groupUsers = getUsersForGroup($currentGroupId, "LIMIT 100");
-		if ($groupUsers && dbNumRows($groupUsers) > 0) {
-			while ($user = dbFetchObject($groupUsers)) {?>
-				<div class="itemHolder">
-					<img src='<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/>
-					<a href="javascript:logAction()" onclick="showProfileSummary('<?= $user->userId ?>')"><?=$user->firstName . ' ' . $user->lastName . ' / ' . $user->username?></a>
-				</div>
-			<?}
-			if (dbNumRows($groups) > 100) {?>
-				<p>Only displaying 100 latest users</p>
-			<?}
-		} else {
-			echo "<p>None</p>";
-		}
-	}
-	 
+	$groupIdeas = getIdeasForGroup($currentGroupId, $_SESSION['innoworks.ID'], "LIMIT 500");
+	$groupUsers = getUsersForGroup($currentGroupId, "LIMIT 100");
+	$hasGroupAccess = hasAccessToGroup($group->groupId, $_SESSION['innoworks.ID']);
+	renderTemplate('groupSummary', get_defined_vars());
 }
 
 /* POPUP BOX OPTIONS FOR GROUPS */
@@ -247,9 +195,9 @@ function renderAddIdeaItems($criteria, $limit) {
 				</div>
 			</div>
 		<?}
-		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this,{action:'getAddIdeaItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
-		<?}
+		if ($countIdeas > dbNumRows($ideas)) {
+			renderTemplate('common.loadMore', array('action' => 'getAddIdeaItems', 'limit' => $limit+20));
+		}
 	} else {?>
 		<p>No ideas found</p>
 	<?}
@@ -295,9 +243,9 @@ function renderPublicAddIdeaItems($criteria, $limit) {
 				</div>
 			</div>
 		<?}
-		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a href="javascript:logAction()" onclick="loadResults(this,{action:'getPublicAddIdeaItems', limit: '<?= $limit + 20; ?>'})">Load more</a>
-		<?}
+		if ($countIdeas > dbNumRows($ideas)) {
+			renderTemplate('common.loadMore', array('action' => 'getPublicAddIdeaItems', 'limit' => $limit+20));
+		}
 	} else {?>
 		<p>No ideas found</p>
 	<?}
@@ -350,13 +298,10 @@ function renderIdeaGroupItemsForUser($uid, $limit = 20) {
 	if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {
 			renderTemplate('idea.groupItem', get_defined_vars());
-		} if ($countGroups > dbNumRows($groups)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action: 'getIdeaGroupItemsForUser', limit:'<?= $limit + 20; ?>'})">
-			Load more</a>
-		<?}
-	} else {?>
-		<div style="margin-bottom:0.5em;">None</div>
-	<?}
+		} if ($countGroups > dbNumRows($groups)) {
+			renderTemplate('common.loadMore', array('action' => 'getIdeaGroupItemsForUser', 'limit' => $limit+20));
+		}
+	}
 }
 
 function renderGroupPreview($gid, $uid) {

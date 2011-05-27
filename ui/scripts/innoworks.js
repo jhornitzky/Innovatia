@@ -25,6 +25,7 @@ var groupComments = '<form class="addForm commentForm" onsubmit="addCompareComme
 '<div class="tiny">post a comment...</div>' +
 '<textarea name="text" class="dijitTextArea" dojoType="dijit.form.Textarea" style="width: 100%"></textarea>'+
 '<input type="submit" value="post" />' +
+'<input type="hidden" value="addComment" name="action" />' +
 '</form>' +
 '<div class="compareCommentList"></div>';
 var groupInfo = '<form class="addForm" onsubmit="addPrivateIdea(this); return false;">' +
@@ -109,15 +110,15 @@ function loadIdeaPopupData() {
 	else if (!($("#ideaSelect").is(":hidden")))
 		getSelectForIdea();
 	else if (!($("#ideaRiskEval").is(":hidden")))
-		getRiskEvalForIdea("ideaRisks",currentIdeaId);function is_object (mixed_var) {
-		    if (mixed_var instanceof Array) {
-		        return false;
-		    } else {
-		        return (mixed_var !== null) && (typeof(mixed_var) == 'object');
-		    }
-		}
+		getRiskEvalForIdea("ideaRisks",currentIdeaId);
+}
 
-
+function is_object (mixed_var) {
+    if (mixed_var instanceof Array) {
+        return false;
+    } else {
+        return (mixed_var !== null) && (typeof(mixed_var) == 'object');
+    }
 }
 
 function loadPopupShow() {

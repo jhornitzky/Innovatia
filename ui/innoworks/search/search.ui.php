@@ -3,12 +3,10 @@ require_once(dirname(__FILE__) . "/../pureConnector.php");
 import("search.service");
 
 function renderSearchDefault($userid, $opts) {
-	$limit = 15;
-
+	$limit = 5;
 	$searchTerms = '';
 	if (isset($_REQUEST['searchTerms']))
 	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);
-
 	renderTemplate('search.default', get_defined_vars());
 }
 
@@ -66,7 +64,6 @@ function renderSearchProfiles($userId, $limit) {
 
 	$users = getSearchPeople($searchTerms, $userId, $filters, "LIMIT $limit");
 	$countUsers = countGetSearchPeople($searchTerms, $userId, $filters);
-	echo "<p><b>".$countUsers."</b> profile(s)</p>";
 	renderTemplate('search.profiles', get_defined_vars());
 }
 

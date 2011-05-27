@@ -22,5 +22,5 @@
 	more</a>
 	<?}
 } else {?>
-<p>No ideas yet</p>
+<p class="help">No ideas yet</p>
 <?}?>

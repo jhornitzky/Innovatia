@@ -1,4 +1,8 @@
 /* COMMON */
+*[onclick] {
+	cursor:pointer;
+}
+
 body {
 	text-align:left;
 	overflow-y:scroll;
@@ -39,6 +43,14 @@ div.tabBody div.loadingAnim {
 
 .tundra #commonPopup #actionDetails {
 	overflow:hidden;
+}
+
+.tundra ._underlay {
+	background:rgba(30,30,30,0.9) none no-repeat right top;
+}
+
+.tundra .dojoxFloatingPaneCanvas {
+	position:relative;
 }
 
 /* Page header */
@@ -118,106 +130,16 @@ ul.tabMenu li.selMenu a:hover {
 }
 
 /* CONTENT AND COMMON */
-
-.bordRight {
-	/*border-right:1px solid #DDDDDD;*/
-}
-
 div#content { 
 	width:100%;
 	padding:0%;
 	position:relative;
 	font-size:0.95em;
-	min-height:20em;
+	min-height:98%;
 }
 
 div.tabBody div div.fixed-left {
 	font-size:0.95em;
-}
-
-.addForm {
-	font-size:2em;
-	color:#AAA;
-	text-transform:lowercase;
-}
-
-/* Based of css3 buttons on github */
-.addForm input[type=button], .addForm input[type=submit] {
-	background: #7fbf4d;
-  background: -moz-linear-gradient(top, #7fbf4d 0%, #63a62f 100%);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7fbf4d), to(#63a62f));
-  border: 1px solid #63a62f;
-  border-bottom: 1px solid #5b992b;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  -moz-box-shadow: inset 0 1px 0 0 #96ca6d;
-  -webkit-box-shadow: inset 0 1px 0 0 #96ca6d;
-  box-shadow: inset 0 1px 0 0 #96ca6d;
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 -1px 0 #4c9021;
-}
-
-.addForm input[type=button]:hover, .addForm input[type=submit]:hover {
-  background: #76b347;
-  background: -moz-linear-gradient(top, #76b347 0%, #5e9e2e 100%);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#76b347), to(#5e9e2e));
-  -moz-box-shadow: inset 0 1px 0 0 #8dbf67;
-  -webkit-box-shadow: inset 0 1px 0 0 #8dbf67;
-  box-shadow: inset 0 1px 0 0 #8dbf67;
-  cursor: pointer;
-}
-
-.addForm input[type=button]:active, .addForm input[type=submit]:active {
-  border: 1px solid #5b992b;
-  border-bottom: 1px solid #538c27;
-  -moz-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
-  -webkit-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
-  box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
-}
-
-/* CUPID */
-.cupid-blue {
-  background: #d7e5f5;
-  background: -moz-linear-gradient(top, #d7e5f5 0%, #cbe0f5 100%);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d7e5f5), to(#cbe0f5));
-  border-top: 1px solid #abbbcc;
-  border-left: 1px solid #a7b6c7;
-  border-bottom: 1px solid #a1afbf;
-  border-right: 1px solid #a7b6c7;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
-  -moz-box-shadow: inset 0 1px 0 0 #fff;
-  -webkit-box-shadow: inset 0 1px 0 0 #fff;
-  box-shadow: inset 0 1px 0 0 #fff;
-  color: #1a3e66;
-  text-align: center;
-  text-shadow: 0 1px 1px #fff;
-  font-size:20px;
-}
-
-.cupid-blue:hover {
-  background: #ccd9e8;
-  background: -moz-linear-gradient(top, #ccd9e8 0%, #c1d4e8 100%);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccd9e8), to(#c1d4e8));
-  border-top: 1px solid #a1afbf;
-  border-left: 1px solid #9caaba;
-  border-bottom: 1px solid #96a3b3;
-  border-right: 1px solid #9caaba;
-  -moz-box-shadow: inset 0 1px 0 0 #f2f2f2;
-  -webkit-box-shadow: inset 0 1px 0 0 #f2f2f2;
-  box-shadow: inset 0 1px 0 0 #f2f2f2;
-  color: #163659;
-  cursor: pointer;
-}
-
-.cupid-blue:active {
-  border: 1px solid #8c98a7;
-  -moz-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
-  -webkit-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
-  box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
 }
 
 .treeAddForm {
@@ -414,16 +336,24 @@ table td input[type=text] {
 #notepadder div {
 	border-top:1px solid #DDD;
 	background-repeat:no-repeat;
-	background-position:center right;
+	background-position:left center;
 }
 
 #noteTab div.incoming {
-	margin-left:6em;
 	background-image:url('arrowLeft.png');
+	background-position:right center;
+}
+
+#noteTab div.outgoing table {
+	margin-left:3em;
 }
 
 #noteTab div.outgoing {
 	background-image:url('arrowRight.png');
+}
+
+#noteTab div.incoming table {
+	margin-right:3em;
 }
 
 .ideaGroups {
@@ -613,6 +543,7 @@ div.groupPreview {
 	text-align:left;
 	margin-bottom:10px;
 	padding-top:0;
+	border-bottom: 1px solid #DDDDDD;
 }
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
@@ -699,7 +630,6 @@ ul.submenu li.selected a {
 	font-size:20px;
 }
 
-
 .tundra .dijitTextBox {
 	padding:0; margin:0;
 }
@@ -710,4 +640,8 @@ ul.submenu li.selected a {
 	background-position:center right;
 	background-repeat:no-repeat;
 	cursor:pointer;
+}
+
+.fixed-right ul.submenu {
+	margin-bottom:40px;
 }

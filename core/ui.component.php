@@ -47,6 +47,17 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 	echo "</table>";
 }
 
+function renderGenericInfoLine($rs,$row,$omitArray) {
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray) && !empty($value)) {?>
+			<b>
+				<?=fromCamelCase($key)?>
+			</b>
+			<?=$value?>
+		<?}
+	}
+}
+
 function renderGenericInfoFormOnlyPopulated($rs,$row,$omitArray) {
 	echo "<table>";
 	foreach($row as $key => $value) {

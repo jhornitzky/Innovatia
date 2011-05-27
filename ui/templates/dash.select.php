@@ -23,5 +23,5 @@ if ($selections && dbNumRows($selections) > 0 ) {
 	more</a>
 	<?}
 } else {?>
-<p>No selections yet</p>
+<p class="help">No selections yet</p>
 <?}?>

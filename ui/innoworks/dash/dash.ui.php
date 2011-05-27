@@ -6,7 +6,7 @@ import("user.service");
 
 function renderDefaultDash($userid) {
 	global $serverRoot;
-	$limit = 4;
+	$limit = 5;
 	$notes = getAllIncomingNotes($_SESSION['innoworks.ID'], "LIMIT $limit");
 	$noOfIdeas = countQuery("SELECT COUNT(*) FROM Ideas WHERE userId='".$_SESSION['innoworks.ID']."'");
 	$noOfSelectedIdeas = countQuery("SELECT COUNT(*) FROM Selections, Ideas WHERE Ideas.userId='".$_SESSION['innoworks.ID']."' and Ideas.ideaId = Selections.ideaId");

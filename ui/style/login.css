@@ -1,7 +1,8 @@
 html, body {
 	font-size:1.3em;
 	background:none;
-	background: #FFFFFF url('bg.jpg') no-repeat right top;
+	background: #FFFFFF none no-repeat right top;
+	overflow-x:hidden;
 }
 
 a {
@@ -140,4 +141,22 @@ span.subtext {
 
 #footerSurround {
 	/* border-top: 1px solid #DDD; */
+}
+
+#loginHeader2 {
+	background-image:url('roundCloudMed.png');
+	background-repeat:repeat-x;
+	background-position:center center;
+}
+
+.blueCloud {
+	background-image:url('roundCloudBlue.png');
+	background-repeat:repeat-x;
+	background-position:left center;
+}
+
+.orangeCloud {
+	background-image:url('roundCloudOrange.png');
+	background-repeat:repeat-x;
+	background-position:right center;
 }

@@ -58,6 +58,10 @@ a img {
 	border:none;
 }
 
+.addthis_toolbox a, .addthis_toolbox a:hover  {
+	border-bottom:none; 
+}
+
 div.loadingAnim {
 	background-image: url('ajaxLoader.gif');
 	background-repeat: no-repeat ;
@@ -290,14 +294,15 @@ h2.leftHeader {
 
 #footerSurround {
 	width:100%;
+	border-top:1px solid #EEE;
 }
 
 #footer {	
-	width:1024px;
+	width:952px;
 	margin:0 auto;
-	font-size:0.65em;
-	border-top:1px solid #AAA;
+	font-size:12px;
 	padding-top:0.25em;
+	margin-bottom:30px;
 	padding-left:0.5em;
 	padding-right:0.5em;
 }
@@ -361,4 +366,111 @@ div.itemHolder.headBorder.treeMenu div.lefter {
 
 .smallInfo {
 	font-size:11px;
+}
+
+p.help {
+	font-size:0.95em;
+	color:#999;
+}
+
+.summaryContainer {
+	position:relative;
+}
+
+.summaryContainer h2 {
+	margin-top:1.5em;
+	border-bottom:1px solid #EEE;
+}
+
+.summaryActions {
+	position:absolute; right:30px; top:2px;
+}
+
+/* Based of css3 buttons on github */
+.addForm input[type=button], .addForm input[type=submit] {
+	background: #7fbf4d;
+  background: -moz-linear-gradient(top, #7fbf4d 0%, #63a62f 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7fbf4d), to(#63a62f));
+  border: 1px solid #63a62f;
+  border-bottom: 1px solid #5b992b;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: inset 0 1px 0 0 #96ca6d;
+  -webkit-box-shadow: inset 0 1px 0 0 #96ca6d;
+  box-shadow: inset 0 1px 0 0 #96ca6d;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 -1px 0 #4c9021;
+}
+
+.addForm input[type=button]:hover, .addForm input[type=submit]:hover {
+  background: #76b347;
+  background: -moz-linear-gradient(top, #76b347 0%, #5e9e2e 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#76b347), to(#5e9e2e));
+  -moz-box-shadow: inset 0 1px 0 0 #8dbf67;
+  -webkit-box-shadow: inset 0 1px 0 0 #8dbf67;
+  box-shadow: inset 0 1px 0 0 #8dbf67;
+  cursor: pointer;
+}
+
+.addForm input[type=button]:active, .addForm input[type=submit]:active {
+  border: 1px solid #5b992b;
+  border-bottom: 1px solid #538c27;
+  -moz-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+  -webkit-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+  box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eee;
+}
+
+/* CUPID */
+.cupid-blue {
+  background: #d7e5f5;
+  background: -moz-linear-gradient(top, #d7e5f5 0%, #cbe0f5 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d7e5f5), to(#cbe0f5));
+  border-top: 1px solid #abbbcc;
+  border-left: 1px solid #a7b6c7;
+  border-bottom: 1px solid #a1afbf;
+  border-right: 1px solid #a7b6c7;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-box-shadow: inset 0 1px 0 0 #fff;
+  -webkit-box-shadow: inset 0 1px 0 0 #fff;
+  box-shadow: inset 0 1px 0 0 #fff;
+  color: #1a3e66;
+  text-align: center;
+  text-shadow: 0 1px 1px #fff;
+  font-size:20px;
+}
+
+.cupid-blue:hover {
+  background: #ccd9e8;
+  background: -moz-linear-gradient(top, #ccd9e8 0%, #c1d4e8 100%);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ccd9e8), to(#c1d4e8));
+  border-top: 1px solid #a1afbf;
+  border-left: 1px solid #9caaba;
+  border-bottom: 1px solid #96a3b3;
+  border-right: 1px solid #9caaba;
+  -moz-box-shadow: inset 0 1px 0 0 #f2f2f2;
+  -webkit-box-shadow: inset 0 1px 0 0 #f2f2f2;
+  box-shadow: inset 0 1px 0 0 #f2f2f2;
+  color: #163659;
+  cursor: pointer;
+}
+
+.cupid-blue:active {
+  border: 1px solid #8c98a7;
+  -moz-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
+  -webkit-box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
+  box-shadow: inset 0 0 4px 2px #abbccf, 0 0 1px 0 #eee;
+}
+
+.addForm {
+	font-size:2em;
+	color:#AAA;
+	text-transform:lowercase;
+}
+
+.addForm input, .addForm textarea {
+	max-width:100%;
 }

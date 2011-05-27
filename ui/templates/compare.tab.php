@@ -6,7 +6,6 @@
 		<div class="fixed-right">
 			<div class='itemHolder groupPreview'></div>
 			<form class="addForm">
-				<div class="tiny">compare idea...</div>
 				<input type='button'
 					onclick='showAddRiskItem(this)' value=' + '
 					title="Add an idea to comparison" /> compare an idea 
