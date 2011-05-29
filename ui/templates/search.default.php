@@ -7,7 +7,7 @@
 <form id="searchForm" onsubmit="showSearch(); return false;" style="font-size: 1.5em; clear: both;">
 	<div class="dijitTextBox"
 		style="border: 1px solid #B3B3B3; position: relative; float: left; clear: right; margin: 0; padding: 0;">
-		<input id="searchTerms" type="text" name="searchTerms" value="<?= $searchTerms ?>" placeholder=" . . . " style="font-size: 1.2em; width: 80%; border: none" /> <img
+		<input id="searchTerms" type="text" name="searchTerms" value="<?= $searchTerms ?>" style="font-size: 1.2em; width: 80%; border: none" /> <img
 			src="<?= $uiRoot."style/glass.png"?>" onclick="showSearch()"
 			style="width: 30px; height: 24px; margin: 2px; cursor: pointer; right: 2px; position: absolute; top: 2px;" />
 		<input id="searchBtn" type="submit" value="Search"

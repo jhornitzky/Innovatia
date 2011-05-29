@@ -17,10 +17,10 @@
 </div>
 	<?}
 	if ($countIdeas > dbNumRows($ideas)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getDashIdeas', limit:'<?= ($limit + 20) ?>'})">Load
-	more</a>
+	<a class="loadMore" href="javascript:logAction()"
+		onclick="loadResults(this, {action:'getDashIdeas', limit:'<?= ($limit + 20) ?>'})">Load
+		more</a>
 	<?}
 } else {?>
-<p class="help">No ideas yet</p>
+	<p class="nohelp">Record, manage and explore ideas to help them take shape</p>
 <?}?>

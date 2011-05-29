@@ -10,11 +10,11 @@ function renderIdeasDefault($user, $limit = 30) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
-		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
-		<?}
+		if ($countIdeas > dbNumRows($ideas)) {
+			renderTemplate('common.loadMore', array('action' => 'getIdeas', 'limit' => $limit + 20));
+		}
 	} else {
-		echo "<p>No ideas yet</p>";
+		renderTemplate('no.ideas');
 	}
 }
 
@@ -26,11 +26,11 @@ function renderPublicIdeas($limit = 30) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
-		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getPublicIdeas', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
-		<?}
+		if ($countIdeas > dbNumRows($ideas)) {
+			renderTemplate('common.loadMore', array('action' => 'getPublicIdeas', 'limit' => $limit + 20));
+		}
 	} else {
-		echo "<p>No ideas yet</p>";
+		renderTemplate('no.ideas');
 	}
 }
 
@@ -45,11 +45,11 @@ function renderIdeasForGroup($groupId) {
 		while ($idea = dbFetchObject($ideas)) {
 			renderJustIdea($ideas,$idea, $_SESSION["innoworks.ID"]);
 		}
-		if ($countIdeas > dbNumRows($ideas)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getIdeasForGroup', limit:'<?= ($limit + 20) ?>'})">Load more</a>		
-		<?}
+		if ($countIdeas > dbNumRows($ideas)) {
+			renderTemplate('common.loadMore', array('action' => 'getIdeasForGroup', 'limit' => $limit + 20));
+		}
 	} else {
-		echo "<p>No ideas yet</p>";
+		renderTemplate('no.ideas');
 	}
 }
 
@@ -86,16 +86,12 @@ function renderIdeaFeatures($ideaId, $canEdit = null) {
 		echo "<table id='featureTable_$ideaId' class='ideaFeatures'>";
 		renderGenericHeaderWithRefData($features, array("featureId", "ideaId"), 'Features');
 		while ($feature = dbFetchObject($features)) {
-			renderFeature($features, $feature,$canEdit);
+			renderTemplate('idea.feature', get_defined_vars());
 		}
 		echo "</table>";
 	} else {
-		echo "<p>No features</p>";
+		renderTemplate('no.features');
 	}
-}
-
-function renderFeature($features, $feature, $canEdit = false) {
-	renderTemplate('idea.feature', get_defined_vars());
 }
 
 function renderIdeaRoles($ideaId, $canEdit = null) {
@@ -107,16 +103,12 @@ function renderIdeaRoles($ideaId, $canEdit = null) {
 		echo "<table class='ideaRoles'>";
 		renderGenericHeaderWithRefData($roles, array("roleId", "ideaId"), 'Roles');	
 		while ($role = dbFetchObject($roles)) {
-			renderRole($roles, $role, $canEdit);
+			renderTemplate('idea.role', get_defined_vars());
 		}
 		echo "</table>";
 	} else {
-		echo "<p>No roles</p>";
+		renderTemplate('no.roles');
 	}
-}
-
-function renderRole($roles, $role, $canEdit = false) {
-	renderTemplate('idea.role', get_defined_vars());
 }
 
 function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
@@ -160,7 +152,7 @@ function renderIdeaFeatureEvaluationsForIdea($id, $shouldEdit) {
 			renderTemplate('idea.featureEvaluationContainer', get_defined_vars());
 		}
 	} else {
-		echo "<p>No feature evaluations</p>";
+		renderTemplate('no.featureEval');
 	}
 }
 
@@ -218,9 +210,9 @@ function renderAttachments($ideaId, $userId) {
 	renderTemplate('idea.attachments', get_defined_vars());
 }
 
-function renderAttachmentsIframe($ideaId, $userId) {?>
-	<iframe src="attachment.php?ideaId=<?= $ideaId?>" style="width:100%;height:100%"></iframe>
-<?}
+function renderAttachmentsIframe($ideaId, $userId) {
+	renderTemplate('attach.iframe', array('ideaId' => $ideaId));
+}
 
 function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));

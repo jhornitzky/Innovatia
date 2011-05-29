@@ -18,10 +18,10 @@ if ($selections && dbNumRows($selections) > 0 ) {
 </div>
 	<?}
 	if ($countSelections > dbNumRows($selections)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getDashSelect', limit:'<?= ($limit + 20) ?>'})">Load
-	more</a>
+		<a class="loadMore" href="javascript:logAction()"
+			onclick="loadResults(this, {action:'getDashSelect', limit:'<?= ($limit + 20) ?>'})">Load
+			more</a>
 	<?}
 } else {?>
-<p class="help">No selections yet</p>
+	<p class="nohelp">Choose ideas to work on and manage their tasks.</p>
 <?}?>

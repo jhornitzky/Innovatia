@@ -33,6 +33,7 @@ $mailPass = 'password885011';
 $mailFrom = 'notifications@innoworks.feit.uts.edu.au';
 
 //OTHER PROPERTIES
+$versionName = 'localhost';
 $loglevel = 1; //0-5, with 0 being lowest
 $salt = '123456789987654321';
 ?>

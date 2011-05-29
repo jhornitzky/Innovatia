@@ -12,19 +12,19 @@ import("user.service");
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
 <title>innoWorks</title>
 <link rel="shortcut icon" href="<?= $serverUrl.$serverRoot?>favicon.ico" type="image/x-icon" />
-<script type="text/javascript" src="<?= $uiRoot?>scripts/jQuery-Min.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojo/dojo.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoBigDialog.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/base/InnoDialog.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/base/dojoLayer.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/innoworks.js"></script>
-<script type="text/javascript" src="<?= $uiRoot?>scripts/common.js"></script>
-<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
-<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dojox/layout/resources/ResizeHandle.css" />
-<link rel="stylesheet" type="text/css" href="<?= $uiRoot?>scripts/base/dojox/layout/resources/FloatingPane.css" />
-<link href="<?= $serverRoot?>ui/style/buttons.css" rel="stylesheet" type="text/css" />
-<link href="<?= $serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
-<link href="<?= $serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/jQuery-Min.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/base/dojo/dojo.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/base/InnoBigDialog.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/base/InnoDialog.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/base/dojoLayer.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/innoworks.js"></script>
+<script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/common.js"></script>
+<link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
+<link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dojox/layout/resources/ResizeHandle.css" />
+<link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dojox/layout/resources/FloatingPane.css" />
+<link href="<?= $serverUrl.$serverRoot?>ui/style/buttons.css" rel="stylesheet" type="text/css" />
+<link href="<?= $serverUrl.$serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
+<link href="<?= $serverUrl.$serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 //////// VARS //////////
@@ -59,9 +59,13 @@ $(document).ready(function() {
 });
 
 dojo.addOnLoad(function(){	
-	/* if (isMobile) {
+	/* 
+	if (isMobile) {
 		dojo.declare("dijit.form.Textarea",null,null);
-	} */
+	} 
+	
+	djConfig.modulePaths = {dojo:'',dijit:'',dojox:'',inno:''}
+	*/
 	
 	//Parse controls
 	dojo.parser.parse();
@@ -151,12 +155,12 @@ function openAdmin() {
 	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
 		<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">profile</a>
 	</li>
-	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/public.png');">
+	<!-- <li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/public.png');">
 		<a id="publiclnk" class="menulnk" href="javascript:showPublic(this)" title="View public ideas and announcements">public</a>
 	</li>
 	<li class="greybox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/search.png');">
 		<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)" title="Find ideas, innovators and groups">search</a>
-	</li>
+	</li> -->
 </ul>
 </div>
 <div id="rightAlignMenu">
@@ -167,6 +171,9 @@ function openAdmin() {
 			<img id="profileAvatar" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" title="<?= $_SESSION['innoworks.username']; ?>" style="width:1em;height:1em; vertical-align:middle; border: 1px solid #AAA; border-radius:2px; -moz-border-radius:2px;"/>
 		</div>
 		<div class="actions">
+			<form class="quickSearch" onsubmit="showSearch(this); return false;" style="padding:0; margin:0; margin-right:5px; clear:none; float:left;">
+				<input name="searchTerms" class="dijitTextBox" placeHolder="find ideas, people and groups"  style="padding:0; margin:0;"/>
+			</form>
 			<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
 			<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
 			<?}?>

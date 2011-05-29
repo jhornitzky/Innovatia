@@ -474,3 +474,12 @@ p.help {
 .addForm input, .addForm textarea {
 	max-width:100%;
 }
+
+.searchResults .lefter:last-child {
+	max-width:80%;
+	max-height:2.4em;
+}
+
+.nohelp {
+	color:#AAA;
+}

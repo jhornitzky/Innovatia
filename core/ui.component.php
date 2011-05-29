@@ -6,11 +6,9 @@
 
 function renderTemplate($templateName, $vars = null) {
 	global $serverRoot, $serverUrl, $uiRoot;
-	
 	if (is_array($vars)) {
 		extract($vars);
 	}
-	
 	return require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
 }
 

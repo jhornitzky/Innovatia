@@ -21,5 +21,5 @@
 	onclick="loadResults(this, {action:'getDashCompare', limit:'<?= ($limit + 20) ?>'})">Load more</a>
 	<?}
 } else {?>
-<p class="help">No compares yet</p>
+	<p class="nohelp">Contrast and compare your existing ideas</p>
 <?}?>

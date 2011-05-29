@@ -29,4 +29,8 @@
 			onclick="loadResults(this, {action:'getNotes', limit:'<?= ($limit + 20) ?>'})">Load more</a>
 	<?}
 	markNotesAsRead($_SESSION['innoworks.ID']);
-}?>
+} else {?>
+	<p class="nohelp">
+		Notes are messages that you can send to other people using the innoWorks tool. Notes will automatically be sent to releant people when you do stuff (like adding an idea to a group or posting a comment), but you can also send other messages manually too.
+	</p>
+<?}?>

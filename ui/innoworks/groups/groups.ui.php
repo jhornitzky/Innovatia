@@ -125,12 +125,12 @@ function renderGroupSummary($currentGroupId) {
 	global $serverUrl, $uiRoot;
 	$groups = getGroupWithId($currentGroupId, $_SESSION['innoworks.ID']);
 	$group;
+	
 	if ($groups && dbNumRows($groups) > 0)
 		$group = dbFetchObject($groups);
 	else
 		die("No group exists");
-	
-	//$userService = new AutoObject("user.service");
+
 	import('user.service');
 	$shareUrl = $serverUrl . $uiRoot . "innoworks/viewer.php?group=" . $currentGroupId;
 	$groupIdeas = getIdeasForGroup($currentGroupId, $_SESSION['innoworks.ID'], "LIMIT 500");
@@ -256,12 +256,13 @@ function renderIdeaShare($ideaId, $userId) {
 	import("group.service");
 	import("idea.service");
 	$idea = dbFetchObject(getIdeaDetails($ideaId));
+	
 	if ($idea->userId == $_SESSION['innoworks.ID'] || $_SESSION['innoworks.isAdmin']) {
-	$groups = getAllGroupsForUser($_SESSION['innoworks.ID'], "LIMIT 100");
-	$countGroups = countGetAllGroupsForUser($_SESSION['innoworks.ID']);
-	$items = dbFetchAll(getIdeaShareDetails($ideaId));
-	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?idea=" . $ideaId;
-	renderTemplate('group.ideaShare', get_defined_vars());
+		$groups = getAllGroupsForUser($_SESSION['innoworks.ID'], "LIMIT 100");
+		$countGroups = countGetAllGroupsForUser($_SESSION['innoworks.ID']);
+		$items = dbFetchAll(getIdeaShareDetails($ideaId));
+		$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?idea=" . $ideaId;
+		renderTemplate('group.ideaShare', get_defined_vars());
 	} else {
 		echo "You did not create this idea, and therefore cannot control sharing. If you want edit access to this idea, contact the owner.";
 	}

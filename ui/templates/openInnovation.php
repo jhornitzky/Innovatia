@@ -13,7 +13,7 @@
 	</div>
 	<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://www.creativitypool.com')">
 		<img src="http://www.creativitypool.com/favicon.ico"/>
-		<span>creativty pool</span>
+		<span>creativity pool</span>
 	</div>
 	<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://www.openinnovation.net/favicon.ico')">
 		<img style="width:16px; height:16px;" src="http://www.openinnovation.net/favicon.ico"/>

@@ -24,14 +24,21 @@ function renderCommon($riskItems) {
 	import("idea.service");
 	if ($riskItems && dbNumRows($riskItems) > 0){
 		renderTemplate('compare.riskTable', array('riskItems' => $riskItems));
-	} else {?>
-<p>No risk items</p>
-	<?}
+	} else {
+		renderTemplate('no.riskItems');
+	}
 }
 
 function renderRiskItemHeadCallback($key) {
 	if ($key == "idea") {?>
-<th class="headcol">Idea</th>
+		<th class="headcol">
+			Idea<br/>
+			<span style="font-size:12px; color:#AAA">
+				idea & reviewer - criteria - score (average risk & feature)<br/>
+				<br/>
+				1 - poor to 7 - high
+			</span>
+		</th>
 	<?return true;
 	} else {
 		return false;
@@ -67,18 +74,16 @@ function renderAddRiskIdeaItems($criteria, $limit) {
 	if ($ideas && dbNumRows($ideas) > 0) {
 		renderTemplate('compare.riskIdeaItems', get_defined_vars());
 	} else {?>
-<p>No ideas found</p>
+		<p>No ideas found</p>
 	<?}
 }
 
 function renderAddRiskIdeaForGroup($groupId, $userId) {
 	$limit=20;?>
-<p>
-	Select a <b>group</b> idea to add to group comparison
-</p>
-<div>
-<?renderAddRiskIdeaForGroupItems($groupId, $userId, $limit);?>
-</div>
+	<p>Select a <b>group</b> idea to add to group comparison</p>
+	<div>
+	<?renderAddRiskIdeaForGroupItems($groupId, $userId, $limit);?>
+	</div>
 <?}
 
 function renderAddRiskIdeaForGroupItems($groupId, $userId, $limit) {
@@ -90,9 +95,7 @@ function renderAddRiskIdeaForGroupItems($groupId, $userId, $limit) {
 	if ($ideas && dbNumRows($ideas) > 0) {
 		renderTemplate('compare.addRiskItemGroup', get_defined_vars());
 	} else {?>
-<p>
-	No <b>group</b> ideas found
-</p>
+		<p>No <b>group</b> ideas found</p>
 	<?}
 }
 
@@ -131,8 +134,8 @@ function renderIdeaRiskEval($ideaId, $userId) {
 
 function renderMeCallback($key) {
 	if ($key == "title") {?>
-<th class="headcol">Reviewer</th>
-	<?return true;
+		<th class="headcol">Reviewer</th>
+		<?return true;
 	}
 	return false;
 }
@@ -154,6 +157,6 @@ function renderCompareCommentsForGroup($uId, $gId) {
 
 function renderCommonComments($comments, $uId) {
 	$userService = new AutoObject("user.service");
-	renderTemplate('compare.commonContents', get_defined_vars());
+	renderTemplate('compare.commonComments', get_defined_vars());
 }
 ?>

@@ -10,24 +10,37 @@
 		<div style="width: 100%; margin-bottom: 1em; position:relative;">
 			<div style="position:absolute; top:0; right:0; color:#777; text-align:right; font-size:0.75em">need help? click the i up here</div>
 			<div class="itemHolder" style="border-top:none;">
-				<h2 style="color:#AAA;padding-top:1px;">while you were gone here's what happened...</h2>
+				<h2 style="color:#AAA;padding-top:1px;">latest activity on your network...</h2>
 			</div>
-				<? if ($notes && dbNumRows($notes) > 0) {
-					while ($note = dbFetchObject($notes)) { ?>
-					<div class="itemHolder">
-						<div><?= $note->noteText ?><br/>
-							<span>
-								<img src="retrieveImage.php?action=userImg&actionId=<?= $note->fromUserId ?>" style="width:1em; height:1em;" /> 
-								<a href="javascript:showProfileSummary('<?= $note->fromUserId ?>')">
-									<?= getDisplayUsername($note->fromUserId)?>
-								</a>
-								sent <span><?= $note->createdTime ?></span>
-							</span>
+				<? $count = 0;
+				if ($notes && dbNumRows($notes) > 0) {
+					while ($note = dbFetchObject($notes)) { 
+						$count++;?>
+						<div class="itemHolder">
+							<div><?= $note->noteText ?><br/>
+								<span>
+									<img src="retrieveImage.php?action=userImg&actionId=<?= $note->fromUserId ?>" style="width:1em; height:1em;" /> 
+									<a href="javascript:showProfileSummary('<?= $note->fromUserId ?>')">
+										<?= getDisplayUsername($note->fromUserId)?>
+									</a>
+									sent <span><?= $note->createdTime ?></span>
+								</span>
+							</div>
 						</div>
-					</div>
 					<?}
 				}
-				$limit = 6;?>
+				
+				if ($count < 1) { ?>
+					<p style="margin-top:0;">Welcome to innoWorks, the innovation management tool.</p>
+					<p>
+						innoWorks helps you innovate by giving you a simple yet structured way to manage your ideas, compare them and select them. 
+						A good place to start is by hitting the green add button up the top left, or you can move throughout the system at your own pace.
+					</p>
+					<p>
+						If you get stuck you can click on the 'i' icon to the top right for help. 
+						Happy ideating!
+					</p>
+				<?}?>
 		</div>
 	</div>
 </div>
@@ -52,7 +65,6 @@
 				<div class="widget ui-corner-all">
 					<div class="itemHolder" onclick="showIdeas()">
 						<h2>ideate</h2>
-						<span style="color:#777">record, manage and explore ideas to help them take shape</span>
 					</div>
 					<div class="dashResults">
 					<? renderDashIdeas($userid, $limit)?>
@@ -64,7 +76,6 @@
 				<div class="widget ui-corner-all">
 					<div class="itemHolder" onclick="showCompare()">
 						<h2>compare</h2>
-						<span style="color:#777">contrast and compare your existing ideas</span>
 					</div>
 					<div class="dashResults">
 					<? renderDashCompare($userid, $limit);?>
@@ -75,7 +86,6 @@
 				<div class="widget ui-corner-all">
 					<div class="itemHolder" onclick="showSelect()">
 						<h2>select</h2>
-						<span style="color:#777">choose ideas to work on and manage their tasks.</span>
 					</div>
 					<div class="dashResults">
 					<? renderDashSelect($userid, $limit);?>

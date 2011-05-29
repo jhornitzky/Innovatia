@@ -457,8 +457,12 @@ function getReports() {
 	});
 }
 
-function getSearch() {
-	var data = $("#searchForm").serialize();
+function getSearch(input) {
+	var data = '';
+	if (input != undefined) 
+		data = $(input).serialize();
+	else 
+		data = $("#searchForm").serialize();
 	showLoading("#searchTab #searchResults");
 	var url = "engine.ajax.php?action=getSearchDefault";
 	if (data != undefined) 
@@ -501,12 +505,12 @@ function getSelectForIdea() {
 	});
 }
 
-function showSearch() {
+function showSearch(input) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#searchlnk").parent().addClass("selMenu");
 	$(".menulnk").removeClass("selLnk");
 	$("#searchlnk").addClass("selLnk");
-	getSearch();
+	getSearch(input);
 	$(".tabBody").hide();
 	$("#searchTab").fadeIn();	
 }

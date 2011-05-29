@@ -146,7 +146,9 @@ function showResponses(data, timeout) {
 			</table>
 		<?}
 	} else {?>
-		<p>No attachments</p>
+		<p class="nohelp">You can attach files to this idea to share with others.</p>
+		<p class="nohelp">Any pictures you upload can also be tagged as a display picture(DP) for the idea/group/profile.</p>
+		<p class="nohelp">Max upload size is <?= ini_get('upload_max_filesize') ?>.</p>
 	<?}?>
 </body>
 

@@ -9,7 +9,7 @@ function renderSelectDefault($userId) {
 			renderSelectIdea($ideas,$idea, $userId);
 		}
 	} else {
-		echo "<p>No selections yet</p>";
+		renderTemplate('no.select');
 	}
 }
 
@@ -20,7 +20,7 @@ function renderSelectPublic() {
 			renderSelectIdea($ideas,$idea, $userId);
 		}
 	} else {
-		echo "<p>No selections yet</p>";
+		renderTemplate('no.select');
 	}
 }
 
@@ -33,7 +33,7 @@ function renderSelectForGroup($groupId, $userId) {
 			renderSelectIdea($ideas,$idea, $userId);
 		}
 	} else {
-		echo "<p>No selections yet</p>";
+		renderTemplate('no.select');
 	}
 }
 

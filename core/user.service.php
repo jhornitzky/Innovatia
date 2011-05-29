@@ -167,21 +167,18 @@ function registerUser($postArgs) {
 	$success = dbQuery($link,$sql);
 	$successId = dbInsertedId($link);
 	
+	/*
 	$opts = array();
 	$opts['noteText'] = "Welcome to Innoworks! You can start innovating through the tabs above. If you get stuck you can click on the icon to the top right. Happy ideating!";
 	$opts['toUserId'] = $successId;
 	createNote($opts);
+	*/
 	
 	//Tidy up
 	dbClose($link);
 
-	//Send welcome email FIXME TEMPLATIZE
-	$message = '<html>
-				<head>
-				  <title>Innoworks Credentials</title>
-				</head>
-				<body>
-				  <p>Innoworks - Login Credentials</p>
+	//Send welcome email
+	$message = '<p>Innoworks - Login Credentials</p>
 				  <table>
 					<tr>
 					  <th>Username:</th><td>'.$postArgs["username"].'</td>
@@ -189,17 +186,11 @@ function registerUser($postArgs) {
 					<tr>
 					  <th>Password:</th><td>'.$postArgs["password"].'</td>
 					</tr>
-				  </table>
-				</body>
-				</html>';
-	$headers = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	$headers .= 'From: Innoworks' . "\r\n";
+				  </table>';
 	
-	//mail($postArgs['email'], "Innoworks - Credentials", $message, $headers);
 	sendMail(array(
 			'to' => $postArgs['email'],
-			"subject" => "Innoworks - Credentials", 
+			"subject" => "innoWorks - User Credentials", 
 			"msg" => $message, 
 			"headers" => $headers));
 	
