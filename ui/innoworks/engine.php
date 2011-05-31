@@ -135,11 +135,15 @@ function openAdmin() {
 <div id="leftAlignMenu">
 <ul class="tabMenu">
 	<li style="padding:0;">
-		<img id="dashlnk" class="menulnk" style="width: 226px; height:48px;" src="<?= $serverRoot?>ui/style/kubu.png" onclick="showDash(this)"  title="Dashboard"/>
+		<img id="dashlnk" class="menulnk" style="width: 211px; height:45px;" src="<?= $serverRoot?>ui/style/kubu.png" onclick="showDash(this)"  title="Dashboard"/>
 	</li>
-	<li style="padding:2px; padding-left:0; margin-right:10px; margin-left:-6px;">
-		<img src="<?= $serverRoot ?>ui/style/menu/add.png" style="width:25px; height:25px; cursor:pointer;" onclick="showIdeas(); showDefaultIdeas();" alt="Add" title="Add idea"/>
+	<li style="padding:2px; padding-left:0; margin-right:21px; margin-left:-6px;">
+		<img class="adder" src="<?= $serverRoot ?>ui/style/menu/add.png" style="width:25px; height:25px; cursor:pointer;" onclick="showCreateIdea(this)" alt="Add" title="Add idea"/>
 	</li>		
+	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
+		<a id="ideaslnk" class="menulnk" href="javascript:showInnovate(this)" title="Add, explore, compare and manage ideas">ideas</a>
+	</li>
+	<!-- 
 	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
 		<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)" title="Add and explore ideas">ideate</a>
 	</li>
@@ -149,31 +153,27 @@ function openAdmin() {
 	<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/select.png');">
 	<a id="selectlnk" class="menulnk" href="javascript:showSelect(this)" title="Select and manage ideas for implementation">select</a>
 	</li>
+	 -->
 	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/group.png');">
 		<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share and manage ideas with groups">groups</a>
 	</li>
 	<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
 		<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">profile</a>
 	</li>
-	<!-- <li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/public.png');">
-		<a id="publiclnk" class="menulnk" href="javascript:showPublic(this)" title="View public ideas and announcements">public</a>
+	<li>
+		<form class="quickSearch" onsubmit="showSearch(this); return false;" style="padding:0; margin:0; margin-right:5px; clear:none; float:left;">
+			<input name="searchTerms" class="dijitTextBox" placeHolder="find ideas, people and groups"  style="padding:0; margin:0;"/>
+		</form>
 	</li>
-	<li class="greybox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/search.png');">
-		<a id="searchlnk" class="menulnk" href="javascript:showSearch(this)" title="Find ideas, innovators and groups">search</a>
-	</li> -->
 </ul>
 </div>
 <div id="rightAlignMenu">
 <ul class="tabMenu">
-	<li style="padding-top:0.2em; padding-bottom:0.025em;margin-right:0;">
+	<li style="padding-top:0.2em; padding-bottom:0.025em; margin-right:0; padding-top:10px;">
 		<div title="<?= getDisplayUsername($_SESSION['innoworks.ID']); ?>">
 			<span style="color:#DDD; font-size:0.9em;"><?= getDisplayFirstName($_SESSION['innoworks.ID']); ?></span>
-			<img id="profileAvatar" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" title="<?= $_SESSION['innoworks.username']; ?>" style="width:1em;height:1em; vertical-align:middle; border: 1px solid #AAA; border-radius:2px; -moz-border-radius:2px;"/>
 		</div>
 		<div class="actions">
-			<form class="quickSearch" onsubmit="showSearch(this); return false;" style="padding:0; margin:0; margin-right:5px; clear:none; float:left;">
-				<input name="searchTerms" class="dijitTextBox" placeHolder="find ideas, people and groups"  style="padding:0; margin:0;"/>
-			</form>
 			<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
 			<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
 			<?}?>
@@ -188,12 +188,39 @@ function openAdmin() {
 </div>
 
 <!-- PAGE CONTENT -->
-
 <div id="content">
 <div id="dashTab" class="tabBody"></div>
-<? renderTemplate('ideate.tab'); ?>
-<? renderTemplate('compare.tab'); ?>
-<? renderTemplate('select.tab'); ?>
+<div id="ideaMega" class="tabBody">
+	<div id="innovateHead" class="fixed-left innovateSub" style="border-bottom:1px solid #7FBF4D; position:relative;"> 
+		<div class="tiny">your</div>
+		<h1 onclick="showInnovate(this)">
+			innovation
+		</h1>
+		<div class="tiny" style="position:absolute; bottom:5px; right:35px;">process</div>
+		<!-- <div class="groupPreview"></div>-->
+	</div>
+	<div class="fixed-right">
+		<div class="threeColumnContainer">
+			<div id="ideaHead" onclick="showIdeas(this)" class="threecol innovateSub bluebox" style="border-width:0; border-bottom-width:1px; ">
+				<div class="tiny">stage 1</div>
+				<h1>ideate</h1>
+			</div>
+			<div id="compareHead" onclick="showCompare(this)" class="threecol innovateSub greenbox" style="border-width:0; border-bottom-width:1px; ">
+				<div class="tiny">stage 2</div>
+				<h1>compare</h1>
+			</div>
+			<div id="selectHead" onclick="showSelect(this)" class="threecol innovateSub orangebox" style="border-width:0; border-bottom-width:1px; ">
+				<div class="tiny">stage 3</div>
+				<h1>select</h1>
+			</div>
+		</div>
+	</div>
+	<div class="clearer"  style="height:1.5em; clear:both"></div>
+	<div id="innovateTab" class="tabBody"></div>
+	<? renderTemplate('ideate.tab'); ?>
+	<? renderTemplate('compare.tab'); ?>
+	<? renderTemplate('select.tab'); ?>
+</div>
 <div id="profileTab" class="tabBody"></div>
 <? renderTemplate('group.tab'); ?>
 <div id="publicTab" class="tabBody"></div>
@@ -206,7 +233,7 @@ function openAdmin() {
 <div id="footerSpace"></div>
 <div id="footerSurround">
 	<div id="footer" style="min-height:3em;">
-		<div class="fixed-left">UTS server version</div>
+		<div class="fixed-left"><?= $versionName ?> · try innoWorks on your mobile</div>
 		<div class="fixed-right">&copy; UTS 2011</div>
 	</div>
 </div>

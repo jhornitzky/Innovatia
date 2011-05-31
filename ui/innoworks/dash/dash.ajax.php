@@ -20,6 +20,9 @@ if (isset($_GET['action'])) {
 		case "getDashSelect":
 			renderDashSelect($_SESSION['innoworks.ID'],$limit);
 			break;
+		case "getInnovate":
+			renderInnovateDash($_SESSION['innoworks.ID']);
+			break;
 	}
 }
 ?>
