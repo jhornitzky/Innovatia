@@ -23,7 +23,7 @@ a {
 
 #head {
 	height:2.75em;
-	padding-top:0.5em;
+	padding-top:0.25em;
 	color:#FFFFFF;
 }
 
@@ -147,16 +147,4 @@ span.subtext {
 	background-image:url('roundCloudMed.png');
 	background-repeat:repeat-x;
 	background-position:center center;
-}
-
-.blueCloud {
-	background-image:url('roundCloudBlue.png');
-	background-repeat:repeat-x;
-	background-position:left center;
-}
-
-.orangeCloud {
-	background-image:url('roundCloudOrange.png');
-	background-repeat:repeat-x;
-	background-position:right center;
 }

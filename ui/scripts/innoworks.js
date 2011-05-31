@@ -13,7 +13,7 @@ function processQueuedActions() {
 	if (queue.length > 0) {
 		for (x in queue) {
 			eval(queue[x]);
-		}
+		}0
 		queue = [];
 	}
 }
@@ -272,7 +272,7 @@ function showSummaryPane(props) {
 	pane.bringToTop();
 	
 	//use good ol' jquery to get the tough stuff done
-	$(pane.domNode).animate({top:$(window).height()*0.2, left:$(window).width()/2 - 250, width:500, height:420}); //FIXME with the animate
+	$(pane.domNode).animate({top:$(window).height()*0.2 + $(window).scrollTop(), left:$(window).width()/2 - 250 + 20 * $('.dojoxFloatingPane').size(), width:500, height:420}); //FIXME with the animate
 	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '97%').css('padding', '2%');
 }
 
@@ -387,6 +387,10 @@ function getIdeas() {
 	}
 } 
 
+function getInnovate() {
+	$("#innovateTab").load("engine.ajax.php?action=getInnovate");
+} 
+
 function prepCompareTable() {
 	initFormSelectTotals('table.riskEvaluation');
 	$("table.riskEvaluation tr").each(function() { 
@@ -497,12 +501,25 @@ function getSelectForIdea() {
 	showLoading("#ideaSelect");
 	$("#ideaSelect").load("engine.ajax.php?action=getSelectForIdea&actionId="+currentIdeaId, function () {
 		dojo.parser.instantiate(dojo.query('#ideaSelectDetails *')); 
+		dojo.parser.instantiate(dojo.query('#taskDetails tr td *')); 
 		$("#ideaSelectDetails").find(":input").each(function() {
 			$(this).blur(function() {
 				updateSelection("ideaSelectDetails");
 			});
 		});
 	});
+}
+
+function updateTask(elem, featureId) {
+	var taskData;
+	taskData = $(elem).serialize();
+	taskData = taskData + '&action=updateTask&featureId=' + featureId;
+	doAction(taskData);
+}
+
+function updateDateTask(value, key,  featureId) {
+	var taskData = key + '=' + value + '&action=updateTask&featureId=' + featureId;
+	doAction(taskData);
 }
 
 function showSearch(input) {
@@ -515,26 +532,58 @@ function showSearch(input) {
 	$("#searchTab").fadeIn();	
 }
 
-function showIdeas(elem) {
+function selectItem(elem) {
+	if ($(elem).siblings().size() > 0 )
+		$(elem).siblings().removeClass('selected');
+	$(elem).addClass('selected');
+}
+
+function showInnovate(elem) {
+	$(".innovateSub").removeClass("selected");
+	$("#innovateHead").addClass("selected");
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#ideaslnk").parent().addClass("selMenu");
 	$(".menulnk").removeClass("selLnk");
 	$("#ideaslnk").addClass("selLnk");
-	getIdeas();
-	showIdeaGroupsForUser();
+	getInnovate();
 	$(".tabBody").hide();
-	$("#ideaTab").fadeIn();
+	$("#ideaMega").fadeIn();
+	$("#innovateTab").fadeIn();
+	selectItem(elem);
 }
 
-function showReports(elem) {
-	$(".menulnk").parent().removeClass("selMenu");
-	$("#reportslnk").parent().addClass("selMenu");
-	$(".menulnk").removeClass("selLnk");
-	$("#reportslnk").addClass("selLnk");
-	getReports();
-	$(".tabBody").hide();
-	$("#reportTab").fadeIn();
-}	
+function showIdeas(elem) {
+	$(".innovateSub").removeClass("selected");
+	$("#ideaHead").addClass("selected");
+	getIdeas();
+	showIdeaGroupsForUser();
+	$(".tabBody .tabBody").hide();
+	$("#ideaMega").fadeIn();
+	$("#ideaTab").fadeIn();
+	selectItem(elem);
+}
+
+function showCompare(elem) {
+	$(".innovateSub").removeClass("selected");
+	$("#compareHead").addClass("selected");
+	getCompare();
+	showIdeaGroupsForUser();
+	$(".tabBody .tabBody").hide();
+	$("#ideaMega").fadeIn();
+	$("#compareTab").fadeIn();
+	selectItem(elem);
+}
+
+function showSelect(elem) {
+	$(".innovateSub").removeClass("selected");
+	$("#selectHead").addClass("selected");
+	getSelect();
+	showIdeaGroupsForUser();
+	$(".tabBody .tabBody").hide();
+	$("#ideaMega").fadeIn();
+	$("#selectTab").fadeIn();	
+	selectItem(elem);
+}
 
 function showProfile(elem) {
 	currentGroupId = null;
@@ -557,28 +606,6 @@ function showGroups(elem) {
 	showGroupDetails();
 	$(".tabBody").hide();
 	$("#groupTab").fadeIn();
-}
-
-function showCompare(elem) {
-	$(".menulnk").parent().removeClass("selMenu");
-	$("#comparelnk").parent().addClass("selMenu");
-	$(".menulnk").removeClass("selLnk");
-	$("#comparelnk").addClass("selLnk");
-	getCompare();
-	showIdeaGroupsForUser();
-	$(".tabBody").hide();
-	$("#compareTab").fadeIn();
-}
-
-function showSelect(elem) {
-	$(".menulnk").parent().removeClass("selMenu");
-	$("#selectlnk").parent().addClass("selMenu");
-	$(".menulnk").removeClass("selLnk");
-	$("#selectlnk").addClass("selLnk");
-	getSelect();
-	showIdeaGroupsForUser();
-	$(".tabBody").hide();
-	$("#selectTab").fadeIn();	
 }
 
 function showDash(elem) {
@@ -644,9 +671,7 @@ function showFeedback(elem) {
 }
 
 function sendFeedback(elem) {
-	doAction($(elem).serialize(), function() {
-		dijit.byId('commonPopup').hide();
-	});
+	doAction($(elem).serialize(), 'closePopup()');
 	return false;
 }
 
@@ -785,12 +810,15 @@ function addPrivateIdea(elem) {
 }
 
 function addIdea(elem) {
-	if(currentGroupId == null && currentGroupName == "Private") {
+	if (elem !== undefined && $(elem).get(0).tagName.toLowerCase() === 'form') {
+		doAction($(elem).serialize(),"refreshVisibleTab();");
+		closePopup();
+	} else if (currentGroupId == null && currentGroupName == "Private") {
 		if ($("#addIdeaForm").find('input').val().length > 0) 
 			doAction($("#addIdeaForm").serialize(),"getIdeas()");
 		else 
 			showResponses('You must enter an idea name first', 5000);
-	} else if(currentGroupId == null && currentGroupName == "Public") {
+	} else if (currentGroupId == null && currentGroupName == "Public") {
 		showAddPublicIdea(elem);
 	} else {
 		showAddGroupIdea(elem);
@@ -910,6 +938,11 @@ function updateForGroup(id,name) {
 function showAddGroupIdea(elem) {
 	showCommonPopup(elem);
 	$("#actionDetails").load("engine.ajax.php?action=getAddIdea");
+}
+
+function showCreateIdea(elem) {
+	showCommonPopup(elem);
+	$("#actionDetails").load("engine.ajax.php?action=getCreateIdea");
 }
 
 function showAddPublicIdea(elem) {
@@ -1185,6 +1218,10 @@ function updateSelection(selectform){
 
 function printPopupIdea() {
 	printIdea("&idea=" + currentIdeaId);
+}
+
+function exportDocPopupIdea() {
+	window.open("viewer.php?doc=true&idea=" + currentIdeaId);
 }
 
 function printIdea(urlE) {
