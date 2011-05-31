@@ -4,6 +4,7 @@ $curDate = getdate();
 ?>
 <html>
 <head>
+<? require_once("head.php"); ?>
 <style>
 html,body {
 	margin-bottom:2em;
@@ -18,7 +19,8 @@ div {
 </style>
 </head>
 <body>
-<span>Showing week starting data for the year <?= $curDate['year'] ?></span>
+<span>Data for year <?= $curDate['year'] ?></span><br/>
+<span style="font-size:0.85em;">Current week of year  is <b><?= date('W') ?></b></span>
 <div>
 <h2>new ideas per week</h2>
 <img src="reportImages.php?action=ideas&year=<?= $curDate['year'] ?>"/>

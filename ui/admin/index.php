@@ -20,6 +20,7 @@ require_once("thinConnector.php");
 		
 		#head a {
 			color:#FFF;
+			margin-right:1em;
 		}
 		
 		.adminContent iframe{
@@ -37,8 +38,9 @@ require_once("thinConnector.php");
 <div id="head">
 	<img id="logo" src="<?= $serverRoot?>ui/style/kubu.png" style="height:48px;width:226px;"/>
 	<a href="javascript:logAction()" onclick="showFrame('adminDash.php')">ADash</a>	
-	<a href="javascript:logAction()" onclick="showFrame('reports.php')">Reports</a>	
 	<a href="javascript:logAction()" onclick="showFrame('announcement.php')">Announcements</a>	
+	<a href="javascript:logAction()" onclick="showFrame('reports.php')">Reports</a>	
+	<a href="javascript:logAction()" onclick="showFrame('actions.php')">Bulk Actions</a>	
 	<a href="javascript:logAction()" onclick="showFrame('users.php')">Users</a>
 	<a href="javascript:logAction()" onclick="showFrame('tables.php')">Tables</a>
 	<a href="javascript:logAction()" onclick="showFrame('ldap.php')">LDAP</a>
