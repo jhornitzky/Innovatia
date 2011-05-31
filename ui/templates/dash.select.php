@@ -23,5 +23,5 @@ if ($selections && dbNumRows($selections) > 0 ) {
 			more</a>
 	<?}
 } else {?>
-	<p class="nohelp">Choose ideas to work on and manage their tasks.</p>
+	<span class="nohelp">Choose ideas to work on and manage their tasks</span>
 <?}?>

@@ -14,11 +14,9 @@
 			style="display: none;" />
 	</div>
 	<div id="searchHider" style="padding: 0.25em; border: 1px solid #DDD; background-color: #EEE; float: left; height:0.95em">
-		<a href="javascript:logAction()" onclick="toggleSearchOptions()"
-			style="font-size: 0.6em; margin: 0;">more &gt;&gt;</a>
+		<a href="javascript:logAction()" onclick="toggleSearchOptions()" style="font-size: 0.6em; margin: 0;">more &gt;&gt;</a>
 	</div>
-	<div id="searchOptions"
-		style="display: none; clear: left; font-size: 0.7em; padding: 0.25em; border: 1px solid #DDD; background-color: #EEE; float: left">
+	<div id="searchOptions" style="display: none; clear: left; font-size: 0.7em; padding: 0.25em; border: 1px solid #DDD; background-color: #EEE; float: left">
 		<div style="margin-bottom:1em;"><b>more filters</b> <a href="javascript:logAction()" onclick="toggleSearchOptions()" style="margin: 0; margin-bottom: 0.5em; float:right">&lt;&lt; less</a></div> 
 		<div>Date from <input type="text" name="dateFrom" dojoType="dijit.form.DateTextBox" value="<?= $dateFrom ?>" /> to <input type="text" name="dateTo" dojoType="dijit.form.DateTextBox" value="<?= $dateTo ?>" /></div>
 	</div>

@@ -22,5 +22,5 @@
 		more</a>
 	<?}
 } else {?>
-	<p class="nohelp">Record, manage and explore ideas to help them take shape</p>
+	<span class="nohelp">Record, manage and explore ideas to help them take shape</span>
 <?}?>

@@ -19,10 +19,10 @@
 <?renderIdeaRoles($ideaId, false);?>
 <h2>Feature(s)</h2>
 <?renderIdeaFeatures($ideaId, false);?>
-<h2>Comment(s)</h2>
-<?renderCommentsForIdea($ideaId, $_SESSION['innoworks.ID']);?>
 <h2>Feature Evaluation(s)</h2>
 <?renderIdeaFeatureEvaluationsForIdea($ideaId, false);?>
 <h2>Risk Evaluation(s)</h2>
 <?renderIdeaRiskEval($ideaId, $_SESSION['innoworks.ID']);?>
+<h2>Comment(s)</h2>
+<?renderCommentsForIdea($ideaId, $_SESSION['innoworks.ID']);?>
 </div>

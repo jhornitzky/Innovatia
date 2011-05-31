@@ -1,14 +1,31 @@
 <? 
 require_once("pureConnector.php");
 
+function serializeGet() {
+	$serial = '';
+	foreach ($_GET as $key => $value) {
+		$serial .= '&'.$key.'='.$value;
+	}
+	return $serial;
+}
+
 if (!(isset($_GET['idea']) || isset($_GET['group']) || isset($_GET['profile']))) 
 	die();
 
 $print = 'false';
 if (isset($_GET['print']) )
 	$print = 'true';
+
+$ns = '';
+if (isset($_REQUEST['doc'])) {
+	$the_filename = 'innoWorks';
+	header( 'Pragma: public' ); 
+	header( 'Content-Type: application/msword' ); 
+	header( 'Content-Disposition: attachment; filename="' . $the_filename . '.doc"' );
+	$ns = 'xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"';
+}
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html <?= $ns ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
@@ -77,6 +94,10 @@ h1, h2, .bluetext {
 	vertical-align: top;
 	border:1px solid #AAA;
 } 
+
+.compareForce {
+	display:none;
+}
 </style>
 
 <script>
@@ -108,25 +129,25 @@ function goToInnoworks() {
 </head>
 <body class="tundra">
 <table>
-<tr>
-<td>
-<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
-</td>
-<td class="bluetext">
-<?
-$echoBit;
-if ( isset($_GET['idea']) ) 
-	$echoBit = "Idea";
-else if ( isset($_GET['group']) ) 
-	$echoBit = "Group";
-else if ( isset($_GET['profile']) ) 
-	$echoBit = "Profile";
-?>
-<p class="subheading" style="font-size:50px;padding-top:12px;">
-<?= $echoBit?>
-</p>
-</td>
-</tr>
+	<tr>
+	<td>
+	<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
+	</td>
+	<td class="bluetext">
+	<?
+	$echoBit;
+	if ( isset($_GET['idea']) ) 
+		$echoBit = "Idea";
+	else if ( isset($_GET['group']) ) 
+		$echoBit = "Group";
+	else if ( isset($_GET['profile']) ) 
+		$echoBit = "Profile";
+	?>
+	<p class="subheading" style="font-size:50px;padding-top:12px;">
+	<?= $echoBit?>
+	</p>
+	</td>
+	</tr>
 </table>
 <div class="viewSummary">
 <?
@@ -148,13 +169,14 @@ if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 ?>
 </div>
 <div class="disclaimer" style="font-size:10px; color:#AAA; margin-top:20px; border-top:2px solid #DDD;">
-<?if (!isLoggedIn()) {?><b>You may be able to see more of this if you <a href="<? $serverUrl . $serverRoot ?>">log in</a></b><br/><?}?>
-Note that the ideas or other information represented here are copyright of the ideator.<br/>
-You should contact them if you wish to use the idea in any way.
+	<?if (!isLoggedIn()) {?><b>You may be able to see more of this if you <a href="<? $serverUrl . $serverRoot ?>">log in</a></b><br/><?}?>
+	Note that the ideas or other information represented here are copyright of the ideator.<br/>
+	You should contact them if you wish to use the idea in any way.
 </div>
 <div class="viewerShare" style="position:absolute; top:10px; right:0;">
-<p style="font-size:0.8em;margin:0; padding:0;color:#AAA;">Share this with a friend</p>
-<? renderTemplate('shareBtns', get_defined_vars()); ?>
+	<p style="font-size:0.8em;margin:0; padding:0;color:#AAA;">Share this with a friend</p>
+	<? renderTemplate('shareBtns', get_defined_vars()); ?>
+	<a href="viewer.php?doc=true<?= serializeGet(); ?>">export as word .doc</a>
 </div>
 </body>
 </html>

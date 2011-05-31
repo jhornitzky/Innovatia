@@ -51,6 +51,9 @@ if (isset($_GET['action'])) {
 			registerIdeaView($_GET['actionId'], $_SESSION['innoworks.ID']);
 			renderIdeaName($_GET['actionId'], $_SESSION['innoworks.ID']);
 			break;
+		case "getCreateIdea":
+			renderTemplate('idea.addForm');
+			break;
 	}
 }
 

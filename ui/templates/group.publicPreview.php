@@ -1,5 +1,4 @@
 <div>
-	<div class="tiny">you are currently viewing...</div>
 	<div class="lefter lefterImage">
 		<img src="<?= $uiRoot . "style/public.png"?>"
 			style="width: 3.5em; height: 3.5em" /><br />

@@ -53,6 +53,13 @@ if (isset($_POST['action'])) {
 			unset($opts['action']);
 			renderServiceResponse(updateIdeaSelect($opts));
 			break;	
+		case "updateTask":
+			import('task.service');
+			echo "Updating task... ";
+			$opts = $_REQUEST;
+			unset($opts['action']);
+			renderServiceResponse(updateOrCreateTask($opts));
+			break;	
 	}
 }
 ?>

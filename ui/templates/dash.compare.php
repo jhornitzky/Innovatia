@@ -8,11 +8,10 @@
 			style="width: 2.25em; height: 2.25em;" />
 	</div>
 	<div class="lefter">
-	<?= $item->title ?>
-		<br /> <img
-			src="retrieveImage.php?action=userImg&actionId=<?= $item->userId ?>"
-			style="width: 1em; height: 1em;" /> <span><?= getDisplayUsername($item->userId); ?>
-		</span>
+		<?= $item->title ?><br/> 
+		<img src="retrieveImage.php?action=userImg&actionId=<?= $item->userId ?>"
+			style="width: 1em; height: 1em;"/> 
+		<span><?= getDisplayUsername($item->userId); ?></span>
 	</div>
 </div>
 	<?}
@@ -21,5 +20,5 @@
 	onclick="loadResults(this, {action:'getDashCompare', limit:'<?= ($limit + 20) ?>'})">Load more</a>
 	<?}
 } else {?>
-	<p class="nohelp">Contrast and compare your existing ideas</p>
+	<span class="nohelp">Contrast and compare your existing ideas</span>
 <?}?>

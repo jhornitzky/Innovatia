@@ -1,4 +1,11 @@
-<?require_once("core/innoworks.config.php");?>
+<?
+require_once("core/innoworks.config.php");
+
+//check cookies first
+if (cookieLogin()) {
+	header('Location: ' . $serverUrl . $serverRoot);
+}
+?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -39,7 +46,13 @@ $(document).ready( function () {
 	<tr>
 		<td><input id="iUsername" type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
-		<td><input class="cupid-blue" type="submit" value="login" style="font-weight: bold; font-size:0.9em" /></td>
+		<td><input class="cupid-blue" type="submit" value="Log In" style="font-weight: bold; font-size:0.9em" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" style="font-size:0.75em; color:#AAA">
+			<input type="checkbox" name="remember" style="font-size:0.75em;vertical-align:middle; margin-left:0;"/> 
+			Keep me logged in
+		</td>
 	</tr>
 	<tr>
 		<td colspan="3">
@@ -85,15 +98,16 @@ $(document).ready( function () {
 
 <div id="footerSpace"></div>
 <div id="footerSurround">
-	<div id="footer">
-		<div class="fixed-left">UTS server version<br/><!-- AddThis Button BEGIN -->
+	<div id="footer" style="font-size:12px">
+		<div class="fixed-left"><?= $versionName ?> · try innoWorks on your mobile<br/>
+			<!-- AddThis Button BEGIN -->
 			<div class="addthis_toolbox addthis_default_style ">
-			<a class="addthis_button_preferred_1"></a>
-			<a class="addthis_button_preferred_2"></a>
-			<a class="addthis_button_preferred_3"></a>
-			<a class="addthis_button_preferred_4"></a>
-			<a class="addthis_button_compact"></a>
-			<a class="addthis_counter addthis_bubble_style"></a>
+				<a class="addthis_button_preferred_1"></a>
+				<a class="addthis_button_preferred_2"></a>
+				<a class="addthis_button_preferred_3"></a>
+				<a class="addthis_button_preferred_4"></a>
+				<a class="addthis_button_compact"></a>
+				<a class="addthis_counter addthis_bubble_style"></a>
 			</div>
 			<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script>
 			<!-- AddThis Button END --></div>

@@ -11,6 +11,6 @@
 	<?=$comment->text;?>
 </div>
 	<?}
-} else {
-	echo "<p>None</p>";
-}?>
+} else {?>
+	<p class="nohelp">Share a comment with others to get innovation flowing...</p>
+<?}?>

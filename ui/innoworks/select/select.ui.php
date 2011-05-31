@@ -44,6 +44,7 @@ function renderSelectIdea($ideas,$idea,$user) {
 	$roles = getRolesForIdea($idea->ideaId);
 	$comments = getCommentsForIdea($idea->ideaId);
 	$views = getViewsForIdea($idea->ideaId);
+	$tasks = getTasksForIdea($idea->ideaId);
 	renderTemplate('select.idea', get_defined_vars());
 }
 
@@ -72,8 +73,10 @@ function renderAddIdeaSelectItemsForGroup($groupId, $userId, $limit) {
 }
 
 function renderIdeaSelect($ideaId,$userId) {
-	import("idea.service");
+	import('idea.service');
+	import('task.service');
 	$item = getIdeaSelect($ideaId,$userId);
+	$tasks = getTasksForIdea($ideaId); 
 	renderTemplate('idea.select', get_defined_vars());
 }
 ?>

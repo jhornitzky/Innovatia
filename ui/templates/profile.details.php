@@ -1,8 +1,4 @@
-<div
-	style="width: 54%; position: relative; float: left; margin-right: 2%; border-top: 1px solid #DDD;">
-	<p>
-		<b>Details</b>
-	</p>
+<div style="width: 54%; position: relative; float: left; margin-right: 2%;">
 	<form id="profileDetailsForm"
 		onsubmit="updateProfile('profileDetailsForm'); return false;"
 		style="border: 1px solid #DDD;">
@@ -11,14 +7,14 @@
 				<td>Public<br /> <span style="font-size: 0.85em">Share your profile
 						with everyone</span></td>
 				<td><input type="checkbox" onclick="togglePublicProfile(this)"
-<? if ($userDetails->isPublic == 1) echo "checked"; ?> />
+					<? if ($userDetails->isPublic == 1) echo "checked"; ?> />
 				</td>
 			</tr>
 			<tr>
 				<td>Send Emails<br /> <span style="font-size: 0.85em">Allow
 						innoworks to send you updates and notes via email</span></td>
 				<td><input type="checkbox" onclick="toggleSendEmail(this)"
-<? if ($userDetails->sendEmail == 1) echo "checked"; ?> />
+					<? if ($userDetails->sendEmail == 1) echo "checked"; ?> />
 				</td>
 			</tr>
 			<tr>

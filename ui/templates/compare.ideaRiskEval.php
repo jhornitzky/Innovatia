@@ -18,8 +18,6 @@ if ($items && dbNumRows($items) > 0) {?>
 <?} else {?>
 	<p class="nohelp">Comparing an idea gives you insight into how to make things better.</p>
 <?}?>
-<p class="summaryActions" style="clear:both;">
-	You must go to <a
-		href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a>
-	to edit data
+<p style="clear:both;" class="compareForce">
+	You must go to <a href='javascript:showCompare(); dijit.byId("ideasPopup").hide()'>Compare</a> to edit data
 </p>

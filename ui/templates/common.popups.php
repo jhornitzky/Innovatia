@@ -1,11 +1,12 @@
 <div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none">
 	<span class="ideaDetailsOptions" style="position: relative; float: right;"> 
+		<a href="javascript:exportDocPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/word.jpg" style="width:32px; height:32px"/></a> 
 		<a href="javascript:printPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></a> 
 	</span>
 	<table>
 		<tr>
 			<td style="vertical-align: top;">
-				<img id="popupIdeaImgMain" style="height: 2em; width: 2em;" />
+				<img id="popupIdeaImgMain" style="height: 4em; width: 4em; margin-right:1em" />
 			</td>
 			<td style="vertical-align: top;">
 				<span id="ideaName"></span>

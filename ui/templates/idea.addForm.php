@@ -1,13 +1,9 @@
 <form id="addIdeaForm" class="addForm" onsubmit="addIdea(this);return false;">
-	<span>Add new idea</span> 
-	<p>Title</p>
-	<input id="addIdeaTitle" name="title"
-		type="text" dojoType="dijit.form.TextBox" /> 
-	<p>Description</p>
-	<textarea id="addIdeaTitle" name="serviceDescription" style="width:280px;"/><br/>
-	<input type="button"
-		value=" + " title="Add idea" onclick="addIdea(this)" /> <input
-		style="display: none" type="submit" /> 
-	<input type="hidden"
-		name="action" value="addIdea" />
+	<span>Add new idea</span> <br/>
+	<span>Title</span>
+	<input id="addIdeaTitle" name="title" type="text" class="dijitTextBox"/> 
+	<span>Description</span>
+	<textarea id="addIdeaTitle" name="serviceDescription" class="dijitTextArea" style="width:95%;"></textarea><br/>
+	<input type="submit" value="Add Idea " title="Add idea"/>  
+	<input type="hidden" name="action" value="addIdea" />
 </form>

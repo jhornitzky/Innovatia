@@ -9,8 +9,8 @@
 			style="width: 2em; height: 2em;" />
 	</div>
 	<div class="lefter">
-	<?= $group->title; ?>
-		<br /> <img
+		<?= $group->title; ?><br/> 
+		<img
 			src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $group->userId ?>"
 			style="width: 1em; height: 1em;" /> <span><?= getDisplayUsername($group->userId); ?>
 		</span>
@@ -22,6 +22,6 @@
 	onclick="loadResults(this, {action:'getSearchGroups', limit:'<?= ($limit + 20) ?>'})">Load
 	more</a>
 	<?}
-} else {
-	echo "<p>No groups</p>";
-}?>
+} else {?>
+	<p class="nohelp">No groups</p>
+<?}?>

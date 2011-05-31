@@ -21,5 +21,5 @@
 			more</a>
 	<?}
 } else {?>
-	<p>No profiles</p>
+	<p class="nohelp">No profiles</p>
 <?}

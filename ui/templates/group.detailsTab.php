@@ -1,12 +1,12 @@
-<form id='groupDetailsForm'>
-	<?if ($group->userId == $_SESSION['innoworks.ID'])
-		renderGenericUpdateForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
-	else
-		renderGenericInfoForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));?>
-	<input type='hidden' name='action' value='updateGroup' /> <input type='hidden' name='groupId' value='<?=$group->groupId?>' />
-</form>
-		
 <div class="two-column" style="border-top:1px solid #EEE; margin-right:2%; width:58%;">
+	<form id='groupDetailsForm'>
+		<?if ($group->userId == $_SESSION['innoworks.ID'])
+			renderGenericUpdateForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
+		else
+			renderGenericInfoForm($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));?>
+		<input type='hidden' name='action' value='updateGroup' /> <input type='hidden' name='groupId' value='<?=$group->groupId?>' />
+	</form>
+		
 	<p><b>Ideas<input type='button' value=' + ' onclick='showAddGroupIdea(this)' alt='Add an idea to the group'/></b></p>
 	<?
 	$groupIdeas = getIdeasForGroup($currentGroupId);
@@ -43,7 +43,7 @@
 	<? } ?>
 </div>
 
-<div class='two-column' style='border-top: 1px solid #EEE; width:38%;'>
+<div class='two-column' style='border-top: 1px solid #EEE; width:35%; float:right;'>
 	<p style="font-weight:bold">User(s) 
 		<?if ($group->userId == $_SESSION['innoworks.ID']) { ?>
 		<input
