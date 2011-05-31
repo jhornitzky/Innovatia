@@ -38,6 +38,12 @@ function cleanseArray($opts) {
 
 //////////////// GENERIC CRUD FUNCTIONS ////////////
 
+/**
+ * 
+ * Generically create a row for any table
+ * @param string $tablename
+ * @param array $opts
+ */
 function genericCreate($tablename, $opts) {
 	$opts = cleanseArray($opts);
 	$comma_keys = implode(",", array_keys($opts));
@@ -46,6 +52,13 @@ function genericCreate($tablename, $opts) {
 	return dbQuery($sql);
 }
 
+/**
+ * 
+ * Update a row in any table
+ * @param string $tablename
+ * @param array $opts (full array of keys and values)
+ * @param array $where (the keys from $opts to use in where string)
+ */
 function genericUpdate($tablename, $opts, $where) {
 	$opts = cleanseArray($opts);
 	$keys = array_keys($opts);
@@ -75,6 +88,11 @@ function genericUpdate($tablename, $opts, $where) {
 
 }
 
+/**
+ * Delete a row in any table
+ * @param string $tablename
+ * @param array $opts (the where keys and values)
+ */
 function genericDelete($tablename, $opts) {
 	$opts = cleanseArray($opts);
 	$keys = array_keys($opts);
@@ -243,7 +261,18 @@ function dbRelease($result)
 }
 
 function cleanseString($link, $str) {
-	return mysqli_real_escape_string($link, $str);
+	$createdLink = false;
+	if ($link === null) {
+		$link = dbConnect();
+		$createdLink = true;
+	} 
+	
+	$returnVal = mysqli_real_escape_string($link, $str);
+	
+	if($createdLink) 
+		dbClose($link);
+		 
+	return $returnVal;
 }
 
 function dbCloseRollback($link) {
