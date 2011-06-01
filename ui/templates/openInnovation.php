@@ -23,4 +23,8 @@
 		<img src="http://www.openideas.org/favicon.ico"/>
 		<span>openideas</span>
 	</div>
+	<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://atizo.com/')">
+		<img src="http://www.atizo.com/site_media/images/favicon.ico"/>
+		<span>atizo</span>
+	</div>
 </div>

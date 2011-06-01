@@ -1,1 +1,3 @@
-<? require_once($_SERVER['DOCUMENT_ROOT']."/innovation/core/innoworks.connector.php");?>
+<?
+require_once(dirname(__FILE__)."/ui.connector.php");
+?>

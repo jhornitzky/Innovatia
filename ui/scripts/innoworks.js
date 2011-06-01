@@ -1483,3 +1483,17 @@ function setNoteUser(id) {
 	$('.userChooser').load("engine.ajax.php?action=getNoteUserDetails&actionId=" + id);
 	dijit.byId('commonPopup').hide();
 }
+
+function getDashPersonal(elem) {
+	$('.dashNoteControl span').removeClass('selected');
+	$(elem).addClass('selected');
+	showLoading(".dashNote");
+	$('.dashNote').load("engine.ajax.php?action=getDashNotes");
+}
+
+function getDashPublic(elem) {
+	$('.dashNoteControl span').removeClass('selected');
+	$(elem).addClass('selected');
+	showLoading(".dashNote");
+	$('.dashNote').load("engine.ajax.php?action=getDashPublic");
+}

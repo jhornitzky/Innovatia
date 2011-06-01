@@ -13,7 +13,7 @@
 		?>
 			<script type="text/javascript">
 			{
-            	window.location.reload(true);
+            	window.location.reload(false);
 			}
             </script>  			
 		<? 

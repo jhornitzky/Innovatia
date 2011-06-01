@@ -1,6 +1,7 @@
 <div id="ideaTab" class="tabBody">
 	<div style="width: 100%; clear: left">
 		<div class="fixed-left">
+			<div class='tiny'>currently viewing...</div>
 			<div class='itemHolder groupPreview'></div>
 			<div class="ideaGroupsList"></div>
 		</div>

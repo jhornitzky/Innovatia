@@ -27,7 +27,7 @@
 		while ($task = dbFetchObject($tasks)) {?>
 		<div class="clearfix" style="font-size:0.75em">
 			<div style="float:left; width:64px; text-overflow:ellipsis; height:1.25em; text-align:right; margin-right:7px; overflow:hidden;"><?= $task->feature ?></div>
-			<div style="float:left; width:90%;">
+			<div style="float:left; width:85%; position:relative">
 				<?
 				$startDays = 1;
 				$finishDays = 1;
@@ -42,7 +42,7 @@
 				if (isset($task->startDate) && isset($task->finishDate))
 					$width = $startDays - $finishDays;
 				?>
-				<div style="background-color:blue; height:0.5em; margin-top:0.5em; width:<?= $width ?>%; left:<?= $startDays ?>%;"></div>
+				<div style="background-color:blue; height:0.5em; margin-top:0.5em; width:<?= $width ?>%; left:<?= $startDays ?>%; position:absolute"></div>
 			</div>
 		</div>		
 		<?}

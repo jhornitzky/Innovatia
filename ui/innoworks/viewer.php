@@ -18,7 +18,7 @@ if (isset($_GET['print']) )
 
 $ns = '';
 if (isset($_REQUEST['doc'])) {
-	$the_filename = 'innoWorks';
+	$the_filename = 'innoWorks' . $_GET['idea'] . $_GET['group'] . $_GET['profile'] . time();
 	header( 'Pragma: public' ); 
 	header( 'Content-Type: application/msword' ); 
 	header( 'Content-Disposition: attachment; filename="' . $the_filename . '.doc"' );
@@ -173,10 +173,9 @@ if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 	Note that the ideas or other information represented here are copyright of the ideator.<br/>
 	You should contact them if you wish to use the idea in any way.
 </div>
-<div class="viewerShare" style="position:absolute; top:10px; right:0;">
-	<p style="font-size:0.8em;margin:0; padding:0;color:#AAA;">Share this with a friend</p>
+<div class="viewerShare" style="position:absolute; top:10px; right:0; text-align:right;">
 	<? renderTemplate('shareBtns', get_defined_vars()); ?>
-	<a href="viewer.php?doc=true<?= serializeGet(); ?>">export as word .doc</a>
+	<a  style="border:none" href="viewer.php?doc=true<?= serializeGet(); ?>"><img src="<?= $serverUrl . $serverRoot?>ui/style/word.gif"/></a>
 </div>
 </body>
 </html>

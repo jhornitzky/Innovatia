@@ -42,42 +42,15 @@
 	</div>
 	<div class="fixed-right">
 		<div class="clearfix" style="width: 65%; margin-bottom: 1em; position:relative; float:left;">
-			<div class="itemHolder" style="border-top:none;">
-				<h2 style="color:#AAA;padding-top:1px;">latest activity...</h2>
+			<div class="itemHolder" style="border:none;">
+				<h2 class="dashNoteControl" style="padding-top:1px;">latest <span class="selected" onclick="getDashPersonal(this)">personal</span> <span onclick="getDashPublic(this)">public</span> activity</h2>
 			</div>
-				<? $count = 0;
-				if ($notes && dbNumRows($notes) > 0) {
-					while ($note = dbFetchObject($notes)) { 
-						$count++;?>
-						<div class="itemHolder">
-							<div><?= $note->noteText ?><br/>
-								<span>
-									<img src="retrieveImage.php?action=userImg&actionId=<?= $note->fromUserId ?>" style="width:1em; height:1em;" /> 
-									<a href="javascript:showProfileSummary('<?= $note->fromUserId ?>')">
-										<?= getDisplayUsername($note->fromUserId)?>
-									</a>
-									sent <span><?= $note->createdTime ?></span>
-								</span>
-							</div>
-						</div>
-					<?}?>
-					<a class="loadMore" href="javascript:log(this)" onclick="showProfile();">show and send more notes</a>
-				<?}
-				
-				if ($count < 1) { ?>
-					<p style="margin-top:0;">Welcome to innoWorks, the innovation management tool.</p>
-					<p>
-						innoWorks helps you innovate by giving you a simple yet structured way to manage your ideas, compare them and select them. 
-						A good place to start is by hitting the green add button up the top left, or you can move throughout the system at your own pace.
-					</p>
-					<p>
-						If you get stuck you can click on the 'i' icon to the top right for help. 
-						Happy ideating!
-					</p>
-				<?}?>
+			<div class="dashNote">
+				<? renderTemplate('notes.dash', array('notes' => $notes));?>
+			</div>
 		</div>
 		<div style="position:relative; float:right; width:30%">
-			<div style="position:absolute; top:0; right:0; color:#777; text-align:right; font-size:0.75em">need help? click the i up here</div>
+			<!-- <div style="position:absolute; top:0; right:0; color:#777; text-align:right; font-size:0.75em">need help? click the i up here</div> -->
 			<div style="margin-top:2.25em; padding:0.25em; background-color:#EEE">Getting started</div>
 			<ul style="list-style: square; font-size:0.9em; padding-left:1.75em; margin-top:0.5em;">
 				<li onclick="goTo('http://www.youtube.com/user/thoughtthinkers#p/u/4/X14S99KFn2A')"><a href="javascript:log(this)">Watch the tour</a></li>

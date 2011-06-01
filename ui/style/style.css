@@ -107,12 +107,17 @@ div.smallLoadingAnim {
 	background-image:url('gridDarkBg.jpg');
 }
 
-.threecol {
+.threecol, .sixCol {
 	margin-right:1.25%; 
 	width:32%; 
 	position:relative; 
 	float:left; 
 	background-color:#FFF;
+}
+
+.sixCol {
+	width:15%;
+	margin-bottom:0.5em;
 }
 
 .marker {
@@ -481,7 +486,7 @@ p.help {
 }
 
 .nohelp {
-	color:#AAA;
+	color:#777;
 }
 
 .blueCloud {

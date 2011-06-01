@@ -10,11 +10,23 @@ function renderDefaultDash($userid) {
 	$limit = 15;
 	$notes = getAllIncomingNotes($_SESSION['innoworks.ID'], "LIMIT $limit");
 	markNotesAsRead($_SESSION['innoworks.ID']);
-	import('search.service');
-	$limit = 5;
+	$limit = 5; //reduce
 	$ideas = getDashIdeas($userid, "LIMIT $limit");
 	$groups = getSearchGroups('', $userid, null, 'LIMIT '.$limit);
 	renderTemplate('dash.default', get_defined_vars());
+}
+
+function renderDashNotes($userid) {
+	$limit = 15;
+	$notes = getAllIncomingNotes($_SESSION['innoworks.ID'], "LIMIT $limit");
+	renderTemplate('notes.dash', get_defined_vars());
+}
+
+function renderDashPublic($userid) {
+	global $serverRoot, $serverUrl, $uiRoot;
+	$limit = 15;
+	$announces = getAnnouncements("LIMIT ".$limit);
+	renderTemplate('notes.public', get_defined_vars());
 }
 
 function renderInnovateDash($userid) {

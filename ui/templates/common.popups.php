@@ -1,6 +1,6 @@
 <div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none">
 	<span class="ideaDetailsOptions" style="position: relative; float: right;"> 
-		<a href="javascript:exportDocPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/word.jpg" style="width:32px; height:32px"/></a> 
+		<a href="javascript:exportDocPopupIdea()"><img src="<?= $serverRoot?>ui/style/word.gif" style="width:32px; height:32px"/></a> 
 		<a href="javascript:printPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></a> 
 	</span>
 	<table>

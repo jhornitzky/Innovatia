@@ -372,7 +372,6 @@ function getAdmins() {
 function cookieLogin() {
 	$innoname = $_COOKIE['innoname'];
 	$innohash = $_COOKIE['innohash'];
-	//list($innoname, $innohash) = @unserialize($_COOKIE);
 	logDebug('read cookie data; name : ' . $innoname . ' ; hash : ' . $innohash);
 	if (!$innoname || !$innohash || empty($innohash)) return;
 

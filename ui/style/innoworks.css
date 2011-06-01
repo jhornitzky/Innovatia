@@ -683,3 +683,12 @@ h1.innoProcess span.selected {
 .innovateTab .threecol {
 	margin-top:0; padding-top:0;
 }
+
+div.itemHolder h2.dashNoteControl span {
+	font-size:1em;
+	color:#AAA;
+}
+
+div.itemHolder h2.dashNoteControl span.selected {
+	color:#444;
+}

@@ -18,22 +18,19 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="background-color: #EEE;">Flags <br /> <span
-					style="font-size: 0.85em"><? if($userDetails->isAdmin == 1) echo "admin"; ?>
+				<td colspan="2" style="background-color: #EEE;">Flags <br /> 
+				<span style="font-size: 0.85em"><? if($userDetails->isAdmin == 1) echo "admin"; ?>
 					<? if($userDetails->isExternal == 1) echo "external"; ?>
 				</span></td>
 			</tr>
 		</table>
-		<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", "isAdmin", "lastUpdateTime", "isExternal", "isPublic", "sendEmail")); ?>
+		<? renderGenericUpdateForm(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", "isAdmin", "lastUpdateTime", "isExternal", "isPublic", "sendEmail", "cookie")); ?>
 		<input type="hidden" name="action" value="updateProfile" />
 	</form>
 </div>
-<div
-	style="width: 40%; position: relative; float: left; border-top: 1px solid #DDD;">
+<div style="width: 40%; position: relative; float: left; border-top: 1px solid #DDD;">
 	<p>
 		<b>Attachments</b>
 	</p>
-	<iframe
-		style="width: 100%; height: 20em; border: none; background: #EEE;"
-		src="attachment.php"></iframe>
+	<iframe style="width: 100%; height: 20em; border: none; background: #EEE;" src="attachment.php"></iframe>
 </div>

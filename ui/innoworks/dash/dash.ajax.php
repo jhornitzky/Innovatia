@@ -23,6 +23,12 @@ if (isset($_GET['action'])) {
 		case "getInnovate":
 			renderInnovateDash($_SESSION['innoworks.ID']);
 			break;
+		case "getDashNotes":
+			renderDashNotes($_SESSION['innoworks.ID']);
+			break;
+		case "getDashPublic":
+			renderDashPublic($_SESSION['innoworks.ID']);
+			break;
 	}
 }
 ?>

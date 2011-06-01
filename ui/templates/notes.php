@@ -15,8 +15,10 @@
 				<table>
 					<tr>
 						<td><img src="retrieveImage.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em"/></td>
-						<td><span><?= $note->noteText ?></span><br /> <span class="noteData">
-						<?= $note->createdTime ?>&nbsp; <?= getDisplayUsername($from) ?>&nbsp; &gt;&nbsp; <?= getDisplayUsername(getUserInfo($note->toUserId)) ?>&nbsp;
+						<td><span><?= $note->noteText ?></span><br /> 
+						<span class="noteData">
+						<?= getDisplayUsername($from) ?>&nbsp; &gt;&nbsp; <?= getDisplayUsername(getUserInfo($note->toUserId)) ?>&nbsp;
+						&nbsp; <?= $note->createdTime ?>
 						</span>
 						</td>
 					</tr>
@@ -28,7 +30,6 @@
 			href="javascript:logAction()"
 			onclick="loadResults(this, {action:'getNotes', limit:'<?= ($limit + 20) ?>'})">Load more</a>
 	<?}
-	markNotesAsRead($_SESSION['innoworks.ID']);
 } else {?>
 	<p class="nohelp">
 		Notes are messages that you can send to other people using the innoWorks tool. Notes will automatically be sent to releant people when you do stuff (like adding an idea to a group or posting a comment), but you can also send other messages manually too.
