@@ -1,4 +1,6 @@
-<p><b><?=$countUsers?></b> profile(s)</p>
+<h3 style="padding-top:1em;padding-bottom:0.5em;">
+	<?=$countUsers?> <span style="color:#AAA">profiles</span>
+</h3>
 <?if ($users && dbNumRows($users) > 0){ 
 	while ($user = dbFetchObject($users)) { ?>
 		<div class='itemHolder clickable'
@@ -15,11 +17,7 @@
 			</div>
 		</div>
 	<?}
-	if ($countUsers > dbNumRows($users)) {?>
-		<a class="loadMore" href="javascript:logAction()"
-			onclick="loadResults(this, {action:'getSearchProfiles', limit:'<?= ($limit + 20) ?>'})">Load
-			more</a>
-	<?}
-} else {?>
-	<p class="nohelp">No profiles</p>
-<?}
+	if ($countUsers > dbNumRows($users)) {
+		renderTemplate('common.loadMore', array('action' => 'getSearchProfiles', 'limit' => ($limit + 20)));
+	}
+}?>

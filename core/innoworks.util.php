@@ -71,4 +71,9 @@ function calculateDateDiff($inDate) {
 	$dateInterval = date_diff($date, $date2);
 	return $dateInterval->days;
 }
+
+function prettyDate($inDate, $format = 'ga, d M') {
+	$date = date_create($inDate);
+	return date_format($date, $format);
+}
 ?>

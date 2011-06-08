@@ -50,7 +50,8 @@ div.tabBody div.loadingAnim {
 }
 
 .tundra ._underlay {
-	background:rgba(30,30,30,0.9) none no-repeat right top;
+	background:none;
+	display:none;
 }
 
 .tundra .dojoxFloatingPaneCanvas {
@@ -59,7 +60,7 @@ div.tabBody div.loadingAnim {
 
 /* Page header */
 div#head {
-	height:3.5em;
+	height:4.5em;
 	margin-bottom:0.3em;
 	padding-top:0;
 	padding-bottom:0;
@@ -94,9 +95,20 @@ ul.tabMenu li {
 	margin-right:0.25em;
 	/* background-color:#444444;*/ 
 	border-top:none;
+	border-left:0;
+	border-right:0;
 	backgound-position:top left; 
 	background-repeat:no-repeat;
 	font-size:1.25em;
+}
+
+ul.tabMenu li a {
+	border-bottom:none;
+}
+
+ul.tabMenu li.selected { 
+	border-bottom-width:1px;
+	border-bottom-style:solid;
 }
 
 div#head div#leftAlignMenu {
@@ -176,7 +188,7 @@ div.tabBody div div.fixed-left {
 	color:#000000;
 	background-color:#EEEEEE;
 	overflow:hidden;
-	/* display:none; */
+	font-size:0.85em;
 }
 
 .respSurround {
@@ -282,15 +294,6 @@ div.tabBody div div.fixed-left {
 	font-size:1.2em;
 }
 
-.ideaGroupsList div p a.selected {
-	border-right:5px solid #CCC;
-	border-bottom:none;
-	font-weight: bold;
-	padding-left:2em;
-	background-color:#AAA;
-	color:#FFFFFF;
-}
-
 /* Other tabs styling */
 #timelineTab table
 {
@@ -334,19 +337,16 @@ table td input[type=text] {
 #noteTab #notePadder div {
 	padding:0.2em;
 	margin-bottom:0.25em;
-	width:80%;
 	overflow:hidden;
 }
 
 #notepadder div {
-	border-top:1px solid #DDD;
 	background-repeat:no-repeat;
-	background-position:left center;
+	background-position:right center;
 }
 
 #noteTab div.incoming {
 	background-image:url('arrowLeft.png');
-	background-position:right center;
 }
 
 #noteTab div.outgoing table {
@@ -368,7 +368,7 @@ table td input[type=text] {
 }
 
 div.treeMenu {
-	border-right:1px solid #AAA;
+	border-right:1px solid #CCC;
 	background-color:#FFF;
 }
 
@@ -551,11 +551,8 @@ div.groupPreview {
 }
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
-	background-color: #BDE4FF;
-}
-
-div.groupsHolder.selected div.groupsActualHolder {
-	background-color: #BFE6FF;
+	border-top:1px solid #D3E1F9;
+	border-bottom:1px solid #D3E1F9;
 }
 
 ul.submenu {
@@ -647,11 +644,8 @@ ul.submenu li.selected a {
 }
 
 .fixed-right ul.submenu {
-	margin-bottom:40px;
-}
-
-h1.innoProcess {
-	
+	padding-bottom:40px;
+	border-bottom:1px solid #CCC;
 }
 
 h1.innoProcess span {
@@ -691,4 +685,72 @@ div.itemHolder h2.dashNoteControl span {
 
 div.itemHolder h2.dashNoteControl span.selected {
 	color:#444;
+}
+
+h1.dashNoteControl span {
+	opacity:0.3;
+}
+
+h1.dashNoteControl span.selected {
+	opacity:1;
+}
+
+.fixed-right ul.submenu li {
+	border-left:none;
+	border-right:none;
+	border-top:none;
+	border-bottom:1px solid #AAA;
+	font-size:2em;
+	text-transform:lowercase;
+}
+
+.fixed-right ul.submenu li.selected {
+	border-bottom:1px solid #444;
+	background-color:transparent;
+}
+
+.fixed-right ul.submenu li a {
+	border:none;
+	color:#AAA;
+}
+
+.fixed-right ul.submenu li.selected a {
+	border:none;
+	color:#000;
+}
+
+h1.dashNoteControl span img {
+	vertical-align:top;
+}
+
+.ideaOptions img {
+	opacity:0.4;
+	margin-left:5px;
+	width:16px;
+	height:16px;
+}
+
+h3 a {
+	border:0;
+	color:#AAA;
+}
+
+.dash h3 {
+	margin-bottom:0.5em;
+}
+
+.noteData {
+	color:#AAA;
+}
+
+.note {
+	border-top: 1px solid #DDD;
+}
+
+.note .noteText {
+	font-size:0.95em;
+}
+
+.righterimage {
+	margin-right:0.5em;
 }

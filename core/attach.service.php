@@ -23,8 +23,8 @@ function genericRetrieveImage($imgs, $defImg) {
 		$img = dbFetchObject($imgs);
 		$imgPath = $_SERVER['DOCUMENT_ROOT'] . $usersRoot . $img->path;
 		//FIXME possbily rewrite images on the fly...
-		//readfile($imgPath);
-		header("Location: ".$serverUrl.$usersRoot.$img->path);
+		//header("Location: ".$serverUrl.$usersRoot.$img->path);
+		readfile($imgPath);
 	} else {
 		//header("Location: ".$serverUrl.$uiRoot."style/".$defImg);
 		readfile($_SERVER['DOCUMENT_ROOT'].$uiRoot."style/".$defImg);

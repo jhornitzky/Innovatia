@@ -1,5 +1,5 @@
 <div class="summaryContainer">
-<span class="summaryActions"><a href="javascript:printIdea('<?= $ideaUrl ?>')">Print</a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');">Edit</a> </span>
+<span class="summaryActions"><a href="javascript:printIdea('<?= $ideaUrl ?>')"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');"><img src="<?= $uiRoot . 'style/social/edit.jpg'?>"/></a> </span>
 <table>
 	<tr>
 		<td><img
@@ -15,14 +15,14 @@
 <div class="ideaDetailBit">
 <?renderGenericInfoFormOnlyPopulated(null, $idea, array("proposedService","ideaId","userId", "title", "createdTime", "lastUpdateTime","isPublic",'username', 'firstName', 'lastName'));?>
 </div>
-<h2>Role(s)</h2>
+<h2>Roles</h2>
 <?renderIdeaRoles($ideaId, false);?>
-<h2>Feature(s)</h2>
+<h2>Features</h2>
 <?renderIdeaFeatures($ideaId, false);?>
-<h2>Feature Evaluation(s)</h2>
+<h2>Feature Evaluations</h2>
 <?renderIdeaFeatureEvaluationsForIdea($ideaId, false);?>
-<h2>Risk Evaluation(s)</h2>
+<h2>Risk Evaluations</h2>
 <?renderIdeaRiskEval($ideaId, $_SESSION['innoworks.ID']);?>
-<h2>Comment(s)</h2>
+<h2>Comments</h2>
 <?renderCommentsForIdea($ideaId, $_SESSION['innoworks.ID']);?>
 </div>

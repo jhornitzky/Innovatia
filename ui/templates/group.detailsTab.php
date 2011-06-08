@@ -39,15 +39,14 @@
 		<?}?>
 		</table>
 	<? } else { ?>
-		<p>None</p>
+		<div class="tiny">None</div>
 	<? } ?>
 </div>
 
 <div class='two-column' style='border-top: 1px solid #EEE; width:35%; float:right;'>
 	<p style="font-weight:bold">User(s) 
 		<?if ($group->userId == $_SESSION['innoworks.ID']) { ?>
-		<input
-			type='button' value=' + ' onclick='showAddGroupUser(this)'
+		<input type='button' value=' + ' onclick='showAddGroupUser(this)'
 			alt='Add user to group' />
 		<?}?>
 	</p>

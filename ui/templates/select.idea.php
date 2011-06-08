@@ -5,16 +5,17 @@
 				<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width: 64px; height: 64px" />
 			</td>
 			<td style="text-align:left;">
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>" style="width: 1em; height: 1em" /> 
-				<span class="ideator"><?= getDisplayUsername($idea->userId); ?></span> 
+				<?php renderTemplate('ideator', array('userId' => $idea->userId))?>
 				<span class="ideaoptions"> 
-				<?if ($idea->userId == $user) { ?>
-					<input type="button" value=" - " onclick="deleteSelectIdea(<?= $idea->selectionId?>)" title="Deselect this idea" /> <?}?>
+					<img onclick="showIdeaSummary(<?= $idea->ideaId?>)" src="<?= $uiRoot . 'style/summary.png'?>">
+					<?if ($idea->userId == $user || $_SESSION['innoworks.isAdmin']) { ?>
+						<img onclick="deleteSelectIdea(<?= $idea->selectionId?>)" src="<?= $uiRoot . 'style/trash.png'?>">
+					<?}?> 
 				</span><br/> 
 				<span class="ideatitle">
 					<a href="javascript:logAction()" onclick="showIdeaDetails('<?= $idea->ideaId?>');"> <?=trim($idea->title)?></a>
 				</span><br/>
-				<span style="font-size:0.85em">
+				<span style="font-size:0.85em; color:#AAA;">
 				<b><?= dbNumRows($features); ?></b> feature(s) &nbsp; 
 				<b><?= dbNumRows($roles); ?></b> role(s) &nbsp; 
 				<b><?= dbNumRows($comments);?></b> comment(s) &nbsp; 

@@ -721,7 +721,7 @@ function positionResponse() {
 function showResponses(data, timeout) {
 	var selector;
 	selector = "#ideaResponses"; 
-	$(selector).html(data);
+	$(selector).prepend(data + '<br/>');
 	$('.respSurround').show('slide',function() {
 		positionResponse(); 
 	});
@@ -813,6 +813,7 @@ function addIdea(elem) {
 	if (elem !== undefined && $(elem).get(0).tagName.toLowerCase() === 'form') {
 		doAction($(elem).serialize(),"refreshVisibleTab();");
 		closePopup();
+		return false;
 	} else if (currentGroupId == null && currentGroupName == "Private") {
 		if ($("#addIdeaForm").find('input').val().length > 0) 
 			doAction($("#addIdeaForm").serialize(),"getIdeas()");
@@ -1456,7 +1457,7 @@ function showHelpSize(elem, sizeProps, selfVisibility) {
 }
 
 function closePopup() {
-	dijit.byId("commonPopup").close();
+	dijit.byId("commonPopup").hide();
 }
 
 function showCreateNewGroup(elem) {

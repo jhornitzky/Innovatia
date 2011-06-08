@@ -142,7 +142,7 @@ function linkGroupToUser($groupid, $userid) {
 		import("note.service");
 		global $session;
 		$note = array();
-		$note['fromUserId'] = $session['innoworks.ID'];
+		$note['fromUserId'] = $_SESSION['innoworks.ID'];
 		$note['toUserId'] = $userid;
 		$note['noteText'] = "You have been asked to join the group " . getGroupDetails($groupid)->title;
 		createNote($note);
@@ -165,9 +165,8 @@ function unlinkGroupToUser($groupid, $userid) {
 
 function approveGroupUser($groupid, $userid) {
 	import("note.service");
-	global $session;
 	$note = array();
-	$note['fromUserId'] = $session['innoworks.ID'];
+	$note['fromUserId'] = $_SESSION['innoworks.ID']; //FIXME
 	$note['toUserId'] = $userid;
 	$note['noteText'] = "You have been approved for the group " . getGroupDetails($groupid)->title;
 	createNote($note);
@@ -175,6 +174,7 @@ function approveGroupUser($groupid, $userid) {
 }
 
 function acceptGroupInvitation($groupid, $userid) {
+	/* FIXME
 	import("note.service");
 	global $session;
 	$note = array();
@@ -182,6 +182,7 @@ function acceptGroupInvitation($groupid, $userid) {
 	$note['toUserId'] = getGroupDetails($groupid)->userId;
 	$note['noteText'] = "I have joined the group " . getGroupDetails($groupid)->title;
 	createNote($note);
+	*/
 	return dbQuery("UPDATE GroupUsers SET accepted=1 WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 

@@ -6,7 +6,7 @@ import("search.service");
 
 function renderNotesDefault($user) {
 	$limit = 20;
-	$users = getSearchPeople("",$_SESSION['innoworks.ID'], array());
+	logAudit('notes 1');
 	$notes = getAllNotes($user, "LIMIT $limit");
 	
 	//calc first one
@@ -15,11 +15,13 @@ function renderNotesDefault($user) {
 		$notey = dbFetchObject($notes);
 		if ($notey->toUserId === $_SESSION['innoworks.ID'])
 			$latestUser = $notey->fromUserId;
-		else if ($notey['fromUserId'] === $_SESSION['innoworks.ID']) 
+		else if ($notey->fromUserId === $_SESSION['innoworks.ID']) 
 			$latestUser = $notey->toUserId;
+		
+		dbRowSeek($notes, 0);
 	}
-	dbRowSeek($notes, 0);
 	
+	logAudit('notes 6');
 	renderTemplate('notes.default', get_defined_vars());
 }
 

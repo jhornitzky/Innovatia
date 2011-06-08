@@ -1,7 +1,7 @@
-<div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none">
+<div id="ideasPopup" dojoType="inno.BigDialog" title="Edit idea" style="display:none" draggable="true">
 	<span class="ideaDetailsOptions" style="position: relative; float: right;"> 
-		<a href="javascript:exportDocPopupIdea()"><img src="<?= $serverRoot?>ui/style/word.gif" style="width:32px; height:32px"/></a> 
-		<a href="javascript:printPopupIdea()"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></a> 
+		<a href="javascript:exportDocPopupIdea()" style="border:none"><img src="<?= $serverRoot?>ui/style/word.gif" style="width:32px; height:32px;"/></a> 
+		<a href="javascript:printPopupIdea()" style="border:none"><img src="<?= $serverRoot?>ui/style/social/printIcon.jpg" style="width:32px; height:32px"/></a> 
 	</span>
 	<table>
 		<tr>
@@ -13,7 +13,6 @@
 			</td>
 		</tr>
 	</table>
-
 	<div id="ideasPopupTabContainer" dojoType="dijit.layout.TabContainer" style="width: 950px; height: 28em;" tabPosition="left-h" tabStrip="true">
 		<div id="ideasPopupDetails" dojoType="dijit.layout.TabContainer" title="Details" nested="true"
 			iconClass="dijitEditorIcon dijitEditorIconSelectAll">

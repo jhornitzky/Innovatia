@@ -92,7 +92,6 @@ function renderSearchGroups($userId, $limit) {
 
 	$groups = getSearchGroups($searchTerms, $userId, $filters, "LIMIT $limit");
 	$countGroups = countGetSearchGroups($searchTerms, $userId, $filters);
-	echo "<p><b>".$countGroups."</b> group(s)</p>";
 	renderTemplate('search.groups', get_defined_vars());
 }
 ?>

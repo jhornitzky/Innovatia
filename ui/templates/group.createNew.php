@@ -1,4 +1,4 @@
-<form class="addForm" onsubmit="addGroup(this); return false" style="font-size:1.25em;">
+<form class="addForm" onsubmit="addGroup(this); return false">
 <span>create new group</span>
 <div class="tiny">title</div>
 <input type="text" name="title" class="dijitTextBox"/>

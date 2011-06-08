@@ -75,15 +75,19 @@ $(document).ready( function () {
 <div class="orangeCloud" style="width:150px; float:left; height:120px; border-left:2px solid #FFCA6A;"></div>
 </div>
 </div>
+<div style="width:100%; border-bottom:1px solid #EEE; height:1.6em;">
+<div style="width:948px; margin:0 auto;">
+<ul id="submenu" style="clear:both">
+	<li id="ideaInnolnk" class="blueItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showSearch();">innovate</a></li> 
+	<li id="aboutlnk" class="greenItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showAbout();">about</a></li>
+	<li id="reglnk" class="orangeItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="registerUser();">join us</a></li>
+	<li id="downlnk" class="redItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showDownload();">download</a></li>
+</ul>
+</div>
+</div>
 
 <div id="loginContent">
-<div style="width:100%; font-size:1em; padding:0.2em; padding-top:0; text-align:left; clear:both ">
-	<ul id="submenu" style="clear:both">
-		<li id="ideaInnolnk"><span class="blueItem">[</span><a href="javascript:logAction();" onclick="showSearch();">innovation</a><span class="blueItem">]</span></li> 
-		<li id="aboutlnk"><span class="greenItem">[</span><a href="javascript:logAction();" onclick="showAbout();">about</a><span class="greenItem">]</span></li>
-		<li id="reglnk"><span class="orangeItem">[</span><a href="javascript:logAction();" onclick="registerUser();">register</a><span class="orangeItem">]</span></li>
-		<li id="downlnk"><span class="redItem">[</span><a href="javascript:logAction();" onclick="showDownload();">download</a><span class="redItem">]</span></li>
-	</ul>
+<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
 	<div id="ajaxContent" style="clear:both">
 		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
 	</div>

@@ -1,5 +1,5 @@
 <div class="summaryContainer">
-<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a></span>
+<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a></span>
 <table>
 	<tr>
 		<td><img
@@ -16,12 +16,12 @@
 </table>
 <span class="smallInfo">
 <? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
-	renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic'));
+	renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic', 'cookie'));
 }?>
-<? if ($userDetails->isAdmin) { ?><b>is</b> <i>admin</i> | <?}?>
+<? if ($userDetails->isAdmin) { ?><b>admin</b><?}?>
 </span>
 <p>
-	<h2>Idea(s)</h2>
+	<h2>Ideas</h2>
 	<?if ($ideas && dbNumRows($ideas) > 0 ) {
 		while ($idea = dbFetchObject($ideas)) {
 			if (hasAccessToIdea($idea->ideaId, $_SESSION['innoworks.ID'])) {?>
@@ -41,7 +41,7 @@
 <p>None</p>
 	<?}?>
 
-<h2>Group(s)</h2>
+<h2>Groups</h2>
 	<?if ($groups && dbNumRows($groups) > 0 ) {
 		while ($group = dbFetchObject($groups)) {?>
 <div class="itemHolder">

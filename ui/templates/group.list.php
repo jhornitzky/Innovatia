@@ -1,8 +1,8 @@
 <div class="addForm" style="margin-bottom:0.5em;">
 	<input type="button" value="create new group" style="width:100%;" onclick="showCreateNewGroup(this);"/>
 </div>
-<div class='tiny'>groups that you created...</div>
-<div class="treeMenu" style="padding: 0; margin-bottom:1em;"">
+<div class="treeMenu" style="padding: 0; margin-bottom:1em;">
+	<div class='tiny'>groups that you created...</div>
 	<div style="margin-bottom: 1.5em;">
 	<? renderGroupsForCreatorUser($user, $limit); ?>
 	</div>

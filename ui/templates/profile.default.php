@@ -1,21 +1,28 @@
 <div style="width: 100%;">
 	<div class="fixed-left">
 		<div class="treeMenu" style="margin-bottom:10px;">
-			<div class="itemHolder headBorder"><h3>your statistics</h3></div>
+			<div class="itemHolder headBorder">
+				<h3>your statistics</h3>
+			</div>
 			<div class="itemHolder">
 				<?= $noOfIdeas ?> <span>ideas</span>
+				<div style="clear:both; width:<?= $noOfIdeas ?>%; height:3px; background-color:blue; max-width:100%"></div>
 			</div>
 			<div class="itemHolder">
 				<?= $noOfSelectedIdeas ?> <span>selected ideas</span>
+				<div style="clear:both; width:<?= $noOfSelectedIdeas ?>%; height:3px; background-color:green; max-width:100%"></div>
 			</div>
 			<div class="itemHolder">
-				<? if($noOfIdeas > 0) echo round($noOfSelectedIdeas/$noOfIdeas, 2); else echo 0; ?> <span>selection/idea ratio</span>
+				<?= $percentOfIdeas ?> <span>selection/idea %</span>
+				<div style="clear:both; width:<?= $percentOfIdeas ?>%; height:3px; background-color:red; max-width:100%"></div>
 			</div>
 			<div class="itemHolder">
 				<?= $noOfGroupsCreated?> <span>groups created</span>
+				<div style="clear:both; width:<?= $noOfGroupsCreated ?>%; height:3px; background-color:orange; max-width:100%"></div>
 			</div>
 			<div class="itemHolder" style="margin-bottom:1.5em;">
 				<?= $noOfGroupsIn?> <span>groups in</span>
+				<div style="clear:both; width:<?= $noOfGroupsIn ?>%; height:3px; background-color:purple; max-width:100%"></div>
 			</div>
 			<div class="tiny">Similar profiles...</div>
 			<div>
@@ -24,16 +31,13 @@
 		</div>
 	</div>
 	<div class="fixed-right">
-		<div style="height:5em; border-bottom:1px solid #DDD;">
-			<div class="lefter lefterImage">
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>"
-					style="width: 3.5em; height: 3.5em;" />
-			</div>
+		<div style="height:4.5em; overflow:hidden;">
 			<div class="lefter">
-				<h1><?= $userDetails->firstName . ' ' . $userDetails->lastName ?> <span style="color:#AAA"><?= $userDetails->username ?></span></h1>
-				<span class="smallInfo">
-					<b>joined</b> <?=$userDetails->createdTime ?> <b>part of</b> <?= $userDetails->organization ?>
-				</span>
+				<h1 style="font-size:3.5em;">
+					<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>"
+					style="width: 1em; height: 1em; vertical-align:middle"/>
+					<?= $userDetails->firstName . ' ' . $userDetails->lastName ?> <span style="color:#AAA"><?= $userDetails->username ?></span>
+				</h1>
 			</div>
 			<div class="righter">
 				<p style="font-size: 0.8em; margin: 0; padding: 0; color:#AAA">
@@ -43,7 +47,6 @@
 				<? renderTemplate('shareBtns', null); ?>
 			</div>
 		</div>
-
 		<ul class="submenu">
 			<li class="greybox"><a href="javascript:logAction()"
 				onclick="showProfileNotes(this)">Notes</a>

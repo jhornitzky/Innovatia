@@ -3,7 +3,7 @@
 	<div class="tiny">Send note to...</div> 
 	<div class="userChooser" onclick="showAddNoteUser(this);"><?= renderAddNoteUserHeader($latestUser); ?></div>
 	<input class="toUserNote" name="toUserId" type="hidden" value="<?= $latestUser ?>"/>
-	<input type="text" name="noteText" class="noteText" dojoType="dijit.form.Textarea" />
+	<input type="text" name="noteText" class="noteText dijitTextArea" style="width:100%:" dojoType="dijit.form.Textarea" />
 	<input type="submit" value="send" title="Send" />
 </form>
 <div id='notePadder'>

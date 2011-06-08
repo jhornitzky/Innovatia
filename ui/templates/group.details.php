@@ -1,12 +1,10 @@
-<div class="tiny">currently viewing group...</div> 
-<div class='clearfix' style="height:4.5em; border-bottom:1px solid #DDD;">
-	<div class="lefter lefterImage">
-		<img
-			src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"
-			style="width: 3.5em; height: 3.5em" />
-	</div>
+<div class='clearfix' style="height:6em; overflow:hidden;">
 	<div class="lefter">
-		<h1><?= $group->title ?></h1>
+		<h1 style="font-size:3.5em;">
+			<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"
+			style="width: 1em; height: 1em; vertical-align:middle" /> 
+			<?= $group->title ?>
+		</h1>
 		<? if (isset($groupUser)) {?>
 		<input type='button'
 			onclick='currentGroupId="<?=$group->groupId?>"; delUserFromCurGroup("<?= $_SESSION['innoworks.ID'] ?>")'

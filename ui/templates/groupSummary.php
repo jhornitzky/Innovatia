@@ -1,5 +1,5 @@
 <div class="summaryContainer">
-<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');">Print</a></span>
+<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a></span>
 <table>
 	<tr>
 		<td>
@@ -24,7 +24,7 @@
 	<p>You have no access to this group</p>
 <?} else {
 	if ($groups && (dbNumRows($groups) == 1)) {?>
-		<h2>Idea(s)</h2>
+		<h2>Ideas</h2>
 		<?if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 			while ($idea = dbFetchObject($groupIdeas)) {?>
 				<div class="itemHolder">
@@ -40,7 +40,7 @@
 			<p>None</p>
 		<?}?>
 	
-		<h2>User(s)</h2>
+		<h2>Users</h2>
 		<?if ($groupUsers && dbNumRows($groupUsers) > 0) {
 			while ($user = dbFetchObject($groupUsers)) {?>
 				<div class="itemHolder">

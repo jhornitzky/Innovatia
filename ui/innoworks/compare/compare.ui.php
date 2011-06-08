@@ -30,16 +30,9 @@ function renderCommon($riskItems) {
 }
 
 function renderRiskItemHeadCallback($key) {
-	if ($key == "idea") {?>
-		<th class="headcol">
-			Idea<br/>
-			<span style="font-size:12px; color:#AAA">
-				idea & reviewer - criteria - score (average risk & feature)<br/>
-				<br/>
-				1 - poor to 7 - high
-			</span>
-		</th>
-	<?return true;
+	if ($key == "idea") {
+		renderTemplate('compare.headCallback');
+		return true;
 	} else {
 		return false;
 	}

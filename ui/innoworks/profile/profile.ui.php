@@ -11,6 +11,12 @@ function renderProfileDefault($user) {
 	$noOfSelectedIdeas = countQuery("SELECT COUNT(*) FROM Selections, Ideas WHERE Ideas.userId='".$_SESSION['innoworks.ID']."' and Ideas.ideaId = Selections.ideaId");
 	$noOfGroupsCreated = countQuery("SELECT COUNT(*) FROM Groups WHERE userId='".$_SESSION['innoworks.ID']."'");
 	$noOfGroupsIn = countQuery("SELECT COUNT(*) FROM GroupUsers WHERE userId='".$_SESSION['innoworks.ID']."'");
+	
+	if($noOfIdeas > 0) 
+		$percentOfIdeas = round($noOfSelectedIdeas/$noOfIdeas, 2) * 100; 
+	else 
+		echo 0;
+	
 	renderTemplate('profile.default', get_defined_vars());
 } 
 
@@ -32,7 +38,7 @@ function renderOtherProfiles($user, $limit) {
 			<!-- <a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>-->
 		<?}
 	} else {?>
-		<p>No similar profiles</p>
+		<div class="tiny">No similar profiles</div>
 	<?}
 }
 

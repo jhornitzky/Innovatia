@@ -14,11 +14,11 @@ function renderGroupsForCreatorUser($user, $limit) {
 		while ($group = dbFetchObject($groups)) {
 			renderGroupItem($group);
 		} 
-		if ($groupsCount > dbNumRows($groups)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getGroupsForCreatorUser', limit:'<?= ($limit + 20) ?>'})">Load more</a>
-		<?}
+		if ($groupsCount > dbNumRows($groups)) {
+			renderTemplate('common.loadMore', array('action' => 'getGroupsForCreatorUser', 'limit' => ($limit + 20)));
+		}
 	} else {?>
-		<span>None</span>
+		<span class="tiny">None</span>
 	<?}
 }
 
@@ -29,11 +29,11 @@ function renderPartOfGroupsForUser($user, $limit) {
 		while ($group = dbFetchObject($groups)) {
 			renderGroupItem($group);
 		} 
-		if ($groupsCount > dbNumRows($groups)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getPartOfGroupsForUser', limit:'<?= ($limit + 20) ?>'})">Load more</a>
-		<?}
+		if ($groupsCount > dbNumRows($groups)) {
+			renderTemplate('common.loadMore', array('action' => 'getPartOfGroupsForUser', 'limit' => ($limit + 20)));
+		}
 	} else {?>
-		<span>None</span>
+		<span class="tiny">None</span>
 	<?}
 }
 
@@ -45,11 +45,11 @@ function renderOtherGroupsForUser($user, $limit) {
 		while ($group = dbFetchObject($groups)) {
 			renderGroupItem($group);
 		} 
-		if ($groupsCount > dbNumRows($groups)) {?>
-			<a class="loadMore" href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherGroupsForUser', limit:'<?= ($limit + 20) ?>'})">Load more</a>
-		<?}
+		if ($groupsCount > dbNumRows($groups)) {
+			renderTemplate('common.loadMore', array('action' => 'getOtherGroupsForUser', 'limit' => ($limit + 20)));
+		}
 	} else {?>
-		<span>None</span>
+		<span class="tiny">None</span>
 	<?}
 }
 

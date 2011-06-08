@@ -1,6 +1,6 @@
-<p>
-	<b><?=$countIdeas?> </b> idea(s)
-</p>
+<h3 style="padding-top:1em;padding-bottom:0.5em;">
+	<?=$countIdeas?> <span style="color:#AAA">ideas</span>
+</h3>
 <?if ($ideas && dbNumRows($ideas) > 0){
 	while ($idea = dbFetchObject($ideas)) {?>
 <div class='itemHolder clickable'
@@ -19,11 +19,7 @@
 	</div>
 </div>
 	<?}
-	if ($countIdeas > dbNumRows($ideas)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getSearchIdeas', limit:'<?= ($limit + 20) ?>'})">Load
-	more</a>
-	<?}
-} else {?>
-	<p class="nohelp">No ideas</p>
-<?}
+	if ($countIdeas > dbNumRows($ideas)) {
+		renderTemplate('common.loadMore', array('action' => 'getSearchIdeas', 'limit' => ($limit + 20)));
+	}
+}?>

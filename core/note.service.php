@@ -135,6 +135,7 @@ function sendMail($inputs) {
 	}
 	
 	if ($mailMethod == 'smtp') {
+		//FIXME cahgne config based on what is available
 		$config = array('auth' => 'login',
                 	'username' => $mailUser,
                 	'password' => $mailPass, 

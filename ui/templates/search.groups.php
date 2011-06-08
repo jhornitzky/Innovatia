@@ -1,3 +1,6 @@
+<h3 style="padding-top:1em;padding-bottom:0.5em;">
+	<?=$countGroups?> <span style="color:#AAA">groups</span>
+</h3>
 <?if ($groups && dbNumRows($groups) > 0){
 	while ($group = dbFetchObject($groups)) {?>
 <div class='itemHolder clickable'
@@ -17,11 +20,7 @@
 	</div>
 </div>
 	<?}
-	if ($countGroups > dbNumRows($groups)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getSearchGroups', limit:'<?= ($limit + 20) ?>'})">Load
-	more</a>
-	<?}
-} else {?>
-	<p class="nohelp">No groups</p>
-<?}?>
+	if ($countGroups > dbNumRows($groups)) {
+		renderTemplate('common.loadMore', array('action' => 'getSearchGroups', 'limit' => ($limit + 20)));
+	}
+}?>

@@ -48,10 +48,12 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 function renderGenericInfoLine($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray) && !empty($value)) {?>
-			<b>
-				<?=fromCamelCase($key)?>
-			</b>
-			<?=$value?>
+			<span>
+				<b>
+					<?=fromCamelCase($key)?>
+				</b>
+				<?=$value?>
+			</span>
 		<?}
 	}
 }

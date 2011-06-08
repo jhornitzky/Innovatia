@@ -5,12 +5,11 @@
 				<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width: 64px; height: 64px" />
 			</td>
 			<td>
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId?>"
-					style="width: 1em; height: 1em" title="<?= getDisplayUsername($idea->userId); ?>" /> 
-				<span class="ideator"><?= getDisplayUsername($idea->userId); ?></span> 
+				<? renderTemplate('ideator', array('userId' => $idea->userId)); ?>
 				<span class="ideaoptions"> 
+					<img onclick="showIdeaSummary(<?= $idea->ideaId?>)" src="<?= $uiRoot . 'style/summary.png'?>">
 					<?if ($idea->userId == $user || $_SESSION['innoworks.isAdmin']) { ?>
-					<input type="button" value=" - " onclick="deleteIdea(<?= $idea->ideaId?>)" title="Delete this idea" />
+						<img onclick="deleteIdea(<?= $idea->ideaId?>)" src="<?= $uiRoot . 'style/trash.png'?>">
 					<?}?> 
 				</span><br/> 
 				<span class="ideatitle"> 
