@@ -31,11 +31,12 @@
 		</div>
 	</div>
 	<div class="fixed-right">
+		<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em;">
+			<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="height:100%;"/>
+		</div>
 		<div style="height:4.5em; overflow:hidden;">
 			<div class="lefter">
 				<h1 style="font-size:3.5em;">
-					<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>"
-					style="width: 1em; height: 1em; vertical-align:middle"/>
 					<?= $userDetails->firstName . ' ' . $userDetails->lastName ?> <span style="color:#AAA"><?= $userDetails->username ?></span>
 				</h1>
 			</div>

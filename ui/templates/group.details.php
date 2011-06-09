@@ -1,8 +1,9 @@
 <div class='clearfix' style="height:6em; overflow:hidden;">
+	<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em;">
+		<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="height: 100%;" /> 
+	</div>
 	<div class="lefter">
 		<h1 style="font-size:3.5em;">
-			<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"
-			style="width: 1em; height: 1em; vertical-align:middle" /> 
 			<?= $group->title ?>
 		</h1>
 		<? if (isset($groupUser)) {?>

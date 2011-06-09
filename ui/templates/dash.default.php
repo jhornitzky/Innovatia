@@ -42,8 +42,28 @@
 		</div>
 	</div>
 	<div class="fixed-right">
-		<div class="clearfix" style="width: 65%; margin-bottom: 1em; position:relative; float:left;">
-			<div class="itemHolder" style="border:none;">
+		<div class="clearfix" style="width: 65%; margin-bottom:1em; position:relative; float:left;">
+			<div class="tiles clearfix" style="border:none;">
+				<div class="tile" onclick="showInnovate(); showIdeas()" style="background-image:url('../style/cube.png')">
+					<div class="tileTitle">ideas</div>
+					<div class="tileTotal"><?= $countIdeas ?></div>
+					<div class="tileHit" onclick="showCreateIdea(this)">&oplus;</div>
+				</div>	
+				<div class="tile" onclick="showInnovate(); showCompare()">
+					<div class="tileTitle">compare</div>
+					<div class="tileTotal"><?= $countItems ?></div>
+				</div>
+				<div class="tile" onclick="showInnovate(); showSelect()">
+					<div class="tileTitle">select</div>
+					<div class="tileTotal"><?= $countSelections ?></div>
+				</div>	
+				<div class="tile" onclick="showGroups()" style="background-image:url('../style/group.png')">
+					<div class="tileTitle">groups</div>
+					<div class="tileTotal"><?= $countGroups ?></div>
+					<div class="tileHit" onclick="showCreateNewGroup(this)">&oplus;</div>
+				</div>	
+			</div>
+			<div class="itemHolder" style="border:none; margin-top:1.5em;">
 				<h1 class="dashNoteControl" style="font-size:30px; margin-top:0;"><span class="selected" onclick="getDashPersonal(this)" style="font-size:1em;"><img src="../style/user.png"/></span> <span onclick="getDashPublic(this)" style="font-size:1em;"><img src="../style/public.png"/></span> activity</h1>
 			</div>
 			<div class="dashNote">

@@ -16,7 +16,8 @@ if (!empty($note->toUserId) && $note->fromUserId == $id) {
 			</td>
 			<td>
 				<span class="noteData">
-					<a href="javascript:showUserSummary(<?= $id ?>)"><?= getDisplayUsername($id) ?></a>
+					<? if ($note->toUserId === $_SESSION['innoworks.ID']) {?>to<?}?>
+					<a href="javascript:showProfileSummary(<?= $id ?>)"><?= getDisplayUsername($id) ?></a>
 					<? if (isset($note->ideaId)) {?>on <a href="javascript:showIdeaSummary(<?= $note->ideaId ?>)">idea</a><?}?> 
 					<? if (isset($note->ideaId)) {?>on <a href="javascript:showGroupSummary(<?= $note->groupId ?>)">group</a><?}?>
 					<? if (isset($note->announcementId)) {?>annouced<?}?>

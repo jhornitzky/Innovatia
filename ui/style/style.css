@@ -232,7 +232,8 @@ div.clickable:hover, div.hoverable:hover {
 }
 
 .responses span.serviceResponseFail {
-	color:red;font-weight:bold;
+	color:red;
+	font-weight:bold;
 }
 
 div.lefter {

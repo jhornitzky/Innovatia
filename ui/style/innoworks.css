@@ -349,15 +349,11 @@ table td input[type=text] {
 	background-image:url('arrowLeft.png');
 }
 
-#noteTab div.outgoing table {
-	margin-left:3em;
-}
-
 #noteTab div.outgoing {
 	background-image:url('arrowRight.png');
 }
 
-#noteTab div.incoming table {
+#noteTab div table {
 	margin-right:3em;
 }
 
@@ -552,7 +548,6 @@ div.groupPreview {
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
 	border-top:1px solid #D3E1F9;
-	border-bottom:1px solid #D3E1F9;
 }
 
 ul.submenu {
@@ -586,7 +581,7 @@ ul.submenu li.selected a {
 }
 
 .ideator {
-	font-size:0.75em;
+	font-size:0.85em;
 }
 
 .actions img {
@@ -745,6 +740,7 @@ h3 a {
 
 .note {
 	border-top: 1px solid #DDD;
+	margin-bottom:0.5em;
 }
 
 .note .noteText {
@@ -753,4 +749,40 @@ h3 a {
 
 .righterimage {
 	margin-right:0.5em;
+}
+
+.ideator a {
+	font-weight:normal
+}
+
+.tiles .tile {
+	width:107px;
+	height:107px;
+	padding:1px;
+	border:1px solid #AAA;
+	float:left;
+	margin-right:5px;
+	font-size:1.5em;
+	position:relative;
+	background-position:left center;
+	background-repeat:no-repeat;
+	color:#AAA;
+}
+
+.tiles .tile:last-child {
+	margin-right:0;
+}
+
+.tiles .tileTotal {
+	font-weight:bold;
+	font-weight:bold;
+	font-size:3em;
+}
+
+.tiles .tileHit {
+	color:green;
+	font-size:0.85em;
+	position:absolute;
+	bottom:0;
+	right:3px;
 }

@@ -10,9 +10,19 @@ function renderDefaultDash($userid) {
 	$limit = 15;
 	$notes = getAllIncomingNotes($_SESSION['innoworks.ID'], "LIMIT $limit");
 	markNotesAsRead($_SESSION['innoworks.ID']);
+	
+	//latest ideas and groups
 	$limit = 5; //reduce
 	$ideas = getDashIdeas($userid, "LIMIT $limit");
 	$groups = getSearchGroups('', $userid, null, 'LIMIT '.$limit);
+	
+	//counts for tiles
+	$countIdeas = countDashIdeas($userid);
+	$countItems = countDashCompare($userid);
+	$countSelections = countDashSelect($userid);
+	import('group.service');
+	$countGroups = countGetAllGroupsForUser($userid);
+	
 	renderTemplate('dash.default', get_defined_vars());
 }
 

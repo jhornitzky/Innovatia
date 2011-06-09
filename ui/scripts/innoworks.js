@@ -13,7 +13,7 @@ function processQueuedActions() {
 	if (queue.length > 0) {
 		for (x in queue) {
 			eval(queue[x]);
-		}0
+		}
 		queue = [];
 	}
 }
