@@ -15,7 +15,7 @@ function renderProfileDefault($user) {
 	if($noOfIdeas > 0) 
 		$percentOfIdeas = round($noOfSelectedIdeas/$noOfIdeas, 2) * 100; 
 	else 
-		echo 0;
+		$percentOfIdeas = 0;
 	
 	renderTemplate('profile.default', get_defined_vars());
 } 

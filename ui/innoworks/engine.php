@@ -25,18 +25,6 @@ import("user.service");
 <link href="<?= $serverUrl.$serverRoot?>ui/style/buttons.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverUrl.$serverRoot?>ui/style/style.css" rel="stylesheet" type="text/css" />
 <link href="<?= $serverUrl.$serverRoot?>ui/style/innoworks.css" rel="stylesheet" type="text/css" />
-<style>
-.menu {
-	padding-top:4px;
-}
-
-.menu img {
-	width:20px;
-	height:20px;
-	vertical-align:middle;
-	font-size:18px;
-}
-</style>
 
 <script type="text/javascript">
 //////// VARS //////////
@@ -144,14 +132,16 @@ function openAdmin() {
 <!-- HEADER BAR -->
 <div id="headSurround">
 <div id="head">
-<div class="menu" style="width:100%; text-align:right;">
-	<!-- <span style="color:#DDD; font-size:0.9em;"><?= getDisplayFirstName($_SESSION['innoworks.ID']); ?></span> -->
-	<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
-	<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
-	<?}?>
-	<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback(this)" alt="Feedback" title="Leave feedback and report bugs"/>
-	<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp(this)" alt="Feedback" title="Get help and info"/>
-	<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout(this)" alt="Logout" title="Logout and end your session"/>
+<div class="menu clearfix" style="width:100%; text-align:right;">
+	<div class="menuHolder clearfix">
+		<a href="javascript:showProfile()" style="color:#FFF; font-size:0.9em;"><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></a>
+		<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
+		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
+		<?}?>
+		<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback(this)" alt="Feedback" title="Leave feedback and report bugs"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp(this)" alt="Feedback" title="Get help and info"/>
+		<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout(this)" alt="Logout" title="Logout and end your session"/>
+	</div>
 </div>
 
 <div style="width:100%; text-align:right;">
@@ -241,8 +231,7 @@ function openAdmin() {
 <div id="footerSpace"></div>
 <div id="footerSurround">
 	<div id="footer" style="min-height:3em;">
-		<div class="fixed-left"><?= $versionName ?> · try innoWorks on your mobile</div>
-		<div class="fixed-right">&copy; UTS 2011</div>
+		<? renderTemplate('common.footer')?>
 	</div>
 </div>
 

@@ -3,7 +3,7 @@
 </h3>
 <?if ($ideas && dbNumRows($ideas) > 0){
 	while ($idea = dbFetchObject($ideas)) {?>
-<div class='itemHolder clickable'
+<div class='itemHolder clickable clearfix'
 	onclick="showIdeaSummary(<?= $idea->ideaId?>);" style="height: 2.5em;">
 	<div class="lefter" style="padding: 0.1em;">
 		<img

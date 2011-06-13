@@ -21,6 +21,11 @@ a {
 	margin:0 auto;
 }
 
+#loginContent {
+	width:975px;
+	margin:0 auto;
+}
+
 #head {
 	height:2.75em;
 	padding-top:0.25em;
@@ -36,7 +41,6 @@ a {
 }
 
 .searchResults {
-	background-color:rgba(255,255,255,0.75);
 	padding-top:3px;
 }
 

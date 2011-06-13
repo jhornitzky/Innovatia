@@ -66,58 +66,55 @@ $(document).ready( function () {
 </div>
 
 <div id="loginHeader2" class="clearfix" style="width:100%; padding-top:25px;padding-bottom:20px;">
-<div id="loginHeader" style="width:1280px; margin:0 auto;">
-<div class="blueCloud" style="width:150px; float:left; height:120px; border-right:2px solid #7DB4FF"></div>
-<div style="width:948px; float:left; text-align:left; padding-left:10px; padding-right: 10px; background-color:white; background-color:rgba(255,255,255,0.7); height:100px; padding-top:10px;">
-	<h1>Connect your ideas</h1>
-	<p style="margin:0">innoWorks lets you save, compare and share ideas with others.</p>
-</div>
-<div class="orangeCloud" style="width:150px; float:left; height:120px; border-left:2px solid #FFCA6A;"></div>
-</div>
-</div>
-<div style="width:100%; border-bottom:1px solid #EEE; height:1.6em;">
-<div style="width:948px; margin:0 auto;">
-<ul id="submenu" style="clear:both">
-	<li id="ideaInnolnk" class="blueItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showSearch();">innovate</a></li> 
-	<li id="aboutlnk" class="greenItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showAbout();">about</a></li>
-	<li id="reglnk" class="orangeItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="registerUser();">join us</a></li>
-	<li id="downlnk" class="redItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showDownload();">download</a></li>
-</ul>
-</div>
-</div>
-
-<div id="loginContent">
-<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
-	<div id="ajaxContent" style="clear:both">
-		<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
+	<div id="loginHeader" style="width:1280px; margin:0 auto; max-height:120px">
+		<div class="blueCloud" style="width:147px; float:left; height:120px; border-right:2px solid #7DB4FF"></div>
+		<div style="width:955px; float:left; text-align:left; padding-left:10px; padding-right: 10px; background-color:white; background-color:rgba(255,255,255,0.7); height:100px; padding-top:10px;">
+			<h1>Connect your ideas</h1>
+			<p style="margin:0; padding-left:6px;">innoWorks lets you save, compare and share ideas with others.</p>
+		</div>
+		<div class="orangeCloud" style="width:147px; float:left; height:120px; border-left:2px solid #FFCA6A;"></div>
 	</div>
 </div>
 
-<div style="width:100%; font-size:1em; padding:0.2em; text-align:left; ">
-	<div style="float:left;  width:560px; text-align:left; font-size:22px;">
-		<noscript><span><b>You must have javascript enabled to use Innoworks</b></span></noscript>
+<div style="width:100%; border-bottom:1px solid #AAA; height:1.6em; background-image:url('ui/style/gearsStrip.jpg'); background-repeat:repeat-x; background-position:bottom center;">
+	<div class="clearfix" style="width:975px; margin:0 auto; background-color:#EEE">
+		<ul id="submenu" style="clear:both; padding-left:15px; padding-right:15px;">
+			<li id="ideaInnolnk" class="blueItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showSearch();">innovate</a></li> 
+			<li id="aboutlnk" class="greenItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showAbout();">about</a></li>
+			<li id="reglnk" class="orangeItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="registerUser();">join us</a></li>
+			<li id="downlnk" class="redItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showDownload();">download</a></li>
+		</ul>
 	</div>
 </div>
+
+<div id="loginContent" style="background-color:#EEE;">
+	<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
+		<div id="ajaxContent" style="clear:both">
+			<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
+		</div>
+	</div>
+	<div style="width:100%; font-size:1em; padding:0.2em; text-align:left; ">
+		<div style="float:left;  width:560px; text-align:left; font-size:22px;">
+			<noscript><span><b>You must have javascript enabled to use innoWorks</b></span></noscript>
+		</div>
+	</div>
 </div>
 
 <div id="footerSpace"></div>
 <div id="footerSurround">
 	<div id="footer" style="font-size:12px">
-		<div class="fixed-left"><?= $versionName ?> · try innoWorks on your mobile<br/>
-			<!-- AddThis Button BEGIN -->
-			<div class="addthis_toolbox addthis_default_style ">
-				<a class="addthis_button_preferred_1"></a>
-				<a class="addthis_button_preferred_2"></a>
-				<a class="addthis_button_preferred_3"></a>
-				<a class="addthis_button_preferred_4"></a>
-				<a class="addthis_button_compact"></a>
-				<a class="addthis_counter addthis_bubble_style"></a>
-			</div>
-			<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script>
-			<!-- AddThis Button END --></div>
-		<div class="fixed-right">
-			&copy; UTS 2011
+		<? renderTemplate('common.footer');?>
+		<!-- AddThis Button BEGIN -->
+		<div class="addthis_toolbox addthis_default_style ">
+			<a class="addthis_button_preferred_1"></a>
+			<a class="addthis_button_preferred_2"></a>
+			<a class="addthis_button_preferred_3"></a>
+			<a class="addthis_button_preferred_4"></a>
+			<a class="addthis_button_compact"></a>
+			<a class="addthis_counter addthis_bubble_style"></a>
 		</div>
+		<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script>
+		<!-- AddThis Button END -->
 	</div>
 </div>
 </body>

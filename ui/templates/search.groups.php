@@ -3,7 +3,7 @@
 </h3>
 <?if ($groups && dbNumRows($groups) > 0){
 	while ($group = dbFetchObject($groups)) {?>
-<div class='itemHolder clickable'
+<div class='itemHolder clickable clearfix'
 	onclick="showGroupSummary('<?= $group->groupId; ?>')"
 	style="height: 2.5em">
 	<div class="lefter" style="padding: 0.1em;">

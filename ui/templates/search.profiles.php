@@ -3,7 +3,7 @@
 </h3>
 <?if ($users && dbNumRows($users) > 0){ 
 	while ($user = dbFetchObject($users)) { ?>
-		<div class='itemHolder clickable'
+		<div class='itemHolder clickable clearfix'
 			onclick="showProfileSummary('<?=$user->userId?>')"
 			style="height: 2.5em">
 			<div class="lefter" style="padding: 0.1em;">

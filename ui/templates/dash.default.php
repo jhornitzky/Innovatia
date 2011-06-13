@@ -3,7 +3,7 @@
 		<div onclick="showProfile()" style="height: 120px; border:1px solid #AAA; position:relative">
 			<div style="position:absolute;width:100%;height:120px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>');opacity:0.25; background-position:center center;background-color:#EEE;"></div>
 			<div style="position:absolute;width:100%;height:120px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); background-repeat:no-repeat; background-position:center center;">
-				<h1 style="font-size:30px" onclick="showProfile()" style="color:#AAA"><span style="color:#FFF;">hello</span> <?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
+				<h1>hello<br/><?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
 			</div>
 		</div>
 		<div style="border-right:1px solid #CCC; margin-top:1em;">
@@ -20,8 +20,13 @@
 					</div>
 				<?}
 			}?>
-			<div class="itemHolder" style="margin-bottom:1.5em;">
-				<h2 style="color:#AAA" onclick="showInnovate(); showIdeate()">see all ideas &raquo;</h2>
+			<div class="itemHolder clearfix" onclick="showInnovate(); showIdeate()" style="margin-bottom:1.5em;">
+				<div class="lefter" style="color:#AAA">
+					see all ideas
+				</div>
+				<div class="righter righterImage">
+					&raquo;
+				</div>
 			</div>
 			<div class="tiny">...and groups</div>
 			<?if (isset($groups) && dbNumRows($groups) > 0) { 
@@ -36,8 +41,13 @@
 					</div>
 				<?}
 			}?>
-			<div class="itemHolder" style="margin-bottom:1.5em;">
-				<h2 style="color:#AAA" onclick="showGroups()">see all groups &raquo;</h2>
+			<div class="itemHolder clearfix" style="margin-bottom:1.5em;" onclick="showGroups()">
+				<div class="lefter" style="color:#AAA">
+					see all groups
+				</div>
+				<div class="righter righterImage">
+					&raquo;
+				</div>
 			</div>
 		</div>
 	</div>

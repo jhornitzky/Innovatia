@@ -112,7 +112,6 @@ div.smallLoadingAnim {
 	width:32%; 
 	position:relative; 
 	float:left; 
-	background-color:#FFF;
 }
 
 .sixCol {
@@ -506,4 +505,17 @@ p.help {
 	width:16px;
 	height:16px;
 	vertical-align:middle;
+}
+
+#searchui .threecol {
+	margin-top:0.5em;
+}
+
+.linkHolder img {
+	vertical-align: middle;
+}
+
+.linkHolder a {
+	color:#AAA;
+	text-decoration:none;
 }
