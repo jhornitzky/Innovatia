@@ -1,17 +1,21 @@
 <div class="summaryContainer">
 <span class="summaryActions"><a href="javascript:printIdea('<?= $ideaUrl ?>')"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a> <a href="javascript:showIdeaDetails('<?= $ideaId?>');"><img src="<?= $uiRoot . 'style/social/edit.jpg'?>"/></a> </span>
-<table>
-	<tr>
-		<td><img
-			src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>"
-			style="width: 3em; height: 3em;" /></td>
-		<td>
-			<h1><?= $idea->title ?></h1> 
-		</td>
-	</tr>
-</table>
-<p class="smallInfo"><b>By</b> <?= getDisplayUsername($idea->userId);?> <b>Created</b> <?= $idea->createdTime?> <b>Updated</b> <?= $idea->lastUpdateTime?></p>
-<p style="color: #444"><?= $idea->proposedService?></p>
+<div class="summaryHead curvetr">
+	<table>
+		<tr>
+			<td style="background-color:#FFF"; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;"">
+				<? if (!isset($_REQUEST['doc'])) {?>
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width: 3em; height: 3em;" />
+				<? } ?>
+			</td>
+			<td>
+				<h1><?= $idea->title ?></h1> 
+			</td>
+		</tr>
+	</table>
+	<p class="smallInfo"><b>By</b><? renderTemplate('ideator', array('userId' => $idea->userId));?><b>Created</b> <?= $idea->createdTime?> <b>Updated</b> <?= $idea->lastUpdateTime?></p>
+	<p style="color: #444; font-size:0.85em"><?= $idea->proposedService?></p>
+</div>
 <div class="ideaDetailBit">
 <?renderGenericInfoFormOnlyPopulated(null, $idea, array("proposedService","ideaId","userId", "title", "createdTime", "lastUpdateTime","isPublic",'username', 'firstName', 'lastName'));?>
 </div>

@@ -84,5 +84,5 @@ dojo.declare("inno.BigDialog",dijit.Dialog,{
 		}
 		this.open = false;
 		this.onHide();
-	},
+	}
 });

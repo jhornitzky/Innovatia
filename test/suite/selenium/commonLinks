@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost/innovation" />
+<title>commonLinks</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">commonLinks</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/innovation/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>ideaslnk</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>ideaMega</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>groupslnk</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@id='groupTab']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>profilelnk</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@id='profileTab']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=test again</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@id='profileTab']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>dashlnk</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>dashTab</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//img[@alt='Add']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>addIdeaForm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//img[@alt='Feedback']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>actionDetails</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//img[@onclick='showHelp(this)']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@id='inno_Dialog_0']/div[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='inno_Dialog_0']/div[1]/span[2]</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

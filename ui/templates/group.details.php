@@ -1,5 +1,5 @@
 <div class='clearfix' style="height:6em; overflow:hidden;">
-	<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em;">
+	<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em; filter: alpha(opacity=10);">
 		<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="height: 100%;" /> 
 	</div>
 	<div class="lefter">

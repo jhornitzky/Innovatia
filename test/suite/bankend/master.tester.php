@@ -1,0 +1,5 @@
+<?php
+/**
+ * MCP for testing
+ */
+?>

@@ -1,25 +1,22 @@
 <div class="summaryContainer">
 <span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a></span>
-<table>
-	<tr>
-		<td>
-			<img src="<?= $serverUrl .  $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:3em; height:3em;"/> 
-		</td>
-		<td><h1><?= $group->title?></h1>
-			<!-- <div style="margin-bottom:1.0em">
-				 <span><?= getDisplayUsername($group->userId)?></span>  |
-				<span class="summaryActions"><a href="javascript:logAction()" onclick="printGroupSummary('<?= "&group=" . $group->groupId ?>')">Print</a>
-				<a href="javascript:logAction()" onclick="currentGroupId=<?= $group->groupId ?>;showGroups();">Edit</a></span> 
-			</div> -->
-		</td>
-	</tr>
-</table>
-<span class="smallInfo"><b>Led by</b> <?= getDisplayUsername($group->userId) ?> 
-<?php renderGenericInfoLine($groups, $group ,array('groupId', 'userId', 'title', 'description', 'tags'))?>
-</span>
-<div class="smallInfo"><?= $group->tags ?></div>
-<div class="smallInfo"><?= $group->description ?></div>
-
+<div class="summaryHead curvetr">
+	<table>
+		<tr>
+			<td style="background-color:#FFF; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;">
+				<? if (!isset($_REQUEST['doc'])) {?>
+				<img src="<?= $serverUrl .  $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:3em; height:3em;"/> 
+				<? } ?>
+			</td>
+			<td><h1><?= $group->title?></h1></td>
+		</tr>
+	</table>
+	<span class="smallInfo"><b>Led by</b> <? renderTemplate('ideator', array('userId' => $group->userId)) ?> 
+	<?php renderGenericInfoLine($groups, $group ,array('groupId', 'userId', 'title', 'description', 'tags'))?>
+	</span>
+	<p style="font-size:0.9em;"><?= $group->description ?></p>
+	<div class="smallInfo"><i><?= $group->tags ?></i></div>
+</div>
 <?if (!$hasGroupAccess) {?>
 	<p>You have no access to this group</p>
 <?} else {

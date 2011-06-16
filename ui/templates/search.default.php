@@ -5,13 +5,11 @@
 <? } ?>
 
 <form id="searchForm" onsubmit="showSearch(); return false;" style="font-size: 1.5em; clear: both;">
-	<div class="dijitTextBox" style="border: 1px solid #B3B3B3; position: relative; float: left; clear: right; margin: 0; padding: 0; background-color:#FFF">
-		<input id="searchTerms" type="text" name="searchTerms" value="<?= $searchTerms ?>" style="margin: 0; padding: 0; font-size: 1.2em;border: none" /> 
-		<img src="<?= $uiRoot."style/glass.png"?>" onclick="showSearch()"
-			style="width: 30px; height: 24px; margin: 2px; cursor: pointer;" />
-		<input id="searchBtn" type="submit" value="Search"
-			style="display: none;" />
-		<div id="searchHider" style="padding: 0.25em; background-color: #EEE; height:1em; position:absolute; right: -75px; top:-1; width:60px">
+	<div class="dijitTextBox" style="border: 1px solid #B3B3B3; position: relative; float: left; clear: right; margin: 0; padding: 0; background-color:#FFF; width:auto">
+		<input id="searchTerms" type="text" name="searchTerms" value="<?= $searchTerms ?>" style="margin: 0; padding: 0; font-size: 1.2em; border:none; width:auto !important;" /> 
+		<img src="<?= $uiRoot."style/glass.png"?>" onclick="showSearch()" style="width: 30px; height: 24px; margin: 2px; cursor: pointer;" />
+		<input id="searchBtn" type="submit" value="Search" style="display: none;" />
+		<div id="searchHider" style="padding: 0.25em; background-color: #EEE; height:1.15em; position:absolute; right: -75px; top:-1; width:60px">
 			<a href="javascript:logAction()" onclick="toggleSearchOptions()" style="font-size: 0.6em; margin: 0;">more &darr;</a>
 		</div>
 	</div>

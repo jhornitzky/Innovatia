@@ -11,7 +11,7 @@
 				<tr>
 					<th style="padding-right:20px; font-weight:normal;">
 						<span style="font-size:1.5em; color:#AAA;">
-							tasks
+							timeline
 						</span>
 					</th>
 					<th>effort (days)</th> 

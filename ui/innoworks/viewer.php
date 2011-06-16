@@ -86,7 +86,7 @@ h1, h2, .bluetext {
 	vertical-align:top;
 }
 
- td.totalCol span.itemTotal {
+td.totalCol span.itemTotal {
 	font-size:2.0em;
 }
 
@@ -97,6 +97,10 @@ h1, h2, .bluetext {
 
 .compareForce {
 	display:none;
+}
+
+table td {
+ font-size:0.9em;
 }
 </style>
 
@@ -128,27 +132,29 @@ function goToInnoworks() {
 </script>
 </head>
 <body class="tundra">
+<? if (!isset($_REQUEST['doc'])) { ?>
 <table>
 	<tr>
-	<td>
-	<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
-	</td>
-	<td class="bluetext">
-	<?
-	$echoBit;
-	if ( isset($_GET['idea']) ) 
-		$echoBit = "Idea";
-	else if ( isset($_GET['group']) ) 
-		$echoBit = "Group";
-	else if ( isset($_GET['profile']) ) 
-		$echoBit = "Profile";
-	?>
-	<p class="subheading" style="font-size:50px;padding-top:12px;">
-	<?= $echoBit?>
-	</p>
-	</td>
+		<td>
+			<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
+		</td>
+		<td class="bluetext">
+			<?
+			$echoBit;
+			if ( isset($_GET['idea']) ) 
+				$echoBit = "Idea";
+			else if ( isset($_GET['group']) ) 
+				$echoBit = "Group";
+			else if ( isset($_GET['profile']) ) 
+				$echoBit = "Profile";
+			?>
+			<p class="subheading" style="font-size:50px;padding-top:12px;">
+			<?= $echoBit?>
+			</p>
+		</td>
 	</tr>
 </table>
+<? } ?>
 <div class="viewSummary">
 <?
 if ( isset($_GET['iv']) && isset($_GET['idea'])) {

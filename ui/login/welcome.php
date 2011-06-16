@@ -46,7 +46,7 @@ $(document).ready( function () {
 	<tr>
 		<td><input id="iUsername" type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
-		<td><input class="cupid-blue" type="submit" value="Log In" style="font-weight: bold; font-size:0.9em" /></td>
+		<td rowspan="2"><input style="border:none; background-color:transparent; width:48px;height:48px; background-image:url('<?= $serverUrl . $uiRoot ?>style/forward.png'); text-indent:-9999px; margin-top:-25px" type="submit" value="Log In" style="font-weight: bold; font-size:0.9em" /></td>
 	</tr>
 	<tr>
 		<td colspan="3" style="font-size:0.75em; color:#AAA">
@@ -76,8 +76,8 @@ $(document).ready( function () {
 	</div>
 </div>
 
-<div style="width:100%; border-bottom:1px solid #AAA; height:1.6em; background-image:url('ui/style/gearsStrip.jpg'); background-repeat:repeat-x; background-position:bottom center;">
-	<div class="clearfix" style="width:975px; margin:0 auto; background-color:#EEE">
+<div style="width:100%; border-bottom:1px solid #AAA; height:1.6em;background-repeat:repeat-x; background-position:bottom center;">
+	<div class="clearfix curvetr" style="width:975px; margin:0 auto; background-color:#EEE;">
 		<ul id="submenu" style="clear:both; padding-left:15px; padding-right:15px;">
 			<li id="ideaInnolnk" class="blueItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showSearch();">innovate</a></li> 
 			<li id="aboutlnk" class="greenItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showAbout();">about</a></li>
@@ -87,7 +87,7 @@ $(document).ready( function () {
 	</div>
 </div>
 
-<div id="loginContent" style="background-color:#EEE;">
+<div id="loginContent"style="background-color:#EEE;">
 	<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
 		<div id="ajaxContent" style="clear:both">
 			<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>

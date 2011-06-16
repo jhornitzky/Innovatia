@@ -96,33 +96,22 @@ function openAdmin() {
 		margin-top:2px;
 	}
 	
-	#searchTab * .threecol {
-		margin-right:2%; 
+	* .threecol {
+		margin-right:1.5%; 
 		width:23%; 
 		position:relative; 
 		float:left; 
 		overflow:auto; 
 	}
 	
+	* .threecol:last-child {
+		margin-right:0;
+	}
+	
 	#timelineTab table, #compareTab table, div.fixed-right #reportDetails  {
 		width:750px;
 	}
 	
-	.respSurround {
-		background-color:#FFFFFF;
-		max-height:3em;
-	}
-
-	.respSurround .responses {
-		padding-left:10px;
-		max-height:3em;
-		overflow:hidden;
-		width:1000px; 
-		margin:auto; 
-		color:#000000;
-		background:none;
-		border:none;
-	}
 	</style>
 <![endif]-->
 </head>

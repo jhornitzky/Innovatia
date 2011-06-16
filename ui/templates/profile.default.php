@@ -31,7 +31,7 @@
 		</div>
 	</div>
 	<div class="fixed-right">
-		<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em;">
+		<div class="overlay" style="color:#AAA; position:absolute; opacity:0.1; height:8em; filter: alpha(opacity=10);">
 			<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>" style="height:100%;"/>
 		</div>
 		<div style="height:4.5em; overflow:hidden;">

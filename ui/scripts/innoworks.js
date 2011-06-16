@@ -1,6 +1,16 @@
 var handler = "engine.ajax.php";
 
-//QUEUE 
+//ERROR Handler
+if ($ !== undefined) {
+	$(document).ajaxError(function(e, jqxhr, settings, exception) {
+		/*if ( settings.url == "ajax/missing.html" ) {
+			$(this).text( "Triggered ajaxError handler." );
+		} */
+		showResponses('Failed request to ' + settings.url, true);
+	});
+}
+
+//QUEUE
 var queue = [];
 var loadingString = "<div class='loadingAnim'></div>";
 var smallLoadingString = "<div class='smallLoadingAnim'></div>";

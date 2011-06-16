@@ -1,25 +1,29 @@
 <div class="summaryContainer">
-<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a></span>
-<table>
-	<tr>
-		<td><img
-			src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>"
-			style="width: 3em; height: 3em;" />
-		</td>
-		<td>
-			<h1>
-			<?= $userDetails->firstName?>
-			<?= $userDetails->lastName?>
-			<span style="color:#AAA"><?= $userDetails->username?></span>
-			</h1></td>
-	</tr>
-</table>
-<span class="smallInfo">
-<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
-	renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic', 'cookie'));
-}?>
-<? if ($userDetails->isAdmin) { ?><b>admin</b><?}?>
-</span>
+<span class="summaryActions"><a href="javascript:logAction()" onclick="printUser('&profile=<?= $userDetails->userId?>');"><img src="<?= $uiRoot . 'style/social/printIcon.jpg'?>"/></a></span>	
+<div class="summaryHead curvetr">
+	<table>
+		<tr>
+			<td style="background-color:#FFF; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;">
+				<? if (!isset($_REQUEST['doc'])) {?>
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width: 3em; height: 3em;" />
+				<? } ?>
+			</td>
+			<td>
+				<h1>
+				<?= $userDetails->firstName?>
+				<?= $userDetails->lastName?>
+				<span style="color:#AAA"><?= $userDetails->username?></span>
+				</h1>
+			</td>
+		</tr>
+	</table>
+	<span class="smallInfo">
+	<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
+		renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic', 'cookie'));
+	}?>
+	<? if ($userDetails->isAdmin) { ?><b>admin</b><?}?>
+	</span>
+</div>
 <p>
 	<h2>Ideas</h2>
 	<?if ($ideas && dbNumRows($ideas) > 0 ) {

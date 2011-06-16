@@ -1,5 +1,5 @@
 <div id="ideaform_<?= $idea->ideaId?>" class="idea hoverable" title="<?= $idea->title ?>">
-	<div style="position:absolute; opacity:0.1;">
+	<div style="position:absolute; opacity:0.1; filter: alpha(opacity=10);">
 		<img src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width: 64px; height: 64px" />
 	</div>
 	<div style="position:absolute; width:98%%; padding:1%;">

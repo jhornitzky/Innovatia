@@ -502,6 +502,7 @@ p.help {
 
 .control {
 	opacity:0.4;
+	filter: alpha(opacity=40);
 	width:16px;
 	height:16px;
 	vertical-align:middle;
@@ -518,4 +519,23 @@ p.help {
 .linkHolder a {
 	color:#AAA;
 	text-decoration:none;
+}
+
+.curved {
+	-moz-border-radius-topleft: 8px; -webkit-border-top-left-radius: 8px; border-top-left-radius: 8px;
+	-moz-border-radius-bottomright: 8px; -webkit-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px; 
+}
+
+.curvetr {
+	-moz-border-radius-topright: 24px; -webkit-border-top-right-radius: 24px; border-top-right-radius: 24px;
+}
+
+.curvetbl {
+	-moz-border-radius-bottomleft: 24px; -webkit-border-bottom-left-radius: 24px; border-bottom-left-radius: 24px;
+}
+
+.summaryHead {
+	background-color:#EEE;
+	padding:5px;
+	margin-left: -5px;
 }

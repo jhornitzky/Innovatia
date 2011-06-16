@@ -19,5 +19,5 @@ dojo.declare("inno.Dialog",dijit.Dialog,{
 				top : t + "px"
 			});
 		}
-	},
+	}
 });
