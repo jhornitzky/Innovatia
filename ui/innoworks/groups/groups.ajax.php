@@ -92,6 +92,8 @@ if (isset($_POST['action'])) {
 		case "addGroup":
 			echo "Creating Group.. ";
 			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID'], 'createdTime' => date_create()->format('Y-m-d H:i:sP'));
+			if (isset($_REQUEST['description'])) $opts['description'] = $_REQUEST['description'];
+			if (isset($_REQUEST['tags'])) $opts['tags'] = $_REQUEST['tags'];
 			unset($opts['action']);
 			renderServiceResponse(createGroup($opts));
 			break;

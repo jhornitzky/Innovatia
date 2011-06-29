@@ -4,6 +4,10 @@
  */
 import("innoworks.connector");
 
+function getAllIdeas() {
+	return dbQuery("SELECT *FROM Ideas ORDER BY createdTime DESC LIMIT 10000");
+}
+
 function getPublicIdeas() {
 	return dbQuery("SELECT Ideas.*, Users.username FROM Ideas, Users WHERE Ideas.isPublic = '1' AND Ideas.userId = Users.userId ORDER BY createdTime");
 }
@@ -61,13 +65,27 @@ function getIdeaSelect($ideaId, $userid) {
 }
 
 function createIdea($opts) {
-	return genericCreate("Ideas", $opts);
+	import('note.service');
+	$id = genericCreate("Ideas", $opts);
+	
+	if ($id) {
+		$note = array();
+		$note['mail'] = false;
+		$note['fromUserId'] = $_SESSION['innoworks.ID'];
+		$note['toUserId'] = $_SESSION['innoworks.ID'];
+		$note['noteText'] = 'Created new idea ' . $opts['title'];
+		$note['ideaId'] = $id;
+		createNote($note);
+	}
+	
+	return $id;
 }
 
 function updateIdeaDetails($opts) {
 	if (hasEditAccessToIdea($opts['ideaId'], $_SESSION['innoworks.ID'])){
 		$where = array("ideaId", "userId");
-		return genericUpdate("Ideas", $opts, $where);
+		$success = genericUpdate("Ideas", $opts, $where);
+		return $success;
 	}
 	return false;
 }
@@ -138,7 +156,7 @@ function createComment($opts) {
 
 function deleteComment($id) {
 	if (hasEditAccessToComment($id, $_SESSION['innoworks.ID'])) {
-		return genericDelete("Comments", array("commentId"=>$id));
+		return genericDelete("Comments", array("commentId" => $id));
 	}
 	return false;
 }

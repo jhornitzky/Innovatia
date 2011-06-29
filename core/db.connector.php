@@ -45,11 +45,16 @@ function cleanseArray($opts) {
  * @param array $opts
  */
 function genericCreate($tablename, $opts) {
+	$link = dbConnect();
 	$opts = cleanseArray($opts);
 	$comma_keys = implode(",", array_keys($opts));
 	$comma_vals = dbValImplode(array_values($opts));
 	$sql = "INSERT INTO $tablename (".$comma_keys.") VALUES (".$comma_vals.")";
-	return dbQuery($sql);
+	$success = dbQuery($link, $sql);
+	if ($success) {
+		return dbAffectedId($link);
+	}
+	return false;
 }
 
 /**
@@ -217,12 +222,12 @@ function dbClose($link)
 
 //////////////////////////////////////////////
 
-function dbAffectedId($result) {
-	return mysqli_insert_id($result);
+function dbAffectedId($link) {
+	return mysqli_insert_id($link);
 }
 
-function dbNumAffectedRows($result) {
-	return mysqli_affected_rows($result);
+function dbNumAffectedRows($link) {
+	return mysqli_affected_rows($link);
 }
 
 function dbNumRows($result) {
@@ -234,7 +239,10 @@ function dbNumFields($result) {
 }
 
 function dbFetchObject($result) {
-	return mysqli_fetch_object($result);
+	if ($result != null) 
+		return mysqli_fetch_object($result);
+	else 
+		return false;
 }
 
 function dbFetchField($result) {

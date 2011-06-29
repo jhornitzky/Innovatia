@@ -4,7 +4,7 @@ import("user.service");
  
 function renderProfileDefault($user) {
 	global $serverUrl, $serverRoot;
-	$limit = 5;
+	$limit = 8;
 	$userDetails = getUserInfo($user);
 	$shareUrl = $serverUrl . $serverRoot . "ui/innoworks/viewer.php?user=" . $_SESSION['innoworks.ID'];
 	$noOfIdeas = countQuery("SELECT COUNT(*) FROM Ideas WHERE userId='".$_SESSION['innoworks.ID']."'");

@@ -5,6 +5,10 @@ function getGroupDetails($gid) {
 	return dbFetchObject(dbQuery("SELECT Groups.* FROM Groups WHERE groupId = '$gid'"));
 }
 
+function getAllGroups() {
+	return dbQuery("SELECT * FROM Groups");
+}
+
 function getAllGroupsForUser($user, $limit) {
 	return dbQuery("SELECT Groups.* FROM Groups WHERE userId = '$user' UNION SELECT Groups.* FROM GroupUsers, Groups WHERE GroupUsers.userId = '$user' AND GroupUsers.groupId = Groups.groupId GROUP BY Groups.groupId ORDER BY createdTime DESC $limit");
 }

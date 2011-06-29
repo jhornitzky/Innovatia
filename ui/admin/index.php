@@ -41,6 +41,8 @@ require_once("thinConnector.php");
 	<a href="javascript:logAction()" onclick="showFrame('announcement.php')">Announcements</a>	
 	<a href="javascript:logAction()" onclick="showFrame('reports.php')">Reports</a>	
 	<a href="javascript:logAction()" onclick="showFrame('actions.php')">Bulk Actions</a>	
+	<a href="javascript:logAction()" onclick="showFrame('ideabook.php')">Ideabook</a>
+	<a href="javascript:logAction()" onclick="showFrame('groups.php')">Groups</a>
 	<a href="javascript:logAction()" onclick="showFrame('users.php')">Users</a>
 	<a href="javascript:logAction()" onclick="showFrame('tables.php')">Tables</a>
 	<a href="javascript:logAction()" onclick="showFrame('ldap.php')">LDAP</a>

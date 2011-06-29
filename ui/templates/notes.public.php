@@ -3,7 +3,7 @@
 	<div class="note <?= $class ?> clearfix">
 		<table>
 			<tr>
-				<td>
+				<td style="vertical-align:top;">
 					<img src="retrieveImage.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
 				</td>
 				<td>

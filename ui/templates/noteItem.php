@@ -11,7 +11,7 @@ if (!empty($note->toUserId) && $note->fromUserId == $id) {
 <div class="note <?= $class ?> clearfix">
 	<table>
 		<tr>
-			<td>
+			<td style="vertical-align:top;">
 				<img onclick="showProfileSummary(<?= $id ?>)" src="retrieveImage.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
 			</td>
 			<td>

@@ -62,6 +62,7 @@ if (isset($_POST['action'])) {
 		case "addIdea":
 			echo "Creating Idea.. ";
 			$opts = array('title' => $_POST['title'], 'userId' => $_SESSION['innoworks.ID'], 'createdTime' => date_create()->format('Y-m-d H:i:sP'));
+			if (isset($_REQUEST['proposedService'])) $opts['proposedService'] = $_REQUEST['proposedService'];
 			unset($opts['action']);
 			renderServiceResponse(createIdea($opts));
 			break;

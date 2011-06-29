@@ -45,6 +45,19 @@ function renderGenericInfoForm($rs,$row,$omitArray) {
 	echo "</table>";
 }
 
+function renderGenericInfoLines($rs,$row,$omitArray) {
+	echo "<div>";
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray)) {?>
+			<div class="tiny"><?=fromCamelCase($key)?></div>
+			<div>
+			<p><?=$value?></p>
+			</div>
+		<?}
+	}
+	echo "</div>";
+}
+
 function renderGenericInfoLine($rs,$row,$omitArray) {
 	foreach($row as $key => $value) {
 		if (!in_array($key, $omitArray) && !empty($value)) {?>
@@ -73,20 +86,38 @@ function renderGenericInfoFormOnlyPopulated($rs,$row,$omitArray) {
 	echo "</table>";
 }
 
+function renderGenericInfoLinesOnlyPopulated($rs,$row,$omitArray) {
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray) && !empty($value)) {?>
+			<div class="tiny"><?=fromCamelCase($key)?></div>
+			<div><?=$value?></div>
+		<?}
+	}
+}
+
 function renderGenericUpdateForm($rs,$row,$omitArray) {
 	echo "<table>";
 	foreach($row as $key => $value) {
 		echo "<tr>";
 		if (!in_array($key, $omitArray)) {?>
-<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
-<td
-	style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
-<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
-</td>
+		<td style="width: 10%"><label><?=fromCamelCase($key)?></label></td>
+		<td
+			style="width: 90%"><!-- <input type="text" name="<?=$key?>" value="<?=$value?>" />  -->
+		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+		</td>
 		<?}
 		echo "</tr>";
 	}
 	echo "</table>";
+}
+
+function renderGenericUpdateLines($rs,$row,$omitArray) {
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray)) {?>
+		<div class="tiny"><?=fromCamelCase($key)?></div>
+		<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+		<?}
+	}
 }
 
 function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
@@ -136,6 +167,47 @@ function renderGenericUpdateFormWithRefData($rs,$row,$omitArray,$tableName) {
 	}
 	echo "</table>";
 }
+
+function renderGenericUpdateLinesWithRefData($rs,$row,$omitArray,$tableName) {
+	$refdata = getRefDataForTable($tableName);
+
+	if ($refdata && dbNumRows($refdata) > 0)
+	$refdata = dbFetchAll($refdata);
+
+	foreach($row as $key => $value) {
+		if (!in_array($key, $omitArray)) {
+			
+			$metaArray = findColumnMetadata($refdata, $key);
+			
+			if ($metaArray){
+				$metaHelp = getColumnDescription($metaArray);
+				if ($metaHelp) {?>
+					<div class="tiny" title="<?= $metaHelp?>"><?= fromCamelCase($key) ?></div>
+				<?} else {?>
+					<div class="tiny"><?=fromCamelCase($key)?></div>
+				<?}
+			} else {?>
+				<div class="tiny"><?=fromCamelCase($key)?></div>
+			<?}
+			
+			$metaArray = findColumnMetadata($refdata, $key);
+			
+			//If metadata then render appropriate input dialog
+			if ($metaArray){
+				//Get column type, if column type, then render appropriate input
+				$metaType = getColumnType($refdata);
+				if ($metaType) {
+					renderMetaType($metaType, $key, $value);
+				} else {?>
+					<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+				<?}
+			} else {?>
+				<textarea name="<?=$key?>" dojoType="dijit.form.Textarea"><?=$value?></textarea>
+			<?}
+		}
+	}
+}
+
 
 function renderGenericHeader($rs, $omitArray, $camelcase = true) {
 	echo "<tr>";

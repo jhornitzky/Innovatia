@@ -60,14 +60,15 @@ function decrypt($data, $iv) {
 	return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $salt , $data , MCRYPT_MODE_CBC, $iv));
 }
 
-function calculateDateDiff($inDate) {
+function calculateDateDiff($inDate, $inDate2 = null) {
 	logVerbose('calcDateDiff');
 	$date = date_create($inDate);
 				
-	logVerbose('calcDateDiff 1');
-	$date2 = date_create();
+	if (isset($inDate2))
+		$date2 = date_create($inDate2);
+	else
+		$date2 = date_create();
 				
-	logVerbose('calcDateDiff 2');
 	$dateInterval = date_diff($date, $date2);
 	return $dateInterval->days;
 }

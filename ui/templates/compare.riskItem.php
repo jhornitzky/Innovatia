@@ -4,4 +4,5 @@
 	<span class="itemTotal" title="Risk evaluation score">0</span> | <span class="featureTotal"
 		title="Feature evaluation score"><?= $featuresTotal ?>
 	</span></td>
+	<input type="hidden" name="riskEvaluationId" value="<?= $riskItem->riskEvaluationId?>"/>
 </tr>

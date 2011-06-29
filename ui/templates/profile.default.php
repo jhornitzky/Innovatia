@@ -65,7 +65,6 @@
 				onclick="showProfileSelect(this)">Select</a>
 			</li>
 		</ul>
-
 		<div class="profileInfo" style="margin-top: 2em"></div>
 	</div>
 </div>

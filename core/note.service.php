@@ -40,30 +40,41 @@ function createAnnouncement($senderid, $msg) {
 	return genericCreate("Announcements", $announce);
 }
 
+/**
+ * 
+ * Send a note to a user, or just create one.
+ * 
+ * 
+ * @param array $opts {toUserId, fromUserId, noteText, isPublic, isAnnouncement, ideaId, groupId}
+ */
 function createNote($opts) {
-	import("user.service");
-	$success = genericCreate("Notes", $opts);
-	$userDetails = getUserInfo($opts["toUserId"]);
-	$username = '';
-	$userInfo = getUserInfo($opts["fromUserId"]);
-	if ($userInfo != false)
-	$username = $userInfo->username;
-	if ($success && $userDetails->sendEmail == 1) {
-		$message = $opts["noteText"];
-
-		$headers = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$headers .= 'Innoworks' . "\r\n";
-
-		sendMail(array(
-			'to' => $userDetails->email, 
-			"subject" => "Innoworks update", 
-			"msg" => $message, 
-			"headers" => $headers));
-		//mail($userDetails->email, "Innoworks update", $message, $headers);
-	}
-	if ($success)
-	return true;
+	try {	
+		import("user.service");
+		$success = genericCreate("Notes", $opts);
+		$userDetails = getUserInfo($opts["toUserId"]);
+		$username = '';
+		$userInfo = getUserInfo($opts["fromUserId"]);
+		if ($userInfo != false)
+		$username = $userInfo->username;
+		if ($success && $userDetails->sendEmail == 1) {
+			$message = $opts["noteText"];
+	
+			$headers = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'Innoworks' . "\r\n";
+			
+			if (isset($opts['mail']) && $opts['mail'] === false) {} 
+			else {
+				sendMail(array(
+					'to' => $userDetails->email, 
+					"subject" => "Innoworks update", 
+					"msg" => $message, 
+					"headers" => $headers));
+			}
+		}
+		if ($success)
+		return true;
+	} catch (Exception $e) {}
 	return false;
 }
 

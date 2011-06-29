@@ -16,21 +16,40 @@ function retrieveImageForUser($userId) {
 	return genericRetrieveImage($imgs,"user.png");
 }
 
+/**
+ * 
+ * Read an image to display to user
+ * @param unknown_type $imgs
+ * @param unknown_type $defImg
+ */
 function genericRetrieveImage($imgs, $defImg) {
-	global $uiRoot, $usersRoot, $serverUrl;
+       global $uiRoot, $usersRoot, $serverUrl;
 
-	if ($imgs && dbNumRows($imgs) > 0) {
-		$img = dbFetchObject($imgs);
-		$imgPath = $_SERVER['DOCUMENT_ROOT'] . $usersRoot . $img->path;
-		//FIXME possbily rewrite images on the fly...
-		//header("Location: ".$serverUrl.$usersRoot.$img->path);
-		readfile($imgPath);
-	} else {
-		//header("Location: ".$serverUrl.$uiRoot."style/".$defImg);
-		readfile($_SERVER['DOCUMENT_ROOT'].$uiRoot."style/".$defImg);
-	}
+       $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+       if ($imgs && dbNumRows($imgs) > 0) {
+               $img = dbFetchObject($imgs);
+               $imgPath = $_SERVER['DOCUMENT_ROOT'] . $usersRoot . $img->path;
+               //FIXME possbily rewrite images on the fly...
+               //header("Location: ".$serverUrl.$usersRoot.$img->path);
+               header("Content-type: " . finfo_file($finfo, $imgPath));
+               readfile($imgPath);
+       } else {
+               //header("Location: ".$serverUrl.$uiRoot."style/".$defImg);
+               $imgPath = $_SERVER['DOCUMENT_ROOT'].$uiRoot."style/".$defImg;
+               header("Content-type: " . finfo_file($finfo, $imgPath));
+               readfile($imgPath);
+       }
+
+       finfo_close($finfo);
 }
 
+/**
+ * 
+ * Resize image to page size
+ * @param unknown_type $source_image_path
+ * @param unknown_type $thumbnail_image_path
+ */
 function generate_image_thumbnail( $source_image_path, $thumbnail_image_path )
 {
 	logInfo('shouldFixImageThumbnail');
@@ -94,6 +113,11 @@ function updateAttachment($opts) {
 	return genericUpdate("Attachments", $opts, array("attachmentId"));
 }
 
+/**
+ * 
+ * Save an attachment to the file system
+ * @param unknown_type $destFileName
+ */
 function createAttachmentFS($destFileName) {
 	global $usersRoot;
 	$destFilePath = $usersRoot.$destFileName;

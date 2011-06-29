@@ -12,7 +12,7 @@ function renderDefaultDash($userid) {
 	markNotesAsRead($_SESSION['innoworks.ID']);
 	
 	//latest ideas and groups
-	$limit = 5; //reduce
+	$limit = 8; //reduce
 	$ideas = getDashIdeas($userid, "LIMIT $limit");
 	$groups = getSearchGroups('', $userid, null, 'LIMIT '.$limit);
 	
