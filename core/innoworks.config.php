@@ -28,8 +28,8 @@ $mailMethod = 'smtp';
 $mailMethod = '';
 $mailServer = 'smtp.gmail.com';
 $mailPort = 465;
-$mailUser = 'james.hornitzky@gmail.com';
-$mailPass = 'password885011';
+$mailUser = '';
+$mailPass = '';
 $mailFrom = 'notifications@innoworks.feit.uts.edu.au';
 
 //OTHER PROPERTIES
