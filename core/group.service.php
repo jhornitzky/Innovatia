@@ -99,7 +99,17 @@ function getGroupUserEntryWithId($groupId, $userId) {
 }
 
 function createGroup($opts) {
-	return genericCreate("Groups",$opts);
+	$id = genericCreate("Groups", $opts);
+	if ($id) {
+		$note = array();
+		$note['mail'] = false;
+		$note['fromUserId'] = $_SESSION['innoworks.ID'];
+		$note['toUserId'] = $_SESSION['innoworks.ID'];
+		$note['noteText'] = 'New group: ' . $opts['title'];
+		$note['groupId'] = $id;
+		createNote($note);
+	}
+	return $id;
 }
 
 function updateGroup($opts) {
@@ -120,15 +130,13 @@ function deleteGroup($id, $user) {
 
 function linkIdeaToGroup($groupId, $ideaId) {
 	import("note.service");
-	global $session;
-	createNoteForGroup($session['innoworks.ID'], $groupId, "An idea has been added to the group " . getGroupDetails($groupId)->title);
+	createNoteForGroup($_SESSION['innoworks.ID'], $groupId, "An idea has been added to the group " . getGroupDetails($groupId)->title);
 	return dbQuery("INSERT INTO GroupIdeas (groupId,ideaId) VALUES ('$groupId','$ideaId')");
 }
 
 function unlinkIdeaToGroup($groupId, $ideaId) {
 	import("note.service");
-	global $session;
-	createNoteForGroup($session['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupId)->title);
+	createNoteForGroup($_SESSION['innoworks.ID'],$groupId, "An idea has been removed from the group " . getGroupDetails($groupId)->title);
 	return dbQuery("DELETE FROM GroupIdeas WHERE groupId = '$groupId' AND ideaId = '$ideaId'");
 }
 
@@ -136,19 +144,19 @@ function groupEntryExists($groupid, $userid) {
 	logInfo('Checking for group entry');
 	$entries = dbQuery("SELECT * FROM GroupUsers WHERE groupId = '$groupid' AND userId = '$userid'");
 	if ($entries != null && dbNumRows($entries) > 0)
-	return true;
+		return true;
 	else
-	return false;
+		return false;
 }
 
 function linkGroupToUser($groupid, $userid) {
 	if (!groupEntryExists($groupid, $userid))  {
 		import("note.service");
-		global $session;
 		$note = array();
 		$note['fromUserId'] = $_SESSION['innoworks.ID'];
 		$note['toUserId'] = $userid;
 		$note['noteText'] = "You have been asked to join the group " . getGroupDetails($groupid)->title;
+		$note['groupId'] = $groupid;
 		createNote($note);
 		return dbQuery("INSERT INTO GroupUsers (groupId,userId,approved) VALUES ('$groupid','$userid',1)");
 	} else {
@@ -158,11 +166,11 @@ function linkGroupToUser($groupid, $userid) {
 
 function unlinkGroupToUser($groupid, $userid) {
 	import("note.service");
-	global $session;
 	$note = array();
-	$note['fromUserId'] = $session['innoworks.ID'];
+	$note['fromUserId'] = $_SESSION['innoworks.ID'];
 	$note['toUserId'] = $userid;
 	$note['noteText'] = "You have been removed from the group " . getGroupDetails($groupid)->title;
+	$note['groupId'] = $groupid;
 	createNote($note);
 	return dbQuery("DELETE FROM GroupUsers WHERE groupId = '$groupid' AND userId = '$userid'");
 }
@@ -170,43 +178,61 @@ function unlinkGroupToUser($groupid, $userid) {
 function approveGroupUser($groupid, $userid) {
 	import("note.service");
 	$note = array();
-	$note['fromUserId'] = $_SESSION['innoworks.ID']; //FIXME
+	$note['fromUserId'] = $_SESSION['innoworks.ID'];
 	$note['toUserId'] = $userid;
 	$note['noteText'] = "You have been approved for the group " . getGroupDetails($groupid)->title;
+	$note['groupId'] = $groupid;
 	createNote($note);
 	return dbQuery("UPDATE GroupUsers SET approved=1 WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 
 function acceptGroupInvitation($groupid, $userid) {
-	/* FIXME
 	import("note.service");
-	global $session;
 	$note = array();
-	$note['fromUserId'] = $session['innoworks.ID'];
+	$note['fromUserId'] = $_SESSION['innoworks.ID'];
 	$note['toUserId'] = getGroupDetails($groupid)->userId;
+	$note['groupId'] = $groupid;
 	$note['noteText'] = "I have joined the group " . getGroupDetails($groupid)->title;
 	createNote($note);
-	*/
 	return dbQuery("UPDATE GroupUsers SET accepted=1 WHERE groupId = '$groupid' AND userId = '$userid'");
 }
 
 function requestGroupAccess($groupid, $userid) {
-	logInfo('HelloRequestingGroup');
+	logVerbose('HelloRequestingGroup');
 	if (!groupEntryExists($groupid, $userid))  {
-		global $session;
 		import("note.service");
 		$note = array();
-		$note['fromUserId'] = $session['innoworks.ID'];
+		$note['fromUserId'] = $_SESSION['innoworks.ID'];
 		$note['toUserId'] = getGroupDetails($groupid)->userId;
+		$note['groupId'] = $groupid;
 		$note['noteText'] = "I want to join the group " . getGroupDetails($groupid)->title;
 		createNote($note);
+		
 		return dbQuery("INSERT INTO GroupUsers (groupId,userId,accepted) VALUES ('$groupid','$userid',1)");
 	} else {
 		return acceptGroupInvitation($groupid, $userid);
 	}
 }
 
+/**
+ * 
+ * Add your idea to the public space and let everyone know about it
+ * @param unknown_type $ideaId
+ * @param unknown_type $userId
+ */
 function addIdeaToPublic($ideaId, $userId) {
+	//Create public note
+	import("note.service");
+	$note = array();
+	$note['fromUserId'] = $_SESSION['innoworks.ID'];
+	$note['isPublic'] = 1;
+	$note['ideaId'] = $ideaId;
+	$note['noteText'] = "I've shared my idea " . getIdeaDetails($ideaId)->title;
+	createNote($note);
+		
+	//email everyone
+	sendAllUsersMail($note);
+	
 	return dbQuery("UPDATE Ideas SET isPublic=1 WHERE ideaId=$ideaId AND userId=$userId");
 }
 

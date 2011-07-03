@@ -276,6 +276,11 @@ function isLoggedIn()
 
 function getDisplayUsername($userId)
 {
+	//If you send notes to yourself
+	//if (isset($_SESSION['innoworks.ID']) && $_SESSION['innoworks.ID'] == $userId)
+		//return 'me'; 
+	
+	//otherwise do lookup
 	if (is_object($userId)) {
 		$row = $userId;
 		if (!empty($row->firstName) || !empty($row->lastName))

@@ -16,11 +16,9 @@
 	</div>
 </div>
 	<?}
-	if ($countIdeas > dbNumRows($ideas)) {?>
-	<a class="loadMore" href="javascript:logAction()"
-		onclick="loadResults(this, {action:'getDashIdeas', limit:'<?= ($limit + 20) ?>'})">Load
-		more</a>
-	<?}
+	if ($countIdeas > dbNumRows($ideas)) {
+		renderTemplate('common.loadMore', array('action' => 'getDashIdeas', 'limit' => ($limit + 20)));
+	}
 } else {?>
 	<span class="nohelp">Record, manage and explore ideas to help them take shape</span>
 <?}?>

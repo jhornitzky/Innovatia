@@ -58,6 +58,10 @@ div.tabBody div.loadingAnim {
 	position:relative;
 }
 
+.tundra .dijitTextBox {
+	padding:0; margin:0;
+}
+
 /* Page header */
 div#head {
 	height:4.5em;
@@ -152,6 +156,7 @@ div#content {
 	min-height:98%;
 	width:auto;
 	padding-top:2px;
+	clear:both;
 }
 
 div.tabBody div div.fixed-left {
@@ -341,7 +346,7 @@ table td input[type=text] {
 	overflow:hidden;
 }
 
-#notepadder div {
+/* #notepadder div {
 	background-repeat:no-repeat;
 	background-position:right center;
 }
@@ -352,7 +357,7 @@ table td input[type=text] {
 
 #noteTab div.outgoing {
 	background-image:url('arrowRight.png');
-}
+} */
 
 #noteTab div table {
 	margin-right:3em;
@@ -548,7 +553,7 @@ div.groupPreview {
 }
 
 div.private.selected, div.public.selected, div.groupsHolder.selected {
-	border-top:1px solid #D3E1F9;
+	background-color: #E8EFFA;
 }
 
 ul.submenu {
@@ -622,15 +627,11 @@ ul.submenu li.selected a {
 .dojoxDock {
 	border:none;
 	background-color: #444;
-	background-color: rbga(30,30,30,0.8);
+	background-color: rbga(30,30,30,0.25);
 }
 
 .commentForm input {
 	font-size:20px;
-}
-
-.tundra .dijitTextBox {
-	padding:0; margin:0;
 }
 
 .userChooser {
@@ -766,13 +767,13 @@ h3 a {
 }
 
 .tiles .tile {
-	width:107px;
-	height:107px;
+	width:148px;
+	height:148px;
 	padding:1px;
 	border:1px solid #AAA;
 	float:left;
 	margin-right:5px;
-	font-size:1.5em;
+	font-size:2em;
 	position:relative;
 	background-position:right center;
 	background-repeat:no-repeat;
@@ -805,7 +806,18 @@ h3 a {
 }
 
 .menuHolder {
-	float:right; border-top:1px solid #7db4ff; margin-right:5px; padding-left:5px; padding-right:5px;
+	float:right; 
+	margin-right:5px; 
+	padding-left:5px; 
+	padding-right:5px;
+	background-color:#7db4ff;
+	border-radius: 0 0 4px 4px;
+	-webkit-border-radius: 0 0 4px 4px;
+	-moz-border-radius: 0 0 4px 4px;
+}
+
+#headSurround {
+	border-top:1px solid #7db4ff; 
 }
 
 .menuHolder > *:hover {

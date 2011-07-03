@@ -51,5 +51,5 @@ Some basic tests of certain components lie in the test folder, but the majority 
 
 IDEAS FOR CHANGES--------------------------
 -Write some tests
--include more tempates to separate ui/control from display
+-include more templates to separate ui/control from display
 -include smarter/better forms of model validation

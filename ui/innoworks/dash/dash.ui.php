@@ -35,6 +35,7 @@ function renderDashNotes($userid) {
 function renderDashPublic($userid) {
 	global $serverRoot, $serverUrl, $uiRoot;
 	$limit = 15;
+	$notes = getPublicNotes("LIMIT ".$limit);
 	$announces = getAnnouncements("LIMIT ".$limit);
 	renderTemplate('notes.public', get_defined_vars());
 }

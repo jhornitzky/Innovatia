@@ -1,4 +1,3 @@
-	<h3 style="margin-top:20px">Info<hr/></h3>
 	<form id='groupDetailsForm' style="margin-top:0; padding-top:0;">
 		<?if ($group->userId == $_SESSION['innoworks.ID'])
 			renderGenericUpdateLines($groups, $group ,array('groupId', 'userId', 'createdTime', 'lastUpdateTime'));
@@ -66,5 +65,5 @@
 		<div class="tiny">None</div>
 	<? } ?>
 
-	<h3 style="margin-top:20px">Attachments<hr/></h3>
+	<form class="addForm"><h3 style="margin-top:20px; margin-bottom:0;">Attachments</h3></form>
 	<iframe style='width:100%; height:15em; padding:1px; border:1px solid #EEEEEE; background-color:#EEEEEE;' src='attachment.php?groupId=<?=$group->groupId?>'></iframe>

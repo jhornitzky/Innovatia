@@ -16,15 +16,16 @@ if (!empty($note->toUserId) && $note->fromUserId == $id) {
 			</td>
 			<td>
 				<span class="noteData">
-					<? if ($note->toUserId === $_SESSION['innoworks.ID']) {?>to<?}?>
+					<? if ($note->fromUserId === $_SESSION['innoworks.ID']) {?>to<?}?>
 					<a href="javascript:showProfileSummary(<?= $id ?>)"><?= getDisplayUsername($id) ?></a>
 					<? if (isset($note->ideaId)) {?>on <a href="javascript:showIdeaSummary(<?= $note->ideaId ?>)">idea</a><?}?> 
-					<? if (isset($note->ideaId)) {?>on <a href="javascript:showGroupSummary(<?= $note->groupId ?>)">group</a><?}?>
-					<? if (isset($note->announcementId)) {?>annouced<?}?>
+					<? if (isset($note->groupId)) {?>on <a href="javascript:showGroupSummary(<?= $note->groupId ?>)">group</a><?}?>
+					<? if (isset($note->isAnnouncement) && $note->isAnnouncement == 1) {?> <b>announced</b><?}?>
+					<? if (isset($note->isFeedback) && $note->isFeedback == 1) {?> gave <b>feedback</b><?}?>
 					&nbsp;@&nbsp;<?= prettyDate($note->createdTime) ?> 
 				</span>
 				<br/>
-				<span class="noteText"><?= $note->noteText ?> </span>
+				<span class="noteText" style="font-size:0.85em;"><?= $note->noteText ?> </span>
 			</td>
 		</tr>
 	</table>

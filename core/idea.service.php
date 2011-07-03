@@ -73,7 +73,7 @@ function createIdea($opts) {
 		$note['mail'] = false;
 		$note['fromUserId'] = $_SESSION['innoworks.ID'];
 		$note['toUserId'] = $_SESSION['innoworks.ID'];
-		$note['noteText'] = 'Created new idea ' . $opts['title'];
+		$note['noteText'] = 'New idea: ' . $opts['title'];
 		$note['ideaId'] = $id;
 		createNote($note);
 	}

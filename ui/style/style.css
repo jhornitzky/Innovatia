@@ -103,8 +103,10 @@ div.smallLoadingAnim {
 }
 
 #headSurround {
-	background-color: #444444;
-	background-image:url('gridDarkBg.jpg');
+	/*background-color: #444444;
+	background-image:url('gridDarkBg.jpg');*/
+	background-image:url('top.jpg');
+	background-repeat:repeat-x;
 }
 
 .threecol, .sixCol {

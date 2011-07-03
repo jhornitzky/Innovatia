@@ -95,7 +95,13 @@ if (isset($_POST['action'])) {
 			if (isset($_REQUEST['description'])) $opts['description'] = $_REQUEST['description'];
 			if (isset($_REQUEST['tags'])) $opts['tags'] = $_REQUEST['tags'];
 			unset($opts['action']);
-			renderServiceResponse(createGroup($opts));
+			$id = createGroup($opts);
+			renderServiceResponse($id);
+			
+			//also render the currentGroup
+			?>
+			<script type="text/javascript">currentGroupId = <?= $id ?>; showGroupDetails();</script>
+			<?
 			break;
 		case "updateGroup":
 			echo "Updating Group.. ";

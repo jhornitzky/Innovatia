@@ -393,7 +393,7 @@ function getColumnDescription($refDataArray) {
 }
 
 function renderServiceResponse($resp) {
-	if ($resp) {
+	if (isset($resp) && $resp != null) {
 		echo "<span class='serviceResponseSuccess'>Success</span> ";	
 	} else {
 		echo getCommonErrorString("Unknown");

@@ -15,10 +15,9 @@
 	</div>
 </div>
 	<?}
-	if ($countItems > dbNumRows($items)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this, {action:'getDashCompare', limit:'<?= ($limit + 20) ?>'})">Load more</a>
-	<?}
+	if ($countItems > dbNumRows($items)) {
+		renderTemplate('common.loadMore', array('action' => 'getDashCompare', 'limit' => ($limit + 20)));	
+	}
 } else {?>
 	<span class="nohelp">Contrast and compare your existing ideas</span>
 <?}?>

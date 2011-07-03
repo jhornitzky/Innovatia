@@ -6,6 +6,7 @@ require_once("thinConnector.php");
 import("mobile.functions");
 import("user.service");
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,6 +20,7 @@ import("user.service");
 <script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/base/dojoLayer.js"></script>
 <script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/innoworks.js"></script>
 <script type="text/javascript" src="<?= $serverUrl.$uiRoot?>scripts/common.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dijit/themes/soria/soria.css" />-->
 <link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dijit/themes/tundra/tundra.css" />
 <link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dojox/layout/resources/ResizeHandle.css" />
 <link rel="stylesheet" type="text/css" href="<?= $serverUrl.$uiRoot?>scripts/base/dojox/layout/resources/FloatingPane.css" />
@@ -123,7 +125,7 @@ function openAdmin() {
 <div id="head">
 <div class="menu clearfix" style="width:100%; text-align:right;">
 	<div class="menuHolder clearfix">
-		<a href="javascript:showProfile()" style="color:#FFF; font-size:0.9em;"><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></a>
+		<a href="javascript:showProfile()" style="color:#FFF; font-size:0.9em;"><img src="retrieveImage.php?user=<?= $_SESSION['innoworks.ID']?>" style="width:1em; height:1em; vertical-align:middle"/><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></a>
 		<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
 		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
 		<?}?>
@@ -166,7 +168,7 @@ function openAdmin() {
 </div>
 <div id="rightAlignMenu" style="float:right; padding-top:7px;">
 	<form class="quickSearch" onsubmit="showSearch(this); return false;" style="padding:0; margin:0; clear:none;">
-		<div style="padding-top:3px; padding-bottom:3px; width:215px; border:1px solid #516070; background-color:#FFF; background-image:url('../style/search.png'); background-position:left top; background-repeat:no-repeat">
+		<div style="padding-top:3px; padding-bottom:3px; width:240px; border:1px solid #516070; background-color:#FFF; background-image:url('../style/search.png'); background-position:left top; background-repeat:no-repeat">
 			<input name="searchTerms" placeHolder="find ideas and more" style="padding:0; margin:0; background-color:transparent; color:#000; border:none; font-size:1.2em"/>
 		</div>
 	</form>

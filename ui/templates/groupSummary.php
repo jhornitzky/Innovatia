@@ -11,8 +11,10 @@
 			<td><h1><?= $group->title?></h1></td>
 		</tr>
 	</table>
-	<span class="smallInfo"><b>Led by</b> <? renderTemplate('ideator', array('userId' => $group->userId)) ?> 
-	<?php renderGenericInfoLine($groups, $group ,array('groupId', 'userId', 'title', 'description', 'tags'))?>
+	<span class="smallInfo">
+		<b>Led by</b> <? renderTemplate('ideator', array('userId' => $group->userId)) ?> 
+		<b>Created</b> @ <?= prettyDate($group->createdTime) ?> 
+		<b>Updated</b> @ <?= prettyDate($group->lastUpdateTime) ?>
 	</span>
 	<p style="font-size:0.9em;"><?= $group->description ?></p>
 	<div class="smallInfo"><i><?= $group->tags ?></i></div>
