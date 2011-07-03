@@ -1,177 +1,178 @@
 /* COMMON */
 * {
-	text-overflow:ellipsis;
+	text-overflow: ellipsis;
 }
 
 *[onclick] {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 body {
-	text-align:left;
-	overflow-y:scroll;
+	text-align: left;
+	overflow-y: scroll;
 }
 
 hr {
-	background-color:#EEE;
-	color:#EEE;
-	border:none;
+	background-color: #EEE;
+	color: #EEE;
+	border: none;
 }
 
 select {
-	width:5em;
+	width: 5em;
 }
 
 #head a:hover {
-	text-decoration:underline;
+	text-decoration: underline;
 }
 
 div.tabBody div.loadingAnim {
-	height:50%;
+	height: 50%;
 }
 
 .90-deg {
-	-webkit-transform: rotate(-90deg); 
+	-webkit-transform: rotate(-90deg);
 	-moz-transform: rotate(-90deg);
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=-3);
+	filter: progid : DXImageTransform.Microsoft.BasicImage ( rotation = -3 );
 }
 
 /* DOJO OVERRIDES */
 .tundra #ideasPopup {
-	overflow:auto;
+	overflow: auto;
 }
 
 .tundra #commonPopup {
-	overflow:hidden;
+	overflow: hidden;
 }
 
 .tundra #commonPopup #actionDetails {
-	overflow:hidden;
+	overflow: hidden;
 }
 
 .tundra ._underlay {
-	background:none;
-	display:none;
+	background: none;
+	display: none;
 }
 
 .tundra .dojoxFloatingPaneCanvas {
-	position:relative;
+	position: relative;
 }
 
 .tundra .dijitTextBox {
-	padding:0; margin:0;
+	padding: 0;
+	margin: 0;
 }
 
 /* Page header */
 div#head {
-	height:4.5em;
-	margin-bottom:0.3em;
-	padding-top:0;
-	padding-bottom:0;
-	color:#FFF;
+	height: 4.5em;
+	margin-bottom: 0.3em;
+	padding-top: 0;
+	padding-bottom: 0;
+	color: #FFF;
 }
 
 img#dashlnk {
-	cursor:pointer;
+	cursor: pointer;
 }
 
-img#dashlnk.selLnk, img#dashlnk:hover {
-	border-bottom:1px solid #FFFFFF;
+img#dashlnk.selLnk,img#dashlnk:hover {
+	border-bottom: 1px solid #FFFFFF;
 }
 
 ul.tabMenu {
-	text-decoration:none;
-	list-style:none;
-	text-indent:0;
-	padding:0;
-	margin:0;
+	text-decoration: none;
+	list-style: none;
+	text-indent: 0;
+	padding: 0;
+	margin: 0;
 }
 
 ul.tabMenu li {
-	float:left;
-	position:relative;
-	padding-left:0.5em;
-	padding-right:0.5em;
-	padding-top:0.5em;
-	padding-bottom:0.5em;
-	text-indent:0;
-	margin-left:0;
-	margin-right:0.25em;
-	/* background-color:#444444;*/ 
-	border-top:none;
-	border-left:0;
-	border-right:0;
-	backgound-position:top left; 
-	background-repeat:no-repeat;
-	font-size:1.25em;
+	float: left;
+	position: relative;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	text-indent: 0;
+	margin-left: 0;
+	margin-right: 0.25em;
+	/* background-color:#444444;*/
+	border-top: none;
+	border-left: 0;
+	border-right: 0;
+	backgound-position: top left;
+	background-repeat: no-repeat;
+	font-size: 1.25em;
 }
 
 ul.tabMenu li a {
-	border-bottom:none;
+	border-bottom: none;
 }
 
-ul.tabMenu li.selected { 
-	border-bottom-width:1px;
-	border-bottom-style:solid;
+ul.tabMenu li.selected {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
 }
 
 div#head div#leftAlignMenu {
-	font-size:1.0em;
-}	                      
+	font-size: 1.0em;
+}
 
 div#head div#rightAlignMenu {
 	right: 0.25em;
 }
 
 ul.tabMenu li a {
-	color:#DDD;
+	color: #DDD;
 }
 
 ul.tabMenu li a:hover {
-	color:#EEE;
+	color: #EEE;
 }
 
 ul.tabMenu li.menulnk {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 ul.tabMenu li.selMenu {
-	padding-bottom:0.6em;
+	padding-bottom: 0.6em;
 }
 
 ul.tabMenu li.selMenu a.selLnk {
-	color:#FFFFFF;
-	border:none;
+	color: #FFFFFF;
+	border: none;
 }
 
 ul.tabMenu li.selMenu a:hover {
-	color:#FFFFFF;
+	color: #FFFFFF;
 }
 
 /* CONTENT AND COMMON */
-div#content { 
-	padding:0%;
-	position:relative;
-	font-size:0.9em;
-	min-height:98%;
-	width:auto;
-	padding-top:2px;
-	clear:both;
+div#content {
+	padding: 0%;
+	position: relative;
+	font-size: 0.9em;
+	min-height: 98%;
+	width: auto;
+	padding-top: 2px;
+	clear: both;
 }
 
 div.tabBody div div.fixed-left {
-	font-size:0.95em;
+	font-size: 0.95em;
 }
 
 .treeAddForm {
-	background-color:#DDD;
+	background-color: #DDD;
 	padding: 4px;
 	border-left: 1px solid #AAA;
 	border-bottom: 1px solid #AAA;
 }
 
-#content > *{ 
-	padding:0.5em;
+#content>* {
+	padding: 0.5em;
 }
 
 .formHead {
@@ -180,170 +181,170 @@ div.tabBody div div.fixed-left {
 }
 
 .formHead:hover {
-	background-color:#F2F2F2;
+	background-color: #F2F2F2;
 }
 
 .formBody subform {
-	padding:4px;
+	padding: 4px;
 }
 
 .responses {
-	padding:5px;
-	padding-left:10px;
-	max-height:3em;
-	color:#000000;
-	background-color:#444444;
-	overflow:hidden;
-	font-size:0.85em;
+	padding: 5px;
+	padding-left: 10px;
+	max-height: 3em;
+	color: #000000;
+	background-color: #444444;
+	overflow: hidden;
+	font-size: 0.85em;
 }
 
 .respSurround {
-	width:100%;
-	height:45px;
-	display:none;
-	z-index:1001;
+	width: 100%;
+	height: 45px;
+	display: none;
+	z-index: 1001;
 }
 
 .respSurround .responses {
-	height:40px;
-	color:#FFFFFF;
-	overflow:hidden;
-	background:none;
-	border:none;
-	width:1000px; 
-	margin:auto;
-	padding-left:10px;
-	display:block;
-	background-color:#444444;
-	background-color:rgba(30,30,30,0.9);
-	border-radius:4px 4px 0 0;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
+	height: 40px;
+	color: #FFFFFF;
+	overflow: hidden;
+	background: none;
+	border: none;
+	width: 1000px;
+	margin: auto;
+	padding-left: 10px;
+	display: block;
+	background-color: #444444;
+	background-color: rgba(30, 30, 30, 0.9);
+	border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 
 .respSurround .responses * {
-	color:#FFFFFF;
+	color: #FFFFFF;
 }
 
 .tabBody {
-	display:none;
+	display: none;
 }
 
 .rightBox {
-	position:relative;
-	float:right;
+	position: relative;
+	float: right;
 }
 
 .formHeadContain {
-	position:relative;
-	float:left;
+	position: relative;
+	float: left;
 }
 
 .two-column {
-	position:relative; float:left; width:48%; min-height:200px;
+	position: relative;
+	float: left;
+	width: 48%;
+	min-height: 200px;
 }
 
 #dashTab p span {
-	font-size:0.85em;
-	padding-right:5px;
+	font-size: 0.85em;
+	padding-right: 5px;
 }
 
 /* IDEAS */
-.selectList .selection, .selection {
-	width:100%;
-	margin-right:0;
-	margin-left:0;
-	margin-top:0;
-	height:auto;
-	max-height:none;
+.selectList .selection,.selection {
+	width: 100%;
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 0;
+	height: auto;
+	max-height: none;
 }
 
 .idea table {
-	width:100%;
+	width: 100%;
 }
 
 .idea table tr td.image {
-	width:64px;
+	width: 64px;
 }
 
 .idea table tr td {
-	text-align:left;
-	vertical-align:top;
+	text-align: left;
+	vertical-align: top;
 }
 
 .idea {
 	margin-bottom: 1%;
 	margin-right: 1%;
 	border: 1px solid #CCC;
-	position:relative;
-	float:left;
-	background-color:#FFF;
-	text-align:left;
+	position: relative;
+	float: left;
+	background-color: #FFF;
+	text-align: left;
 	width: 45%;
-	height:70px;
-	overflow:hidden;
+	height: 70px;
+	overflow: hidden;
 }
 
 .idea a {
-	margin:0;
+	margin: 0;
 }
 
 .ideaoptions {
-	font-size:0.8em;
-	padding-left:5px;
-	padding-right:5px;
-	position:absolute;
-	right:5px;
+	font-size: 0.8em;
+	padding-left: 5px;
+	padding-right: 5px;
+	position: absolute;
+	right: 5px;
 }
 
 .ideatitle {
-	font-size:1.2em;
+	font-size: 1.2em;
 }
 
 /* Other tabs styling */
-#timelineTab table
-{
+#timelineTab table {
 	font-weight: normal;
 	width: 100%;
-	border:none;
+	border: none;
 	border-left: 5px solid #AAAAAA;
 	border-collapse: collapse;
 }
 
-#timelineTab table td
-{
-	/*color: #000;*/
+#timelineTab table td { /*color: #000;*/
 	padding: 4px;
 	text-align: left;
 	border: none;
 	border-bottom: 1px solid #DDDDDD;
-	font-size:0.9em;
+	font-size: 0.9em;
 }
 
 table td input[type=text] {
-	width:100%;
-	min-width:6em;
+	width: 100%;
+	min-width: 6em;
 }
 
 #dashui {
-	border:none;
-	width:100%;
-	min-height:25em;
+	border: none;
+	width: 100%;
+	min-height: 25em;
 }
 
 #dashui .threeCol a {
-	margin-left:0;
-	margin-right:0;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 #noteTab #newNoteForm {
-	max-width:22em; 
+	max-width: 22em;
 }
 
 #noteTab #notePadder div {
-	padding:0.2em;
-	margin-bottom:0.25em;
-	overflow:hidden;
+	padding: 0.2em;
+	margin-bottom: 0.25em;
+	overflow: hidden;
 }
 
 /* #notepadder div {
@@ -358,167 +359,173 @@ table td input[type=text] {
 #noteTab div.outgoing {
 	background-image:url('arrowRight.png');
 } */
-
 #noteTab div table {
-	margin-right:3em;
+	margin-right: 3em;
 }
 
 .ideaGroups {
-	background-color:#FFFFFF;
-	position:relative;
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+	background-color: #FFFFFF;
+	position: relative;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 
 div.treeMenu {
-	border-right:1px solid #CCC;
-	background-color:#FFF;
+	border-right: 1px solid #CCC;
+	background-color: #FFF;
 }
 
 #dashui .moreInfo p span {
-	font-size:0.9em;
+	font-size: 0.9em;
 }
 
 h2.pgName {
-	margin:0;
+	margin: 0;
 }
 
 h2.pgName span.subhead {
-	font-size:0.6em;
-	font-weight:normal;
+	font-size: 0.6em;
+	font-weight: normal;
 }
 
 .subhead {
-	padding-top:0;
-	margin-top:0;
+	padding-top: 0;
+	margin-top: 0;
 }
 
 .task {
-	font-size:0.85em;
+	font-size: 0.85em;
 }
 
 .noteData {
-	font-size:0.8em;
+	font-size: 0.8em;
 }
 
 ul.simProfiles {
-	list-style:none;
+	list-style: none;
 }
 
-div#head, div#content {
-	width:975px; 
-	margin:0 auto;
+div#head,div#content {
+	width: 975px;
+	margin: 0 auto;
 }
 
-.compareList table, #ideaFeatureEvaluationList table, table.evaluation
-{
+.compareList table,#ideaFeatureEvaluationList table,table.evaluation {
 	text-align: center;
 	font-weight: normal;
 	width: 100%;
 	border-collapse: collapse;
 	border-spacing: 0px;
-	border:none;
+	border: none;
 }
 
-.compareList table tr td, #ideaFeatureEvaluationList table tr td, table.evaluation tr td
-{
+.compareList table tr td,#ideaFeatureEvaluationList table tr td,table.evaluation tr td
+	{
 	background-color: #FFF;
 	padding: 4px;
 	text-align: left;
 	border: 1px solid #EEE;
 }
 
-.compareList table tr th, #ideaFeatureEvaluationList table tr th,  table.evaluation tr th
-{
+.compareList table tr th,#ideaFeatureEvaluationList table tr th,table.evaluation tr th
+	{
 	padding: 4px;
 	text-align: left;
 	font-weight: bold;
-	border:none;
-	border-right:1px solid #EEE;
-	font-size:0.9em;
+	border: none;
+	border-right: 1px solid #EEE;
+	font-size: 0.9em;
 }
 
- #ideaFeatureEvaluationList table tr td, #ideaFeatureEvaluationList table tr th, table.evaluation tr th, table.evaluation tr td{
-	border-color:#DDD;
-	background-color:#EEE; 
+#ideaFeatureEvaluationList table tr td,#ideaFeatureEvaluationList table tr th,table.evaluation tr th,table.evaluation tr td
+	{
+	border-color: #DDD;
+	background-color: #EEE;
 }
 
-#ideaFeatureEvaluationList table.titleTT tr td{
-	border:none;
-	background-color:#FFF; 
+#ideaFeatureEvaluationList table.titleTT tr td {
+	border: none;
+	background-color: #FFF;
 }
 
-.featureEvaluationBit * div.helper, #riskEvaluation * div.helper, table.evaluation * div.helper {
-	width:2em;
-	height:2em;
-	overflow:visible;
-	writing-mode: tb-rl; 
-	-webkit-transform: rotate(-90deg); 
+.featureEvaluationBit * div.helper,#riskEvaluation * div.helper,table.evaluation * div.helper
+	{
+	width: 2em;
+	height: 2em;
+	overflow: visible;
+	writing-mode: tb-rl;
+	-webkit-transform: rotate(-90deg);
 	-moz-transform: rotate(-90deg);
-}	
-
-#riskEvaluation tr th, .featureEvaluationBit tr th, table.evaluation tr th {
-	overflow:hidden;
-	height:7em; 
-	width:2em;
-	text-align:left;
-	vertical-align:bottom;
 }
 
-#riskEvaluation tr td, .featureEvaluationBit tr td, table.evaluation tr td {
-	font-size:0.9em;
-	max-height:5em;
-	width:2em;
+#riskEvaluation tr th,.featureEvaluationBit tr th,table.evaluation tr th
+	{
+	overflow: hidden;
+	height: 7em;
+	width: 2em;
+	text-align: left;
+	vertical-align: bottom;
 }
 
-#riskEvaluation tr:hover td, .featureEvaluationBit tr:hover td, table.evaluation tr:hover td {
-	background-color:#DDDDDD;
+#riskEvaluation tr td,.featureEvaluationBit tr td,table.evaluation tr td
+	{
+	font-size: 0.9em;
+	max-height: 5em;
+	width: 2em;
 }
 
-#riskEvaluation select, .featureEvaluationBit select {
-	width:3.5em;
+#riskEvaluation tr:hover td,.featureEvaluationBit tr:hover td,table.evaluation tr:hover td
+	{
+	background-color: #DDDDDD;
 }
 
-#riskEvaluation tr td.headcol, .featureEvaluationBit tr td.headcol{
-	width:15em;	
-	border-left:none;	
+#riskEvaluation select,.featureEvaluationBit select {
+	width: 3.5em;
 }
 
-table.evaluation tr td.headcol  {
-	width:15em;	
+#riskEvaluation tr td.headcol,.featureEvaluationBit tr td.headcol {
+	width: 15em;
+	border-left: none;
 }
 
-#riskEvaluation tr th.headcol, .featureEvaluationBit tr th.headcol, table.evaluation tr td.headcol {
-	font-weight:normal;
-	font-size:1.0em;	
+table.evaluation tr td.headcol {
+	width: 15em;
 }
 
-#riskEvaluation tr td.totalCol, .featureEvaluationBit tr td.totalCol {
-	width:2em;
-} 
+#riskEvaluation tr th.headcol,.featureEvaluationBit tr th.headcol,table.evaluation tr td.headcol
+	{
+	font-weight: normal;
+	font-size: 1.0em;
+}
+
+#riskEvaluation tr td.totalCol,.featureEvaluationBit tr td.totalCol {
+	width: 2em;
+}
 
 span.timestamp {
-	padding-left:0.5em;
-	padding-right:0.5em;
-	font-style:italic;
-	font-size:0.85em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	font-style: italic;
+	font-size: 0.85em;
 }
 
 span.title {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 span.ideaoptions {
-	font-size:0.85em;
-	padding:0;
-	margin:0;
+	font-size: 0.85em;
+	padding: 0;
+	margin: 0;
 }
 
 .smallAddForm {
-	border-top:1px solid #EEE;
-	border-bottom:1px solid #EEE;
+	border-top: 1px solid #EEE;
+	border-bottom: 1px solid #EEE;
 }
 
-#groupDetails * ul{
+#groupDetails * ul {
 	padding-left: 0em;
 	list-style: none;
 }
@@ -528,298 +535,315 @@ span.ideaoptions {
 }
 
 div.itemHolder span {
-	font-size:0.9em;
-	color:#777;
+	font-size: 0.9em;
+	color: #777;
 }
 
-span.itemTotal{
-	font-size:1.5em; font-weight:bold
+span.itemTotal {
+	font-size: 1.5em;
+	font-weight: bold
 }
 
 span.itemName {
-	font-size:1.2em;
+	font-size: 1.2em;
 }
 
 div.shareBtns img {
-	cursor:pointer;
+	cursor: pointer;
 }
 
 div.groupPreview {
-	min-height:4.5em;
-	border:none;
-	text-align:left;
-	padding-top:0;
+	min-height: 4.5em;
+	border: none;
+	text-align: left;
+	padding-top: 0;
 	/* border-bottom: 1px solid #DDDDDD; */
 }
 
-div.private.selected, div.public.selected, div.groupsHolder.selected {
+div.private.selected,div.public.selected,div.groupsHolder.selected {
 	background-color: #E8EFFA;
 }
 
 ul.submenu {
-	text-decoration:none;
-	list-style:none;
-	text-indent:0;
-	padding:0;
-	margin:0;
+	text-decoration: none;
+	list-style: none;
+	text-indent: 0;
+	padding: 0;
+	margin: 0;
 }
 
 ul.submenu li {
 	font-size: 1.1em;
-	float:left;
-	position:relative;
-	margin-right:0.5em;
-	text-indent:0px;
-	margin-left:0px; 
+	float: left;
+	position: relative;
+	margin-right: 0.5em;
+	text-indent: 0px;
+	margin-left: 0px;
 	list-style: none;
-	padding:2px;
-	border-top:none;
+	padding: 2px;
+	border-top: none;
 }
 
 ul.submenu li.selected {
 	color: #FFFFFF;
-	background-color:#444; 
+	background-color: #444;
 }
 
 ul.submenu li.selected a {
 	color: #FFFFFF;
-	border:none;
+	border: none;
 }
 
 .ideator {
-	font-size:0.85em;
+	font-size: 0.85em;
 }
 
 .actions img {
-	width:20px;
-	height:20px;
-	cursor:pointer;
-	opacity : 0.75;
-	filter: alpha(opacity=75);
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	opacity: 0.75;
+	filter: alpha(opacity = 75);
 }
 
 .actions img:hover {
-	opacity : 1;
-	filter: alpha(opacity=100);
+	opacity: 1;
+	filter: alpha(opacity = 100);
 }
 
 .helpbox .overlay {
-	width:100%; height:100%; 
-	position:absolute; 
-	top:0; 
-	left:0; 
-	z-index:1; 
-	text-shadow:0 0 5px #EEE;
-	vertical-align:bottom;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	text-shadow: 0 0 5px #EEE;
+	vertical-align: bottom;
 }
 
 .helpbox .overlay:hover {
-	background-color:transparent;
-	text-indent:-9999px;
-	visibility:none;
+	background-color: transparent;
+	text-indent: -9999px;
+	visibility: none;
 }
 
-#ideasPopupDetails table td, #ideasPopupDetails table th {
-	vertical-align:top;
-	text-align:left;
+#ideasPopupDetails table td,#ideasPopupDetails table th {
+	vertical-align: top;
+	text-align: left;
 }
 
 .dojoxDock {
-	border:none;
+	border: none;
 	background-color: #444;
-	background-color: rbga(30,30,30,0.25);
+	background-color: rbga(30, 30, 30, 0.25);
 }
 
 .commentForm input {
-	font-size:20px;
+	font-size: 20px;
 }
 
 .userChooser {
-	color:#444; border: 1px dashed #AAA;
-	background-image:url('pointer.png');
-	background-position:center right;
-	background-repeat:no-repeat;
-	cursor:pointer;
+	color: #444;
+	border: 1px dashed #AAA;
+	background-image: url('pointer.png');
+	background-position: center right;
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 .fixed-right ul.submenu {
-	padding-bottom:40px;
-	border-bottom:1px solid #CCC;
+	padding-bottom: 40px;
+	border-bottom: 1px solid #CCC;
 }
 
 h1.innoProcess span {
-	color:#AAA;
-	width:31%; 
-	margin-right:1%;
+	color: #AAA;
+	width: 31%;
+	margin-right: 1%;
 }
 
 h1.innoProcess span.selected {
-	color:#000;
+	color: #000;
 }
 
 .adder {
-	opacity:0.9;
-	filter: alpha(opacity=90);
+	opacity: 0.9;
+	filter: alpha(opacity = 90);
 }
 
 .adder:hover {
-	opacity:1;
-	filter: alpha(opacity=100);
+	opacity: 1;
+	filter: alpha(opacity = 100);
 }
 
 .innovateSub {
-	opacity:0.4;
-	filter: alpha(opacity=40);
+	opacity: 0.4;
+	filter: alpha(opacity = 40);
 }
 
-.innovateSub.selected, .innovateSub:hover {
-	opacity:1;
-	filter: alpha(opacity=100);
+.innovateSub.selected,.innovateSub:hover {
+	opacity: 1;
+	filter: alpha(opacity = 100);
 }
 
 .innovateTab .threecol {
-	margin-top:0; padding-top:0;
+	margin-top: 0;
+	padding-top: 0;
 }
 
 div.itemHolder h2.dashNoteControl span {
-	font-size:1em;
-	color:#AAA;
+	font-size: 1em;
+	color: #AAA;
 }
 
 div.itemHolder h2.dashNoteControl span.selected {
-	color:#444;
+	color: #444;
 }
 
 h1.dashNoteControl span {
-	opacity:0.3;
-	filter: alpha(opacity=30);
+	opacity: 0.3;
+	filter: alpha(opacity = 30);
 }
 
 h1.dashNoteControl span.selected {
-	opacity:1;
-	filter: alpha(opacity=100);
+	opacity: 1;
+	filter: alpha(opacity = 100);
 }
 
 .fixed-right ul.submenu li {
-	border-left:none;
-	border-right:none;
-	border-top:none;
-	border-bottom:1px solid #AAA;
-	font-size:2em;
-	text-transform:lowercase;
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid #AAA;
+	font-size: 2em;
+	text-transform: lowercase;
 }
 
 .fixed-right ul.submenu li.selected {
-	border-bottom:1px solid #444;
-	background-color:transparent;
+	border-bottom: 1px solid #444;
+	background-color: transparent;
 }
 
 .fixed-right ul.submenu li a {
-	border:none;
-	color:#AAA;
+	border: none;
+	color: #AAA;
 }
 
 .fixed-right ul.submenu li.selected a {
-	border:none;
-	color:#000;
+	border: none;
+	color: #000;
 }
 
 h1.dashNoteControl span img {
-	vertical-align:top;
+	vertical-align: top;
 }
 
 .ideaOptions img {
-	opacity:0.4;
-	filter: alpha(opacity=40);
-	margin-left:5px;
-	width:16px;
-	height:16px;
+	opacity: 0.4;
+	filter: alpha(opacity = 40);
+	margin-left: 5px;
+	width: 16px;
+	height: 16px;
 }
 
 h3 a {
-	border:0;
-	color:#AAA;
+	border: 0;
+	color: #AAA;
 }
 
 .dash h3 {
-	margin-bottom:0.5em;
+	margin-bottom: 0.5em;
 }
 
 .noteData {
-	color:#AAA;
+	color: #AAA;
 }
 
 .note {
 	border-top: 1px solid #DDD;
-	margin-bottom:0.5em;
+	margin-bottom: 0.5em;
 }
 
 .note .noteText {
-	font-size:0.95em;
+	font-size: 0.95em;
 }
 
 .righterimage {
-	margin-right:0.5em;
+	margin-right: 0.5em;
 }
 
 .ideator a {
-	font-weight:normal
+	font-weight: normal
 }
 
 .tiles .tile {
-	width:148px;
-	height:148px;
-	padding:1px;
-	border:1px solid #AAA;
-	float:left;
-	margin-right:5px;
-	font-size:2em;
-	position:relative;
-	background-position:right center;
-	background-repeat:no-repeat;
-	color:#AAA;
+	width: 148px;
+	height: 148px;
+	padding: 1px;
+	border: 1px solid #AAA;
+	float: left;
+	margin-right: 5px;
+	font-size: 2em;
+	position: relative;
+	background-position: right center;
+	background-repeat: no-repeat;
+	color: #AAA;
 }
 
 .tiles .tile:last-child {
-	margin-right:0;
+	margin-right: 0;
 }
 
 .tiles .tileTotal {
-	font-weight:bold;
-	font-size:2.5em;
+	font-weight: bold;
+	font-size: 2.5em;
 }
 
 .tiles .tileHit {
-	color:green;
-	font-size:0.85em;
-	position:absolute;
-	bottom:0;
-	left:3px;
+	color: green;
+	font-size: 0.85em;
+	position: absolute;
+	bottom: 0;
+	left: 3px;
 }
 
 .menu img {
-	width:20px;
-	height:20px;
-	vertical-align:middle;
-	font-size:18px;
-	margin-left:7px;
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	font-size: 18px;
+	margin-left: 7px;
 }
 
 .menuHolder {
-	float:right; 
-	margin-right:5px; 
-	padding-left:5px; 
-	padding-right:5px;
-	background-color:#7db4ff;
+	float: right;
+	margin-right: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #7db4ff;
 	border-radius: 0 0 4px 4px;
 	-webkit-border-radius: 0 0 4px 4px;
 	-moz-border-radius: 0 0 4px 4px;
 }
 
 #headSurround {
-	border-top:1px solid #7db4ff; 
+	border-top: 2px solid #7db4ff;
 }
 
-.menuHolder > *:hover {
-	background-color: #539DFF; 
+.menuHolder>*:hover {
+	background-color: #539DFF;
+}
+
+.righterImage img {
+	width:1.5em;
+	height:1.5em;
+}
+
+.ideaoptions img {
+	width:2em; height:2em;
+}
+
+form {
+	margin-bottom:5px;
 }
