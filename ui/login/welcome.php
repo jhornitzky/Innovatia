@@ -23,7 +23,7 @@ $(document).ready( function () {
 </script>
 </head>
 
-<body>
+<body style="background-image:url('<?= $serverRoot?>ui/style/body.jpg')">
 <div id="headSurround">
 <div id="head">
 <div id="leftAlignMenu" style="float:left; position:relative; ">
@@ -46,10 +46,10 @@ $(document).ready( function () {
 	<tr>
 		<td><input id="iUsername" type="text" name="username" size="20" /></td>
 		<td><input type="password" name="password" size="20" /></td>
-		<td rowspan="2"><input style="border:none; background-color:transparent; width:48px;height:48px; background-image:url('<?= $serverUrl . $uiRoot ?>style/forward.png'); text-indent:-9999px; margin-top:-25px" type="submit" value="Log In" style="font-weight: bold; font-size:0.9em" /></td>
+		<td rowspan="2"><input style="cursor:pointer; border:none; background-color:transparent; width:48px; height:48px; background-image:url('<?= $serverUrl . $uiRoot ?>style/forward.png'); text-indent:-9999px; margin-top:-25px" type="submit" value="Log In" style="font-weight: bold; font-size:0.9em" /></td>
 	</tr>
 	<tr>
-		<td colspan="3" style="font-size:0.75em; color:#AAA">
+		<td colspan="3" style="font-size:0.75em; color:#FFF">
 			<input type="checkbox" name="remember" style="font-size:0.75em;vertical-align:middle; margin-left:0;"/> 
 			Keep me logged in
 		</td>
@@ -65,20 +65,13 @@ $(document).ready( function () {
 </div>
 </div>
 
-<div id="loginHeader2" class="clearfix" style="width:100%; padding-top:25px;padding-bottom:20px;">
-	<div id="loginHeader" style="width:1280px; margin:0 auto; max-height:120px">
-		<div class="blueCloud" style="width:147px; float:left; height:120px; border-right:2px solid #7DB4FF"></div>
-		<div style="width:955px; float:left; text-align:left; padding-left:10px; padding-right: 10px; background-color:white; background-color:rgba(255,255,255,0.7); height:100px; padding-top:10px;">
-			<h1>Connect your ideas</h1>
-			<p style="margin:0; padding-left:6px;">innoWorks lets you save, compare and share ideas with others.</p>
-		</div>
-		<div class="orangeCloud" style="width:147px; float:left; height:120px; border-left:2px solid #FFCA6A;"></div>
+<div style="width:975px; margin:0 auto; ">
+	<div id="loginHeader" style="text-align:left; margin-left:2px; margin-bottom:20px; margin-top:10px;">
+		<h1>Build your ideas</h1>
+		<p style="margin:0; padding-left:6px; color:#AAA">innoWorks helps you compare, share and make ideas</p>
 	</div>
-</div>
-
-<div style="width:100%; border-bottom:1px solid #AAA; height:1.6em;background-repeat:repeat-x; background-position:bottom center;">
-	<div class="clearfix curvetr" style="width:975px; margin:0 auto; background-color:#EEE;">
-		<ul id="submenu" style="clear:both; padding-left:15px; padding-right:15px;">
+	<div class="clearfix">
+		<ul id="submenu" style="clear:both; padding-left:5px; padding-right:5px;">
 			<li id="ideaInnolnk" class="blueItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showSearch();">innovate</a></li> 
 			<li id="aboutlnk" class="greenItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="showAbout();">about</a></li>
 			<li id="reglnk" class="orangeItem" style="border-bottom-width:1px; border-bottom-style:solid;"><a href="javascript:logAction();" onclick="registerUser();">join us</a></li>
@@ -86,8 +79,7 @@ $(document).ready( function () {
 		</ul>
 	</div>
 </div>
-
-<div id="loginContent"style="background-color:#EEE;">
+<div id="loginContent" class="curvetl curvetr" style="margin-top:-2px;">
 	<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
 		<div id="ajaxContent" style="clear:both">
 			<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>

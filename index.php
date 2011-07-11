@@ -20,9 +20,10 @@ else
 {
 	if (isMobile()) {
 		require_once("ui/login/mobile.php"); 
+	} else if (isset($_REQUEST['slide'])) {
+		require_once("ui/login.slide/welcome.php"); 
 	} else {
 		require_once("ui/login/welcome.php"); 
-		//require_once("ui/login.slide/welcome.php"); 
 	}
 }
 ?>

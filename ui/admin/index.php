@@ -25,7 +25,8 @@ require_once("thinConnector.php");
 		
 		.adminContent iframe{
 			width:100%;
-			height:30em;
+			height:90%;
+			min-height:30em;
 			border:none;
 			border-top:1px solid #444;
 			border-bottom:1px solid #444;

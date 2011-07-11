@@ -283,7 +283,7 @@ function showSummaryPane(props) {
 	
 	//use good ol' jquery to get the tough stuff done
 	$(pane.domNode).animate({top:$(window).height()*0.2 + $(window).scrollTop(), left:$(window).width()/2 - 250 + 20 * $('.dojoxFloatingPane').size(), width:500, height:420}); //FIXME with the animate
-	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '97%').css('padding', '2%');
+	$(pane.domNode).find('.dojoxFloatingPaneCanvas').css('width', '97%').css('padding', '2%').css('height', '375px');
 }
 
 function showIdeaSummary(id) {

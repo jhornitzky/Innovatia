@@ -187,7 +187,7 @@ function sendNoteToMail($opts) {
 }
 
 function sendMail($inputs) {
-	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass, $serverBase;
+	global $mailMethod, $mailServer, $mailPort, $mailUser, $mailPass, $serverBase, $mailConfig;
 	
 	logDebug('doSendEmail');
 	session_write_close(); //speed up
@@ -198,15 +198,12 @@ function sendMail($inputs) {
 		$inputs['subject'] = 'innoWorks update';
 	}
 	
+	//send via smtp
 	if ($mailMethod == 'smtp') {
-		//FIXME change config based on what is available
-		$config = array('auth' => 'login',
-                	'username' => $mailUser,
-                	'password' => $mailPass, 
-					'ssl' => 'ssl',
-                	'port' => $mailPort);
-		
-		$transport = new Zend_Mail_Transport_Smtp($mailServer, $config);
+		if (isset($mailConfig)) 
+			$transport = new Zend_Mail_Transport_Smtp($mailServer, $mailConfig);
+		else
+			$transport = new Zend_Mail_Transport_Smtp($mailServer);
 
 		//Send mail
 		$mail = new Zend_Mail();
@@ -216,7 +213,7 @@ function sendMail($inputs) {
 		$mail->setSubject($inputs['subject']);
 		$mail->setBodyHtml($inputs['msg']);
 		return $mail->send($transport);
-	} else {
+	} else { //normal mail cmd
 		$headers = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 		$headers .= 'From: notifications@'. $serverBase . "\r\n";

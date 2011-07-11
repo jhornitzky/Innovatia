@@ -10,6 +10,9 @@
 body {
 	text-align: left;
 	overflow-y: scroll;
+	background-image: url('gearsStrip.jpg');
+	background-repeat: no-repeat;
+	background-position:top right;
 }
 
 hr {
@@ -125,11 +128,11 @@ div#head div#rightAlignMenu {
 }
 
 ul.tabMenu li a {
-	color: #DDD;
+	color: #FFF;
 }
 
 ul.tabMenu li a:hover {
-	color: #EEE;
+	color: #FFF;
 }
 
 ul.tabMenu li.menulnk {
@@ -821,18 +824,19 @@ h3 a {
 	margin-right: 5px;
 	padding-left: 5px;
 	padding-right: 5px;
-	background-color: #7db4ff;
+	background-color: #8379AB;
 	border-radius: 0 0 4px 4px;
 	-webkit-border-radius: 0 0 4px 4px;
 	-moz-border-radius: 0 0 4px 4px;
+	border:1px solid #1E0094;
+	border-top:none;
 }
 
 #headSurround {
-	border-top: 2px solid #7db4ff;
+	border-top: 1px solid #1E0094;
 }
 
 .menuHolder>*:hover {
-	background-color: #539DFF;
 }
 
 .righterImage img {

@@ -3,7 +3,7 @@
 $dbUser = 'root'; 
 $dbPass = 'return';
 $dbURL = 'localhost';
-$dbSchema = 'innovation_works';
+$dbSchema = 'innoworks';
 
 //LDAP 
 $ldapUser = 'cn=admin,dc=example,dc=com';
@@ -31,6 +31,12 @@ $mailPort = 465;
 $mailUser = '';
 $mailPass = '';
 $mailFrom = 'notifications@innoworks.feit.uts.edu.au';
+
+$mailConfig = array('auth' => 'login',
+                	'username' => $mailUser,
+                	'password' => $mailPass, 
+					'ssl' => 'ssl',
+                	'port' => $mailPort);
 
 //OTHER PROPERTIES
 $versionName = 'localhost';

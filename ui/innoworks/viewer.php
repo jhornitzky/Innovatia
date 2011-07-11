@@ -174,7 +174,7 @@ if ( isset($_GET['iv']) && isset($_GET['idea'])) {
 }
 ?>
 </div>
-<div class="disclaimer" style="font-size:10px; color:#AAA; margin-top:20px; border-top:2px solid #DDD;">
+<div class="disclaimer" style="font-size:10px; color:#AAA; margin-top:20px; border-top:2px solid #DDD;clear:both">
 	<?if (!isLoggedIn()) {?><b>You may be able to see more of this if you <a href="<? $serverUrl . $serverRoot ?>">log in</a></b><br/><?}?>
 	Note that the ideas or other information represented here are copyright of the ideator.<br/>
 	You should contact them if you wish to use the idea in any way.
