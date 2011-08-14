@@ -19,7 +19,7 @@
 	</table>
 	<span class="smallInfo">
 	<? if ($userDetails->isPublic == 1 || $_SESSION['innoworks.isAdmin']) {
-		renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic', 'cookie'));
+		renderGenericInfoLine(null ,$userDetails, array("ideaId", "title","userId", "createdTime", "username", "password", 'firstName', 'lastName', 'isAdmin', 'isExternal', 'sendEmail', 'lastUpdateTime', 'isPublic', 'cookie', 'email'));
 	}?>
 	<? if ($userDetails->isAdmin) { ?><b>admin</b><?}?>
 	</span>

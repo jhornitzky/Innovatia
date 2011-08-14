@@ -6,8 +6,7 @@ require_once("thinConnector.php");
 import("mobile.functions");
 import("user.service");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <base href="<?= $serverUrl.$serverRoot?>ui/innoworks/" />
@@ -123,25 +122,13 @@ function openAdmin() {
 <!-- HEADER BAR -->
 <div id="headSurround">
 	<div id="head">
-		<div class="menu clearfix" style="width:100%; text-align:right; position:absolute; right:2px; top:0;">
-			<div class="menuHolder clearfix">
-				<a href="javascript:showProfile()" style="color:#FFF; font-size:0.9em;">
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID']?>" style="width:1em; height:1em; vertical-align:middle"/><?= getDisplayUsername($_SESSION['innoworks.ID']); ?></a>
-				<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
-				<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/>
-				<?}?>
-				<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback(this)" alt="Feedback" title="Leave feedback and report bugs"/>
-				<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp(this)" alt="Feedback" title="Get help and info"/>
-				<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout(this)" alt="Logout" title="Logout and end your session"/>
-			</div>
-		</div>
 		<div style="width:100%; text-align:right; padding-top:1.25em;">
 			<div id="leftAlignMenu" style="clear:left;">
 				<ul class="tabMenu">
 					<li style="padding:0;">
 						<img id="dashlnk" class="menulnk" style="width: 211px; height:45px;" src="<?= $serverRoot?>ui/style/kubu.png" onclick="showDash(this)"  title="Dashboard"/>
 					</li>
-					<li style="padding:2px; padding-left:0; margin-right:21px; margin-left:-6px;">
+					<li style="padding:2px; padding-left:0; margin-right:23px; margin-left:-2px;">
 						<img class="adder" src="<?= $serverRoot ?>ui/style/menu/add.png" style="width:25px; height:25px; cursor:pointer;" onclick="showCreateIdea(this)" alt="Add" title="Add idea"/>
 					</li>	
 					<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
@@ -161,8 +148,13 @@ function openAdmin() {
 					<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/group.png');">
 						<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share and manage ideas with groups">groups</a>
 					</li>
-					<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
+					<!-- 
+					<li class="orangebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
 						<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">profile</a>
+					</li>
+					-->
+					<li class="orangebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
+						<a id="challengelnk" class="menulnk" href="javascript:showChallenges(this)" title="Solve problems and share ideas">challenges</a>
 					</li>
 				</ul>
 			</div>
@@ -217,6 +209,9 @@ function openAdmin() {
 	<div id="searchResults" style="padding-top:15px;"></div>
 </div>
 <div id="timelineTab" class="tabBody"></div>
+<div id="challengeTab" class="tabBody">
+
+</div>
 </div>
 
 <div id="footerSpace"></div>
@@ -224,6 +219,16 @@ function openAdmin() {
 	<div id="footer" style="min-height:3em;">
 		<? renderTemplate('common.footer')?>
 	</div>
+</div>
+
+<div class="menuHolder clearfix">
+	<img class="profile" onclick="javascript:showProfile()" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID']?>" title="<?= getDisplayUsername($_SESSION['innoworks.ID']); ?>"/><br/>
+	<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
+		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/><br/>
+	<?}?>
+	<img src="<?= $serverRoot ?>ui/style/menu/feedback.png" onClick="showFeedback(this)" alt="Feedback" title="Leave feedback and report bugs"/><br/>
+	<img src="<?= $serverRoot ?>ui/style/menu/help.png" onClick="showHelp(this)" alt="Feedback" title="Get help and info"/><br/>
+	<img src="<?= $serverRoot ?>ui/style/menu/logout.png" onClick="logout(this)" alt="Logout" title="Logout and end your session"/>
 </div>
 
 <!-- POPUP DIALOGS -->

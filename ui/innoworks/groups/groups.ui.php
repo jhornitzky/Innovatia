@@ -18,7 +18,7 @@ function renderGroupsForCreatorUser($user, $limit) {
 			renderTemplate('common.loadMore', array('action' => 'getGroupsForCreatorUser', 'limit' => ($limit + 20)));
 		}
 	} else {?>
-		<span class="tiny">None</span>
+		<div class="tiny topBorder">none</div>
 	<?}
 }
 
@@ -33,7 +33,7 @@ function renderPartOfGroupsForUser($user, $limit) {
 			renderTemplate('common.loadMore', array('action' => 'getPartOfGroupsForUser', 'limit' => ($limit + 20)));
 		}
 	} else {?>
-		<span class="tiny">None</span>
+		<div class="tiny topBorder">none</div>
 	<?}
 }
 
@@ -49,7 +49,7 @@ function renderOtherGroupsForUser($user, $limit) {
 			renderTemplate('common.loadMore', array('action' => 'getOtherGroupsForUser', 'limit' => ($limit + 20)));
 		}
 	} else {?>
-		<span class="tiny">None</span>
+		<div class="tiny topBorder">none</div>
 	<?}
 }
 

@@ -35,7 +35,11 @@ function renderSearchIdeas($userId, $limit) {
 
 	$ideas = getSearchIdeas($searchTerms, $userId, $filters, "LIMIT $limit");
 	$countIdeas = countGetSearchIdeas($searchTerms, $userId, $filters);
-	renderTemplate('search.ideas', get_defined_vars());
+	if (!isset($_REQUEST['searchTerms']) || empty($searchTerms)) { 
+		renderTemplate('search.ideas.tiles', get_defined_vars());
+	} else {
+		renderTemplate('search.ideas', get_defined_vars());
+	}
 }
 
 function renderSearchProfiles($userId, $limit) {
@@ -64,7 +68,11 @@ function renderSearchProfiles($userId, $limit) {
 
 	$users = getSearchPeople($searchTerms, $userId, $filters, "LIMIT $limit");
 	$countUsers = countGetSearchPeople($searchTerms, $userId, $filters);
-	renderTemplate('search.profiles', get_defined_vars());
+	if (!isset($_REQUEST['searchTerms']) || empty($searchTerms)) { 
+		renderTemplate('search.profiles.tiles', get_defined_vars());
+	} else {
+		renderTemplate('search.profiles', get_defined_vars());
+	}
 }
 
 function renderSearchGroups($userId, $limit) {
@@ -92,6 +100,10 @@ function renderSearchGroups($userId, $limit) {
 
 	$groups = getSearchGroups($searchTerms, $userId, $filters, "LIMIT $limit");
 	$countGroups = countGetSearchGroups($searchTerms, $userId, $filters);
-	renderTemplate('search.groups', get_defined_vars());
+	if (!isset($_REQUEST['searchTerms']) || empty($searchTerms)) { 
+		renderTemplate('search.groups.tiles', get_defined_vars());
+	} else {
+		renderTemplate('search.groups', get_defined_vars());
+	}
 }
 ?>

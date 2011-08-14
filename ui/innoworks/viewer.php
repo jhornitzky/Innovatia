@@ -53,7 +53,7 @@ ul {
 } 
 
 h1, h2, .bluetext {
-	color:#006699;
+	color:#0a92e3;
 }
 
 .summaryActions {
@@ -115,15 +115,19 @@ function printThis() {
 }
 
 function showIdeaSummary(id) {
-	window.open("viewer.php?idea="+id);
+	window.location = "viewer.php?idea="+id;
+}
+
+function showUserSummary(id) {
+	showProfileSummary(id);
 }
 
 function showProfileSummary(id) {
-	window.open("viewer.php?profile="+id);
+	window.location = "viewer.php?profile="+id;
 }
 
 function showGroupSummary(id) {
-	window.open("viewer.php?group="+id);
+	window.location = "viewer.php?group="+id;
 }
 
 function goToInnoworks() {
@@ -136,7 +140,7 @@ function goToInnoworks() {
 <table>
 	<tr>
 		<td>
-			<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubus.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
+			<img src="<?= $serverUrl . $serverRoot ?>ui/style/kubu.png" onclick="goToInnoworks()" style="cursor:pointer"/><br/>
 		</td>
 		<td class="bluetext">
 			<?

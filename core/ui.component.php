@@ -9,7 +9,13 @@ function renderTemplate($templateName, $vars = null) {
 	if (is_array($vars)) {
 		extract($vars);
 	}
-	return require($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/'.$templateName.'.php');
+	
+	$files = array();
+	recursiveFileFind($_SERVER['DOCUMENT_ROOT'].$uiRoot.'templates/', $templateName . ".php", null, $files, true);
+	if (!empty($files)) {
+		return require($files[0]);
+	}
+	return 0;
 }
 
 function renderTemplateAsString($templateName, $vars = null) {
@@ -402,7 +408,36 @@ function renderServiceResponse($resp) {
 
 function getCommonErrorString($cause) {
 	return "<span class='serviceResponseFail'>Error occurred:</span> " . $cause . "<br/> Please review your input in light of error. If problem exists please notify support thru feedback.";
-} 
+}
+
+/**
+ * Recursively find files
+ */
+function recursiveFileFind($url, $query, $replace, &$files, $strict = false) {
+	$path = rtrim(str_replace("\\", "/", $url), '/') . '/*';
+	//logAudit('doRecursiveFind: ' . $url);
+  	foreach (scandir($url) as $name) {
+  		$fullname = $url.'/'.$name; 
+  		if (!preg_match('/^\.$|^\.\.$/',basename($fullname))) {
+  			if ($strict) {
+  				if (basename($fullname) == $query) {
+  					if (isset($replace))
+  						$fullname = str_replace($replace, '', $fullname);
+  					array_push($files,$fullname);
+  				}
+  			} else {
+  				if (strpos(basename($fullname), $query) !== false) {
+  					if (isset($replace))
+  						$fullname = str_replace($replace, '', $fullname);
+      				array_push($files,$fullname);
+    			}
+  			}
+  			if (is_dir($fullname)) {
+      			recursiveFileFind($url.'/'.$name, $query, $replace, $files, $strict);
+    		}
+  		}
+  	}
+}
 
 ///////////////////////// Camel Case util functions courtesy of  //////////////////////////////
 /////////http://www.paulferrett.com/2009/php-camel-case-functions///////////////////

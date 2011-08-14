@@ -11,7 +11,7 @@
 					<img class="control" onclick='deleteComment("<?=$comment->commentId?>")' src="<?= $uiRoot.'style/trash.png'?>">
 				<?}?>
 				<br />
-				<span style="font-size:0.85em;">
+				<span class="noteText">
 					<?=$comment->text;?>
 				</span>
 			</td>

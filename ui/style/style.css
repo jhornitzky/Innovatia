@@ -256,7 +256,17 @@ div.righterImage {
 
 div.lefterImage {
 	padding:0.25em;
-	padding-left:0;
+	padding-left:0.1em;
+}
+
+.fixed-left div.lefter {
+	font-size:1.25em;
+}
+
+.fixed-left .lefter.lefterImage img {
+	width:26px;
+	height:26px;
+	margin-top:-6px;
 }
 
 .loadMore {
@@ -516,6 +526,10 @@ p.help {
 	-moz-border-radius-bottomright: 8px; -webkit-border-bottom-right-radius: 8px; border-bottom-right-radius: 8px; 
 }
 
+.curvedL {
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+}
+
 .curvetr {
 	-moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-top-right-radius: 3px;
 }
@@ -544,4 +558,61 @@ p.help {
 .circles {
 	font-family: circles, arial;
 	color:#EEE;
+}
+
+.botBorder {
+	border-bottom: 1px solid #EEEEEE;
+}
+
+.topBorder {
+	border-top: 1px solid #EEEEEE;
+}
+
+.tile {
+	float:left;
+	width:45%;
+	overflow:hidden;
+	background-color:white;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	margin-bottom:10px;
+	height:100px;
+	position:relative;
+	cursor:pointer;
+	padding:0;
+	border:1px solid #AAA;
+}
+
+.tile:hover {
+	border-color:#000;
+}
+
+.searchResults .tile:first-child {
+	background-position: bottom right;
+	background-repeat:no-repeat;
+}
+
+.searchResults .tile:first-child h1 {padding:0.5em; font-size:3em}
+
+.tile:nth-child(odd) {
+	margin-right:6%;
+}
+
+.tile img {
+	width:100%;
+}
+
+.tile .lefter {
+	background-color:rgba(0,0,0,0.5);
+	padding:5px;
+	color:white;
+	width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.dashResults .tile  .lefter:last-child, .searchResults .tile .lefter:last-child {
+	max-width:100%;
 }

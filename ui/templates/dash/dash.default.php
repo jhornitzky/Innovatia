@@ -1,54 +1,29 @@
 <div style="width: 100%;">
 	<div class="fixed-left">
 		<div onclick="showProfile()" style="height: 150px; border:1px solid #AAA; position:relative">
-			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>');opacity:0.25; background-position:center center;background-color:#EEE;"></div>
-			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); background-repeat:no-repeat; background-position:center center;">
+			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>');opacity:0.1; background-position:center center;"></div>
+			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); opacity:0.8; background-repeat:no-repeat; background-position:center center;">
 				<h1>hello<br/><?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
 			</div>
 		</div>
 		<div style="border-right:1px solid #CCC; margin-top:1em;">
-			<div class="tiny">latest ideas...</div>
-			<?if (isset($ideas) && dbNumRows($ideas) > 0) { 
+			<?
+			if (isset($ideas) && dbNumRows($ideas) > 0) { 
 				while($idea = dbFetchObject($ideas)) { ?>
-					<div class='itemHolder clickable clearfix' onclick='showIdeaSummary(<?=$idea->ideaId?>)'>
-						<div class="lefter">
-							<?= $idea->title ?>
-						</div>
-						<div class="righter righterImage">
-							<img src="retrieveImage.php?action=ideaImg&actionId=<?=$idea->ideaId?>" style="width: 1em; height: 1em" />
-						</div>
+					<div class="infoBox clickable clearfix" title="<?= $idea->title ?>" onclick='showIdeaSummary(<?=$idea->ideaId?>)'>
+						<img src="retrieveImage.php?action=ideaImg&actionId=<?=$idea->ideaId?>"/>
 					</div>
 				<?}
-			}?>
-			<div class="itemHolder clearfix" onclick="showInnovate(); showIdeate()" style="margin-bottom:1.5em;">
-				<div class="lefter" style="color:#AAA">
-					see all ideas
-				</div>
-				<div class="righter righterImage">
-					&raquo;
-				</div>
-			</div>
-			<div class="tiny">...and groups</div>
-			<?if (isset($groups) && dbNumRows($groups) > 0) { 
+			}
+			
+			if (isset($groups) && dbNumRows($groups) > 0) { 
 				while($group = dbFetchObject($groups)) { ?>
-					<div class='itemHolder clickable clearfix' onclick='showGroupSummary(<?=$group->groupId?>)'>
-						<div class="lefter">
-							<?= $group->title ?>
-						</div>
-						<div class="righter righterImage">
-							<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>" style="width: 1em; height: 1em" />
-						</div>
+					<div class="infoBox clickable clearfix" title="<?= $group->title ?>" onclick='showGroupSummary(<?=$group->groupId?>)'>
+						<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"/>
 					</div>
 				<?}
 			}?>
-			<div class="itemHolder clearfix" style="margin-bottom:1.5em;" onclick="showGroups()">
-				<div class="lefter" style="color:#AAA">
-					see all groups
-				</div>
-				<div class="righter righterImage">
-					&raquo;
-				</div>
-			</div>
+			<div style="clear:both"></div>
 		</div>
 	</div>
 	<div class="fixed-right">

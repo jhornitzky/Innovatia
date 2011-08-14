@@ -6,7 +6,7 @@ if (cookieLogin()) {
 	header('Location: ' . $serverUrl . $serverRoot);
 }
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>innoWorks</title>
@@ -65,7 +65,7 @@ $(document).ready( function () {
 </div>
 </div>
 
-<div style="width:975px; margin:0 auto; ">
+<div style="width:975px; margin:0 auto;">
 	<div id="loginHeader" style="text-align:left; margin-left:2px; margin-bottom:20px; margin-top:10px;">
 		<h1>Build your ideas</h1>
 		<p style="margin:0; padding-left:6px; color:#AAA">innoWorks helps you compare, share and make ideas</p>
@@ -79,7 +79,7 @@ $(document).ready( function () {
 		</ul>
 	</div>
 </div>
-<div id="loginContent" class="curvetl curvetr" style="margin-top:-2px;">
+<div id="loginContent" class="curvedL" style="margin-top:-2px;">
 	<div style="width:100%; font-size:1em; padding:0.2em; padding-left:0.5em; padding-top:0; text-align:left; clear:both ">
 		<div id="ajaxContent" style="clear:both">
 			<div id="AjaxForm" style="width: 100%; float: left; position: relative; font-size: 0.8em;"></div>
@@ -97,7 +97,7 @@ $(document).ready( function () {
 	<div id="footer" style="font-size:12px">
 		<? renderTemplate('common.footer');?>
 		<!-- AddThis Button BEGIN -->
-		<div class="addthis_toolbox addthis_default_style ">
+		<!-- <div class="addthis_toolbox addthis_default_style ">
 			<a class="addthis_button_preferred_1"></a>
 			<a class="addthis_button_preferred_2"></a>
 			<a class="addthis_button_preferred_3"></a>
@@ -105,7 +105,7 @@ $(document).ready( function () {
 			<a class="addthis_button_compact"></a>
 			<a class="addthis_counter addthis_bubble_style"></a>
 		</div>
-		<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script>
+		<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4dd3b8eb2f85586a"></script> -->
 		<!-- AddThis Button END -->
 	</div>
 </div>

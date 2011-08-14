@@ -77,10 +77,12 @@ div#head {
 
 img#dashlnk {
 	cursor: pointer;
+	opacity:0.5;
 }
 
 img#dashlnk.selLnk,img#dashlnk:hover {
-	border-bottom: 1px solid #FFFFFF;
+	opacity:1;
+	border-bottom: 1px solid #00a2de;
 }
 
 ul.tabMenu {
@@ -99,15 +101,26 @@ ul.tabMenu li {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	text-indent: 0;
-	margin-left: 0;
-	margin-right: 0.25em;
-	/* background-color:#444444;*/
-	border-top: none;
-	border-left: 0;
-	border-right: 0;
+	margin:0;
+	border-left-width: 0;
+	border-right-width: 0;
 	backgound-position: top left;
 	background-repeat: no-repeat;
 	font-size: 1.25em;
+}
+
+ul.tabMenu li.bluebox{
+	border-left-width:1px;
+	border-radius: 4px 0 0 4px;
+	-moz-border-radius: 4px 0 0 4px;
+	-webkit-border-radius: 4px 0 0 4px;
+}
+
+ul.tabMenu li:last-child {
+	border-right-width:1px;
+	border-radius: 0 4px 4px 0;
+	-moz-border-radius: 0 4px 4px 0;
+	-webkit-border-radius: 0 4px 4px 0;
 }
 
 ul.tabMenu li a {
@@ -769,7 +782,7 @@ h3 a {
 }
 
 .note .noteText {
-	font-size: 0.95em;
+	font-size: 1em;
 }
 
 .righterimage {
@@ -821,22 +834,23 @@ h3 a {
 
 .menuHolder {
 	float: right;
-	margin-right: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-	background-color: #8379AB;
-	border-radius: 0 0 4px 4px;
-	-webkit-border-radius: 0 0 4px 4px;
-	-moz-border-radius: 0 0 4px 4px;
-	border:1px solid #1E0094;
-	border-top:none;
+	padding: 5px;
+	background-color: #04aeda;
+	border-radius: 4px 0 0 4px;
+	-webkit-border-radius: 4px 0 0 4px;
+	-moz-border-radius: 4px 0 0 4px;
+	width:35px;
+	text-align:right; position:fixed; right:0; bottom:10px
+}
+
+.menuHolder img {
+	width:100%;
+	margin-top:2px;
+	margin-bottom:2px;
 }
 
 #headSurround {
 	border-top: 1px solid #1E0094;
-}
-
-.menuHolder>*:hover {
 }
 
 .righterImage img {
@@ -851,3 +865,32 @@ h3 a {
 form {
 	margin-bottom:5px;
 }
+
+.fixed-left .infoBox {
+	width:21%;
+	float:left;
+	margin-right:3.5%;
+	position:relative;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	background-image:url('link.png');
+	background-repeat:no-repeat;
+	background-position:center center;
+}
+
+.fixed-left .infoBox img {
+	width:100%;
+}
+
+.profile {
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	background-color:#FFF;
+}
+
+#challenge_container > div { font-size:1.1em; border-top:1px solid #DDD; margin-bottom:5px;} 
+#challenge_container > div div.time {color:#AAA; font-size:0.9em;}
+#challenge_container > div div.content {float:left; max-width:90%; margin-left:1%;}
+#challenge_container > div div.image {float:left;}

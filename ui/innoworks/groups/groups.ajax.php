@@ -84,6 +84,9 @@ if (isset($_GET['action'])) {
 		case "getCreateNewGroup":
 			renderTemplate('group.createNew');
 			break;
+		case "getChallenges":
+			renderTemplate('challenge.tab');
+			break;
 	}
 }
 

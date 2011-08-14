@@ -24,10 +24,11 @@
 				<?= $noOfGroupsIn?> <span>groups in</span>
 				<div style="clear:both; width:<?= $noOfGroupsIn ?>%; height:3px; background-color:purple; max-width:100%"></div>
 			</div>
-			<div class="tiny">Similar profiles...</div>
+			<div class="tiny botBorder">Similar profiles...</div>
 			<div>
 				<? renderOtherProfiles($user, $limit) ?>
 			</div>
+			<div style="clear:both;"></div>
 		</div>
 	</div>
 	<div class="fixed-right">

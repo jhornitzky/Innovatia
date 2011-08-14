@@ -38,51 +38,49 @@
 	</div>
 </div>
 
-<? if (isset($_REQUEST['searchTerms'])) { 
-	$searchTerms = urlencode($_REQUEST['searchTerms']);?>
-	<div class="threeColumnContainer" style="clear:both; padding-top:2em;">
-		<h2 style="color:#AAA">results on other networks</h2>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://www.iinspireus.com/search/index?q=<?= $searchTerms ?>')">
-				<img src="http://www.iinspireus.com/img/favicon.ico"/>
-				<span>iinspireus</span>
-			</div>
-			<span class="tiny">ideas and innovators</span>
+<div class="threeColumnContainer" style="clear: both; padding-top: 2em;">
+	<h2 style="color: #AAA">innovation on other networks</h2>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('http://www.iinspireus.com/search/index?q=<?= $searchTerms ?>')">
+			<img src="http://www.iinspireus.com/img/favicon.ico" /> <span>iinspireus</span>
 		</div>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://www.creativitypool.com/creativitypool.php?searchtext=<?= $searchTerms ?>&find=any')">
-				<img src="http://creativitypool.com/favicon.ico"/>
-				<span>creativity pool</span>
-			</div>
-			<span class="tiny">open ideas</span>
-		</div>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('https://www.innocentive.com/ar/challenge/browse?search=<?= $searchTerms ?>')">
-				<img src="http://innocentive.com/favicon.ico"/>
-				<span>innocentive</span>
-			</div>
-			<span class="tiny">ideas and challenges</span>
-		</div>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('https://www.atizo.com/search/?q=<?= $searchTerms ?>')">
-				<img src="http://www.atizo.com/site_media/images/favicon.ico"/>
-				<span>atizo</span>
-			</div>
-			<span class="tiny">ideas and challenges</span>
-		</div>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://openideas.org/search.php?search=<?= $searchTerms ?>')">
-				<img src="http://openideas.org/favicon.ico"/>
-				<span>open ideas</span>
-			</div>
-			<span class="tiny">more ideas</span>
-		</div>
-		<div class="sixCol">
-			<div class="linkHolder" style="cursor:pointer" onclick="goTo('http://www.linkedin.com/search/fpsearch?type=people&keywords=<?= $searchTerms ?>')">
-				<img src="http://linkedin.com/favicon.ico"/>
-				<span>linkedIn</span>
-			</div>
-			<span class="tiny">professionals</span>
-		</div>
+		<span class="tiny">ideas and innovators</span>
 	</div>
-<? } ?>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('http://www.creativitypool.com/creativitypool.php?searchtext=<?= $searchTerms ?>&find=any')">
+			<img src="http://creativitypool.com/favicon.ico" /> <span>creativity
+				pool</span>
+		</div>
+		<span class="tiny">open ideas</span>
+	</div>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('https://www.innocentive.com/ar/challenge/browse?search=<?= $searchTerms ?>')">
+			<img src="http://innocentive.com/favicon.ico" /> <span>innocentive</span>
+		</div>
+		<span class="tiny">ideas and challenges</span>
+	</div>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('https://www.atizo.com/search/?q=<?= $searchTerms ?>')">
+			<img src="http://www.atizo.com/site_media/images/favicon.ico" /> <span>atizo</span>
+		</div>
+		<span class="tiny">ideas and challenges</span>
+	</div>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('http://openideas.org/search.php?search=<?= $searchTerms ?>')">
+			<img src="http://openideas.org/favicon.ico" /> <span>open ideas</span>
+		</div>
+		<span class="tiny">more ideas</span>
+	</div>
+	<div class="sixCol">
+		<div class="linkHolder" style="cursor: pointer"
+			onclick="goTo('http://www.linkedin.com/search/fpsearch?type=people&keywords=<?= $searchTerms ?>')">
+			<img src="http://linkedin.com/favicon.ico" /> <span>linkedIn</span>
+		</div>
+		<span class="tiny">professionals</span>
+	</div>
+</div>

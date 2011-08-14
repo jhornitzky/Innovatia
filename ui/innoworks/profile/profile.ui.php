@@ -34,9 +34,9 @@ function renderOtherProfiles($user, $limit) {
 			import('user.service');
 			renderTemplate('profile.other', get_defined_vars());
 		}
-		if ($profileCount > dbNumRows($profiles)) {?>
-			<!-- <a href="javascript:logAction()" onclick="loadResults(this, {action:'getOtherProfiles', limit:'<?= ($limit + 20) ?>'})">Load more</a>-->
-		<?}
+		if ($profileCount > dbNumRows($profiles)) {
+			//FIXME add load more here
+		}
 	} else {?>
 		<div class="tiny">No similar profiles</div>
 	<?}

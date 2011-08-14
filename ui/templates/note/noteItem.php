@@ -25,7 +25,7 @@ if (!empty($note->toUserId) && $note->fromUserId == $id) {
 					&nbsp;@&nbsp;<?= prettyDate($note->createdTime) ?> 
 				</span>
 				<br/>
-				<span class="noteText" style="font-size:0.85em;"><?= $note->noteText ?> </span>
+				<span class="noteText"><?= $note->noteText ?> </span>
 			</td>
 		</tr>
 	</table>

@@ -152,3 +152,9 @@ span.subtext {
 	background-repeat:repeat-x;
 	background-position:center center;
 }
+
+#footerSpace {
+	width:100%;
+	height:0;
+	clear:both;
+}

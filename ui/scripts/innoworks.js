@@ -607,6 +607,16 @@ function showProfile(elem) {
 	$("#profileTab").fadeIn();
 }
 
+function showChallenges(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#challengelnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#challengelnk").addClass("selLnk");
+	getChallenges();
+	$(".tabBody").hide();
+	$("#challengeTab").fadeIn();
+}
+
 function showGroups(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#groupslnk").parent().addClass("selMenu");
@@ -675,8 +685,10 @@ function showFeedback(elem) {
 	var top = $(elem).offset().top + $(elem).height();
 	
 	if (($("#commonPopup").width() + left) > $(document).width())
-		left = $(document).width() - $("#commonPopup").width();
-	showCommonPopup({type:'props',left:left, top:top});
+		left = $(document).width() - $("#commonPopup").width() - 20;
+	if ((top + $("#commonPopup").height()) >= $(window).height())
+		top = $(window).height() - $("#commonPopup").height() - 20;
+	showCommonPopup({type:'props', left:left, top:top});
 	$("#actionDetails").load("help/feedback.php");
 }
 
@@ -1507,4 +1519,9 @@ function getDashPublic(elem) {
 	$(elem).addClass('selected');
 	showLoading(".dashNote");
 	$('.dashNote').load("engine.ajax.php?action=getDashPublic");
+}
+
+function getChallenges() {
+	showLoading("#challengeTab");
+	$('#challengeTab').load("engine.ajax.php?action=getChallenges");
 }
