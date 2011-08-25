@@ -12,7 +12,7 @@ if (!empty($note->toUserId) && $note->fromUserId == $id) {
 	<table>
 		<tr>
 			<td style="vertical-align:top;">
-				<img onclick="showProfileSummary(<?= $id ?>)" src="retrieveImage.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
+				<img onclick="showProfileSummary(<?= $id ?>)" src="engine.ajax.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
 			</td>
 			<td>
 				<span class="noteData">

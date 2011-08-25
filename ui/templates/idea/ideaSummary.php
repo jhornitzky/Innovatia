@@ -5,7 +5,7 @@
 		<tr>
 			<td style="background-color:#FFF"; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;">
 				<? if (!isset($_REQUEST['doc'])) {?>
-				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width: 3em; height: 3em;" />
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=ideaImg&actionId=<?= $ideaId ?>" style="width: 3em; height: 3em;" />
 				<? } ?>
 			</td>
 			<td>

@@ -2,12 +2,12 @@
 import("innoworks.connector");
 
 function retrieveImageForIdea($ideaId) {
-	$imgs = dbQuery("SELECT * FROM Attachments WHERE ideaId = $ideaId AND type LIKE 'image/%' ORDER BY isDp DESC LIMIT 1");
+	$imgs = dbQuery("SELECT * FROM Attachments WHERE ideaId = '$ideaId' AND type LIKE 'image/%' ORDER BY isDp DESC LIMIT 1");
 	return genericRetrieveImage($imgs,"cube.png");
 }
 
 function retrieveImageForGroup($groupId) {
-	$imgs = dbQuery("SELECT * FROM Attachments WHERE groupId = $groupId AND type LIKE 'image/%' ORDER BY isDp DESC LIMIT 1");
+	$imgs = dbQuery("SELECT * FROM Attachments WHERE groupId = '$groupId' AND type LIKE 'image/%' ORDER BY isDp DESC LIMIT 1");
 	return genericRetrieveImage($imgs,"group.png");
 }
 

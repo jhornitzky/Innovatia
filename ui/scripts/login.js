@@ -82,7 +82,6 @@ function showDownload() {
 	});
 }
 
-
 function showSearch() {
 	updateForSelect("ideaInno");
 	var searchTerms = $("#searchForm").serialize();
@@ -144,3 +143,7 @@ function toggleSearchOptions() {
 }
 
 function verifyUsername() {}
+
+function showBook(type) {
+	window.open("ui/innoworks/book.php?type="+type);
+}

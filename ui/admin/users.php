@@ -138,7 +138,7 @@ $users = getSearchPeople($searchTerms, $_SESSION['innoworks.ID'], $filters, 'LIM
 					<?}?>
 				</td>
 				<td>
-					<img src="<?= $uiRoot?>/innoworks/retrieveImage.php?action=userImg&actionId=<?= $user->userId?>"/>
+					<img src="<?= $uiRoot?>/innoworks/engine.ajax.php?action=userImg&actionId=<?= $user->userId?>"/>
 					<a href="javascript:void(0)" onclick="openUser('<?= $user->userId ?>')"><?= getDisplayUsername($user->userId) ?></a>
 				</td>
 				<td>

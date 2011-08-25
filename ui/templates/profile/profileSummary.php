@@ -5,7 +5,7 @@
 		<tr>
 			<td style="background-color:#FFF; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;">
 				<? if (!isset($_REQUEST['doc'])) {?>
-				<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width: 3em; height: 3em;" />
+				<img src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=userImg&actionId=<?= $userDetails->userId?>" style="width: 3em; height: 3em;" />
 				<? } ?>
 			</td>
 			<td>
@@ -31,7 +31,7 @@
 			if (hasAccessToIdea($idea->ideaId, $_SESSION['innoworks.ID'])) {?>
 <div class="itemHolder">
 	<img
-		src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>"
+		src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=ideaImg&actionId=<?= $idea->ideaId?>"
 		style="width: 1em; height: 1em;" /> <a href="javascript:logAction()"
 		onclick="showIdeaSummary('<?= $idea->ideaId?>');"><?=$idea->title?>
 	</a>
@@ -50,7 +50,7 @@
 		while ($group = dbFetchObject($groups)) {?>
 <div class="itemHolder">
 	<img
-		src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId?>"
+		src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=groupImg&actionId=<?= $group->groupId?>"
 		style="width: 1em; height: 1em;" /> <a href="javascript:logAction()"
 		onclick="showGroupSummary(<?= $group->groupId?>);"><?=$group->title?>
 	</a>

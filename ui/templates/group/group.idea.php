@@ -1,6 +1,6 @@
 <tr>
 	<td><img
-		src="retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>"
+		src="engine.ajax.php?action=groupImg&actionId=<?= $group->groupId ?>"
 		style="width: 1em; height: 1em;" />
 		<?= $group->title ?>
 	</td>

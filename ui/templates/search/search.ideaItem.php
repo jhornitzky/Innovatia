@@ -1,7 +1,5 @@
-<?if ($ideas && dbNumRows($ideas) > 0) {
-	while ($idea = dbFetchObject($ideas)) {?>
-<div class='itemHolder clickable'
-	onclick="addSelectItem(<?= $idea->ideaId?>);" style="height: 2.5em;">
+<div class='itemHolder clickable clearfix'
+	onclick="showIdeaSummary(<?= $idea->ideaId?>);" style="height: 2.5em;">
 	<div class="lefter" style="padding: 0.1em;">
 		<img
 			src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=ideaImg&actionId=<?= $idea->ideaId?>"
@@ -15,12 +13,3 @@
 		</span>
 	</div>
 </div>
-	<?}
-	if ($countIdeas > dbNumRows($ideas)) {?>
-<a class="loadMore" href="javascript:logAction()"
-	onclick="loadResults(this,{action:'getAddIdeaSelectItems', limit: '<?= $limit + 20; ?>'})">Load
-	more</a>
-	<?}
-} else {?>
-<p>No ideas found</p>
-<?}?>

@@ -5,13 +5,13 @@ if ($selections && dbNumRows($selections) > 0 ) {
 		class="itemHolder clickable" style="height: 2.5em; overflow: hidden">
 		<div class="lefter" style="padding: 0.1em;">
 			<img
-				src="retrieveImage.php?action=ideaImg&actionId=<?= $selection->ideaId ?>"
+				src="engine.ajax.php?action=ideaImg&actionId=<?= $selection->ideaId ?>"
 				style="width: 2.25em; height: 2.25em;" />
 		</div>
 		<div class="lefter">
 		<?= $selection->title ?>
 			<br /> <img
-				src="retrieveImage.php?action=userImg&actionId=<?= $selection->userId ?>"
+				src="engine.ajax.php?action=userImg&actionId=<?= $selection->userId ?>"
 				style="width: 1em; height: 1em;" /> <span><?= getDisplayUsername($selection->userId);  ?>
 			</span>
 		</div>

@@ -5,7 +5,7 @@
 		<tr>
 			<td style="background-color:#FFF; border-radius:2px; -webkit-border-radius:2px; -moz-border-radius:2px;">
 				<? if (!isset($_REQUEST['doc'])) {?>
-				<img src="<?= $serverUrl .  $uiRoot ?>innoworks/retrieveImage.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:3em; height:3em;"/> 
+				<img src="<?= $serverUrl .  $uiRoot ?>innoworks/engine.ajax.php?action=groupImg&actionId=<?= $group->groupId ?>" style="width:3em; height:3em;"/> 
 				<? } ?>
 			</td>
 			<td><h1><?= $group->title?></h1></td>
@@ -27,7 +27,7 @@
 		<?if ($groupIdeas && dbNumRows($groupIdeas) > 0) {
 			while ($idea = dbFetchObject($groupIdeas)) {?>
 				<div class="itemHolder">
-					<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
+					<img src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=ideaImg&actionId=<?= $idea->ideaId?>" style="width:1em; height:1em;"/>
 					<a href="javascript:logAction()" onclick="showIdeaSummary('<?= $idea->ideaId?>');"><?=$idea->title?></a>
 					<span><?= getDisplayUsername($idea->userId); ?></span>
 				</div>
@@ -43,7 +43,7 @@
 		<?if ($groupUsers && dbNumRows($groupUsers) > 0) {
 			while ($user = dbFetchObject($groupUsers)) {?>
 				<div class="itemHolder">
-					<img src='<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/>
+					<img src='<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=userImg&actionId=$user->userId' style='width:1em; height:1em;'/>
 					<a href="javascript:logAction()" onclick="showProfileSummary('<?= $user->userId ?>')"><?=$user->firstName . ' ' . $user->lastName . ' / ' . $user->username?></a>
 				</div>
 			<?}

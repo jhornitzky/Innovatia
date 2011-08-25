@@ -16,7 +16,7 @@
 		<ul>
 		<?while ($user = dbFetchObject($groupUsers)) {?>
 			<li>
-				<img src='<?= $serverUrl . $uiRoot ."innoworks/retrieveImage.php?action=userImg&actionId=" . $user->userId?>' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary("<?= $user->userId ?>")'><?= getDisplayUsername($user) ?></a>
+				<img src='<?= $serverUrl . $uiRoot ."innoworks/engine.ajax.php?action=userImg&actionId=" . $user->userId?>' style='width:1em; height:1em;'/><a href='javascript:showProfileSummary("<?= $user->userId ?>")'><?= getDisplayUsername($user) ?></a>
 				<?php if ($group->userId != $user->userId && $group->userId == $_SESSION['innoworks.ID']) {?> <img style="width:1em; height:1em;" onclick="delUserFromCurGroup(<?= $user->userId ?>)" src="<?= $uiRoot . 'style/trash.png'?>" alt="Remove user from group"/><?}?>
 				<?php if ($group->userId != $user->userId && !hasAccessToGroup($group->groupId, $user->userId) && $group->userId == $_SESSION['innoworks.ID']) { ?> <input type='button' value ='Approve' onclick='approveGroupUser(<?= $user->userId?>)' alt='Approve user for group'/> <?}?>
 			</li>
@@ -39,7 +39,7 @@
 		<? while ($idea = dbFetchObject($groupIdeas)) { ?>
 			<tr>
 				<td>
-					<img src='<?= $serverUrl . $uiRoot . "innoworks/retrieveImage.php?action=ideaImg&actionId=" . $idea->ideaId ?>' style='width:1em; height:1em;'/>
+					<img src='<?= $serverUrl . $uiRoot . "innoworks/engine.ajax.php?action=ideaImg&actionId=" . $idea->ideaId ?>' style='width:1em; height:1em;'/>
 					<a href="javascript:showIdeaDetails('<?= $idea->ideaId ?>')"> <?= $idea->title ?></a>
 				</td>
 				<? if ($idea->userId == $_SESSION['innoworks.ID']) {

@@ -2,7 +2,7 @@
 	<table>
 		<tr>
 			<td style="vertical-align:top;">
-				<img src="retrieveImage.php?action=userImg&actionId=<?= $comment->userId ?>" style="width: 3em; height: 3em; vertical-align: middle;" /> 
+				<img src="engine.ajax.php?action=userImg&actionId=<?= $comment->userId ?>" style="width: 3em; height: 3em; vertical-align: middle;" /> 
 			</td>
 			<td>
 				<span class="noteData" style="font-size:0.85em"> 

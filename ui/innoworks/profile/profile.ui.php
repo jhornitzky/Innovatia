@@ -53,3 +53,13 @@ function renderSummaryProfile($userId) {
 	$countGroups = countGetUserGroups($userId);
 	renderTemplate('profileSummary', get_defined_vars());
 }
+
+function renderProfileBook() {
+	import('user.service');
+	import('search.service');
+	$profiles = getSearchPeople('', $_SESSION['innoworks.ID'], '');
+	while($profile = dbFetchObject($profiles)) {
+		renderTemplate('search.profileItem', array('user' => $profile));
+	}
+}
+?>

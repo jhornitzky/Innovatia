@@ -218,4 +218,14 @@ function renderIdeaName($ideaId) {
 	$details = dbFetchObject(getIdeaDetails($ideaId));
 	renderTemplate('idea.name', get_defined_vars());
 }
+
+function renderIdeaBook() {
+	import('user.service');
+	import('search.service');
+	logVerbose('renderIdeaBook');
+	$ideas = getSearchIdeas('', $_SESSION['innoworks.ID'], '');
+	while($idea = dbFetchObject($ideas)) {
+		renderTemplate('search.ideaItem', array('idea' => $idea));
+	}
+}
 ?>

@@ -71,7 +71,7 @@ function logAction(elem) {
 } 
 
 function doAction(request, callback) {
-	$.post("engine.ajax.php", request, function(data) {
+	$.post(handler, request, function(data) {
 		showResponses(data, true);
 		if (callback !== undefined) eval(callback);
 	});
@@ -81,13 +81,13 @@ function loadResults(element, jsonRequest) {
 	var parent = $(element).parent();
 	$(element).remove();
 	parent.append(smallLoadingString);
-	$.get("engine.ajax.php", jsonRequest, function(data) {
+	$.get(handler, jsonRequest, function(data) {
 		parent.html(data); 
 	});
 }
 
 function pollServer() {
-	$.get("poll.php", function(data){
+	$.get(handler + "?action=poll", function(data){
 		if (data != null && data != '') {
 			showResponses(data, true);
 		}
@@ -133,7 +133,7 @@ function is_object (mixed_var) {
 
 function loadPopupShow() {
 	dijit.byId('ideasPopup').show();
-	$("img#popupIdeaImgMain").attr("src", "retrieveImage.php?action=ideaImg&actionId=" + currentIdeaId);
+	$("img#popupIdeaImgMain").attr("src", "engine.ajax.php?action=ideaImg&actionId=" + currentIdeaId);
 	$("span#ideaName").load("engine.ajax.php?action=getIdeaName&actionId=" + currentIdeaId, function() { 
 		loadIdeaPopupData();
 	});

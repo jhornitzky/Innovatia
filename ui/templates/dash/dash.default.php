@@ -1,17 +1,14 @@
 <div style="width: 100%;">
 	<div class="fixed-left">
-		<div onclick="showProfile()" style="height: 150px; border:1px solid #AAA; position:relative">
-			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>');opacity:0.1; background-position:center center;"></div>
-			<div style="position:absolute;width:100%;height:150px; background-image:url('retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); opacity:0.8; background-repeat:no-repeat; background-position:center center;">
-				<h1>hello<br/><?= getDisplayFirstName($_SESSION['innoworks.ID'])?></h1>
-			</div>
+		<div onclick="showProfile()" style="height: 150px; border:1px solid #AAA; position:relative; background-image:url('engine.ajax.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID'] ?>'); background-size:100%;">
 		</div>
 		<div style="border-right:1px solid #CCC; margin-top:1em;">
 			<?
 			if (isset($ideas) && dbNumRows($ideas) > 0) { 
 				while($idea = dbFetchObject($ideas)) { ?>
 					<div class="infoBox clickable clearfix" title="<?= $idea->title ?>" onclick='showIdeaSummary(<?=$idea->ideaId?>)'>
-						<img src="retrieveImage.php?action=ideaImg&actionId=<?=$idea->ideaId?>"/>
+						<img src="engine.ajax.php?action=ideaImg&actionId=<?=$idea->ideaId?>"/>
+						<div><?= $idea->title ?></div>
 					</div>
 				<?}
 			}
@@ -19,7 +16,8 @@
 			if (isset($groups) && dbNumRows($groups) > 0) { 
 				while($group = dbFetchObject($groups)) { ?>
 					<div class="infoBox clickable clearfix" title="<?= $group->title ?>" onclick='showGroupSummary(<?=$group->groupId?>)'>
-						<img src="retrieveImage.php?action=groupImg&actionId=<?=$group->groupId?>"/>
+						<img src="engine.ajax.php?action=groupImg&actionId=<?=$group->groupId?>"/>
+						<div><?= $group->title ?></div>
 					</div>
 				<?}
 			}?>

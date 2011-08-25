@@ -26,7 +26,7 @@ function getDashSelect($userid, $limitString) {
 }
 
 function countDashSelect($user) {
-	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas, Selections WHERE userId = '".$user."' AND Selections.ideaId =  Ideas.ideaId"));
+	$array = dbFetchArray(dbQuery("SELECT COUNT(*) FROM Ideas, Selections WHERE userId = '".$user."' AND Selections.ideaId = Ideas.ideaId"));
 	return $array[0];
 }
 ?>

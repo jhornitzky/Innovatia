@@ -3,7 +3,7 @@ require_once(dirname(__FILE__) . "/../pureConnector.php");
 import("search.service");
 
 function renderSearchDefault($userid, $opts) {
-	$limit = 5;
+	$limit = 9;
 	$searchTerms = '';
 	if (isset($_REQUEST['searchTerms']))
 	$searchTerms = htmlspecialchars($_REQUEST['searchTerms']);

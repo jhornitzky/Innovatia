@@ -4,13 +4,13 @@
 	class="itemHolder clickable" style="height: 2.5em; overflow: hidden">
 	<div class="lefter" style="padding: 0.1em;">
 		<img
-			src="retrieveImage.php?action=ideaImg&actionId=<?= $idea->ideaId ?>"
+			src="engine.ajax.php?action=ideaImg&actionId=<?= $idea->ideaId ?>"
 			style="width: 2.25em; height: 2.25em;" />
 	</div>
 	<div class="lefter">
 	<?= $idea->title ?>
 		<br /> <img
-			src="retrieveImage.php?action=userImg&actionId=<?= $idea->userId ?>"
+			src="engine.ajax.php?action=userImg&actionId=<?= $idea->userId ?>"
 			style="width: 1em; height: 1em;" /> <span><?= getDisplayUsername($idea->userId);  ?>
 		</span>
 	</div>

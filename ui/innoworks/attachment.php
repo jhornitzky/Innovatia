@@ -121,7 +121,7 @@ function showResponses(data, timeout) {
 					</td>
 					<td>
 						<form method="post" action="./attachment.php" style="padding:0; margin:0">
-						<a href="retrieveAttachment.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0; font-size:1.2em">
+						<a href="engine.ajax.php?action=retrieveAttachment&actionId=<?= $attach->attachmentId;?>" style="padding:0; margin:0; font-size:1.2em">
 						<?= $attach->title;?></a>
 						<?if (isset($ideaId)) 
 							echo '<input type="hidden" name="ideaId" value="'.$ideaId.'"/>';

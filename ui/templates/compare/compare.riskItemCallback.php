@@ -1,6 +1,6 @@
 <td class="headCol">
 	<div style="position:absolute; opacity:0.1; filter: alpha(opacity=10);">
-		<img src="<?= $serverUrl . $uiRoot ?>innoworks/retrieveImage.php?action=ideaImg&actionId=<?= $riskItem->ideaId?>" style="width: 2.5em; height: 2.5em;" />
+		<img src="<?= $serverUrl . $uiRoot ?>innoworks/engine.ajax.php?action=ideaImg&actionId=<?= $riskItem->ideaId?>" style="width: 2.5em; height: 2.5em;" />
 	</div>
 	<div class="hoverable">
 		<span class="itemName"> 

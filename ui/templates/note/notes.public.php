@@ -11,7 +11,7 @@ if ($announces && dbNumRows($announces)) {
 		<table>
 			<tr>
 				<td style="vertical-align:top;">
-					<img src="retrieveImage.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
+					<img src="engine.ajax.php?action=userImg&actionId=<?= $id ?>" style="width: 2em; height: 2em" />
 				</td>
 				<td>
 					<span class="noteData">
