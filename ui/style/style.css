@@ -202,6 +202,10 @@ div.smallLoadingAnim {
 	border-color:#FF1F56;
 }
 
+.redbox.selMenu {
+	background-color:#FF1F56;
+}
+
 .redItem {
 	color:#FF1F56;
 }

@@ -617,6 +617,16 @@ function showChallenges(elem) {
 	$("#challengeTab").fadeIn();
 }
 
+function showWiki(elem) {
+	$(".menulnk").parent().removeClass("selMenu");
+	$("#wikilnk").parent().addClass("selMenu");
+	$(".menulnk").removeClass("selLnk");
+	$("#wikilnk").addClass("selLnk");
+	getWiki();
+	$(".tabBody").hide();
+	$("#wikiTab").fadeIn();
+}
+
 function showGroups(elem) {
 	$(".menulnk").parent().removeClass("selMenu");
 	$("#groupslnk").parent().addClass("selMenu");
@@ -1524,4 +1534,9 @@ function getDashPublic(elem) {
 function getChallenges() {
 	showLoading("#challengeTab");
 	$('#challengeTab').load("engine.ajax.php?action=getChallenges");
+}
+
+function getWiki() {
+	showLoading("#wikiTab");
+	$('#wikiTab').load("engine.ajax.php?action=getWiki");
 }

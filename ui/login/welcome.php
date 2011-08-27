@@ -90,6 +90,7 @@ $(document).ready( function () {
 			<noscript><span><b>You must have javascript enabled to use innoWorks</b></span></noscript>
 		</div>
 	</div>
+	<div class="clearSure" style="height:1px; clear:both;"></div>
 </div>
 
 <div id="footerSpace"></div>

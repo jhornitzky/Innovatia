@@ -54,6 +54,9 @@ if (isset($_GET['action'])) {
 		case "getCreateIdea":
 			renderTemplate('idea.addForm');
 			break;
+		case "getWiki":
+			renderWiki($_SESSION['innoworks.ID']);
+			break;
 	}
 }
 

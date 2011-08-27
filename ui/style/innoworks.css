@@ -867,9 +867,9 @@ form {
 }
 
 .fixed-left .infoBox {
-	width:21%;
+	width:31%;
 	float:left;
-	margin-right:3.5%;
+	margin-right:1.5%;
 	position:relative;
 	border-radius:4px;
 	-moz-border-radius:4px;
@@ -881,6 +881,15 @@ form {
 
 .fixed-left .infoBox img {
 	width:100%;
+}
+
+.infoBox div {
+	color:#777;
+	text-align:center;
+	height:1.2em;
+	font-size:0.9em;
+	overflow:hidden;
+	text-overflow:ellipsis;
 }
 
 .profile {

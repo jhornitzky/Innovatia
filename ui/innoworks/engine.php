@@ -134,27 +134,14 @@ function openAdmin() {
 					<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
 						<a id="ideaslnk" class="menulnk" href="javascript:showInnovate(this)" title="Add, explore, compare and manage ideas">ideas</a>
 					</li>
-					<!-- 
-					<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/ideate.png');">
-						<a id="ideaslnk" class="menulnk" href="javascript:showIdeas(this)" title="Add and explore ideas">ideate</a>
-					</li>
-					<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/compare.png');" >
-						<a id="comparelnk"class="menulnk" href="javascript:showCompare(this)" title="Contrast ideas using structured criteria">compare</a>
-					</li>
-					<li class="bluebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/select.png');">
-					<a id="selectlnk" class="menulnk" href="javascript:showSelect(this)" title="Select and manage ideas for implementation">select</a>
-					</li>
-					-->
 					<li class="greenbox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/group.png');">
 						<a id="groupslnk" class="menulnk" href="javascript:showGroups(this)" title="Share and manage ideas with groups">groups</a>
 					</li>
-					<!-- 
-					<li class="orangebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
-						<a id="profilelnk" class="menulnk" href="javascript:showProfile(this)" title="Manage your ideas and information and send notes">profile</a>
-					</li>
-					-->
 					<li class="orangebox" style="background-image:url('<?= $serverRoot ?>ui/style/menu/profile.png');">
 						<a id="challengelnk" class="menulnk" href="javascript:showChallenges(this)" title="Solve problems and share ideas">challenges</a>
+					</li>
+					<li class="redbox">
+						<a id="wikilnk" class="menulnk" href="javascript:showWiki(this)" title="Solve problems and share ideas">wiki</a>
 					</li>
 				</ul>
 			</div>
@@ -171,47 +158,47 @@ function openAdmin() {
 
 <!-- PAGE CONTENT -->
 <div id="content">
-<div id="dashTab" class="tabBody"></div>
-<div id="ideaMega" class="tabBody">
-	<div id="innovateHead" class="fixed-left innovateSub" style="border-bottom:1px solid #7FBF4D; position:relative;"> 
-		<div class="tiny">your</div>
-		<h1 onclick="showInnovate(this)">
-			innovation
-		</h1>
-		<div class="tiny" style="position:absolute; bottom:5px; right:35px;">process</div>
-	</div>
-	<div class="fixed-right">
-		<div class="threeColumnContainer">
-			<div id="ideaHead" onclick="showIdeas(this)" class="threecol innovateSub bluebox" style="border-width:0; border-bottom-width:1px; ">
-				<div class="tiny">stage 1</div>
-				<h1>ideate</h1>
-			</div>
-			<div id="compareHead" onclick="showCompare(this)" class="threecol innovateSub greenbox" style="border-width:0; border-bottom-width:1px; ">
-				<div class="tiny">stage 2</div>
-				<h1>compare</h1>
-			</div>
-			<div id="selectHead" onclick="showSelect(this)" class="threecol innovateSub orangebox" style="border-width:0; border-bottom-width:1px; ">
-				<div class="tiny">stage 3</div>
-				<h1>select</h1>
+	<div id="dashTab" class="tabBody"></div>
+	<div id="ideaMega" class="tabBody">
+		<div id="innovateHead" class="fixed-left innovateSub" style="border-bottom:1px solid #7FBF4D; position:relative;"> 
+			<div class="tiny">your</div>
+			<h1 onclick="showInnovate(this)">
+				innovation
+			</h1>
+			<div class="tiny" style="position:absolute; bottom:5px; right:35px;">process</div>
+		</div>
+		<div class="fixed-right">
+			<div class="threeColumnContainer">
+				<div id="ideaHead" onclick="showIdeas(this)" class="threecol innovateSub bluebox" style="border-width:0; border-bottom-width:1px; ">
+					<div class="tiny">stage 1</div>
+					<h1>ideate</h1>
+				</div>
+				<div id="compareHead" onclick="showCompare(this)" class="threecol innovateSub greenbox" style="border-width:0; border-bottom-width:1px; ">
+					<div class="tiny">stage 2</div>
+					<h1>compare</h1>
+				</div>
+				<div id="selectHead" onclick="showSelect(this)" class="threecol innovateSub orangebox" style="border-width:0; border-bottom-width:1px; ">
+					<div class="tiny">stage 3</div>
+					<h1>select</h1>
+				</div>
 			</div>
 		</div>
+		<div class="clearer"  style="height:1.5em; clear:both"></div>
+		<div id="innovateTab" class="tabBody"></div>
+		<? renderTemplate('ideate.tab'); ?>
+		<? renderTemplate('compare.tab'); ?>
+		<? renderTemplate('select.tab'); ?>
 	</div>
-	<div class="clearer"  style="height:1.5em; clear:both"></div>
-	<div id="innovateTab" class="tabBody"></div>
-	<? renderTemplate('ideate.tab'); ?>
-	<? renderTemplate('compare.tab'); ?>
-	<? renderTemplate('select.tab'); ?>
-</div>
-<div id="profileTab" class="tabBody"></div>
-<? renderTemplate('group.tab'); ?>
-<div id="publicTab" class="tabBody"></div>
-<div id="searchTab" class="tabBody">
-	<div id="searchResults" style="padding-top:15px;"></div>
-</div>
-<div id="timelineTab" class="tabBody"></div>
-<div id="challengeTab" class="tabBody">
-
-</div>
+	<div id="profileTab" class="tabBody"></div>
+	<? renderTemplate('group.tab'); ?>
+	<div id="publicTab" class="tabBody"></div>
+	<div id="searchTab" class="tabBody">
+		<div id="searchResults" style="padding-top:15px;"></div>
+	</div>
+	<div id="timelineTab" class="tabBody"></div>
+	<div id="challengeTab" class="tabBody"></div>
+	<div id="wikiTab" class="tabBody"></div>
+	<div class="clearSure" style="height:1px; clear:both;"></div>
 </div>
 
 <div id="footerSpace"></div>
@@ -222,7 +209,7 @@ function openAdmin() {
 </div>
 
 <div class="menuHolder clearfix">
-	<img class="profile" onclick="javascript:showProfile()" src="retrieveImage.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID']?>" title="<?= getDisplayUsername($_SESSION['innoworks.ID']); ?>"/><br/>
+	<img class="profile" onclick="javascript:showProfile()" src="engine.ajax.php?action=userImg&actionId=<?= $_SESSION['innoworks.ID']?>" title="<?= getDisplayUsername($_SESSION['innoworks.ID']); ?>"/><br/>
 	<? if ($_SESSION['innoworks.isAdmin'] == 1) { ?>
 		<img src="<?= $serverRoot ?>ui/style/menu/cog.png" onClick="openAdmin(this)" alt="Admin" title="Go to admin"/><br/>
 	<?}?>

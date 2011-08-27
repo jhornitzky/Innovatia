@@ -228,4 +228,8 @@ function renderIdeaBook() {
 		renderTemplate('search.ideaItem', array('idea' => $idea));
 	}
 }
+
+function renderWiki($userId) {
+	echo '<h1 style="text-align:center;">coming soon</h1>';
+}
 ?>
