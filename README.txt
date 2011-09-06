@@ -1,7 +1,7 @@
 INNOVATIA README
 v1.0 22/2/2011
 
-These directories contain the code of the innoworks project.
+These directories contain the code of the innovatia project.
 For more info on Innoworks and open innovation head to http://innovatia.org to get a better perspective on how innovation works!
 
 PARTS--------------------------------------------------------
@@ -69,4 +69,3 @@ Copyright (C) 2011 James Hornitzky
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
--include smarter/better forms of model validation
