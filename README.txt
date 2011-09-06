@@ -1,4 +1,4 @@
-INNOWORKS README
+INNOVATIA README
 v1.0 22/2/2011
 
 These directories contain the code of the innoworks project.
@@ -52,4 +52,21 @@ Some basic tests of certain components lie in the test folder, but the majority 
 IDEAS FOR CHANGES--------------------------
 -Write some tests
 -include more templates to separate ui/control from display
+
+
+LICENSE
+Copyright (C) 2011 James Hornitzky
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -include smarter/better forms of model validation
